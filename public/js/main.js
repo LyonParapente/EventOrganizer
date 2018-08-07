@@ -65,7 +65,7 @@ $(function()
 
 		eventColor: "#3a87ad",
 		displayEventTime: false,
-		events: './events.php',
+		events: './events',
 
 		dayClick: function(date)
 		{
