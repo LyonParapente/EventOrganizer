@@ -9,17 +9,19 @@ import (
 type Logger struct {
 	*log.Logger
 
-	Level LogLevel
+	Level  LogLevel
 	Output string
 }
 
 type LogLevel int
+
 const (
 	DEBUG LogLevel = iota
 	INFO
 	WARNING
 	ERROR
 )
+
 func NewLogLevel(s string) LogLevel {
 	switch strings.ToLower(s) {
 	case "debug":
@@ -42,7 +44,7 @@ func NewLogger(prefix, output string, level LogLevel) *Logger {
 	case "stdout":
 		l = log.New(os.Stdout, prefix, log.LstdFlags|log.Lshortfile)
 	default:
-		f, err :=os.OpenFile(output, os.O_WRONLY|os.O_APPEND|os.O_CREATE|os.O_TRUNC, 0666)
+		f, err := os.OpenFile(output, os.O_WRONLY|os.O_APPEND|os.O_CREATE|os.O_TRUNC, 0666)
 		if err != nil {
 			log.Fatalln("Unable to initialize logger, err:", err)
 		}
@@ -51,7 +53,7 @@ func NewLogger(prefix, output string, level LogLevel) *Logger {
 
 	return &Logger{
 		Logger: l,
-		Level: level,
+		Level:  level,
 	}
 }
 
@@ -78,5 +80,3 @@ func (l Logger) Error(v ...interface{}) {
 		l.Println("ERROR:", v)
 	}
 }
-
-

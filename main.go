@@ -2,17 +2,17 @@ package main
 
 import (
 	"flag"
-	"strings"
 	"os"
+	"strings"
 
-	"./core"
+	"github.com/LyonParapente/EventOrganizer/core"
 )
 
 var (
-	logLevel *string
-	logOutput *string
+	logLevel   *string
+	logOutput  *string
 	publicPath *string
-	target *string
+	target     *string
 )
 
 func init() {
@@ -34,7 +34,7 @@ func main() {
 
 	app := EventOrganizer{
 		PublicPath: *publicPath,
-		Target: *target,
+		Target:     *target,
 	}
 	app.Logger = core.NewLogger("", "stdout", core.NewLogLevel(*logLevel))
 

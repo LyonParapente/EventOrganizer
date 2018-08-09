@@ -13,4 +13,3 @@ type App struct {
 func (a App) GetLogger() *Logger {
 	return a.Logger
 }
-
