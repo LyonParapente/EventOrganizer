@@ -25,8 +25,7 @@ func (e *EventOrganizer) Start() error {
 // router initialize routings
 func (e *EventOrganizer) router() http.Handler {
 	router := http.NewServeMux()
-	// router.Handle("/", http.FileServer(http.Dir(e.PublicPath)))
-	router.Handle("/", &srv.GetHomepage{App: e})
+	router.Handle("/", homePageOrFileServer(&srv.GetHomepage{App: e}, http.FileServer(http.Dir(e.PublicPath))))
 	router.Handle("/calendar", &srv.GetCalendar{App: e})
 
 	router.Handle("/api/events", &srv.GetEvents{App: e})
