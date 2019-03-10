@@ -23,12 +23,12 @@ $(function()
 		{
 			listMonth:
 			{
-				buttonText: 'Liste mois'
+				buttonText: i18n("Month list")
 			},
 			listYear:
 			{
-				buttonText: 'Liste année',
-				listDayAltFormat: 'DD/MM/YYYY'
+				buttonText: i18n("Year list"),
+				listDayAltFormat: settings.listDayAltFormat
 			},
 			month:
 			{
@@ -37,7 +37,7 @@ $(function()
 			}
 		},
 
-		locale: 'fr',
+		locale: settings.lang,
 		timezone: false,
 		defaultView: 'month',
 		defaultDate: new Date(),
@@ -53,18 +53,11 @@ $(function()
 		{
 			if (date.isSameOrAfter(moment(), 'day'))
 			{
-				$("#sortie_date").val(date.format());
-
-				var titles = settings.default_random_event_title;
-				var title = titles[getRandomInt(0, titles.length)];
-				$("#sortie_title").val(title);
-
-				// https://getbootstrap.com/docs/4.1/getting-started/javascript/#programmatic-api
-				$("#eventProperties").modal('show');
+				planAnEvent(date);
 			}
 			else
 			{
-				// Cannot create event in the past
+				alert(i18n("Cannot create event in the past"));
 			}
 		},
 		select: function(startDate, endDate)
@@ -109,4 +102,31 @@ function getRandomInt(min, max)
 	min = Math.ceil(min);
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function planAnEvent(date)
+{
+	var $sortie_title = $("#sortie_title");
+	var $sortie_date = $("#sortie_date");
+	var D = document.getElementById.bind(document);
+
+	i18n_inPlace([
+		D("eventPropertiesTitle"),
+		$sortie_title[0].labels[0],
+		D("sortie_lieu").labels[0],
+		D("sortie_RDV").labels[0],
+		$sortie_date[0].labels[0],
+		D("sortie_heure").labels[0],
+		D("sortie_description").labels[0],
+		D("sortie_save")
+	]);
+
+	var titles = settings.default_random_event_title;
+	var title = titles[getRandomInt(0, titles.length)];
+	$sortie_title.val(title);
+
+	$sortie_date.val(date.format());
+
+	// https://getbootstrap.com/docs/4.1/getting-started/javascript/#programmatic-api
+	$("#eventProperties").modal('show');
 }

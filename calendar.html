@@ -46,7 +46,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title container text-center" id="eventPropertiesTitle">Planifier une sortie</h4>
+				<h4 class="modal-title container text-center" id="eventPropertiesTitle">Plan an event</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -54,19 +54,19 @@
 			<div class="modal-body" id="eventPropertiesBody">
 <form>
   <div class="form-group row">
-    <label for="sortie_title" class="col-sm-4 col-form-label">Sortie</label>
+    <label for="sortie_title" class="col-sm-4 col-form-label">Event</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="sortie_title" />
     </div>
   </div>
   <div class="form-group row">
-    <label for="sortie_lieu" class="col-sm-4 col-form-label">Lieu de l'activité</label>
+    <label for="sortie_lieu" class="col-sm-4 col-form-label">Activity location</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="sortie_lieu" />
     </div>
   </div>
   <div class="form-group row">
-    <label for="sortie_RDV" class="col-sm-4 col-form-label">Point de RDV</label>
+    <label for="sortie_RDV" class="col-sm-4 col-form-label">Meeting location</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="sortie_RDV" />
     </div>
@@ -78,7 +78,7 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="sortie_heure" class="col-sm-4 col-form-label">Heure</label>
+    <label for="sortie_heure" class="col-sm-4 col-form-label">Time</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="sortie_heure" />
     </div>
@@ -89,7 +89,7 @@
       <textarea class="form-control" id="sortie_description" rows="5"></textarea>
     </div>
   </div>
-  <button type="button" class="btn btn-outline-primary btn-lg btn-block">Enregistrer</button>
+  <button type="button" class="btn btn-outline-primary btn-lg btn-block" id="sortie_save">Save</button>
 </form>
 			</div>
 		</div>
