@@ -73,3 +73,5 @@ var fakeData1 =
 		start: '2018-01-22'
 	}
 ];
+
+setTimeout(x => $calendar.fullCalendar('addEventSource', fakeData2), 200);

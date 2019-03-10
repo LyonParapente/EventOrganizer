@@ -54,6 +54,10 @@ height: 100%;
   cursor: pointer;
 }
 
+.fc-title {
+  white-space: normal;
+}
+
 #sortie_map {
   height: 250px;
 }

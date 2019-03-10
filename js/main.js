@@ -1,9 +1,9 @@
+var $calendar;
 $(function()
 {
-	var $calendar = $('#calendar'),
-		$loading = $("#loading"),
-		loadingTimer,
-		DEV = typeof fakeData1 !== "undefined";
+	$calendar = $('#calendar');
+	var $loading = $("#loading"),
+		loadingTimer;
 
 	$calendar.fullCalendar(
 	{
@@ -48,6 +48,7 @@ $(function()
 
 		eventColor: settings.default_event_color,
 		displayEventTime: false,
+		/*events: './events.php',*/
 
 		dayClick: function(date)
 		{
@@ -85,13 +86,6 @@ $(function()
 			}
 		}
 	});
-
-	var eventSource = './events.php';
-	if (DEV)
-	{
-		eventSource = fakeData1;
-	}
-	$calendar.fullCalendar('addEventSource', eventSource);
 });
 
 /* Returns a random integer between the specified values.

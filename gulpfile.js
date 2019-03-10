@@ -126,7 +126,7 @@ gulp.task('serve', function()
 	});
 	
 	//gulp.watch("*.scss", ['sass']);
-	gulp.watch(["*.html", "js/*.js", "css/*.css"]).on('change', browserSync.reload);
+	gulp.watch(["*.html", "js/**/*.js", "css/*.css"]).on('change', browserSync.reload);
 });
 
 exports.default = gulp.series('copy', 'serve');
