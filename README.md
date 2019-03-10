@@ -49,4 +49,5 @@ Each time you save a source file, [browserSync](https://www.browsersync.io) relo
 * [Font Awesome](https://fontawesome.com/)
 * [Moment.js](https://momentjs.com)
 * [jQuery](https://jquery.com/)
+* [Leaflet](https://leafletjs.com) with [OpenStreetMap](https://www.openstreetmap.org/about) and [Esri](https://esri.github.io/esri-leaflet/)
 * [GoLang](https://golang.org/)

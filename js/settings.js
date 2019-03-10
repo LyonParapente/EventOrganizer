@@ -11,7 +11,9 @@ const settings =
 		"Sortie autour de ",
 		"Sortie vers ",
 		"Qui veut voler ?"
-	]
+	],
+	default_map_center: [45.721892, 4.919573],
+	default_map_zoom: 14
 };
 
 const trads =
@@ -28,7 +30,8 @@ const trads =
 		"Description": "Description",
 		"Save": "Enregistrer",
 		"Month list": "Liste mois",
-		"Year list": "Liste année"
+		"Year list": "Liste année",
+		"Search an address": "Chercher une adresse"
 	}
 };
 

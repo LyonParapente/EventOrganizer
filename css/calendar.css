@@ -53,3 +53,7 @@ height: 100%;
 .fc-day, .fc-list-item, .fc-content-skeleton tbody td {
   cursor: pointer;
 }
+
+#sortie_map {
+  height: 250px;
+}
