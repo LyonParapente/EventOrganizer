@@ -7,12 +7,13 @@ gulp.task('serve', function()
 	{
 		server:
 		{
-			baseDir: "./"
+			baseDir: "./",
+			index: "calendar.dev.html"
 		}
 	});
 	
 	//gulp.watch("*.scss", ['sass']);
-	gulp.watch(["*.js", "*.css", "*.html"]).on('change', browserSync.reload);
+	gulp.watch(["*.html", "js/*.js", "css/*.css"]).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['serve']);
