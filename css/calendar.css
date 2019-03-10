@@ -49,3 +49,7 @@ animation: fa-spin2 1s infinite linear;
 width: 100%;
 height: 100%;
 }
+
+.fc-day, .fc-list-item, .fc-content-skeleton tbody td {
+  cursor: pointer;
+}
