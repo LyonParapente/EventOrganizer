@@ -5,12 +5,12 @@ Organize events in your community!
 We're a paragliding club but this tool could definitely be used by other groups.
 
 Main goals:
-* Intuitive & nice looking
-* Mobile friendly (we're often outside...)
 * Ability to organize events for one or more days
-** Each event has a name, description, date and meeting point
-** Comments can be exchange between members for this event
-** Nice to have: organize transport (how many vehicules available for how many persons...)
+  * Each event has a name, description, date and meeting point
+  * Comments can be exchange between members for this event
+  * Nice to have: organize transport (how many vehicules available for how many persons...)
+* Intuitive & nice looking
+* Mobile friendly
 * List of members (restrict access)
 * Emails notifications
 * Stats (per month / year)
@@ -20,7 +20,7 @@ Main goals:
 
 ## Fast debug
 
-Open calendar.dev.html in your favorite browser
+Open `calendar.dev.html` in your favorite browser
 
 ## Normal debug
 
