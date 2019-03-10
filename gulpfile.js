@@ -16,4 +16,4 @@ gulp.task('serve', function()
 	gulp.watch(["*.html", "js/*.js", "css/*.css"]).on('change', browserSync.reload);
 });
 
-gulp.task('default', ['serve']);
+exports.default = gulp.series('serve');
