@@ -42,3 +42,10 @@ animation: fa-spin2 1s infinite linear;
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
+
+
+/* modal not big enough */
+.modal-backdrop.show {
+width: 100%;
+height: 100%;
+}
