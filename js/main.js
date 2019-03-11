@@ -121,10 +121,5 @@ function planAnEvent(date)
 
 	$sortie_date.val(date.format());
 
-	// https://getbootstrap.com/docs/4.1/getting-started/javascript/#programmatic-api
-	$("#eventProperties").modal('show').on('shown.bs.modal', function ()
-	{
-		// Wait for first modal to be displayed
-		initMap();
-	});
+	$("#eventProperties").modal('show').on('shown.bs.modal', initMap);
 }

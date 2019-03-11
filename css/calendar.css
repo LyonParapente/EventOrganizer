@@ -11,9 +11,14 @@ right: 0;
 }
 
 #calendar {
-width: 900px;
+width: 100%;
+max-width: 900px;
 margin: 40px auto 0 auto;
 position: relative;
+}
+
+.fc-scroller {
+height: auto !important;
 }
 
 #loading {
@@ -51,13 +56,30 @@ height: 100%;
 }
 
 .fc-day, .fc-list-item, .fc-content-skeleton tbody td {
-  cursor: pointer;
+cursor: pointer;
 }
 
+/* looks weird
+.fc .fc-row .fc-bg td:hover,
+.fc .fc-row .fc-content-skeleton td:not(.fc-event-container):hover {
+background-color: #bce8f1;
+}*/
+
 .fc-title {
-  white-space: normal;
+white-space: normal;
 }
 
 #sortie_map {
-  height: 250px;
+height: 250px;
+}
+
+#eventProperties .close {
+width: 4rem;
+height: 4rem;
+}
+#eventProperties .close span {
+font-size: 3em;
+position: absolute;
+right: 10px;
+top: -5px;
 }
