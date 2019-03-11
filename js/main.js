@@ -121,5 +121,5 @@ function planAnEvent(date)
 
 	$sortie_date.val(date.format());
 
-	$("#eventProperties").modal('show').on('shown.bs.modal', initMap);
+	$("#eventProperties").modal('show').one('shown.bs.modal', initMap);
 }
