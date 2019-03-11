@@ -119,6 +119,8 @@ function planAnEvent(date)
 	var title = titles[getRandomInt(0, titles.length)];
 	$sortie_title.val(title);
 
+	$("#sortie_RDV").attr("placeholder", settings.default_location).val('');
+
 	$sortie_date.val(date.format());
 
 	$("#eventProperties").modal('show').one('shown.bs.modal', initMap);

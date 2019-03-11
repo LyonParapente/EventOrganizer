@@ -1,14 +1,18 @@
-var map, marker;
+var map, marker, $sortie_RDV;
 function initMap()
 {
 	if (map)
 	{
 		// Reset positions
 		map.setView(settings.default_map_center, settings.default_map_zoom);
+
+		marker.off('move', onMarkerMove); // avoid issue with placeholder
 		marker.setLatLng(settings.default_map_center);
+		marker.on('move', onMarkerMove);
 	}
 	else
 	{
+		$sortie_RDV = $("#sortie_RDV");
 		map = L.map('sortie_map',
 		{
 			center: settings.default_map_center,
@@ -80,5 +84,12 @@ function onMarkerMove()
 {
 	marker.unbindPopup();
 	var latlng = marker.getLatLng();
-	$("#sortie_RDV").val(latlng.lat+', '+latlng.lng);
+	$sortie_RDV.val(function (i, value)
+	{
+		if (value.length === 0 || value.match(/\d+\.\d+, \d+\.\d+/))
+		{
+			return latlng.lat+', '+latlng.lng;
+		}
+		return value;
+	});
 }

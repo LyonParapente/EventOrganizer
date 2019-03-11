@@ -12,6 +12,7 @@ const settings =
 		"Sortie vers ",
 		"Qui veut voler ?"
 	],
+	default_location: "La Halle Mode & Chaussures | Bron",
 	default_map_center: [45.721892, 4.919573],
 	default_map_zoom: 14
 };
