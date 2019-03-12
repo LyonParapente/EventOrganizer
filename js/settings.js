@@ -14,5 +14,24 @@ const settings =
 	],
 	default_location: "La Halle Mode & Chaussures | Bron",
 	default_map_center: [45.721892, 4.919573],
-	default_map_zoom: 14
+	default_map_zoom: 14,
+	categories:
+	{
+		default:
+		{
+			permanence: '#5FDCE2',
+			club: '#00C400',
+			weekend: '#FF9F89',
+			voyage: '#8D00FF',
+			dune: '#FF9900',
+			ski: '#853D88',
+			escalade: '#FF99CC',
+			formation: 'green',
+			conference: '#FF4848',
+			theorie: '#C0B701',
+			jeux: '#8894F9',
+			canceled: '#8A8A8A',
+			other: '#30CF74'
+		}
+	}
 };

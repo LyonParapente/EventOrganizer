@@ -69,6 +69,24 @@ $(function()
 		{
 			alert('Event: ' + calEvent.title);
 		},
+		eventDataTransform: function(event)
+		{
+			// Manage color according to category
+			if (event.hasOwnProperty('category'))
+			{
+				var colorConf;
+				if (settings.categories.hasOwnProperty(theme))
+				{
+					colorConf = settings.categories[theme];
+				}
+				else
+				{
+					colorConf = settings.categories["default"];
+				}
+				event.color = colorConf[event.category];
+			}
+			return event;
+		},
 		loading: function(isLoading)
 		{
 			if (isLoading)

@@ -1,3 +1,4 @@
+var theme;
 $(function()
 {
 	var $themeSelector = $('#themeSelector');
@@ -38,6 +39,7 @@ $(function()
 			date.setTime(date.getTime()+(nbDays*24*60*60*1000));
 			var expires = "; expires="+date.toGMTString();
 			document.cookie = "theme=" + themeName + expires;
+			theme = themeName;
 		});
 	}
 
