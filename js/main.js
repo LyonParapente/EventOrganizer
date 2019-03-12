@@ -44,26 +44,28 @@ $(function()
 
 		selectable: true, // for both month & basicWeek views
 		unselectAuto: true, // clicking elsewhere on the page will cause the current selection to be cleared
-		unselectCancel: '', // TODO: https://fullcalendar.io/docs/unselectCancel
 
 		eventColor: settings.default_event_color,
 		displayEventTime: false,
 		/*events: './events.php',*/
 
-		dayClick: function(date)
+		dayClick: function (date)
 		{
-			if (date.isSameOrAfter(moment(), 'day'))
-			{
-				planAnEvent(date);
-			}
-			else
-			{
-				alert(i18n("Cannot create event in the past"));
-			}
+			console.log("Day clicked "+date.format());
+			planAnEvent(date, date);
 		},
 		select: function(startDate, endDate)
 		{
-			console.log('Selected ' + startDate.format() + ' to ' + endDate.format());
+			endDate.add(-1, 'days');
+			if (startDate.format() !== endDate.format())
+			{
+				console.log('Selected ' + startDate.format() + ' to ' + endDate.format());
+				planAnEvent(startDate, endDate);
+			}
+			else
+			{
+				// handled by dayClick
+			}
 		},
 		eventClick: function(calEvent)
 		{
@@ -116,10 +118,17 @@ function getRandomInt(min, max)
 	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-function planAnEvent(date)
+function planAnEvent(start_date, end_date)
 {
+	if (!start_date.isSameOrAfter(moment(), 'day'))
+	{
+		alert(i18n("Cannot create event in the past"));
+		return;
+	}
+
 	var $sortie_title = $("#sortie_title");
-	var $sortie_date = $("#sortie_date");
+	var $sortie_date_start = $("#sortie_date_start");
+	var $sortie_date_end = $("#sortie_date_end");
 	var D = document.getElementById.bind(document);
 
 	i18n_inPlace([
@@ -127,7 +136,9 @@ function planAnEvent(date)
 		$sortie_title[0].labels[0],
 		D("sortie_lieu").labels[0],
 		D("sortie_RDV").labels[0],
-		$sortie_date[0].labels[0],
+		$("#eventPropertiesBody .date")[0],
+		$sortie_date_start[0].labels[0],
+		$sortie_date_end[0].labels[0],
 		D("sortie_heure").labels[0],
 		D("sortie_description").labels[0],
 		D("sortie_save")
@@ -139,7 +150,8 @@ function planAnEvent(date)
 
 	$("#sortie_RDV").attr("placeholder", settings.default_location).val('');
 
-	$sortie_date.val(date.format());
+	$sortie_date_start.val(start_date.format());
+	$sortie_date_end.val(end_date.format());
 
 	$("#eventProperties").modal('show').one('shown.bs.modal', initMap);
 }

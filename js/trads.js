@@ -13,7 +13,9 @@ const trads =
 		"Save": "Enregistrer",
 		"Month list": "Liste mois",
 		"Year list": "Liste année",
-		"Search an address": "Chercher une adresse"
+		"Search an address": "Chercher une adresse",
+		"DateFrom": "Du",
+		"DateTo": "Au"
 	}
 };
 
