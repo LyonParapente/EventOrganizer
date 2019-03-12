@@ -78,6 +78,8 @@ function initMap()
 			onMarkerMove();
 		});
 	}
+	// Map unfortunately has de-focus the title field
+	$("#sortie_title").focus();
 }
 
 function onMarkerMove()
