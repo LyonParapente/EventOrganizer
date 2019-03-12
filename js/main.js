@@ -106,6 +106,32 @@ $(function()
 			}
 		}
 	});
+
+	$("#eventPropertiesBody .needs-validation").on('submit', function(e)
+	{
+		var form = e.target;
+		if (form.checkValidity())
+		{
+			//TODO: post ajax data
+		}
+		else
+		{
+			$(form).find(":invalid").first().focus();
+		}
+
+		form.classList.add('was-validated');
+
+		// Do not reload page
+		event.preventDefault();
+		event.stopPropagation();
+	});
+
+	$("#sortie_date_start").on('change', function()
+	{
+		// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+		// Dates before this are disabled on mobile and forbidden on desktop validation
+		$("#sortie_date_end").attr("min", this.value);
+	});
 });
 
 /* Returns a random integer between the specified values.
@@ -144,6 +170,10 @@ function planAnEvent(start_date, end_date)
 		D("sortie_save")
 	]);
 
+	var $form = $("#eventPropertiesBody form");
+	$form.removeClass('was-validated');
+	i18n_inPlace($form.find('.invalid-feedback'));
+
 	var titles = settings.default_random_event_title;
 	var title = titles[getRandomInt(0, titles.length)];
 	$sortie_title.val(title);
@@ -152,6 +182,7 @@ function planAnEvent(start_date, end_date)
 
 	$sortie_date_start.val(start_date.format());
 	$sortie_date_end.val(end_date.format());
+	$sortie_date_start.trigger('change'); // ensure "min" attribute is set
 
 	$("#eventProperties").modal('show').one('shown.bs.modal', initMap);
 }

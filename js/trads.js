@@ -15,7 +15,11 @@ const trads =
 		"Year list": "Liste année",
 		"Search an address": "Chercher une adresse",
 		"DateFrom": "Du",
-		"DateTo": "Au"
+		"DateTo": "Au",
+		"Please provide a title": "Veuillez saisir un nom de sortie",
+		"Please provide a location": "Veuillez saisir un lieu",
+		"Date is required": "Date requise",
+		"Cannot end before start": "Doit être après la date de début"
 	}
 };
 
