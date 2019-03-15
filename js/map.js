@@ -1,4 +1,4 @@
-var mapList = {}, $sortie_RDV;
+var mapList = {}, $sortie_RDV = $("#sortie_RDV");
 function initMap(elem_id, edit, gps, location)
 {
 	var defaultPoint = gps || settings.default_map_center;
@@ -42,7 +42,6 @@ function initMap(elem_id, edit, gps, location)
 
 		if (edit)
 		{
-			$sortie_RDV = $("#sortie_RDV");
 			marker.on('move', onMarkerMove);
 
 			var searchControl = new L.esri.Geocoding.geosearch(
@@ -97,12 +96,12 @@ function initMap(elem_id, edit, gps, location)
 				}
 			});
 		}
-		else // !edit
+	}
+	if (!edit)
+	{
+		if (!gps && location)
 		{
-			if (!gps && location)
-			{
-				findLocation(location, marker, map);
-			}
+			findLocation(location, marker, map);
 		}
 	}
 }
