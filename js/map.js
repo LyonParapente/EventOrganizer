@@ -86,22 +86,22 @@ function initMap(elem_id, edit, gps, location)
 				marker.setLatLng(e.latlng);
 				onMarkerMove();
 			});
+
+			$sortie_RDV.on('change', function()
+			{
+				var latlng = marker.getLatLng();
+				if (latlng.lat === settings.default_map_center[0] &&
+					latlng.lng === settings.default_map_center[1])
+				{
+					findLocation(this.value, marker, map);
+				}
+			});
 		}
 		else // !edit
 		{
 			if (!gps && location)
 			{
-				var proximity = L.latLng(settings.default_map_center);
-				var proximity_radius = 100000;
-				L.esri.Geocoding.geocode().text(location).nearby(proximity, proximity_radius).run(function (error, response)
-				{
-					if (response.results.length > 0)
-					{
-						var bestResult = response.results[0];
-						marker.setLatLng(bestResult.latlng);
-						map.fitBounds(bestResult.bounds);
-					}
-				});
+				findLocation(location, marker, map);
 			}
 		}
 	}
@@ -118,5 +118,22 @@ function onMarkerMove()
 			return latlng.lat+', '+latlng.lng;
 		}
 		return value;
+	});
+}
+
+function findLocation(text, marker, map)
+{
+	var proximity = L.latLng(settings.default_map_center);
+	var proximity_radius = 100000;
+	$("#spinner_RDV").show();
+	L.esri.Geocoding.geocode().text(text).nearby(proximity, proximity_radius).run(function (error, response)
+	{
+		$("#spinner_RDV").hide();
+		if (response.results.length > 0)
+		{
+			var bestResult = response.results[0];
+			marker.setLatLng(bestResult.latlng);
+			map.fitBounds(bestResult.bounds);
+		}
 	});
 }

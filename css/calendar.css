@@ -83,3 +83,10 @@ position: absolute;
 right: 10px;
 top: -5px;
 }
+
+#spinner_RDV {
+display: none;
+position: absolute;
+top: 3px;
+right: 15px;
+}
