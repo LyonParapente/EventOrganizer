@@ -16,21 +16,34 @@ const trads =
 		"Search an address": "Chercher une adresse",
 		"DateFrom": "Du",
 		"DateTo": "Au",
+		"DateThe": "Le",
 		"Please provide a title": "Veuillez saisir un nom de sortie",
 		"Please provide a location": "Veuillez saisir un lieu",
 		"Date is required": "Date requise",
-		"Cannot end before start": "Doit être après la date de début"
+		"Cannot end before start": "Doit être après la date de début",
+		"Proposed by": "Proposé par",
+		"Comments:": "Commentaires :",
+		"Add a comment...": "Ajouter un commentaire...",
+		"Please provide a comment": "Veuillez saisir un commentaire",
+		"Send": "Envoyer"
 	}
 };
 
 function i18n (key/*, arg1, arg2, ...*/)
 {
 	var dic = trads[settings.lang];
-	if (dic && dic.hasOwnProperty(key))
+	if (dic)
 	{
-		var trad = dic[key];
-		var args = Array.prototype.slice.call(arguments, 1);
-		return i18nFormat(trad, args);
+		if (dic.hasOwnProperty(key))
+		{
+			var trad = dic[key];
+			var args = Array.prototype.slice.call(arguments, 1);
+			return i18nFormat(trad, args);
+		}
+		else
+		{
+			console.warn("Missing trad for key:", key);
+		}
 	}
 	return "[["+key+"]]"; // not translated yet
 }
@@ -45,14 +58,25 @@ function i18nFormat (trad, replaceValues)
 	return trad;
 }
 
-function i18n_inPlace (selectors)
+function i18n_inPlace (selectors, attr)
 {
 	for (var i = 0; i < selectors.length; ++i)
 	{
 		var $item = jQuery(selectors[i]);
+		if ($item.length === 0)
+		{
+			console.warn("i18n was unable to find element:", selectors[i]);
+		}
 		if (!$item.data('translated'))
 		{
-			$item.text((i, old) => i18n(old));
+			if (attr)
+			{
+				$item.attr(attr, (i, old) => i18n(old));
+			}
+			else
+			{
+				$item.text((i, old) => i18n(old));
+			}
 			$item.data('translated', true);
 		}
 	}

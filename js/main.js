@@ -67,27 +67,23 @@ $(function()
 				// handled by dayClick
 			}
 		},
-		eventClick: function(calEvent)
-		{
-			alert('Event: ' + calEvent.title);
-		},
+		eventClick: showEvent,
 		eventDataTransform: function(event)
 		{
-			// Manage color according to category
 			if (event.hasOwnProperty('category'))
 			{
-				var colorConf;
-				if (settings.categories.hasOwnProperty(theme))
-				{
-					colorConf = settings.categories[theme];
-				}
-				else
-				{
-					colorConf = settings.categories["default"];
-				}
-				event.color = colorConf[event.category];
+				event.color = getColor(event.category);
 			}
+			event.desc = event.desc.replace(/\n/g, '<br/>');
 			return event;
+		},
+		eventRender: function(event, element)
+		{
+			if (event.desc)
+			{
+				//with popper.min.js
+				//$(element).tooltip({title: event.desc, html: true});
+			}
 		},
 		loading: function(isLoading)
 		{
@@ -107,7 +103,7 @@ $(function()
 		}
 	});
 
-	$("#eventPropertiesBody .needs-validation").on('submit', function(e)
+	$("#createEventBody .needs-validation").on('submit', function(e)
 	{
 		var form = e.target;
 		if (form.checkValidity())
@@ -144,6 +140,20 @@ function getRandomInt(min, max)
 	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
+function getColor(category)
+{
+	var colorConf;
+	if (settings.categories.hasOwnProperty(theme))
+	{
+		colorConf = settings.categories[theme];
+	}
+	else
+	{
+		colorConf = settings.categories["default"];
+	}
+	return colorConf[category];
+}
+
 function planAnEvent(start_date, end_date)
 {
 	if (!start_date.isSameOrAfter(moment(), 'day'))
@@ -157,12 +167,13 @@ function planAnEvent(start_date, end_date)
 	var $sortie_date_end = $("#sortie_date_end");
 	var D = document.getElementById.bind(document);
 
-	i18n_inPlace([
-		D("eventPropertiesTitle"),
+	i18n_inPlace(
+	[
+		D("createEventTitle"),
 		$sortie_title[0].labels[0],
 		D("sortie_lieu").labels[0],
 		D("sortie_RDV").labels[0],
-		$("#eventPropertiesBody .date")[0],
+		$("#createEventBody .date")[0],
 		$sortie_date_start[0].labels[0],
 		$sortie_date_end[0].labels[0],
 		D("sortie_heure").labels[0],
@@ -170,7 +181,7 @@ function planAnEvent(start_date, end_date)
 		D("sortie_save")
 	]);
 
-	var $form = $("#eventPropertiesBody form");
+	var $form = $("#createEventBody form");
 	$form.removeClass('was-validated');
 	i18n_inPlace($form.find('.invalid-feedback'));
 
@@ -184,5 +195,81 @@ function planAnEvent(start_date, end_date)
 	$sortie_date_end.val(end_date.format());
 	$sortie_date_start.trigger('change'); // ensure "min" attribute is set
 
-	$("#eventProperties").modal('show').one('shown.bs.modal', initMap);
+	$("#createEvent").modal('show').one('shown.bs.modal', function()
+	{
+		initMap('sortie_map', true);
+		$("#sortie_title").focus();
+	})
+}
+
+function showEvent(calEvent)
+{
+	var $eventProperties = $("#eventProperties");
+
+	i18n_inPlace($eventProperties.find('.trad'));
+	i18n_inPlace(["#event_comment"], "placeholder");
+	i18n_inPlace(
+	[
+		"#event_time_title",
+		"#event_location_title"
+	], "title");
+
+	var $form = $("#eventProperties form");
+	$form.removeClass('was-validated');
+	i18n_inPlace($form.find('.invalid-feedback'));
+
+	$("#event_title").text(calEvent.title);
+	$("#event_description").html(calEvent.desc);
+	if (calEvent.category)
+	{
+		$("#event_category").text(calEvent.category).css(
+		{
+			'backgroundColor': getColor(calEvent.category),
+			'color': 'white'
+		});
+	}
+	else
+	{
+		$("#event_category").text('');
+	}
+	$("#event_author").text(calEvent.by);
+
+	var date_start = calEvent.start.format();
+	var date_end = (calEvent.end ? calEvent.end : calEvent.start).format();
+	if (date_start === date_end)
+	{
+		$("#event_date_day").text(date_start);
+		$("#event_date_from").hide();
+		$("#event_date_to").hide();
+		$("#event_date_the").show();
+	}
+	else
+	{
+		$("#event_date_start").text(date_start);
+		$("#event_date_end").text(date_end);
+		$("#event_date_from").show();
+		$("#event_date_to").show();
+		$("#event_date_the").hide();
+	}
+
+	if (!calEvent.time && !calEvent.location)
+	{
+		$("#event_rdv_infos").hide();
+		$("#event_map").hide();
+	}
+	else
+	{
+		$("#event_time").text(calEvent.time || "");
+		$("#event_location").text(calEvent.location || "");
+		$("#event_rdv_infos").show();
+		$("#event_map").show();
+	}
+
+	$eventProperties.modal('show').one('shown.bs.modal', function()
+	{
+		initMap('event_map', false, calEvent.gps);
+
+		// Avoid keyboard popping on mobile
+		//$("#event_comment").focus();
+	});
 }

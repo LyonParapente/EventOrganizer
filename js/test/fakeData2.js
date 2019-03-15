@@ -331,7 +331,7 @@ var fakeData2 =
 		desc: "Le 26 mars à 19h, Gaspard Petiot donnera une conférence gratuite sur la X-AlpS 2019 organisée par la toute nouvelle section Parapente de l'AS Lyon1. Quelques jours après le dévoilement du parcours, Gaspard nous fera part de sa vision de la course et nous entrerons dans le coeur de sa préparation : vol, météo, organisation… que faut-il faire pour être performant dans la plus grande compétition mondiale de Marche et Vol, la RedBull X-Alps ?\n\nLa conférence est gratuite, il suffit de vous inscrire ici : https://goo.gl/xQKK59",
 		time: '19H00',
 		location: 'Club des Sports du Campus de la Doua',
-		gps: '45.7788759,4.8677651',
+		gps: [45.77918949858406, 4.869684576988221],
 		category: 'conference'
 	},
 	{

@@ -1,21 +1,24 @@
-var map, marker, $sortie_RDV;
-function initMap()
+var mapList = {}, $sortie_RDV;
+function initMap(elem_id, edit, gps)
 {
-	if (map)
+	var defaultPoint = gps || settings.default_map_center;
+	if (mapList.hasOwnProperty(elem_id))
 	{
-		// Reset positions
-		map.setView(settings.default_map_center, settings.default_map_zoom);
+		map = mapList[elem_id].map;
+		marker = mapList[elem_id].marker;
 
-		marker.off('move', onMarkerMove); // avoid issue with placeholder
-		marker.setLatLng(settings.default_map_center);
+		// Reset positions
+		map.setView(defaultPoint, settings.default_map_zoom);
+
+		marker.off('move', onMarkerMove); // avoid issue with placeholder in edit mode
+		marker.setLatLng(defaultPoint);
 		marker.on('move', onMarkerMove);
 	}
 	else
 	{
-		$sortie_RDV = $("#sortie_RDV");
-		map = L.map('sortie_map',
+		map = L.map(elem_id,
 		{
-			center: settings.default_map_center,
+			center: defaultPoint,
 			zoom: settings.default_map_zoom
 		});
 		map.zoomControl.setPosition('topright');
@@ -26,8 +29,9 @@ function initMap()
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		marker = L.marker(settings.default_map_center, {draggable: true}).addTo(map);
-		marker.on('move', onMarkerMove);
+		marker = L.marker(defaultPoint, {draggable: edit}).addTo(map);
+		mapList[elem_id] = {map: map, marker: marker};
+
 		marker.on('click', function()
 		{
 			var latlng = marker.getLatLng();
@@ -36,50 +40,54 @@ function initMap()
 			marker.bindPopup('<a href="'+url+'" target="_blank">Open in Google Maps</a>').openPopup();
 		});
 
-		var searchControl = new L.esri.Geocoding.geosearch(
+		if (edit)
 		{
-			position: 'topleft',
-			useMapBounds: false, // difficult to get head around otherwise
-			collapseAfterResult: true,
-			expanded: false,
-			placeholder: i18n("Search an address")
-		}).addTo(map);
+			$sortie_RDV = $("#sortie_RDV");
+			marker.on('move', onMarkerMove);
 
-		var results = new L.LayerGroup().addTo(map);
-		searchControl.on('results', function(data)
-		{
-			results.clearLayers();
-			if (data.results.length === 1)
+			var searchControl = new L.esri.Geocoding.geosearch(
 			{
-				marker.setLatLng(data.results[0].latlng);
-				onMarkerMove();
-			}
-			else
+				position: 'topleft',
+				useMapBounds: false, // difficult to get head around otherwise
+				collapseAfterResult: true,
+				expanded: false,
+				placeholder: i18n("Search an address")
+			}).addTo(map);
+
+			var results = new L.LayerGroup().addTo(map);
+			searchControl.on('results', function(data)
 			{
-				marker.removeFrom(map);
-				for (var i = data.results.length - 1; i >= 0; i--)
+				results.clearLayers();
+				if (data.results.length === 1)
 				{
-					var searchMarker = L.marker(data.results[i].latlng);
-					results.addLayer(searchMarker);
-					searchMarker.on('click', function()
-					{
-						marker.setLatLng(this.getLatLng());
-						marker.addTo(map);
-						onMarkerMove();
-						results.clearLayers();
-					});
+					marker.setLatLng(data.results[0].latlng);
+					onMarkerMove();
 				}
-			}
-		});
+				else
+				{
+					marker.removeFrom(map);
+					for (var i = data.results.length - 1; i >= 0; i--)
+					{
+						var searchMarker = L.marker(data.results[i].latlng);
+						results.addLayer(searchMarker);
+						searchMarker.on('click', function()
+						{
+							marker.setLatLng(this.getLatLng());
+							marker.addTo(map);
+							onMarkerMove();
+							results.clearLayers();
+						});
+					}
+				}
+			});
 
-		map.on('click', function (e)
-		{
-			marker.setLatLng(e.latlng);
-			onMarkerMove();
-		});
+			map.on('click', function (e)
+			{
+				marker.setLatLng(e.latlng);
+				onMarkerMove();
+			});
+		}
 	}
-	// Map unfortunately has de-focus the title field
-	$("#sortie_title").focus();
 }
 
 function onMarkerMove()

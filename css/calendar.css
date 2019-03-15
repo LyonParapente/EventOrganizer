@@ -69,15 +69,15 @@ background-color: #bce8f1;
 white-space: normal;
 }
 
-#sortie_map {
+#sortie_map, #event_map {
 height: 250px;
 }
 
-#eventProperties .close {
+.modal-header .close {
 width: 4rem;
 height: 4rem;
 }
-#eventProperties .close span {
+.modal-header .close span {
 font-size: 3em;
 position: absolute;
 right: 10px;
