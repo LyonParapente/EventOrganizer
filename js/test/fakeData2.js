@@ -136,7 +136,7 @@ var fakeData2 =
 		by: 'Thibault ROHMER',
 		desc: "Venez nombreux discuter de vos projets d'hiver et si pas de projet et bien juste pour prendre un verre ensemble.",
 		time: '18H30',
-		location: 'Coq en Pâte',
+		location: 'Au Coq en Pâte - 36 Rue Tête d\'Or, 69006 Lyon',
 		category: 'permanence'
 	},
 	{
@@ -241,7 +241,7 @@ var fakeData2 =
 		by: 'Thibault ROHMER',
 		desc: "On pourra continuer à discuter révision BP avec celles et ceux qui ont des questions. Ou se faire un petit quizz en live si ca vous dit.",
 		time: '18H30',
-		location: 'Coq en Pâte',
+		location: 'Au Coq en Pâte - 36 Rue Tête d\'Or, 69006 Lyon',
 		category: 'permanence'
 	},
 	{
@@ -270,7 +270,7 @@ var fakeData2 =
 		by: 'Thibault ROHMER',
 		desc: "",
 		time: '18H30',
-		location: 'Coq en Pâte',
+		location: 'Au Coq en Pâte - 36 Rue Tête d\'Or, 69006 Lyon',
 		category: 'permanence'
 	},
 	{
@@ -320,7 +320,7 @@ var fakeData2 =
 		by: 'Thibault ROHMER',
 		desc: "",
 		time: '18H30',
-		location: 'Coq en Pâte',
+		location: 'Au Coq en Pâte - 36 Rue Tête d\'Or, 69006 Lyon',
 		category: 'permanence'
 	},
 	{
@@ -341,7 +341,7 @@ var fakeData2 =
 		by: 'Thibault ROHMER',
 		desc: "",
 		time: '18H30',
-		location: 'Coq en Pâte',
+		location: 'Au Coq en Pâte - 36 Rue Tête d\'Or, 69006 Lyon',
 		category: 'permanence'
 	},
 	{

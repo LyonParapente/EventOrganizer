@@ -267,7 +267,7 @@ function showEvent(calEvent)
 
 	$eventProperties.modal('show').one('shown.bs.modal', function()
 	{
-		initMap('event_map', false, calEvent.gps);
+		initMap('event_map', false, calEvent.gps, calEvent.location);
 
 		// Avoid keyboard popping on mobile
 		//$("#event_comment").focus();

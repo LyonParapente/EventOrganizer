@@ -1,5 +1,5 @@
 var mapList = {}, $sortie_RDV;
-function initMap(elem_id, edit, gps)
+function initMap(elem_id, edit, gps, location)
 {
 	var defaultPoint = gps || settings.default_map_center;
 	if (mapList.hasOwnProperty(elem_id))
@@ -86,6 +86,23 @@ function initMap(elem_id, edit, gps)
 				marker.setLatLng(e.latlng);
 				onMarkerMove();
 			});
+		}
+		else // !edit
+		{
+			if (!gps && location)
+			{
+				var proximity = L.latLng(settings.default_map_center);
+				var proximity_radius = 100000;
+				L.esri.Geocoding.geocode().text(location).nearby(proximity, proximity_radius).run(function (error, response)
+				{
+					if (response.results.length > 0)
+					{
+						var bestResult = response.results[0];
+						marker.setLatLng(bestResult.latlng);
+						map.fitBounds(bestResult.bounds);
+					}
+				});
+			}
 		}
 	}
 }
