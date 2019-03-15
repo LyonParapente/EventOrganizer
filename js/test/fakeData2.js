@@ -54,7 +54,7 @@ var fakeData2 =
 		by: 'Philou LT',
 		desc: "",
 		time: '19H00',
-		location: 'Château Sans Soucis',
+		location: 'Château Sans Soucis - 36 Avenue Lacassagne, 69003 Lyon',
 		category: 'club'
 	},
 	{
