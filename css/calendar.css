@@ -91,3 +91,7 @@ position: absolute;
 top: 3px;
 right: 15px;
 }
+
+#event_location {
+resize: none;
+}
