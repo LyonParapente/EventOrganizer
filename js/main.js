@@ -238,6 +238,8 @@ function showEvent(calEvent)
 	var date_end = (calEvent.end ? calEvent.end : calEvent.start).format();
 	if (date_start === date_end)
 	{
+		$("#event_date_start").text('');
+		$("#event_date_end").text('');
 		$("#event_date_day").text(date_start);
 		$("#event_date_from").hide();
 		$("#event_date_to").hide();
@@ -247,6 +249,7 @@ function showEvent(calEvent)
 	{
 		$("#event_date_start").text(date_start);
 		$("#event_date_end").text(date_end);
+		$("#event_date_day").text('');
 		$("#event_date_from").show();
 		$("#event_date_to").show();
 		$("#event_date_the").hide();
@@ -254,6 +257,8 @@ function showEvent(calEvent)
 
 	if (!calEvent.time && !calEvent.location)
 	{
+		$("#event_time").text('');
+		$("#event_location").text('');
 		$("#event_rdv_infos").hide();
 		$("#event_map").hide();
 	}
