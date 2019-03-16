@@ -24,7 +24,7 @@ function initMap(elem_id, edit, gps, location)
 		map.zoomControl.setPosition('topright');
 		L.control.scale().addTo(map);
 
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
 		{
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
