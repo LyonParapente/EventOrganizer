@@ -12,7 +12,7 @@ right: 0;
 
 #calendar {
 width: 100%;
-max-width: 900px;
+max-width: 900px; /* viewport 600 */
 margin: 40px auto 0 auto;
 position: relative;
 }
@@ -48,11 +48,12 @@ animation: fa-spin2 1s infinite linear;
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
 
-
-/* modal not big enough */
-.modal-backdrop.show {
-width: 100%;
-height: 100%;
+/* 600px is same as viewport */
+@media (max-width: 600px) {
+  .modal .modal-dialog{
+    /* Use full available width on mobile */
+    max-width: 100%;
+  }
 }
 
 .fc-day, .fc-list-item, .fc-content-skeleton tbody td {
