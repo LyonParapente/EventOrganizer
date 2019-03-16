@@ -275,11 +275,11 @@ function showEvent(calEvent)
 
 	$eventProperties.modal('show').one('shown.bs.modal', function()
 	{
-		initMap('event_map', false, calEvent.gps, calEvent.location);
-
 		// Adjust height of location - step 2
 		var el = $el[0];
 		$el.css('height', el.scrollHeight + (el.offsetHeight - el.clientHeight));
+
+		initMap('event_map', false, calEvent.gps, calEvent.location);
 
 		// Avoid keyboard popping on mobile
 		//$("#event_comment").focus();
