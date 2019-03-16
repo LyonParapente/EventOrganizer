@@ -234,8 +234,8 @@ function showEvent(calEvent)
 	}
 	$("#event_author").text(calEvent.by);
 
-	var date_start = calEvent.start.format();
-	var date_end = (calEvent.end ? calEvent.end : calEvent.start).format();
+	var date_start = calEvent.start.format('L');
+	var date_end = (calEvent.end ? calEvent.end : calEvent.start).format('L');
 	if (date_start === date_end)
 	{
 		$("#event_date_start").text('');
