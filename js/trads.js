@@ -25,7 +25,9 @@ const trads =
 		"Comments:": "Commentaires :",
 		"Add a comment...": "Ajouter un commentaire...",
 		"Please provide a comment": "Veuillez saisir un commentaire",
-		"Send": "Envoyer"
+		"Send": "Envoyer",
+		"The ": "Le ",
+		" at ": " à "
 	}
 };
 

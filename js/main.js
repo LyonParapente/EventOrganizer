@@ -204,6 +204,7 @@ function planAnEvent(start_date, end_date)
 
 function showEvent(calEvent)
 {
+	loadEventComments(calEvent.id);
 	var $eventProperties = $("#eventProperties");
 
 	i18n_inPlace($eventProperties.find('.trad'));
@@ -283,5 +284,75 @@ function showEvent(calEvent)
 
 		// Avoid keyboard popping on mobile
 		//$("#event_comment").focus();
+	});
+}
+
+function loadEventComments(id)
+{
+	$("#event_comment_avatar").attr(
+	{
+		// TODO: replace by current user id
+		"alt": "Thibault ROHMER",
+		"src": "avatars/4145-1.jpg",
+		"height": 110
+	});
+	//TODO: view avatar of person who proposed the event, even if (s)he didn't comment
+
+	var event_comments = document.getElementById('event_comments');
+	event_comments.innerHTML = '';
+
+	//TODO: call server side
+	//TODO: loading spinner why loading comments
+	jQuery.getJSON("js/test/fakeData_Event_"+id+".json", function(data)
+	{
+		for (var i = 0; i < data.comments.length; ++i)
+		{
+			var comment = data.comments[i],
+				userid = comment.user,
+				username = data.users[userid];
+
+			var dateText = moment(comment.date).calendar();
+			if (dateText.indexOf(' ') === -1)
+			{
+				dateText = i18n('The ') + dateText + i18n(' at ') + moment(comment.date).format('LT')
+			}
+			dateText = dateText.replace(':', 'h');
+
+			var groupitem = document.createElement('div');
+			groupitem.className = 'list-group-item p-1 d-flex';
+				var d = document.createElement('div');
+					var a = document.createElement('a');
+					a.href = "user/"+userid;
+						var avatar = new Image();
+						avatar.src = "avatars/"+userid+"-2.jpg";
+						avatar.alt = username;
+					a.appendChild(avatar);
+				d.appendChild(a);
+				groupitem.appendChild(d);
+
+				var col = document.createElement('div');
+				col.className = 'col';
+					var comment_infos = document.createElement('span');
+					comment_infos.className = 'border-bottom border-light';
+						a = document.createElement('a');
+						a.href = "user/"+userid;
+						a.appendChild(document.createTextNode(username));
+					comment_infos.appendChild(a);
+					comment_infos.appendChild(document.createTextNode(' - ' + dateText));
+					
+					col.appendChild(comment_infos);
+					var p = document.createElement("p");
+					p.className = 'blockquote my-1';
+					p.appendChild(document.createTextNode(comment.comment));
+				col.appendChild(p);
+			groupitem.appendChild(col);
+			event_comments.appendChild(groupitem);
+		}
+
+		//TODO: use data.participants
+	}).fail(function(o, type, ex)
+	{
+		console.error(ex);
+		//TODO: on ajax eror display alert
 	});
 }
