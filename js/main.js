@@ -233,7 +233,12 @@ function showEvent(calEvent)
 	{
 		$("#event_category").text('');
 	}
-	$("#event_author").text(calEvent.by);
+	$("#event_author").text(calEvent.user.name);
+	var author_img = new Image();
+	author_img.alt = calEvent.user.name;
+	author_img.src = "avatars/"+calEvent.user.id+"-1.jpg";
+	$("#event_author_img").attr("href", "user/"+calEvent.user.id)
+		.empty().append(author_img);
 
 	var date_start = calEvent.start.format('L');
 	var date_end = (calEvent.end ? calEvent.end : calEvent.start).format('L');
