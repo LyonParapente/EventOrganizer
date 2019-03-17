@@ -52,8 +52,48 @@ const toCopy =
 			'node_modules/moment/min/moment-with-locales.min.js'
 		],
 		dest: 'js/libs/'
+	},
+	leaflet_js:
+	{
+		src:
+		[
+			'node_modules/leaflet/dist/leaflet.js',
+			'node_modules/esri-leaflet/dist/esri-leaflet.js',
+			'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js',
+			'node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js'
+		],
+		dest: 'js/libs/'
+	},
+	leaflet_css:
+	{
+		src: 'node_modules/leaflet/dist/leaflet.css',
+		dest: 'css/leaflet/'
+	},
+	leaflet_geocoder_css:
+	{
+		src: 'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css',
+		dest: 'css/leaflet/geocoder/'
+	},
+	leaflet_fullscreen_css:
+	{
+		src:
+		[
+			'node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css',
+			'node_modules/leaflet-fullscreen/dist/fullscreen.png',
+			'node_modules/leaflet-fullscreen/dist/fullscreen@2x.png'
+		],
+		dest: 'css/leaflet/fullscreen/'
 	}
 };
+
+gulp.task('copy-leaflet-images', function (done)
+{
+	return gulp.src('node_modules/leaflet/dist/images/*').pipe(gulp.dest('css/leaflet/images/'));
+});
+gulp.task('copy-leaflet-geocoder-images', function (done)
+{
+	return gulp.src('node_modules/esri-leaflet-geocoder/dist/img/*').pipe(gulp.dest('css/leaflet/geocoder/img/'));
+});
 
 gulp.task('copy', function (done)
 {

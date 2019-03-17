@@ -8,8 +8,12 @@
   },
   "devDependencies": {
     "browser-sync": "^2.26.3",
+    "esri-leaflet": "^2.2.3",
+    "esri-leaflet-geocoder": "^2.2.14",
     "gulp": "^4.0.0",
-    "gulp-rename": "^1.4.0"
+    "gulp-rename": "^1.4.0",
+    "leaflet": "^1.4.0",
+    "leaflet-fullscreen": "^1.0.2"
   },
   "author": "Thibault ROHMER"
 }
