@@ -301,12 +301,12 @@ function loadEventComments(id)
 	//TODO: view avatar of person who proposed the event, even if (s)he didn't comment
 
 	var event_comments = document.getElementById('event_comments');
-	event_comments.innerHTML = '';
+	event_comments.innerHTML = '<div class="spinner-border m-auto" role="status"></div>';
 
 	//TODO: call server side
-	//TODO: loading spinner why loading comments
 	jQuery.getJSON("js/test/fakeData_Event_"+id+".json", function(data)
 	{
+		event_comments.innerHTML = ''; // rendering optim to avoid repaint in .always()
 		for (var i = 0; i < data.comments.length; ++i)
 		{
 			var comment = data.comments[i],
@@ -371,5 +371,8 @@ function loadEventComments(id)
 	{
 		console.error(ex);
 		$errorBox.show();
-	});
+	}).always(function()
+	{
+		$(".spinner-border, event_comments").remove();
+	});;
 }
