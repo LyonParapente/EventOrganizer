@@ -248,6 +248,7 @@ function showEvent(calEvent)
 	}
 	else
 	{
+		date_end = moment(calEvent.end).add(-1, 'days').format('L');
 		$("#event_date_start").text(date_start);
 		$("#event_date_end").text(date_end);
 		$("#event_date_day").text('');
