@@ -1,0 +1,19 @@
+{
+	"comments":
+	[
+		{
+			"date": "2019-03-10T11:17:00+01:00",
+			"user": 4145,
+			"comment": "Pensez à aérer votre parachute de secours 24H avant la session (extraction + déplier). Ramenez le en boule dans un grand sac de courses avec la sellette attachée (pour remettre dedans)."
+		}
+	],
+	"participants": [4145, 3088, 3121, 3087, 6372],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"3088": "Isabelle Mitaine",
+		"3121": "Tof Boileau",
+		"3087": "Philou LT",
+		"6372": "Maxime GONON"
+	}
+}

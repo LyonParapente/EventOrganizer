@@ -1,0 +1,38 @@
+{
+	"comments":
+	[
+		{
+			"date": "2019-02-14T22:23:00+01:00",
+			"user": 5212,
+			"comment": "Ca fera réunion préparatoire pour aller la voir en vrai la Xalp..."
+		},
+		{
+			"date": "2019-03-09T10:06:00+01:00",
+			"user": 5443,
+			"comment": "Il est où exactement ce club des sports à la doua ? Quelques à une adresse valide sur maps ?"
+		},
+		{
+			"date": "2019-03-10T21:23:00+01:00",
+			"user": 6372,
+			"comment": "c'est juste à coté de ce gymnase\nGymnase B et C SUAPS, 69100 Lyon\nhttps://www.google.fr/maps/dir//Gymnase+B+et+C+SUAPS,+69100+Lyon/@45.7788759,4.8677651,17.98z/data=!4m9!4m8!1m0!1m5!1m1!1s0x47f4ea98d1693d4d:0xfa87a31d2d446b91!2m2!1d4.8693376!2d45.7794308!3e0"
+		},
+		{
+			"date": "2019-03-10T22:40:00+01:00",
+			"user": 5443,
+			"comment": "Super merci bcp Maxime :)"
+		}
+	],
+	"participants": [5508, 4594, 5212, 6131, 5508, 6372, 3490, 5443, 5905],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"5212": "Romuald S",
+		"5443": "Mickael FRANC",
+		"6372": "Maxime GONON",
+		"5508": "Lucas Mura",
+		"6131": "Côme EDELINE",
+		"3490": "Simon LE",
+		"4594": "ELODIE MONTCHER",
+		"5905": "Nicolas Lingois"
+	}
+}

@@ -289,6 +289,7 @@ function showEvent(calEvent)
 
 function loadEventComments(id)
 {
+	var $errorBox = $("#event_comments_error").hide();
 	$("#event_comment_avatar").attr(
 	{
 		// TODO: replace by current user id
@@ -310,6 +311,11 @@ function loadEventComments(id)
 			var comment = data.comments[i],
 				userid = comment.user,
 				username = data.users[userid];
+
+			if (!username)
+			{
+				console.warn("Missing user "+userid);
+			}
 
 			var dateText = moment(comment.date).calendar();
 			if (dateText.indexOf(' ') === -1)
@@ -342,17 +348,27 @@ function loadEventComments(id)
 					
 					col.appendChild(comment_infos);
 					var p = document.createElement("p");
-					p.className = 'blockquote my-1';
+					p.className = 'blockquote my-1 text-dark';
 					p.appendChild(document.createTextNode(comment.comment));
+					p.innerHTML = p.innerHTML.replace(/\n/g, '<br/>');
 				col.appendChild(p);
 			groupitem.appendChild(col);
 			event_comments.appendChild(groupitem);
+		}
+
+		for (i = 0; i < data.participants.length; ++i)
+		{
+			var participant = data.participants[i];
+			if (!data.users[participant])
+			{
+				console.warn("Missing user "+participant);
+			}
 		}
 
 		//TODO: use data.participants
 	}).fail(function(o, type, ex)
 	{
 		console.error(ex);
-		//TODO: on ajax eror display alert
+		$errorBox.show();
 	});
 }

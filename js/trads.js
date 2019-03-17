@@ -27,7 +27,8 @@ const trads =
 		"Please provide a comment": "Veuillez saisir un commentaire",
 		"Send": "Envoyer",
 		"The ": "Le ",
-		" at ": " à "
+		" at ": " à ",
+		"Unable to load comments": "Erreur lors du chargement des commentaires"
 	}
 };
 

@@ -1,0 +1,22 @@
+{
+	"comments":
+	[
+		{
+			"date": "2019-02-19T16:56:00+01:00",
+			"user": 4145,
+			"comment": "Dispo. Vendredi mais pas avant"
+		},
+		{
+			"date": "2019-02-19T18:40:00+01:00",
+			"user": 5092,
+			"comment": "Salut Simon, je peux être disponible demain. Pr contre pour info, je suis en reprise d'activité. Donc pas trop sur de moi. Je connais pas le site non plus. Mon téléphone 0670127469. Amélie"
+		}
+	],
+	"participants": [3490],
+	"users":
+	{
+		"3490": "Simon LE",
+		"4145": "Thibault ROHMER",
+		"5092": "Amélie GONGUET"
+	}
+}

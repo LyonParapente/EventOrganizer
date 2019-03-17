@@ -2,14 +2,12 @@
 	"comments":
 	[
 		{
-			"id": 1,
-			"date": '2019-03-08T19:11:00+01:00',
+			"date": "2019-03-08T19:11:00+01:00",
 			"user": 4439,
 			"comment": "On va aller grimper à Vertical Art St Priest dimanche si ca vous dit"
 		},
 		{
-			"id": 2,
-			"date": '2019-03-08T19:21:00+01:00',
+			"date": "2019-03-08T19:21:00+01:00",
 			"user": 5508,
 			"comment": "Dimanche pas dispo! samedi?"
 		}

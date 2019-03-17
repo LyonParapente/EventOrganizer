@@ -1,0 +1,16 @@
+{
+	"comments":
+	[
+		{
+			"date": "2019-02-26T09:28:00+01:00",
+			"user": 5676,
+			"comment": "je peux pas, dommage"
+		}
+	],
+	"participants": [3144],
+	"users":
+	{
+		"3144": "Sébastien Avitabile",
+		"5676": "Julieta Rivosecchi"
+	}
+}

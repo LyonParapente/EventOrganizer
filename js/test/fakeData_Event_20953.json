@@ -1,0 +1,44 @@
+{
+	"comments":
+	[
+		{
+			"date": "2019-01-05T14:21:00+01:00",
+			"user": 4145,
+			"comment": "Merci de remplir ce doodle pour savoir qui vient / combien on sera : https://doodle.com/poll/99pzh3zd63bdh3dg"
+		},
+		{
+			"date": "2019-02-24T16:32:00+01:00",
+			"user": 4145,
+			"comment": "Y'aurait-il quelqu'un pour nous accueillir chez lui/elle ?"
+		},
+		{
+			"date": "2019-02-24T20:13:00+01:00",
+			"user": 5508,
+			"comment": "chez nous !"
+		},
+		{
+			"date": "2019-02-26T00:15:00+01:00",
+			"user": 4145,
+			"comment": "Je viens de monter un album pour vous montrer l'exemple de la ZIT de Grenoble dans Google Earth avec 4 traces prises au hasard, ces vols étant valides.\n\nLes photos :\nhttps://photos.app.goo.gl/Y9iqaDVtdkM4ZfSu9\n\n---\n\nVols affichés:\nhttps://parapente.ffvl.fr/cfd/liste/2017/vol/20240194\nhttps://parapente.ffvl.fr/cfd/liste/2017/vol/20240210\nhttps://parapente.ffvl.fr/cfd/liste/2017/vol/20240184\nhttps://parapente.ffvl.fr/cfd/liste/2017/vol/20238019\nConversion IGC > KML effectuée avec ceci:\nhttp://cunimb.net/igc2kml.php"
+		},
+		{
+			"date": "2019-02-24T16:32:00+01:00",
+			"user": 4145,
+			"comment": "Airspaces du monde au format .kmz (google earth):\nhttp://www.3dairspace.org.uk/airspace.html\n\nWorldwide airspace avec les dates de mise à jour:\nhttp://soaringweb.org/Airspace/EU.html\n\n\n---\n\n\nRécit du vol record de France de distance de Martin Morlet\nhttps://paragliding.rocktheoutdoor.com/cross-parapente/record-de-france-de-distance-de-martin-morlet-411-km/\nJe vous invite à voir la trace : http://parapente.ffvl.fr/cfd/liste/2015/vol/20185566\nActivez les espaces aériens, pfiou compliqué !! Et regarder les commentaires du pilote à droite\n\n\n---\n\nPleins de supers liens : http://liberiste.com/in-formations-parapente/\n\nUn crosseur qui explique 2-3 trucs:\nhttps://youtu.be/Mk79JeQzj0U?list=PLgfEFbpRZIb-QMpAP4LCaYjT-jP4Fewoo&t=31"
+		}
+	],
+	"participants": [4145, 3093, 5508, 3545, 5577, 6131, 3087, 5676, 5998, 5443],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"3093": "Gildas Thurin",
+		"5508": "Lucas Mura",
+		"3545": "Pierre Blanchard",
+		"5577": "Yann Corderoc'h",
+		"6131": "Côme EDELINE",
+		"3087": "Philou LT",
+		"5676": "Julieta Rivosecchi",
+		"5998": "Florian Viricelle",
+		"5443": "Mickael FRANC"
+	}
+}

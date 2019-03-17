@@ -1,0 +1,59 @@
+{
+	"comments":
+	[
+		{
+			"date": "2019-01-05T14:19:00+01:00",
+			"user": 4145,
+			"comment": "Merci de remplir ce doodle pour savoir qui vient / combien on sera : https://doodle.com/poll/nrzafqrz5m3k49wf"
+		},
+		{
+			"date": "2019-02-05T22:27:00+01:00",
+			"user": 6050,
+			"comment": "Salut,\nJe suis débutant mais intéressé par une soirée comme celle là. C'est encore possible de venir ?"
+		},
+		{
+			"date": "2019-02-05T23:21:00+01:00",
+			"user": 4145,
+			"comment": "Salut Rémi,\nLa soirée est réservée aux membres du club.\n\nTu peux rejoindre LyonParapente en prenant ta licence 2019.\nEt dans ce cas oui :)\n\nC'est en effet une soirée intéressante pour débutants (mais pas que) pour échanger face à ses incertitudes/peurs/expériences, et partager ensemble pour éviter de refaire des erreurs \"classiques\".\n\nOn pourra également discuter Stratégie Indididuelle de Gestion du Risque (SIGR)\nhttps://intranet.ffvl.fr/sites/intranet.ffvl.fr/files/2018_03_SIGR_VP100.pdf"
+		},
+		{
+			"date": "2019-02-06T09:14:00+01:00",
+			"user": 4145,
+			"comment": "(réservé sauf bien sûr les permanences comme celle de ce soir au coq en pâte!)"
+		},
+		{
+			"date": "2019-02-07T20:00:00+01:00",
+			"user": 4145,
+			"comment": "Et c'est Nicolas qui nous accueille chez lui vers brotteaux/masséna pour cette soirée.\n\nNicolas Flamant\n129 rue Bugeaud\nLyon 6\nCode deux.4.zéro.5 puis interphone si c’est fermé (bouton en haut à gauche)\net ensuite monter les escaliers et c’est … en haut à gauche ! Au cinquième mais bon ça c’est la surprise !"
+		},
+		{
+			"date": "2019-02-08T19:47:00+01:00",
+			"user": 5799,
+			"comment": "le code est Deux 4 zéro 5 A"
+		},
+		{
+			"date": "2019-02-11T07:46:00+01:00",
+			"user": 5676,
+			"comment": "J'y serai après mon cours vers 20h. à ce soir!"
+		}
+	],
+	"participants": [4145, 6050, 5799, 5676, 3093, 3490, 5508, 3545, 6131, 5577, 3087, 5998, 5676, 4594, 5443, 1816],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"6050": "Rémi Jonard",
+		"5799": "Nicolas Flamant",
+		"5676": "Julieta Rivosecchi",
+		"3093": "Gildas Thurin",
+		"3490": "Simon LE",
+		"5508": "Lucas Mura",
+		"3545": "Pierre Blanchard",
+		"6131": "Côme EDELINE",
+		"5577": "Yann Corderoc'h",
+		"3087": "Philou LT",
+		"5998": "Florian Viricelle",
+		"4594": "ELODIE MONTCHER",
+		"5443": "Mickael FRANC",
+		"1816": "Thomas Grillet"
+	}
+}
