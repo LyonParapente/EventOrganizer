@@ -19,7 +19,8 @@ function initMap(elem_id, edit, gps, location)
 		map = L.map(elem_id,
 		{
 			center: defaultPoint,
-			zoom: settings.default_map_zoom
+			zoom: settings.default_map_zoom,
+			fullscreenControl: true
 		});
 		map.zoomControl.setPosition('topright');
 		L.control.scale().addTo(map);
