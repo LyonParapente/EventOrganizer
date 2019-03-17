@@ -124,63 +124,81 @@
 				</button>
 			</div>
 			<div class="modal-body" id="eventPropertiesBody">
-				<div class="mb-2 p-3 bg-light">
-					<div class="lead" id="event_description"></div>
-				</div>
-				<div class="form-inline mb-2">
-					<div class="input-group mr-2" id="event_date_from">
-						<div class="input-group-prepend">
-							<div class="input-group-text trad">DateFrom</div>
+				<div class="container mx-0">
+					<div class="row">
+						<div class="p-3 bg-light col">
+							<div class="lead text-break" id="event_description"></div>
 						</div>
-						<span class="form-control" id="event_date_start"></span>
-					</div>
-
-					<div class="input-group mr-2" id="event_date_to">
-						<div class="input-group-prepend">
-							<div class="input-group-text trad">DateTo</div>
+						<div class="col-auto ml-3 p-0">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text trad">By</div>
+								</div>
+								<span class="form-control" id="event_author"></span>
+							</div>
+							<div class="text-center mt-1"><a id="event_author_img"></a></div>
 						</div>
-						<span class="form-control" id="event_date_end"></span>
-					</div>
-
-					<div class="input-group" id="event_date_the">
-						<div class="input-group-prepend">
-							<div class="input-group-text trad">DateThe</div>
-						</div>
-						<span class="form-control" id="event_date_day"></span>
-					</div>
-
-					<div class="col"></div>
-
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<div class="input-group-text trad">By</div>
-						</div>
-						<span class="form-control" id="event_author"></span>
-					</div>
-					<div class="text-center mt-1"><a id="event_author_img"></a></div>
-				</div>
-
-				<div class="form-inline mb-2" id="event_rdv_infos">
-					<div class="input-group mr-2">
-						<div class="input-group-prepend">
-							<div class="input-group-text"><i class="far fa-clock" id="event_time_title" title="Time"></i></div><!-- translate -->
-						</div>
-						<span class="form-control" id="event_time"></span>
-					</div>
-
-					<div class="input-group flex-grow-1">
-						<div class="input-group-prepend">
-							<div class="input-group-text"><i class="fas fa-map-marker-alt" id="event_location_title" title="Meeting location"></i></div><!-- translate -->
-						</div>
-						<textarea readonly class="form-control bg-white" id="event_location" rows="1"></textarea>
 					</div>
 				</div>
-				<div id="event_map" class="form-control"></div>
+
+				<div class="container mt-2 mx-0">
+					<div class="row">
+						<div class="col-7 p-0">
+							<div id="event_map" class="form-control"></div>
+						</div>
+						<div class="col d-flex flex-column justify-content-center">
+							<div class="input-group mt-auto" id="event_date_from">
+								<div class="input-group-prepend">
+									<div class="input-group-text trad">DateFrom</div>
+								</div>
+								<span class="form-control" id="event_date_start"></span>
+							</div>
+
+							<div class="input-group mt-auto" id="event_date_to">
+								<div class="input-group-prepend">
+									<div class="input-group-text trad">DateTo</div>
+								</div>
+								<span class="form-control" id="event_date_end"></span>
+							</div>
+
+							<div class="form-inline mt-auto">
+								<div class="input-group" id="event_date_the">
+									<div class="input-group-prepend">
+										<div class="input-group-text trad">DateThe</div>
+									</div>
+									<span class="form-control" id="event_date_day"></span>
+								</div>
+							</div>
+
+							<div class="form-inline mt-auto" id="event_rdv_time">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="far fa-clock" id="event_time_title" title="Time"></i></div><!-- translate -->
+									</div>
+									<span class="form-control" id="event_time"></span>
+								</div>
+							</div>
+
+							<div class="form-inline mt-auto" id="event_rdv_location">
+								<div class="input-group flex-grow-1">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="fas fa-map-marker-alt" id="event_location_title" title="Meeting location"></i></div><!-- translate -->
+									</div>
+									<textarea readonly class="form-control bg-white" id="event_location" rows="1"></textarea>
+								</div>
+							</div>
+
+							<div class="mt-auto"></div>
+						</div>
+					</div>
+				</div>
+
 				<h5 class="text-muted mt-3 trad">Comments:</h5>
 				<div id="event_comments" class="list-group text-break"></div>
-				<div id="event_comments_error" class="alert alert-danger" role="alert">Unable to load comments</div>
+				<div id="event_comments_error" class="alert alert-danger trad" role="alert">Unable to load comments</div>
 				<form class="needs-validation form-inline mt-3" novalidate>
 					<div class="input-group col pl-0">
+						<img id="event_comment_avatar" />
 						<textarea class="form-control" id="event_comment" required autofocus rows="4" placeholder="Add a comment..."></textarea>
 						<div class="invalid-feedback">Please provide a comment</div>
 					</div>

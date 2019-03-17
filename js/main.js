@@ -266,14 +266,14 @@ function showEvent(calEvent)
 	{
 		$("#event_time").text('');
 		$("#event_location").text('');
-		$("#event_rdv_infos").hide();
+		$("#event_rdv_time,#event_rdv_location").hide();
 		$("#event_map").hide();
 	}
 	else
 	{
 		$("#event_time").text(calEvent.time || "");
 		$("#event_location").text(calEvent.location || "");
-		$("#event_rdv_infos").show();
+		$("#event_rdv_time,#event_rdv_location").show();
 		$("#event_map").show();
 	}
 
