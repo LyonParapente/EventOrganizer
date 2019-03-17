@@ -294,6 +294,15 @@ var fakeData2 =
 		category: 'escalade'
 	},
 	{
+		id: 21482,
+		title: 'up ça dégage ça vole',
+		start: '2019-03-16',
+		by: 'Lucas MURA',
+		desc: "Jolies prévisions pour samedi et peut être dimanche, mais aussi histoire de profiter parce que je serai déjà sur Grenoble vendredi soir =) D'ailleurs je cherche un endroit pour squatter la nuit =D",
+		time: '',
+		location: 'autour de Grenoble'
+	},
+	{
 		id: 20954,
 		title: 'Passage brevet de pilote (QCM)',
 		start: '2019-03-19',
