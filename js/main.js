@@ -158,7 +158,7 @@ function planAnEvent(start_date, end_date)
 {
 	if (!start_date.isSameOrAfter(moment(), 'day'))
 	{
-		alert(i18n("Cannot create event in the past"));
+		console.warn(i18n("Cannot create event in the past"));
 		return;
 	}
 
