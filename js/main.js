@@ -366,7 +366,8 @@ function loadEventComments(id)
 
 		data.participants = data.participants || [];
 		var participants_badge = $('<span class="badge badge-success"></span>').text(data.participants.length);
-		var participants_header = $("<h4>").text(i18n("Participants ")).append(participants_badge);
+		var participants_button = $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm in"));
+		var participants_header = $("<h4>").text(i18n("Participants ")).append(participants_badge).append(participants_button);
 		$event_participants.append(participants_header);
 		for (i = 0; i < data.participants.length; ++i)
 		{
@@ -390,7 +391,8 @@ function loadEventComments(id)
 
 		data.interested = data.interested || [];
 		var interested_badge = $('<span class="badge badge-info"></span>').text(data.interested.length);
-		var interested_header = $("<h4>").text(i18n("Interested ")).append(interested_badge);
+		var interested_button = $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm interested"));
+		var interested_header = $("<h4>").text(i18n("Interested ")).append(interested_badge).append(interested_button);
 		$event_interested.append(interested_header);
 		for (i = 0; i < data.interested.length; ++i)
 		{

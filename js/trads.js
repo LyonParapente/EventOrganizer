@@ -30,7 +30,9 @@ const trads =
 		" at ": " à ",
 		"Unable to load comments": "Erreur lors du chargement des commentaires",
 		"Participants ": "Participants ",
-		"Interested ": "Intéressés "
+		"Interested ": "Intéressés ",
+		"I'm in": "Je viens",
+		"I'm interested": "Je suis intéressé(e)",
 	}
 };
 
