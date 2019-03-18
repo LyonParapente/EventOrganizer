@@ -288,6 +288,7 @@ function showEvent(calEvent)
 
 		// Avoid keyboard popping on mobile
 		//$("#event_comment").focus();
+		$eventProperties[0].scrollTo(0, 0);
 	});
 }
 
