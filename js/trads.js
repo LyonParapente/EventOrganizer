@@ -28,7 +28,9 @@ const trads =
 		"Send": "Envoyer",
 		"The ": "Le ",
 		" at ": " à ",
-		"Unable to load comments": "Erreur lors du chargement des commentaires"
+		"Unable to load comments": "Erreur lors du chargement des commentaires",
+		"Participants ": "Participants ",
+		"Interested ": "Intéressés "
 	}
 };
 

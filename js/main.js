@@ -267,14 +267,12 @@ function showEvent(calEvent)
 		$("#event_time").text('');
 		$("#event_location").text('');
 		$("#event_rdv_time,#event_rdv_location").hide();
-		$("#event_map").hide();
 	}
 	else
 	{
 		$("#event_time").text(calEvent.time || "");
 		$("#event_location").text(calEvent.location || "");
 		$("#event_rdv_time,#event_rdv_location").show();
-		$("#event_map").show();
 	}
 
 	var $el = $("#event_location");
@@ -303,16 +301,19 @@ function loadEventComments(id)
 		"src": "avatars/4145-1.jpg",
 		"height": 110
 	});
-	//TODO: view avatar of person who proposed the event, even if (s)he didn't comment
 
 	var event_comments = document.getElementById('event_comments');
 	event_comments.innerHTML = '<div class="spinner-border m-auto" role="status"></div>';
 
+	var $event_participants = $("#event_participants").empty();
+	var $event_interested = $("#event_interested").empty();
+
 	//TODO: call server side
 	jQuery.getJSON("js/test/fakeData_Event_"+id+".json", function(data)
 	{
+		var a, i, avatar;
 		event_comments.innerHTML = ''; // rendering optim to avoid repaint in .always()
-		for (var i = 0; i < data.comments.length; ++i)
+		for (i = 0; i < data.comments.length; ++i)
 		{
 			var comment = data.comments[i],
 				userid = comment.user,
@@ -333,9 +334,9 @@ function loadEventComments(id)
 			var groupitem = document.createElement('div');
 			groupitem.className = 'list-group-item p-1 d-flex';
 				var d = document.createElement('div');
-					var a = document.createElement('a');
+					a = document.createElement('a');
 					a.href = "user/"+userid;
-						var avatar = new Image();
+						avatar = new Image();
 						avatar.src = "avatars/"+userid+"-2.jpg";
 						avatar.alt = username;
 					a.appendChild(avatar);
@@ -362,20 +363,58 @@ function loadEventComments(id)
 			event_comments.appendChild(groupitem);
 		}
 
+		data.participants = data.participants || [];
+		var participants_badge = $('<span class="badge badge-success"></span>').text(data.participants.length);
+		var participants_header = $("<h4>").text(i18n("Participants ")).append(participants_badge);
+		$event_participants.append(participants_header);
 		for (i = 0; i < data.participants.length; ++i)
 		{
 			var participant = data.participants[i];
-			if (!data.users[participant])
+			if (data.users.hasOwnProperty(participant))
 			{
-				console.warn("Missing user "+participant);
+				a = document.createElement('a');
+				a.href = "user/"+participant;
+					var avatar = new Image();
+					avatar.src = "avatars/"+participant+"-2.jpg";
+					avatar.alt = data.users[participant];
+					avatar.className = "mr-1 mb-1";
+				a.appendChild(avatar);
+				$event_participants.append(a);
+			}
+			else
+			{
+				console.warn("Missing participant user "+participant);
 			}
 		}
 
-		//TODO: use data.participants
+		data.interested = data.interested || [];
+		var interested_badge = $('<span class="badge badge-info"></span>').text(data.interested.length);
+		var interested_header = $("<h4>").text(i18n("Interested ")).append(interested_badge);
+		$event_interested.append(interested_header);
+		for (i = 0; i < data.interested.length; ++i)
+		{
+			var interested = data.interested[i];
+			if (data.users[interested])
+			{
+				a = document.createElement('a');
+				a.href = "user/"+interested;
+					var avatar = new Image();
+					avatar.src = "avatars/"+interested+"-2.jpg";
+					avatar.alt = data.users[interested];
+					avatar.className = "mr-1 mb-1";
+				a.appendChild(avatar);
+				$event_interested.append(a);
+			}
+			else
+			{
+				console.warn("Missing interested user "+interested);
+			}
+		}
 	}).fail(function(o, type, ex)
 	{
 		console.error(ex);
 		$errorBox.show();
+		$errorBox.clone().removeAttr("id").appendTo($event_participants);
 	}).always(function()
 	{
 		$(".spinner-border, event_comments").remove();

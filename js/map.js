@@ -10,6 +10,10 @@ function initMap(elem_id, edit, gps, location)
 		// Reset positions
 		map.setView(defaultPoint, settings.default_map_zoom);
 
+		if (!gps)
+		{
+			marker.remove(map);
+		}
 		marker.off('move', onMarkerMove); // avoid issue with placeholder in edit mode
 		marker.setLatLng(defaultPoint);
 		marker.on('move', onMarkerMove);
@@ -30,7 +34,11 @@ function initMap(elem_id, edit, gps, location)
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		marker = L.marker(defaultPoint, {draggable: edit}).addTo(map);
+		marker = L.marker(defaultPoint, {draggable: edit})
+		if (gps || edit)
+		{
+			marker.addTo(map);
+		}
 		mapList[elem_id] = {map: map, marker: marker};
 
 		marker.on('click', function()
@@ -83,6 +91,7 @@ function initMap(elem_id, edit, gps, location)
 
 			map.on('click', function (e)
 			{
+				marker.addTo(map);
 				marker.setLatLng(e.latlng);
 				onMarkerMove();
 			});
@@ -132,6 +141,7 @@ function findLocation(text, marker, map)
 		if (response.results.length > 0)
 		{
 			var bestResult = response.results[0];
+			marker.addTo(map);
 			marker.setLatLng(bestResult.latlng);
 			map.fitBounds(bestResult.bounds);
 		}
