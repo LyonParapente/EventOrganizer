@@ -76,5 +76,8 @@ var fakeData1 =
 
 $(function()
 {
-	setTimeout(x => $calendar.fullCalendar('addEventSource', fakeData1), 200);
+	setTimeout(function()
+	{
+		$calendar.fullCalendar('addEventSource', fakeData1);
+	}, 200);
 });

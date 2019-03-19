@@ -78,11 +78,11 @@ function i18n_inPlace (selectors, attr)
 		{
 			if (attr)
 			{
-				$item.attr(attr, (i, old) => i18n(old));
+				$item.attr(attr, function(i, old){return i18n(old)});
 			}
 			else
 			{
-				$item.text((i, old) => i18n(old));
+				$item.text(function(i, old){return i18n(old)});
 			}
 			$item.data('translated', true);
 		}
