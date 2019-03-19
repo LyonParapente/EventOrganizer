@@ -76,7 +76,7 @@ var fakeData2 =
 		desc: "IMPORTANT: Soirée ANNULEE et reportée au 21 janvier\n\nProchaines soirées :\n- 28/01\n- 11/02 - soirée dédiée sécurité / partage d'expérience\n- 25/02\n\nPassage du brevet (partie théorique) :\n- lundi 18 mars",
 		time: '',
 		location: 'à définir',
-		category: 'canceled'
+		category: 'annulée'
 	},
 	{
 		id: 21054,
@@ -372,7 +372,7 @@ var fakeData2 =
 		desc: "Stage perfectionnement - Aiguebelette parapente\nJe me suis inscrit à ce stage pour évoluer vers du thermique. Si d'autres membres du groupe sont interessés ça serait peut être cool d'être ensemble. ;)\n@+",
 		time: '08H00',
 		location: 'Novalaise',
-		category: 'formation'
+		category: 'stage'
 	},
 	{
 		title: 'Dune du Pilat édition 2019',

@@ -2,7 +2,7 @@ const settings =
 {
 	lang: "fr", // see `trads` under
 	listDayAltFormat: 'DD/MM/YYYY', // affects the text on the right side of the day headings in list view.
-	default_event_color: "#3a87ad",
+	default_event_color: "#3A87AD",
 	default_random_event_title:
 	[
 		"Allons voler ",
@@ -19,19 +19,20 @@ const settings =
 	{
 		default:
 		{
+			"sortie vol": "#3A87AD",
 			permanence: '#5FDCE2',
 			club: '#00C400',
 			weekend: '#FF9F89',
+			stage: 'green',
 			voyage: '#8D00FF',
-			dune: '#FF9900',
-			ski: '#853D88',
-			escalade: '#FF99CC',
-			formation: 'green',
 			conference: '#FF4848',
 			theorie: '#C0B701',
+			dune: '#FF9900',
+			ski: '#662C67',
+			escalade: '#FF99CC',
 			jeux: '#8894F9',
-			canceled: '#8A8A8A',
-			other: '#30CF74'
+			annulée: '#8A8A8A',
+			autre: '#FB6F46'
 		}
 	}
 };
