@@ -55,56 +55,56 @@
 				</button>
 			</div>
 			<div class="modal-body" id="createEventBody">
-<form class="needs-validation" novalidate>
-  <div class="form-group row">
-    <label for="sortie_title" class="col-sm-3 col-form-label">Event</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="sortie_title" required autofocus />
-      <div class="invalid-feedback">Please provide a title</div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="sortie_lieu" class="col-sm-3 col-form-label">Activity location</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="sortie_lieu" required />
-      <div class="invalid-feedback">Please provide a location</div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="sortie_RDV" class="col-sm-3 col-form-label">Meeting location</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="sortie_RDV" />
-      <div class="spinner-border text-secondary" role="status" id="spinner_RDV"></div>
-      <div id="sortie_map"></div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-3 col-form-label date">Date</label>
-    <div class="col">
-      <label for="sortie_date_start">DateFrom</label>
-      <input type="date" class="form-control" id="sortie_date_start" required />
-      <div class="invalid-feedback">Date is required</div>
-    </div>
-    <div class="col">
-      <label for="sortie_date_end">DateTo</label>
-      <input type="date" class="form-control" id="sortie_date_end" required />
-      <div class="invalid-feedback">Cannot end before start</div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="sortie_heure" class="col-sm-3 col-form-label">Time</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="sortie_heure" />
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
-    <div class="col-sm-9">
-      <textarea class="form-control" id="sortie_description" rows="5"></textarea>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-outline-primary btn-lg btn-block" id="sortie_save">Save</button>
-</form>
+				<form class="needs-validation" novalidate>
+					<div class="form-group row">
+						<label for="sortie_title" class="col-sm-3 col-form-label">Event</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="sortie_title" required autofocus />
+							<div class="invalid-feedback">Please provide a title</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="sortie_lieu" class="col-sm-3 col-form-label">Activity location</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="sortie_lieu" required />
+							<div class="invalid-feedback">Please provide a location</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="sortie_RDV" class="col-sm-3 col-form-label">Meeting location</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="sortie_RDV" />
+							<div class="spinner-border text-secondary" role="status" id="spinner_RDV"></div>
+							<div id="sortie_map"></div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label date">Date</label>
+						<div class="col">
+							<label for="sortie_date_start">DateFrom</label>
+							<input type="date" class="form-control" id="sortie_date_start" required />
+							<div class="invalid-feedback">Date is required</div>
+						</div>
+						<div class="col">
+							<label for="sortie_date_end">DateTo</label>
+							<input type="date" class="form-control" id="sortie_date_end" required />
+							<div class="invalid-feedback">Cannot end before start</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="sortie_heure" class="col-sm-3 col-form-label">Time</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="sortie_heure" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
+						<div class="col-sm-9">
+							<textarea class="form-control" id="sortie_description" rows="5"></textarea>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-outline-primary btn-lg btn-block" id="sortie_save">Save</button>
+				</form>
 			</div>
 		</div>
 	</div>
