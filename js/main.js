@@ -103,6 +103,9 @@ $(function()
 		}
 	});
 
+	i18n_inPlace($("#eventProperties .trad"));
+	i18n_inPlace($("#createEvent .trad"));
+
 	$("#createEventBody .needs-validation").on('submit', function(e)
 	{
 		var form = e.target;
@@ -128,6 +131,37 @@ $(function()
 		// Dates before this are disabled on mobile and forbidden on desktop validation
 		$("#sortie_date_end").attr("min", this.value);
 	});
+
+	// List of available categories
+	$category_dd = $("#sortie_categories");
+	var badges_spacing = "ml-2 mb-2";
+	var colorConf = getColorConf();
+	for (var category in colorConf)
+	{
+		if (colorConf.hasOwnProperty(category))
+		{
+			var a = document.createElement('a');
+			a.className = "badge " + badges_spacing;
+			a.style.backgroundColor = getColor(category);
+			a.style.color = 'white';
+			a.href = "#";
+			a.appendChild(document.createTextNode(category));
+			$category_dd.append(a);
+		}
+	}
+	$category_dd.parent().on("click", "a", function()
+	{
+		var $cloneBadge = $(this).clone();
+		if ($cloneBadge.hasClass("badge"))
+		{
+			$cloneBadge.removeClass(badges_spacing);
+		}
+		else
+		{
+			$cloneBadge = i18n("None");
+		}
+		$("#sortie_category").html($cloneBadge);
+	});
 });
 
 /* Returns a random integer between the specified values.
@@ -140,7 +174,7 @@ function getRandomInt(min, max)
 	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-function getColor(category)
+function getColorConf()
 {
 	var colorConf;
 	if (settings.categories.hasOwnProperty(theme))
@@ -151,7 +185,12 @@ function getColor(category)
 	{
 		colorConf = settings.categories["default"];
 	}
-	return colorConf[category];
+	return colorConf;
+}
+
+function getColor(category)
+{
+	return getColorConf()[category];
 }
 
 function planAnEvent(start_date, end_date)
@@ -178,8 +217,11 @@ function planAnEvent(start_date, end_date)
 		$sortie_date_end[0].labels[0],
 		D("sortie_heure").labels[0],
 		D("sortie_description").labels[0],
+		D("sortie_category").labels[0],
 		D("sortie_save")
 	]);
+
+	$("#sortie_category").empty().text(i18n("None"));
 
 	var $form = $("#createEventBody form");
 	$form.removeClass('was-validated');
@@ -205,9 +247,7 @@ function planAnEvent(start_date, end_date)
 function showEvent(calEvent)
 {
 	loadEventComments(calEvent.id);
-	var $eventProperties = $("#eventProperties");
 
-	i18n_inPlace($eventProperties.find('.trad'));
 	i18n_inPlace(["#event_comment"], "placeholder");
 	i18n_inPlace(
 	[
@@ -215,7 +255,8 @@ function showEvent(calEvent)
 		"#event_location_title"
 	], "title");
 
-	var $form = $("#eventProperties form");
+	var $eventProperties = $("#eventProperties");
+	var $form = $eventProperties.find("form");
 	$form.removeClass('was-validated');
 	i18n_inPlace($form.find('.invalid-feedback'));
 

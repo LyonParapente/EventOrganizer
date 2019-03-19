@@ -96,3 +96,7 @@ right: 15px;
 #event_location {
 resize: none;
 }
+
+#sortie_categories {
+max-width: 400px;
+}

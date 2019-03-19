@@ -33,6 +33,8 @@ const trads =
 		"Interested ": "Intéressés ",
 		"I'm in": "Je viens",
 		"I'm interested": "Je suis intéressé(e)",
+		"Category": "Catégorie",
+		"None": "Aucune"
 	}
 };
 
