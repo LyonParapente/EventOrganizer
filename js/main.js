@@ -149,6 +149,7 @@ $(function()
 			$category_dd.append(a);
 		}
 	}
+	var $sortie_category = $("#sortie_category");
 	$category_dd.parent().on("click", "a", function()
 	{
 		var $cloneBadge = $(this).clone();
@@ -160,7 +161,40 @@ $(function()
 		{
 			$cloneBadge = i18n("None");
 		}
-		$("#sortie_category").html($cloneBadge);
+		$sortie_category.html($cloneBadge);
+	});
+
+	$("#sortie_color_box").colorpicker({format: 'hex', useAlpha: false, inline: true, autoInputFallback: false}).on("change", function(event)
+	{
+		if (event.color)
+		{
+			$sortie_category.html(event.color.toString());
+		}
+	});
+	var colorPicker = $("#sortie_color_box").data('colorpicker');
+	colorPicker.hide(); // default state
+	$("#sortie_color").on('focus', function()
+	{
+		colorPicker.show();
+	});
+
+	$sortie_category.parent().on('show.bs.dropdown', function()
+	{
+		var text = $sortie_category.text();
+		var val = text.indexOf('#') === 0 ? text : '';
+		$("#sortie_color").val(val);
+	}).on('hide.bs.dropdown', function (event)
+	{
+		if (event.clickEvent && event.clickEvent.target)
+		{
+			var target = event.clickEvent.target;
+			if (target.id != 'sortie_color_btn' && $(target).parents("#sortie_color_box").length)
+			{
+				event.preventDefault();
+				return false;
+			}
+		}
+		colorPicker.hide();
 	});
 });
 

@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="css/leaflet/leaflet.css" />
 	<link rel="stylesheet" href="css/leaflet/geocoder/esri-leaflet-geocoder.css" />
 	<link rel="stylesheet" href="css/leaflet/fullscreen/leaflet.fullscreen.css" />
+	<link rel="stylesheet" href="css/bootstrap-colorpicker.min.css" />
 </head>
 <body>
 
@@ -111,6 +112,13 @@
 								<a class="dropdown-item trad" href="#">None</a>
 								<div class="dropdown-divider"></div>
 								<div id="sortie_categories"></div>
+								<div class="dropdown-divider"></div>
+								<div id="sortie_color_box" class="input-group">
+									<div>
+										<input id="sortie_color" type="text" class="form-control" placeholder="#color" />
+										<button id="sortie_color_btn" type="button" class="btn btn-secondary btn-sm float-right">OK</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -235,6 +243,7 @@
 <script src="js/libs/jquery.min.js"></script>
 <script src="js/libs/moment.min.js"></script>
 <script src="js/libs/bootstrap.min.js"></script>
+<script src="js/libs/bootstrap-colorpicker.min.js"></script>
 <script src="js/libs/fullcalendar.min.js"></script>
 <script src="js/libs/fullcalendar-locale-fr.js"></script>
 <script src="js/libs/leaflet.js"></script>

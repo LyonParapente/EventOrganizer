@@ -83,6 +83,18 @@ const toCopy =
 			'node_modules/leaflet-fullscreen/dist/fullscreen@2x.png'
 		],
 		dest: 'css/leaflet/fullscreen/'
+	},
+	colorpicker_css:
+	{
+		
+		src: 'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
+		dest: 'css/'
+	},
+	colorpicker_js:
+	{
+		
+		src: 'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
+		dest: 'js/libs/'
 	}
 };
 

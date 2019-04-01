@@ -2,18 +2,19 @@
   "name": "calendar",
   "version": "1.0.0",
   "dependencies": {
+    "bootstrap-colorpicker": "^3.0.3",
     "fullcalendar": "3.10.0",
     "jquery": "^3.3.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "leaflet": "^1.4.0",
+    "leaflet-fullscreen": "^1.0.2",
+    "esri-leaflet": "^2.2.3",
+    "esri-leaflet-geocoder": "^2.2.14"
   },
   "devDependencies": {
     "browser-sync": "^2.26.3",
-    "esri-leaflet": "^2.2.3",
-    "esri-leaflet-geocoder": "^2.2.14",
     "gulp": "^4.0.0",
-    "gulp-rename": "^1.4.0",
-    "leaflet": "^1.4.0",
-    "leaflet-fullscreen": "^1.0.2"
+    "gulp-rename": "^1.4.0"
   },
   "author": "Thibault ROHMER"
 }
