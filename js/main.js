@@ -164,11 +164,22 @@ $(function()
 		$sortie_category.html($cloneBadge);
 	});
 
-	$("#sortie_color_box").colorpicker({format: 'hex', useAlpha: false, inline: true, autoInputFallback: false}).on("change", function(event)
+	$("#sortie_color_box").colorpicker({format: 'hex', useAlpha: false, inline: true, autoInputFallback: false}).on("change colorpickerChange", function(event)
 	{
 		if (event.color)
 		{
-			$sortie_category.html(event.color.toString());
+			var colorBox = $("<div>").css(
+			{
+				display: 'inline-block',
+				backgroundColor: event.color.toString(),
+				color: event.color.isDark() ? 'white' : 'black'
+			}).text(event.color.toString());
+			$sortie_category.empty().append(colorBox);
+		}
+		else if (event.target.value.match(/^#[a-fA-F0-9]{6}$/))
+		{
+			// User is typing something
+			colorPicker.setValue(event.target.value); // trigger colorpickerChange
 		}
 	});
 	var colorPicker = $("#sortie_color_box").data('colorpicker');
