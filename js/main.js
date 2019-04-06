@@ -280,7 +280,17 @@ function planAnEvent(start_date, end_date)
 
 function showEvent(calEvent)
 {
-	loadEventComments(calEvent.id);
+	if (calEvent.end)
+	{
+		calEvent.end.add(-1, 'days');
+	}
+	else
+	{
+		calEvent.end = calEvent.start;
+	}
+
+	var isFinished = calEvent.end.isBefore(moment(), 'day');
+	loadEventComments(calEvent.id, isFinished);
 
 	i18n_inPlace(["#event_comment"], "placeholder");
 	i18n_inPlace(
@@ -316,7 +326,7 @@ function showEvent(calEvent)
 		.empty().append(author_img);
 
 	var date_start = calEvent.start.format('L');
-	var date_end = (calEvent.end ? calEvent.end : calEvent.start).format('L');
+	var date_end = calEvent.end.format('L');
 	if (date_start === date_end)
 	{
 		$("#event_date_start").text('');
@@ -328,7 +338,6 @@ function showEvent(calEvent)
 	}
 	else
 	{
-		date_end = moment(calEvent.end).add(-1, 'days').format('L');
 		$("#event_date_start").text(date_start);
 		$("#event_date_end").text(date_end);
 		$("#event_date_day").text('');
@@ -366,7 +375,7 @@ function showEvent(calEvent)
 	});
 }
 
-function loadEventComments(id)
+function loadEventComments(id, isFinished)
 {
 	var $errorBox = $("#event_comments_error").hide();
 	$("#event_comment_avatar").attr(
@@ -440,7 +449,7 @@ function loadEventComments(id)
 
 		data.participants = data.participants || [];
 		var participants_badge = $('<span class="badge badge-success"></span>').text(data.participants.length);
-		var participants_button = $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm in"));
+		var participants_button = isFinished ? '' : $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm in"));
 		var participants_header = $("<h4>").text(i18n("Participants ")).append(participants_badge).append(participants_button);
 		$event_participants.append(participants_header);
 		for (i = 0; i < data.participants.length; ++i)
@@ -465,7 +474,7 @@ function loadEventComments(id)
 
 		data.interested = data.interested || [];
 		var interested_badge = $('<span class="badge badge-info"></span>').text(data.interested.length);
-		var interested_button = $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm interested"));
+		var interested_button = isFinished ? '' : $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm interested"));
 		var interested_header = $("<h4>").text(i18n("Interested ")).append(interested_badge).append(interested_button);
 		$event_interested.append(interested_header);
 		for (i = 0; i < data.interested.length; ++i)
