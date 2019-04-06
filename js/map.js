@@ -29,6 +29,12 @@ function initMap(elem_id, edit, gps, location)
 		map.zoomControl.setPosition('topright');
 		L.control.scale().addTo(map);
 
+		map.on('fullscreenchange', function()
+		{
+			// re-center on marker when making fullscreen or exiting
+			map.setView(marker.getLatLng());
+		});
+
 		L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
 		{
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
