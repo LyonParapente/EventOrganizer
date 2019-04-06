@@ -100,3 +100,7 @@ resize: none;
 #sortie_categories {
 max-width: 400px;
 }
+
+#event_location_title {
+cursor: pointer;
+}

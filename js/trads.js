@@ -34,7 +34,8 @@ const trads =
 		"I'm in": "Je viens",
 		"I'm interested": "Je suis intéressé(e)",
 		"Category": "Catégorie",
-		"None": "Aucune"
+		"None": "Aucune",
+		"Copied to clipboard!": "Copié dans le presse-papier!"
 	}
 };
 

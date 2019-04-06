@@ -207,6 +207,22 @@ $(function()
 		}
 		colorPicker.hide();
 	});
+
+	var $event_location_title = $('#event_location_title');
+	$event_location_title.popover({content: i18n('Copied to clipboard!'), placement: 'top', trigger: 'manual'});
+	$event_location_title.on("click", function()
+	{
+		var el = document.getElementById('event_location');
+		el.select();
+		document.execCommand('copy');
+		el.setSelectionRange(0, 0);
+
+		$event_location_title.popover('show');
+		setTimeout(function()
+		{
+			$event_location_title.popover('hide');
+		}, 2000);
+	});
 });
 
 /* Returns a random integer between the specified values.
@@ -307,7 +323,7 @@ function showEvent(calEvent)
 	i18n_inPlace(
 	[
 		"#event_time_title",
-		"#event_location_title"
+		"#event_location_title i"
 	], "title");
 
 	var $eventProperties = $("#eventProperties");
