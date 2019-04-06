@@ -20,7 +20,7 @@ const trads =
 		"Please provide a title": "Veuillez saisir un nom de sortie",
 		"Please provide a location": "Veuillez saisir un lieu",
 		"Date is required": "Date requise",
-		"Cannot end before start": "Doit être après la date de début",
+		"Cannot end before start": "Egale ou après la date de début",
 		"By": "Par",
 		"Comments:": "Commentaires :",
 		"Add a comment...": "Ajouter un commentaire...",
