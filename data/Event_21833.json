@@ -1,0 +1,34 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-06T16:34:00.000Z",
+		"user": 3299,
+		"comment": "Salut!\nJe suis dispo, par contre j'ai déjà fait une grosse rando aujourd'hui."
+	},
+	{
+		"date": "2019-05-06T19:12:00.000Z",
+		"user": 4145,
+		"comment": "Ok donc départ 9H30 de Grange Blanche.\n\nSi d'autres sont intéressés, ne pas hésiter à faire signe."
+	},
+	{
+		"date": "2019-05-06T20:52:00.000Z",
+		"user": 5508,
+		"comment": "..et après montlamb vous faites quoi ? =) peut être j'arrive à me libérer l'aprèm et je pense que le grand ratz peut bien marcher, ça vous dit ? on se tient au jus en tout cas !"
+	},
+	{
+		"date": "2019-05-07T06:27:00.000Z",
+		"user": 4145,
+		"comment": "Ça fait un joli détour pour nous.\nEt faut pouvoir remonter à la voiture après....\nJ'aurais plutôt dit Chamoux mais à voir"
+	}],
+	"participants": [
+		3299,
+		4145,
+		5508
+	],
+	"users":
+	{
+		"3299": "Pascal Ch",
+		"4145": "Thibault ROHMER",
+		"5508": "Lucas Mura"
+	}
+}

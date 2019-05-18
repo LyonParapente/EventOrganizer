@@ -1,0 +1,34 @@
+{
+	"comments": [
+	{
+		"date": "2019-01-25T16:00:00.000Z",
+		"user": 5508,
+		"comment": "pour quoi pas non? vol-rando?"
+	},
+	{
+		"date": "2019-01-25T16:52:00.000Z",
+		"user": 5577,
+		"comment": "Pourquoi pas un vol rando... Il faudrait si possible un site pas trop couvert de neige, je n'ai pas de raquettes... des idées?"
+	},
+	{
+		"date": "2019-01-25T19:01:00.000Z",
+		"user": 5676,
+		"comment": "vous avez trouvé des idées ??"
+	},
+	{
+		"date": "2019-01-25T21:23:00.000Z",
+		"user": 5508,
+		"comment": "peut-être le banchet est jouable en début d'après-midi, on peut voir ça demain"
+	}],
+	"participants": [
+		5508,
+		5577,
+		5676
+	],
+	"users":
+	{
+		"5508": "Lucas Mura",
+		"5577": "Yann Corderoc'h",
+		"5676": "Julieta Rivosecchi"
+	}
+}

@@ -1,0 +1,79 @@
+{
+	"comments": [
+	{
+		"date": "2019-01-05T13:17:00.000Z",
+		"user": 4145,
+		"comment": "Merci de remplir ce doodle pour savoir qui vient / combien on sera : https://doodle.com/poll/hvv9zagczawgfxhk"
+	},
+	{
+		"date": "2019-01-22T10:57:00.000Z",
+		"user": 4145,
+		"comment": "C'est Elie qui accueillera le groupe pour cette session :\n15 rue Moncey\n69003 Lyon\nMétro Guillotière ou place Guichard\nhttps://goo.gl/maps/K3LjeLQcar32\n\nSonner au n°10 sur l'interphone, 2ème étage."
+	},
+	{
+		"date": "2019-01-22T19:19:00.000Z",
+		"user": 3082,
+		"comment": "Le thème du soir : l’aérologie, savoir faire sa propre analyse aérologique, prérequis : instabilité, convection, gradient adiabatique humide ;) etc. et démarche a suivre.\nLes objectifs : décider de voler ou non, a quelle heure, prévoir son plan de vol et ses approches de terrain.\nVenez avec vos questions et vos interrogations !"
+	},
+	{
+		"date": "2019-01-28T16:58:00.000Z",
+		"user": 5676,
+		"comment": "j'arrive 20h (j'ai un cours)"
+	},
+	{
+		"date": "2019-01-28T17:36:00.000Z",
+		"user": 5577,
+		"comment": "Moi idem ce sera plutôt 19h30 ou 20h..."
+	},
+	{
+		"date": "2019-01-28T18:00:00.000Z",
+		"user": 6131,
+		"comment": "Je suis mort de fatigue je vais passer mon tour pour cette fois. Bonne soirée à tous."
+	},
+	{
+		"date": "2019-01-28T18:16:00.000Z",
+		"user": 5443,
+		"comment": "Le nom de Elie c'est Marcoux pour trouver la bonne porte ce soir ;)"
+	},
+	{
+		"date": "2019-01-28T18:17:00.000Z",
+		"user": 4145,
+		"comment": "L'interphone marche pas. C'est au deuxième étage porte Marcoux"
+	},
+	{
+		"date": "2019-01-28T23:21:00.000Z",
+		"user": 4145,
+		"comment": "Petites vidéos sympa sur les thermiques:\nhttps://youtu.be/KXqTCM0-zXQ\nhttps://www.youtube.com/watch?v=_wPvxD_SHj4\nhttps://youtu.be/4NSBbG3Zx-U"
+	}],
+	"participants": [
+		3082,
+		3087,
+		3093,
+		3490,
+		3545,
+		4145,
+		5443,
+		5508,
+		5577,
+		5676,
+		5998,
+		6114,
+		6131
+	],
+	"users":
+	{
+		"3082": "Tof",
+		"3087": "Philou LT",
+		"3093": "Gildas Thurin",
+		"3490": "Simon LE",
+		"3545": "Pierre Blanchard",
+		"4145": "Thibault ROHMER",
+		"5443": "Mickael FRANC",
+		"5508": "Lucas Mura",
+		"5577": "Yann Corderoc'h",
+		"5676": "Julieta Rivosecchi",
+		"5998": "Florian Viricelle",
+		"6114": "Caroline Otty",
+		"6131": "Côme EDELINE"
+	}
+}

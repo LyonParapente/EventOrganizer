@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-01-04T14:27:00.000Z",
+		"user": 5508,
+		"comment": "plutôt partants avec Juli =) d'autres départ Lyon ?"
+	},
+	{
+		"date": "2019-01-04T20:26:00.000Z",
+		"user": 5676,
+		"comment": "isaaaaaaa\non va pas pouvoir te rejoindre ! =("
+	},
+	{
+		"date": "2019-01-04T20:48:00.000Z",
+		"user": 3088,
+		"comment": ":-( Une autre fois !"
+	}],
+	"participants": [
+		3088,
+		5508,
+		5676
+	],
+	"users":
+	{
+		"3088": "Isabelle Mitaine",
+		"5508": "Lucas Mura",
+		"5676": "Julieta Rivosecchi"
+	}
+}

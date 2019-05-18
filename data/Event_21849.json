@@ -1,0 +1,21 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-09T11:31:00.000Z",
+		"user": 6131,
+		"comment": "Perso j'ai posé mon jeudi vendredi, comme ça plus le choix, je suis obligé d'y aller :)"
+	}],
+	"participants": [
+		3088,
+		3490,
+		5508,
+		6131
+	],
+	"users":
+	{
+		"3088": "Isabelle Mitaine",
+		"3490": "Simon LE",
+		"5508": "Lucas Mura",
+		"6131": "Côme EDELINE"
+	}
+}

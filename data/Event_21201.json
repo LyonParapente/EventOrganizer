@@ -1,0 +1,25 @@
+{
+	"comments": [
+	{
+		"date": "2019-03-05T10:45:00.000Z",
+		"user": 4145,
+		"comment": "Pensez à aérer votre parachute de secours avant la session.\n\nDu coup n'hésitez pas à tester une extraction et aérer votre parachute 24H.\nRamenez le en boulle dans un grand sac de courses.\nInutile de le détacher de votre sellette."
+	}],
+	"participants": [
+		3087,
+		4145,
+		4594,
+		5092,
+		5443,
+		5577
+	],
+	"users":
+	{
+		"3087": "Philou LT",
+		"4145": "Thibault ROHMER",
+		"4594": "ELODIE MONTCHER",
+		"5092": "Amélie GONGUET",
+		"5443": "Mickael FRANC",
+		"5577": "Yann Corderoc'h"
+	}
+}

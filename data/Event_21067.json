@@ -1,0 +1,59 @@
+{
+	"comments": [
+	{
+		"date": "2019-02-06T12:18:00.000Z",
+		"user": 5397,
+		"comment": "je me suis inscrit aussi à peine avant que tu postes le message :) Désolé j'ai pas eu le temps de répondre avant.\nIl faudra qu'on s'organise (à 2 ou +), ça serait intéressant de covoiturer"
+	},
+	{
+		"date": "2019-02-06T20:08:00.000Z",
+		"user": 6405,
+		"comment": "Au top! on s'organisera un peu avant le début du stage. Cela dit pour le covoiturage je risque d'être beaucoup sur Chambéry le soir.\nA confirmer!\n\n@+"
+	},
+	{
+		"date": "2019-04-02T06:53:00.000Z",
+		"user": 3545,
+		"comment": "Hello, je me joins à vous pour cette semaine de perf. Avez-vous déjà convenu de quelque chose ? J'aurai mon véhicule et je regarde pour prendre un hébergement dans le coin."
+	},
+	{
+		"date": "2019-04-02T09:29:00.000Z",
+		"user": 5397,
+		"comment": "perso j'ai pris une chambre d'hôtel pas trop cher (campanile de chambéry): je pars le dimanche en fin d'aprèm et je rentre à priori le vendredi soir."
+	},
+	{
+		"date": "2019-04-02T20:26:00.000Z",
+		"user": 6405,
+		"comment": "Moi je dors chez des amis sur Chambéry aussi."
+	},
+	{
+		"date": "2019-04-03T10:33:00.000Z",
+		"user": 3545,
+		"comment": "Ok, je cherche un truc plus proche pour une arrivée le dimanche également.\nEspérons que la météo redevienne correcte d'ici là."
+	},
+	{
+		"date": "2019-04-03T11:39:00.000Z",
+		"user": 5397,
+		"comment": "je croise les doigts pour la météo. Je serai au weekend de paques à mévouillon donc pas de covoit possible depuis lyon pour moi le dimanche."
+	},
+	{
+		"date": "2019-04-21T06:58:00.000Z",
+		"user": 6405,
+		"comment": "Salut à vous deux,\nEst ce qu'il y aurait une ame charitable pour m'emmener le lundi matin de chambery à aigubelette?\n\nMon num pour en échanger 06 72 39 zéro 2 41.\n\nMerci ;)"
+	},
+	{
+		"date": "2019-04-21T10:59:00.000Z",
+		"user": 3545,
+		"comment": "Salut,\npour ma part j'ai trouvé un hébergement à Aiguebelette le lac, ce serait donc plus simple de vous organiser avec Valentin"
+	}],
+	"participants": [
+		3545,
+		5397,
+		6405
+	],
+	"users":
+	{
+		"3545": "Pierre Blanchard",
+		"5397": "Valentin Gallecier",
+		"6405": "Damien GRINGET"
+	}
+}

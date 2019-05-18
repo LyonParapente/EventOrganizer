@@ -420,7 +420,7 @@ function loadEventComments(id, isFinished)
 	var $event_interested = $("#event_interested").empty();
 
 	//TODO: call server side
-	jQuery.getJSON("js/test/fakeData_Event_"+id+".json", function(data)
+	jQuery.getJSON("data/Event_"+id+".json", function(data)
 	{
 		var a, i, avatar;
 		event_comments.innerHTML = ''; // rendering optim to avoid repaint in .always()

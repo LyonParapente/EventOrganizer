@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-09T08:45:00.000Z",
+		"user": 5577,
+		"comment": "Aiguebelette devrait être pas mal ! Ou le Grand Ratz ?"
+	},
+	{
+		"date": "2019-05-09T09:20:00.000Z",
+		"user": 5508,
+		"comment": "J'avais regardé mardi soir et j'ai pensé au Vercors ! mais à re-regarder ! =)\nJe suis basé à Grenoble maintenant ;)"
+	},
+	{
+		"date": "2019-05-09T13:29:00.000Z",
+		"user": 3490,
+		"comment": "je remonte demain des alpes du sud, pourquoi pas m'y arrêter si ça vole"
+	}],
+	"participants": [
+		3490,
+		5508,
+		5577
+	],
+	"users":
+	{
+		"3490": "Simon LE",
+		"5508": "Lucas Mura",
+		"5577": "Yann Corderoc'h"
+	}
+}

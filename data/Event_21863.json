@@ -1,0 +1,23 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-13T17:53:00.000Z",
+		"user": 3299,
+		"comment": "je suis partant si je peux prendre des congés"
+	}],
+	"participants": [
+		3088,
+		3144,
+		3299,
+		3848,
+		5508
+	],
+	"users":
+	{
+		"3088": "Isabelle Mitaine",
+		"3144": "Sébastien Avitabile",
+		"3299": "Pascal Ch",
+		"3848": "Jérémie Juillard",
+		"5508": "Lucas Mura"
+	}
+}

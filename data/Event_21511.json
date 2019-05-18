@@ -1,0 +1,32 @@
+{
+	"comments": [
+	{
+		"date": "2019-03-18T11:23:00.000Z",
+		"user": 1816,
+		"comment": "J'y serai sur place le samedi 15 et dimanche 16"
+	},
+	{
+		"date": "2019-04-30T08:24:00.000Z",
+		"user": 6131,
+		"comment": "J'y serai du mardi 11 au samedi 15 ou dimanche 16. On se croisera peut être."
+	}],
+	"participants": [
+		1816,
+		3088,
+		3490,
+		4145,
+		5508,
+		6131,
+		6519
+	],
+	"users":
+	{
+		"1816": "Thomas Grillet",
+		"3088": "Isabelle Mitaine",
+		"3490": "Simon LE",
+		"4145": "Thibault ROHMER",
+		"5508": "Lucas Mura",
+		"6131": "Côme EDELINE",
+		"6519": "Pierre-jean Paulin"
+	}
+}

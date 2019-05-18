@@ -1,0 +1,39 @@
+{
+	"comments": [
+	{
+		"date": "2018-12-14T12:34:00.000Z",
+		"user": 5508,
+		"comment": "est-ce qu'il y a un barbec au château pour faire un asado ?"
+	},
+	{
+		"date": "2018-12-14T15:09:00.000Z",
+		"user": 3087,
+		"comment": "et non pas possible de faire un asado, pas de bbq"
+	},
+	{
+		"date": "2019-01-07T13:58:00.000Z",
+		"user": 5443,
+		"comment": "Présent mais je devrais partir a 19h45 max, dommage de partir si vite mais on se retrouvera autour d'une bière plus tard  :)"
+	}],
+	"participants": [
+		3087,
+		3088,
+		3490,
+		4145,
+		4594,
+		5092,
+		5443,
+		5508
+	],
+	"users":
+	{
+		"3087": "Philou LT",
+		"3088": "Isabelle Mitaine",
+		"3490": "Simon LE",
+		"4145": "Thibault ROHMER",
+		"4594": "ELODIE MONTCHER",
+		"5092": "Amélie GONGUET",
+		"5443": "Mickael FRANC",
+		"5508": "Lucas Mura"
+	}
+}
