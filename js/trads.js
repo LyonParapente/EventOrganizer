@@ -37,7 +37,8 @@ const trads =
 		"Category": "Catégorie",
 		"None": "Aucune",
 		"Copied to clipboard!": "Copié dans le presse-papier!",
-		"Open in Google Maps": "Ouvrir avec Google Maps"
+		"Open in Google Maps": "Ouvrir avec Google Maps",
+		"New Event": "Ajouter une sortie"
 	}
 };
 

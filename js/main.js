@@ -17,7 +17,8 @@ $(function()
 		},
 		footer:
 		{
-			left: 'listMonth listYear'
+			left: 'listMonth listYear',
+			right: 'newEvent'
 		},
 		views:
 		{
@@ -34,6 +35,19 @@ $(function()
 			{
 				showNonCurrentDates: false,
 				eventLimit: false // extend cell when too many events
+			}
+		},
+
+		customButtons:
+		{
+			newEvent:
+			{
+				text: i18n('New Event'),
+				click: function()
+				{
+					var d = moment().stripTime();
+					planAnEvent(d, d);
+				}
 			}
 		},
 
