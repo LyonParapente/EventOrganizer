@@ -373,17 +373,24 @@ function showEvent(calEvent)
 		$("#event_date_the").hide();
 	}
 
-	if (!calEvent.time && !calEvent.location)
+	$("#event_time").text(calEvent.time || "");
+	if (calEvent.time)
 	{
-		$("#event_time").text('');
-		$("#event_location").text('');
-		$("#event_rdv_time,#event_rdv_location").hide();
+		$("#event_rdv_time").show();
 	}
 	else
 	{
-		$("#event_time").text(calEvent.time || "");
-		$("#event_location").text(calEvent.location || "");
-		$("#event_rdv_time,#event_rdv_location").show();
+		$("#event_rdv_time").hide();
+	}
+
+	$("#event_location").text(calEvent.location || "");
+	if (calEvent.location)
+	{
+		$("#event_rdv_location").show();
+	}
+	else
+	{
+		$("#event_rdv_location").hide();
 	}
 
 	var $el = $("#event_location");
