@@ -103,3 +103,9 @@ max-width: 400px;
 #event_rdv_location_title {
 cursor: pointer;
 }
+
+#event_rdv_location {
+/*hack to ensure it doesn't wrap on a second line with long text.
+flex-grow-1 & flex make it grow to fill the space*/
+width: 5px;
+}
