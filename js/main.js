@@ -208,19 +208,19 @@ $(function()
 		colorPicker.hide();
 	});
 
-	var $event_location_title = $('#event_location_title');
-	$event_location_title.popover({content: i18n('Copied to clipboard!'), placement: 'top', trigger: 'manual'});
-	$event_location_title.on("click", function()
+	var $event_rdv_location_title = $('#event_rdv_location_title');
+	$event_rdv_location_title.popover({content: i18n('Copied to clipboard!'), placement: 'top', trigger: 'manual'});
+	$event_rdv_location_title.on("click", function()
 	{
-		var el = document.getElementById('event_location');
+		var el = document.getElementById('event_rdv_location');
 		el.select();
 		document.execCommand('copy');
 		el.setSelectionRange(0, 0);
 
-		$event_location_title.popover('show');
+		$event_rdv_location_title.popover('show');
 		setTimeout(function()
 		{
-			$event_location_title.popover('hide');
+			$event_rdv_location_title.popover('hide');
 		}, 2000);
 	});
 });
@@ -322,7 +322,8 @@ function showEvent(calEvent)
 	i18n_inPlace(["#event_comment"], "placeholder");
 	i18n_inPlace(
 	[
-		"#event_time_title",
+		"#event_rdv_time_title",
+		"#event_rdv_location_title i",
 		"#event_location_title i"
 	], "title");
 
@@ -332,7 +333,7 @@ function showEvent(calEvent)
 	i18n_inPlace($form.find('.invalid-feedback'));
 
 	$("#event_title").text(calEvent.title);
-	$("#event_description").html(calEvent.desc);
+	$("#event_description").html(calEvent.desc || i18n('No description'));
 	if (calEvent.category)
 	{
 		$("#event_category").text(calEvent.category).css(
@@ -373,25 +374,51 @@ function showEvent(calEvent)
 		$("#event_date_the").hide();
 	}
 
-	$("#event_time").text(calEvent.time || "");
-	if (calEvent.time)
-	{
-		$("#event_rdv_time").show();
-	}
-	else
-	{
-		$("#event_rdv_time").hide();
-	}
+	//----------------------
+	// Activity location
 
 	$("#event_location").text(calEvent.location || "");
 	if (calEvent.location)
 	{
-		$("#event_rdv_location").show();
+		$("#event_location_box").show();
 	}
 	else
 	{
-		$("#event_rdv_location").hide();
+		$("#event_location_box").hide();
 	}
+
+	//----------------------
+	// Rendez-vous location
+
+	$("#event_rdv_time").text(calEvent.time || "");
+	if (calEvent.time)
+	{
+		$("#event_rdv_time_box").show();
+	}
+	else
+	{
+		$("#event_rdv_time_box").hide();
+	}
+
+	var rdv_location_text = '';
+	if (calEvent.gps || calEvent.gps_location)
+	{
+		if (calEvent.gps_location)
+		{
+			rdv_location_text = calEvent.gps_location;
+		}
+		else
+		{
+			rdv_location_text = calEvent.gps.join(', ');
+		}
+	}
+	else
+	{
+		// Retro-compatibility with old events
+		rdv_location_text = calEvent.location || "";
+	}
+	$("#event_rdv_location").val(rdv_location_text).attr("placeholder", settings.default_location);
+	$("#event_rdv_location_box").show();
 
 	var $el = $("#event_location");
 	$el.css('height', 'auto'); // step 1
@@ -402,7 +429,10 @@ function showEvent(calEvent)
 		var el = $el[0];
 		$el.css('height', el.scrollHeight + (el.offsetHeight - el.clientHeight));
 
-		initMap('event_map', false, calEvent.gps, calEvent.location);
+		// Retro-compatibility with old events
+		var location_text = calEvent.gps_location || calEvent.location;
+
+		initMap('event_map', false, calEvent.gps, location_text);
 
 		// Avoid keyboard popping on mobile
 		//$("#event_comment").focus();

@@ -639,7 +639,7 @@ var Events_2019 =
 		},
 		"desc": "Décalage au 15 mai compte tenu des jours fériés.",
 		"time": "18H30",
-		"location": "Coq en pâte",
+		"location": "Au Coq en Pâte - 36 Rue Tête d'Or, 69006 Lyon",
 		"category": "permanence"
 	},
 	{

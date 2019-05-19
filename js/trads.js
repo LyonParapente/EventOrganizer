@@ -10,6 +10,7 @@ const trads =
 		"Date": "Date",
 		"Time": "Heure",
 		"Description": "Description",
+		"No description": "(pas de description)",
 		"Save": "Enregistrer",
 		"Month list": "Liste mois",
 		"Year list": "Liste année",
