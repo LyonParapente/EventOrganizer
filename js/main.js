@@ -209,13 +209,19 @@ $(function()
 	});
 
 	var $event_rdv_location_title = $('#event_rdv_location_title');
-	$event_rdv_location_title.popover({content: i18n('Copied to clipboard!'), placement: 'top', trigger: 'manual'});
+	$event_rdv_location_title.popover({content: i18n('Copied to clipboard!'), placement: 'top', html: true, trigger: 'manual'});
 	$event_rdv_location_title.on("click", function()
 	{
 		var el = document.getElementById('event_rdv_location');
+		if (!el.value) {return;}
+
 		el.select();
 		document.execCommand('copy');
 		el.setSelectionRange(0, 0);
+
+		var url = "http://maps.google.com/maps?daddr="+encodeURIComponent(el.value);
+		var popover_link = '<br/><a href="'+url+'" target="_blank">'+i18n('Open in Google Maps')+'</a>';
+		$event_rdv_location_title.attr('data-content', i18n('Copied to clipboard!')+popover_link);
 
 		$event_rdv_location_title.popover('show');
 		setTimeout(function()

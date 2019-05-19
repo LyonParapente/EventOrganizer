@@ -36,7 +36,8 @@ const trads =
 		"I'm interested": "Je suis intéressé(e)",
 		"Category": "Catégorie",
 		"None": "Aucune",
-		"Copied to clipboard!": "Copié dans le presse-papier!"
+		"Copied to clipboard!": "Copié dans le presse-papier!",
+		"Open in Google Maps": "Ouvrir avec Google Maps"
 	}
 };
 

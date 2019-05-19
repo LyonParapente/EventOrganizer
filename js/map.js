@@ -52,7 +52,7 @@ function initMap(elem_id, edit, gps, location)
 			var latlng = marker.getLatLng();
 			var url = "http://maps.google.com/maps?daddr=loc:"+latlng.lat+"+"+latlng.lng;
 			marker.unbindPopup();
-			marker.bindPopup('<a href="'+url+'" target="_blank">Open in Google Maps</a>').openPopup();
+			marker.bindPopup('<a href="'+url+'" target="_blank">'+i18n('Open in Google Maps')+'</a>').openPopup();
 		});
 
 		if (edit)
