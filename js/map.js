@@ -8,7 +8,7 @@ function initMap(elem_id, edit, gps, location)
 		marker = mapList[elem_id].marker;
 
 		// Reset positions
-		map.setView(defaultPoint, settings.default_map_zoom);
+		map.setView(defaultPoint, settings.default_map_zoom, {animate: false});
 
 		if (!gps)
 		{
@@ -149,7 +149,8 @@ function findLocation(text, marker, map)
 			var bestResult = response.results[0];
 			marker.addTo(map);
 			marker.setLatLng(bestResult.latlng);
-			map.fitBounds(bestResult.bounds);
+			//map.fitBounds(bestResult.bounds); // immediate
+			map.flyToBounds(bestResult.bounds); // animation
 		}
 	});
 }
