@@ -2,9 +2,9 @@
 node_modules/
 package-lock.json
 
-#css/**/*.min.css
-#css/**/*.css.map
+#front/css/**/*.min.css
+#front/css/**/*.css.map
 
-#js/**/*.min.js
-#js/**/*.js.map
+#front/js/**/*.min.js
+#front/js/**/*.js.map
 

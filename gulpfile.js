@@ -5,6 +5,8 @@ const rename = require('gulp-rename');
 const util = require('util');
 const path = require('path');
 
+const front = 'front/';
+
 const toCopy =
 {
 	FullCalendar_js:
@@ -14,12 +16,12 @@ const toCopy =
 			'node_modules/fullcalendar/dist/fullcalendar.js',
 			'node_modules/fullcalendar/dist/fullcalendar.min.js'
 		],
-		dest: 'js/libs/'
+		dest: front+'js/libs/'
 	},
 	FullCalendar_js_locale:
 	{
 		src: 'node_modules/fullcalendar/dist/locale/fr.js',
-		dest: 'js/libs/',
+		dest: front+'js/libs/',
 		rename: function (path)
 		{
 			path.basename = 'fullcalendar-locale-fr';
@@ -33,7 +35,7 @@ const toCopy =
 			'node_modules/fullcalendar/dist/fullcalendar.css',
 			'node_modules/fullcalendar/dist/fullcalendar.min.css'
 		],
-		dest: 'css/'
+		dest: front+'css/'
 	},
 	jQuery:
 	{
@@ -42,7 +44,7 @@ const toCopy =
 			'node_modules/jquery/dist/jquery.min.js',
 			'node_modules/jquery/dist/jquery.min.map'
 		],
-		dest: 'js/libs'
+		dest: front+'js/libs'
 	},
 	moment:
 	{
@@ -51,7 +53,7 @@ const toCopy =
 			'node_modules/moment/min/moment.min.js',
 			'node_modules/moment/min/moment-with-locales.min.js'
 		],
-		dest: 'js/libs/'
+		dest: front+'js/libs/'
 	},
 	leaflet_js:
 	{
@@ -62,17 +64,17 @@ const toCopy =
 			'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js',
 			'node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js'
 		],
-		dest: 'js/libs/'
+		dest: front+'js/libs/'
 	},
 	leaflet_css:
 	{
 		src: 'node_modules/leaflet/dist/leaflet.css',
-		dest: 'css/leaflet/'
+		dest: front+'css/leaflet/'
 	},
 	leaflet_geocoder_css:
 	{
 		src: 'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css',
-		dest: 'css/leaflet/geocoder/'
+		dest: front+'css/leaflet/geocoder/'
 	},
 	leaflet_fullscreen_css:
 	{
@@ -82,29 +84,29 @@ const toCopy =
 			'node_modules/leaflet-fullscreen/dist/fullscreen.png',
 			'node_modules/leaflet-fullscreen/dist/fullscreen@2x.png'
 		],
-		dest: 'css/leaflet/fullscreen/'
+		dest: front+'css/leaflet/fullscreen/'
 	},
 	colorpicker_css:
 	{
 		
 		src: 'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
-		dest: 'css/'
+		dest: front+'css/'
 	},
 	colorpicker_js:
 	{
 		
 		src: 'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
-		dest: 'js/libs/'
+		dest: front+'js/libs/'
 	}
 };
 
 gulp.task('copy-leaflet-images', function (done)
 {
-	return gulp.src('node_modules/leaflet/dist/images/*').pipe(gulp.dest('css/leaflet/images/'));
+	return gulp.src('node_modules/leaflet/dist/images/*').pipe(gulp.dest(front+'css/leaflet/images/'));
 });
 gulp.task('copy-leaflet-geocoder-images', function (done)
 {
-	return gulp.src('node_modules/esri-leaflet-geocoder/dist/img/*').pipe(gulp.dest('css/leaflet/geocoder/img/'));
+	return gulp.src('node_modules/esri-leaflet-geocoder/dist/img/*').pipe(gulp.dest(front+'css/leaflet/geocoder/img/'));
 });
 
 gulp.task('copy', function (done)
@@ -172,8 +174,13 @@ gulp.task('serve', function()
 	{
 		server:
 		{
-			baseDir: "./",
-			index: "calendar.dev.html"
+			baseDir: "front",
+			index: "calendar.dev.html",
+			routes:
+			{
+				"/events": "data/events",
+				"/avatars": "data/avatars"
+			}
 		}
 	});
 	
