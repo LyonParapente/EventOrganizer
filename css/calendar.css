@@ -72,7 +72,6 @@ white-space: normal;
 
 #sortie_map, #event_map {
 min-height: 250px;
-height: 100%;
 }
 
 .modal-header .close {
