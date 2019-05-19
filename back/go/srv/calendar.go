@@ -3,8 +3,8 @@ package srv
 import (
 	"net/http"
 
-	"github.com/LyonParapente/EventOrganizer/core"
-	"github.com/LyonParapente/EventOrganizer/templates"
+	"github.com/LyonParapente/EventOrganizer/back/go/core"
+	"github.com/LyonParapente/EventOrganizer/back/go/templates"
 )
 
 type GetCalendar struct {

@@ -18,36 +18,46 @@ Main goals:
 
 # Developer
 
-## Fast debug
+## Requirements
 
-Open `calendar.dev.html` in your favorite browser
+* Front: [Node & NPM](https://nodejs.org/)
+* Back: [Golang](https://golang.org/doc/install)
 
-## Normal debug
-
-[npm](https://www.npmjs.com/) & [gulp](https://gulpjs.com/) are used
-
-### Prepare
+## Front
 
 First time: `npm install`
-If you want to update dependancies: `npm update`
 
-### Run
+I'm using [gulp.js](https://gulpjs.com/) to "compile" the front.
 
 Just execute: `gulp`
-
+and your browser should open http://localhost:3000/calendar.dev.html
 
 There is a default task (see `gulpfile.js`) which launch a small http server on port 3000.
-Please open http://localhost:3000/calendar.dev.html
+This does not use the go server implementation.
 
 Each time you save a source file, [browserSync](https://www.browsersync.io) reloads the page of all connected browsers, even your phone :). See `gulp.watch`.
+
+
+## Back
+
+First, make sure this repository is located at `GOPATH/src/github.com/LyonParapente/EventOrganizer`.
+
+Compile:  
+```
+cd %GOPATH%/src/github.com/LyonParapente/EventOrganizer/back/go
+go build -o EventOrganizer.exe
+```
+
+Execute:  
+```
+./EventOrganizer.exe
+```
 
 
 
 # Stack
 
-* [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com)
+* [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com) & [Moment.js](https://momentjs.com) & [jQuery](https://jquery.com/)
 * [Font Awesome](https://fontawesome.com/)
-* [Moment.js](https://momentjs.com)
-* [jQuery](https://jquery.com/)
 * [Leaflet](https://leafletjs.com) with [OpenStreetMap](https://www.openstreetmap.org/about) and [Esri](https://esri.github.io/esri-leaflet/)
 * [GoLang](https://golang.org/)

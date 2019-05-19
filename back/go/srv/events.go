@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/LyonParapente/EventOrganizer/core"
-	"github.com/LyonParapente/EventOrganizer/db"
+	"github.com/LyonParapente/EventOrganizer/back/go/core"
+	"github.com/LyonParapente/EventOrganizer/back/go/db"
 )
 
 type GetEvents struct {

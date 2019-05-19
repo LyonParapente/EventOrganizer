@@ -3,7 +3,7 @@ package db
 import (
 	"time"
 
-	"github.com/LyonParapente/EventOrganizer/serialization"
+	"github.com/LyonParapente/EventOrganizer/back/go/serialization"
 )
 
 // Temporary method (just for devel) to get a list of events, next get events from db storage.

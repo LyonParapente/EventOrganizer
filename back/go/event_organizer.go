@@ -3,9 +3,9 @@ package main
 import (
 	"net/http"
 
-	"github.com/LyonParapente/EventOrganizer/core"
-	"github.com/LyonParapente/EventOrganizer/srv"
-	"github.com/LyonParapente/EventOrganizer/templates"
+	"github.com/LyonParapente/EventOrganizer/back/go/core"
+	"github.com/LyonParapente/EventOrganizer/back/go/srv"
+	"github.com/LyonParapente/EventOrganizer/back/go/templates"
 )
 
 type EventOrganizer struct {
@@ -25,9 +25,16 @@ func (e *EventOrganizer) Start() error {
 // router initialize routings
 func (e *EventOrganizer) router() http.Handler {
 	router := http.NewServeMux()
-	router.Handle("/", homePageOrFileServer(&srv.GetHomepage{App: e}, http.FileServer(http.Dir(e.PublicPath))))
+
+	router.Handle("/avatars/", http.FileServer(http.Dir(e.PublicPath+"../data/")))
+	router.Handle("/events/", http.FileServer(http.Dir(e.PublicPath+"../data/")))
+
 	router.Handle("/calendar", &srv.GetCalendar{App: e})
 
 	router.Handle("/api/events", &srv.GetEvents{App: e})
+
+	// The "/" pattern matches everything
+	router.Handle("/", homePageOrFileServer(&srv.GetHomepage{App: e}, http.FileServer(http.Dir(e.PublicPath))))
+
 	return router
 }

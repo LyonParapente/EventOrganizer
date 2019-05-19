@@ -24,6 +24,7 @@ func LoadAllOrFail() {
 }
 
 // Default and common ressources expected by layout
+// TODO: update this with current front
 var CommonCSSRessources = []string{"css/fontawesome-all.min.css"}
 var CommonJSRessources = JSRessources{
 	{Src: "js/libs/jquery.min.js"},

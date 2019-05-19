@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/LyonParapente/EventOrganizer/core"
+	"github.com/LyonParapente/EventOrganizer/back/go/core"
 )
 
 var (
@@ -18,7 +18,7 @@ var (
 func init() {
 	logLevel = flag.String("loglevel", "info", "Log level (ie: debug, info, warning, error)")
 	logOutput = flag.String("logoutput", "stdout", "Log output")
-	publicPath = flag.String("public-path", "./public", "Path of \"public\" directory")
+	publicPath = flag.String("public-path", "../../front/", "Path of \"public\" directory")
 	target = flag.String("target", ":8080", "HTTP target of listener")
 }
 

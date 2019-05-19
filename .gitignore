@@ -1,6 +1,5 @@
 .idea/
 *.exe
-EventOrganizer
 
 node_modules/
 package-lock.json
