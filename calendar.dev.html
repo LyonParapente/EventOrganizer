@@ -129,7 +129,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="eventProperties" style="display:none" tabindex="-1" role="dialog" aria-labelledby="event_title" aria-hidden="true">
+<div class="modal" id="eventProperties" style="display:none" tabindex="-1" role="dialog" aria-labelledby="event_title" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -172,11 +172,12 @@
 							</div>
 
 							<div class="form-inline mt-auto pt-1" id="event_location_box">
-								<div class="input-group flex-grow-1">
+								<div class="input-group">
 									<div class="input-group-prepend">
 										<div class="input-group-text" id="event_location_title"><i class="fas fa-map-marker" title="Activity location"></i></div><!-- translate -->
 									</div>
-									<textarea readonly class="form-control bg-white" id="event_location" rows="1"></textarea>
+									<span class="form-control" id="event_location"></span>
+									<textarea class="form-control bg-white" rows="1" readonly id="event_location2"></textarea>
 								</div>
 							</div>
 

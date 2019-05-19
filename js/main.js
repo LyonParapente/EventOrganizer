@@ -383,7 +383,9 @@ function showEvent(calEvent)
 	//----------------------
 	// Activity location
 
-	$("#event_location").text(calEvent.location || "");
+	var event_location_text = calEvent.location || "";
+	var $el = $("#event_location").text(event_location_text);
+	var $el2 = $("#event_location2").text(event_location_text);
 	if (calEvent.location)
 	{
 		$("#event_location_box").show();
@@ -426,23 +428,33 @@ function showEvent(calEvent)
 	$("#event_rdv_location").val(rdv_location_text).attr("placeholder", settings.default_location);
 	$("#event_rdv_location_box").show();
 
-	var $el = $("#event_location");
-	$el.css('height', 'auto'); // step 1
+	//----------------------
 
-	$eventProperties.modal('show').one('shown.bs.modal', function()
+	$el.show(); // for next time we show an event
+	$el2.hide();
+	$el2.css('height', 'auto');
+
+	$eventProperties.one('shown.bs.modal', function()
 	{
-		// Adjust height of location - step 2
-		var el = $el[0];
-		$el.css('height', el.scrollHeight + (el.offsetHeight - el.clientHeight));
+		// Step 1 - Compute textarea height according to width
+		var w = $el.width();
+		$el.hide();
+		$el2.show();
+		$el2.width(w);
+
+		// Step 2 - Adjust textarea height
+		var el2 = $el2[0];
+		$el2.css('height', el2.scrollHeight + (el2.offsetHeight - el2.clientHeight));
+
+		//---
 
 		// Retro-compatibility with old events
 		var location_text = calEvent.gps_location || calEvent.location;
-
 		initMap('event_map', false, calEvent.gps, location_text);
 
 		// Avoid keyboard popping on mobile
 		//$("#event_comment").focus();
-	});
+	}).modal('show');
 }
 
 function loadEventComments(id, isFinished)
