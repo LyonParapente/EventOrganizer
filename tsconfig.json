@@ -1,0 +1,20 @@
+{
+	"compilerOptions":
+	{
+		"target": "es6",
+		"module": "umd",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"outDir": "dist/",
+		"outFile": "dist/bundle.js"
+	},
+	"files":
+	[
+		"src/main.ts"
+	],
+	"exclude":
+	[
+		"node_modules"
+	]
+}

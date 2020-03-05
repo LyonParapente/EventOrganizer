@@ -1,20 +1,27 @@
 {
-  "name": "calendar",
+  "name": "EventOrganizer",
   "version": "1.0.0",
   "dependencies": {
-    "bootstrap-colorpicker": "^3.0.3",
-    "fullcalendar": "3.10.0",
-    "jquery": "^3.3.1",
-    "moment": "^2.24.0",
-    "leaflet": "^1.4.0",
-    "leaflet-fullscreen": "^1.0.2",
-    "esri-leaflet": "^2.2.3",
-    "esri-leaflet-geocoder": "^2.2.14"
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "@fullcalendar/bootstrap": "^4.4.0",
+    "@fullcalendar/core": "^4.4.0",
+    "@fullcalendar/daygrid": "^4.4.0",
+    "@fullcalendar/interaction": "^4.4.0",
+    "@fullcalendar/list": "^4.4.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.26.3",
-    "gulp": "^4.0.0",
-    "gulp-rename": "^1.4.0"
+    "browserify": "^16.5.0",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify-es": "^1.0.4",
+    "node-sass": "^4.13.1",
+    "tsify": "^4.0.1",
+    "typescript": "^3.8.3",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "author": "Thibault ROHMER"
 }

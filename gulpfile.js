@@ -1,191 +1,89 @@
-const gulp = require('gulp');
-const browserSync = require('browser-sync').create();
-const fs = require('fs');
-const rename = require('gulp-rename');
-const util = require('util');
-const path = require('path');
+var gulp = require("gulp");
+var rename = require('gulp-rename');
+var concat = require('gulp-concat');
+var browserify = require("browserify");
+var source = require('vinyl-source-stream');
+var tsify = require("tsify");
+var uglify = require('gulp-uglify-es').default;
+var sourcemaps = require('gulp-sourcemaps');
+var buffer = require('vinyl-buffer');
+var sass = require('gulp-sass');
+sass.compiler = require('node-sass');
 
-const front = 'front/';
+var dist = "dist";
 
-const toCopy =
+gulp.task('copy-html', function ()
 {
-	FullCalendar_js:
-	{
-		src:
-		[
-			'node_modules/fullcalendar/dist/fullcalendar.js',
-			'node_modules/fullcalendar/dist/fullcalendar.min.js'
-		],
-		dest: front+'js/libs/'
-	},
-	FullCalendar_js_locale:
-	{
-		src: 'node_modules/fullcalendar/dist/locale/fr.js',
-		dest: front+'js/libs/',
-		rename: function (path)
-		{
-			path.basename = 'fullcalendar-locale-fr';
-			path.extname = ".js";
-		}
-	},
-	FullCalendar_css:
-	{
-		src:
-		[
-			'node_modules/fullcalendar/dist/fullcalendar.css',
-			'node_modules/fullcalendar/dist/fullcalendar.min.css'
-		],
-		dest: front+'css/'
-	},
-	jQuery:
-	{
-		src:
-		[
-			'node_modules/jquery/dist/jquery.min.js',
-			'node_modules/jquery/dist/jquery.min.map'
-		],
-		dest: front+'js/libs'
-	},
-	moment:
-	{
-		src:
-		[
-			'node_modules/moment/min/moment.min.js',
-			'node_modules/moment/min/moment-with-locales.min.js'
-		],
-		dest: front+'js/libs/'
-	},
-	leaflet_js:
-	{
-		src:
-		[
-			'node_modules/leaflet/dist/leaflet.js',
-			'node_modules/esri-leaflet/dist/esri-leaflet.js',
-			'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js',
-			'node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js'
-		],
-		dest: front+'js/libs/'
-	},
-	leaflet_css:
-	{
-		src: 'node_modules/leaflet/dist/leaflet.css',
-		dest: front+'css/leaflet/'
-	},
-	leaflet_geocoder_css:
-	{
-		src: 'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css',
-		dest: front+'css/leaflet/geocoder/'
-	},
-	leaflet_fullscreen_css:
-	{
-		src:
-		[
-			'node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css',
-			'node_modules/leaflet-fullscreen/dist/fullscreen.png',
-			'node_modules/leaflet-fullscreen/dist/fullscreen@2x.png'
-		],
-		dest: front+'css/leaflet/fullscreen/'
-	},
-	colorpicker_css:
-	{
-		
-		src: 'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
-		dest: front+'css/'
-	},
-	colorpicker_js:
-	{
-		
-		src: 'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
-		dest: front+'js/libs/'
-	}
-};
-
-gulp.task('copy-leaflet-images', function (done)
-{
-	return gulp.src('node_modules/leaflet/dist/images/*').pipe(gulp.dest(front+'css/leaflet/images/'));
-});
-gulp.task('copy-leaflet-geocoder-images', function (done)
-{
-	return gulp.src('node_modules/esri-leaflet-geocoder/dist/img/*').pipe(gulp.dest(front+'css/leaflet/geocoder/img/'));
+	return gulp.src('src/*.html')
+		.pipe(gulp.dest(dist));
 });
 
-gulp.task('copy', function (done)
+function bundlejs()
 {
-	for (var category in toCopy)
+	return browserify(
 	{
-		var block = toCopy[category];
-		var shouldCopy = false;
+		basedir: '.',
+		debug: true,
+		entries: ['src/main.ts'],
+		cache: {},
+		packageCache: {}
+	})
+	.plugin(tsify)
+	.bundle()
+	.pipe(source('bundle.min.js'))
+	.pipe(buffer())
+	.pipe(sourcemaps.init({loadMaps: true}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest(dist));
+}
 
-		var sourceList = Array.isArray(block.src) ? block.src : [block.src];
-		sourceList.forEach(source =>
-		{
-			var sourceStats = fs.statSync(source);
-			var sourceCtime = new Date(util.inspect(sourceStats.ctime));
-
-			var dest = block.dest;
-			if (block.rename)
-			{
-				// Compte dest after rename
-				var extname = path.extname(source);
-				var p = {basename: path.basename(source, extname), extname: extname};
-				block.rename(p);
-				dest += p.basename + p.extname;
-			}
-			else
-			{
-				dest += source;
-			}
-
-			if (fs.existsSync(dest))
-			{
-				// Compare source & dest stats
-				var destStats = fs.statSync(dest);
-				var destMtime = new Date(util.inspect(destStats.mtime));
-				/*console.log("source", source, "dest", dest);
-				console.log("source time: ", sourceCtime);
-				console.log("dest time: ", destMtime);*/
-				if (destMtime < sourceCtime)
-				{
-					shouldCopy = true;
-				}
-			}
-			else
-			{
-				shouldCopy = true;
-			}
-		});
-
-		if (shouldCopy)
-		{
-			var res = gulp.src(block.src);
-			if (block.rename)
-			{
-				res = res.pipe(rename(block.rename))
-			}
-			res.pipe(gulp.dest(block.dest));
-		}
-	}
-	done();
+gulp.task("copy fontawesome", function()
+{
+	return gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
+		.pipe(rename('fontawesome-all.min.css'))
+		.pipe(gulp.dest(dist+"/css/"));
 });
 
-gulp.task('serve', function()
+gulp.task("copy css themes", function()
 {
-	browserSync.init(
-	{
-		server:
-		{
-			baseDir: "front",
-			index: "calendar.dev.html",
-			routes:
-			{
-				"/events": "data/events",
-				"/avatars": "data/avatars"
-			}
-		}
-	});
-	
-	//gulp.watch("*.scss", ['sass']);
-	gulp.watch(["*.html", "js/**/*.js", "css/*.css"]).on('change', browserSync.reload);
+	return gulp.src('src/css/themes/*')
+		.pipe(gulp.dest(dist+"/css/theme/"));
 });
 
-exports.default = gulp.series('copy', 'serve');
+gulp.task("copy webfonts", function()
+{
+	return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
+		.pipe(gulp.dest(dist+"/webfonts/"));
+});
+
+gulp.task("fullcalendar css", function()
+{
+	var files =
+	[
+		'node_modules/@fullcalendar/core/main.min.css',
+		'node_modules/@fullcalendar/daygrid/main.min.css',
+		'node_modules/@fullcalendar/list/main.min.css'
+	];
+	return gulp.src(files)
+		.pipe(concat('fullcalendar.min.css'))
+		.pipe(gulp.dest(dist+"/css/"));
+});
+
+gulp.task("scss", function()
+{
+	return gulp.src('src/css/*.scss')
+		//.pipe(sourcemaps.init())
+		.pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+		//.pipe(sourcemaps.write())
+		.pipe(concat('calendar.min.css'))
+		.pipe(gulp.dest(dist+"/css/"));
+});
+
+function bundlecss()
+{
+	return gulp.parallel("copy fontawesome", "copy css themes", "copy webfonts", "fullcalendar css", "scss");
+}
+gulp.task("sass", bundlecss());
+gulp.task("default", gulp.series('copy-html', gulp.parallel(bundlejs, "sass")));
+

@@ -4,9 +4,4 @@
 node_modules/
 package-lock.json
 
-#front/css/**/*.min.css
-#front/css/**/*.css.map
-
-#front/js/**/*.min.js
-#front/js/**/*.js.map
-
+dist/
