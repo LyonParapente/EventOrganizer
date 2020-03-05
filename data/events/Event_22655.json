@@ -1,0 +1,17 @@
+{
+	"comments": [
+	{
+		"date": "2019-10-07T13:13:00.000Z",
+		"user": 5577,
+		"comment": "Je veux bien que vous me teniez au courant. Je suis en rendez-vous entre Chambé et Grenoble en fin de matinée donc je pensais justement aller voler dans l'après-midi. Ca pourrait simplifier les rotations."
+	}],
+	"participants": [
+		5577,
+		5676
+	],
+	"users":
+	{
+		"5577": "Yann Corderoc'h",
+		"5676": "Julieta Rivosecchi"
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"comments": [
+	{
+		"date": "2019-08-31T08:05:00.000Z",
+		"user": 4145,
+		"comment": "Allé va pour un classique Aiguebelette, en restant vigilants sur les conditions dans l'après-midi"
+	},
+	{
+		"date": "2019-08-31T08:59:00.000Z",
+		"user": 5212,
+		"comment": "On part avec un passage a 11h30 vers porte des alpes pour un premier vol en air calme s'il y en a qui sont intéressés on a 2 places. On s'arretera a porte des alpes que s'il y a d'autres participants declarés. Au cas où mon numéro : 06soixantedouze06vingt37"
+	}],
+	"participants": [
+		4145,
+		5212
+	],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"5212": "Romuald S"
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-03T15:37:00.000Z",
+		"user": 3144,
+		"comment": "Yep"
+	},
+	{
+		"date": "2019-07-03T16:12:00.000Z",
+		"user": 3144,
+		"comment": "Mais retour le soir sur lyon"
+	},
+	{
+		"date": "2019-07-03T21:41:00.000Z",
+		"user": 5508,
+		"comment": "cool =D !\nje ne sais pas comment tu vas faire pour le retour en vol de plaine avec toutes les TMA de Lyon, bon courage ! =P"
+	}],
+	"participants": [
+		3144,
+		5508
+	],
+	"users":
+	{
+		"3144": "Sébastien Avitabile",
+		"5508": "Lucas Mura"
+	}
+}

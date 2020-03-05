@@ -1,0 +1,39 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-25T13:34:00.000Z",
+		"user": 5508,
+		"comment": "trop fort pour moi, plutôt intéressé pour aller voir la coupe !"
+	},
+	{
+		"date": "2019-05-25T14:32:00.000Z",
+		"user": 5443,
+		"comment": "On se tient au jus Lucas si on va a la coupe :)"
+	},
+	{
+		"date": "2019-05-25T14:42:00.000Z",
+		"user": 5508,
+		"comment": "d'acc"
+	},
+	{
+		"date": "2019-05-26T07:02:00.000Z",
+		"user": 5158,
+		"comment": "Salut les gars, je me manifeste un peu tard, mais si vous filez dans le Pilat, je vous accompagnerai volontier ! Vous souhaiteriez quitter Lyon vers quelle heure ? A plus ; mon numéro est le 06 03 01 33 97"
+	},
+	{
+		"date": "2019-05-26T08:15:00.000Z",
+		"user": 5443,
+		"comment": "Salut Aurélien, pas de soucis pour le côté tardif :)\n\nAu vu des prévisions : https://www.windy.com/45.417/4.483?gfs,45.390,4.483,12,m:eUQagiD\n\nÇa semble effectivement jouable Salvaris, je connais pas encore le site mais on va le tenter avec Nico. On pense arriver sur place un peu avant 12h."
+	}],
+	"participants": [
+		5158,
+		5443,
+		5508
+	],
+	"users":
+	{
+		"5158": "Aurelien Roehrig",
+		"5443": "Mickael FRANC",
+		"5508": "Lucas Mura"
+	}
+}

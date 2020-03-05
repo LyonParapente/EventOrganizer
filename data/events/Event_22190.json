@@ -1,0 +1,51 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-05T17:01:00.000Z",
+		"user": 5799,
+		"comment": "Bien tenté mais je risque de partir vers 11h de Lyon"
+	},
+	{
+		"date": "2019-07-05T19:13:00.000Z",
+		"user": 5092,
+		"comment": "Coucou Nico, c'est un site en Ouest donc ce ne doit pas être un problème. Nous on vient de quitter Lyon. Peut être à demain. Tiens nous au jus :)"
+	},
+	{
+		"date": "2019-07-05T19:39:00.000Z",
+		"user": 5799,
+		"comment": "Parfait \nJe vous dit quand je quitte lyon  \nA demain"
+	},
+	{
+		"date": "2019-07-06T08:27:00.000Z",
+		"user": 5799,
+		"comment": "On se retrouve au parking de l'aigle ? À l'atterrissage du belvédère ? \nMon num 06 soixantetreize 65 81 cinquante \nÀ tout"
+	},
+	{
+		"date": "2019-07-06T09:11:00.000Z",
+		"user": 5212,
+		"comment": "On est parti sur St Martin. C'est moins cross que Lans mais c'est un joli petit site"
+	},
+	{
+		"date": "2019-07-06T10:25:00.000Z",
+		"user": 3087,
+		"comment": "Alors ça vole? Sur Lyon c'est bien. Orageux"
+	},
+	{
+		"date": "2019-07-06T15:14:00.000Z",
+		"user": 5092,
+		"comment": "Coucou Philou j'ai fait un vol balistique à 14h30 et Romu a décollé vers 16h30 c'est étonnamment calme. Il est toujours seul en l'air. Le site est peu fréquenté, on a croisé un bi ce matin et un pilote local que l'on a monté au déco. Je dirais que les conditions sont parfaites. Soleil petite brise...même à l'attero c'est calme. Derrière sur le Vercors ça développe mais rien de menaçant. Belle journée. Je pense que si ça se maintient le vol de restait sera top"
+	}],
+	"participants": [
+		3087,
+		5092,
+		5212,
+		5799
+	],
+	"users":
+	{
+		"3087": "Philou LT",
+		"5092": "Amélie GONGUET",
+		"5212": "Romuald S",
+		"5799": "Nicolas Flamant"
+	}
+}

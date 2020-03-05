@@ -1,0 +1,71 @@
+{
+	"comments": [
+	{
+		"date": "2019-10-24T13:33:00.000Z",
+		"user": 2980,
+		"comment": "Je suis chaud pour aller vers Grenoble/Chambéry. Ca a l'air pas pire à Saint Hil pour le moment"
+	},
+	{
+		"date": "2019-10-24T14:38:00.000Z",
+		"user": 6131,
+		"comment": "ça m'a l'air d'être systématiquement ce qu'il faut pas !\ntu penses a quoi côté grenoble/chambéry ?\nDe ce que je vois :\n- un peu trop sud pour le vercors\n- un peu trop de sud-est pour aigubelette\n- de l'est pour planfait-annecy"
+	},
+	{
+		"date": "2019-10-24T14:54:00.000Z",
+		"user": 2980,
+		"comment": "Tu regardes bien les prévisions pour Samedi ? Moi j'ai 5-10 de SO à Saint Hil en fonction des modèles et du moment de la journée, à peine plus à Aiguebelette.\nC'est bien plus fort en altitude, mais tant que ça rentre pas en basse couche comme prévu ça me paraît safe."
+	},
+	{
+		"date": "2019-10-24T15:08:00.000Z",
+		"user": 6131,
+		"comment": "Je ne parle que de l'orientation générale (sur windy) !\nEffectivement, ce n'est pas fort voir quasi nulle donc safe.\nAnnecy, Aigubelette, jamais fait\nStHil 1 fois a la coupe Icare\nC'est le prix du funiculaire qui me retient d'y retourner vu que j'ai mon abonnement pour le puy de dôme :D"
+	},
+	{
+		"date": "2019-10-24T15:27:00.000Z",
+		"user": 2980,
+		"comment": "Après si on part sur Saint Hil on peut faire du stop, ça marche très bien le week-end"
+	},
+	{
+		"date": "2019-10-24T16:18:00.000Z",
+		"user": 6131,
+		"comment": "Saint Hilaire en stop tu mets combien de temps a remonter au déco  en générale ?"
+	},
+	{
+		"date": "2019-10-24T18:23:00.000Z",
+		"user": 5676,
+		"comment": "intéressée aussi pour voler samedi l'aprem ! j'aimerais rester faire un bivouac quelque part pour voler dimanche matin aussi"
+	},
+	{
+		"date": "2019-10-24T19:21:00.000Z",
+		"user": 4145,
+		"comment": "y'a valentin qui vient de mettre une sortie st hilaire  pour info, et moi une rando-vol en chartreuse"
+	},
+	{
+		"date": "2019-10-24T21:53:00.000Z",
+		"user": 2980,
+		"comment": "Ca dépend vraiment de combien de temps tu attends, la montée en elle même c'est moins de 30 minutes. Sur une bonne journée comme ça a l'air d'être le cas, entre les randonneurs, les locaux et les volants ça prend généralement très bien"
+	},
+	{
+		"date": "2019-10-24T23:11:00.000Z",
+		"user": 6131,
+		"comment": "Voler samedi matin + samedi fin de journée + dimanche matin a st hilaire ça me dit bien.\nJe suis autonome pour le trajet (1 place dispo) et le couchage (camion aménagé, j'ai aussi tout le nécessaire pour faire a manger si besoin)..."
+	},
+	{
+		"date": "2019-10-25T09:42:00.000Z",
+		"user": 6131,
+		"comment": "Bon, au final, je puy de dôme samedi et dimanche départ ce soir, retour dans l'après midi j'ai une blablacar donc je ferai pas le trajet tout seul"
+	}],
+	"participants": [
+		2980,
+		4145,
+		5676,
+		6131
+	],
+	"users":
+	{
+		"2980": "Adrien MORY",
+		"4145": "Thibault ROHMER",
+		"5676": "Julieta Rivosecchi",
+		"6131": "Côme EDELINE"
+	}
+}

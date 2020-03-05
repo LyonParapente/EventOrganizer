@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-06-23T06:47:00.000Z",
+		"user": 4439,
+		"comment": "Nous on sera a belette en fin de journée."
+	},
+	{
+		"date": "2019-06-23T07:22:00.000Z",
+		"user": 6441,
+		"comment": "Un petit vol a mont Lambert en fin de matinée ?"
+	},
+	{
+		"date": "2019-06-23T08:00:00.000Z",
+		"user": 3144,
+		"comment": "Charmant som. On y est dans 40 min... Puis Aiguebe en fin de journée"
+	}],
+	"participants": [
+		3144,
+		4439,
+		6441
+	],
+	"users":
+	{
+		"3144": "Sébastien Avitabile",
+		"4439": "Thomas Vahé",
+		"6441": "Julien Roux"
+	}
+}

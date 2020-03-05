@@ -1,0 +1,51 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-27T13:27:00.000Z",
+		"user": 6131,
+		"comment": "Si la météo reste de la partie, je vais enfin pouvoir tester le puy de dôme, son petit train pour remonter au sommet et enchaîner les ploufs / essayer de rester en l'air de plus en plus longtemps !"
+	},
+	{
+		"date": "2019-05-27T17:07:00.000Z",
+		"user": 5508,
+		"comment": "oui ! je devrais être libre.."
+	},
+	{
+		"date": "2019-05-28T19:52:00.000Z",
+		"user": 5508,
+		"comment": "vol rando sur cou ??"
+	},
+	{
+		"date": "2019-05-29T16:45:00.000Z",
+		"user": 5092,
+		"comment": "Salut Val, tu penses partir sur la journée ou sur plusieurs jours ? nous on part sur plusieurs jours. J'avoue que pour l'instant je suis pas sur pour la météo. Du nord annoncé sur les Alpes. Des sites protégés en Nord je pense à Montlambert mais avec la coupe du monde cà peut être compliqué sinon Courtet... Mais Le puy de dome pourquoi pas (je ne connais pas). Voilà 'analyse  pour l'instant"
+	},
+	{
+		"date": "2019-05-29T16:53:00.000Z",
+		"user": 5397,
+		"comment": "effectivement je suis moins optimiste ce soir vu cette météo... Je bougerai seulement à la journée, j'ai une contrainte vendredi ou samedi"
+	},
+	{
+		"date": "2019-05-29T18:16:00.000Z",
+		"user": 5092,
+		"comment": "C'est pas si mal comme temps. Il y a du Nord pas trop fort mais attention aux rafales. Nous on sera pas prêt avant 10h30-11h. Donc un site du matin c'est mort. \nAprès il y a plusieurs choix soit Courtet, Chamoux ou Annecy.\nOn a abandonné le Puy de Dôme, Romu dit qu'au delà de 10km/h c'est compliqué avec l'effet venturi. Je ne connais pas le site et je ne sais pas trop de quel déco il parlait... mais en tout cas pour nous sur 4-5 jours c'est mort. Mais ça devrait le faire vendredi et samedi."
+	},
+	{
+		"date": "2019-05-29T18:25:00.000Z",
+		"user": 5397,
+		"comment": "mouai, je vois du 30km/h dès que tu prends un peu de gaz, hors rafales à partir de 15h, peut-être un peu avant"
+	}],
+	"participants": [
+		5092,
+		5397,
+		5508,
+		6131
+	],
+	"users":
+	{
+		"5092": "Amélie GONGUET",
+		"5397": "Valentin Gallecier",
+		"5508": "Lucas Mura",
+		"6131": "Côme EDELINE"
+	}
+}

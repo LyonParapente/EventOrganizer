@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-05-25T13:35:00.000Z",
+		"user": 5508,
+		"comment": "salut Norbert ! trop fort pour moi, plutôt intéressé pour aller voir la coupe !"
+	},
+	{
+		"date": "2019-05-25T14:32:00.000Z",
+		"user": 5443,
+		"comment": "Intéressé pour voler sinon coupe aussi :)"
+	},
+	{
+		"date": "2019-05-25T14:33:00.000Z",
+		"user": 3123,
+		"comment": "salut Lucas , je verrais la meteo dimanche matin"
+	}],
+	"participants": [
+		3123,
+		5443,
+		5508
+	],
+	"users":
+	{
+		"3123": "Norbert TECHENS",
+		"5443": "Mickael FRANC",
+		"5508": "Lucas Mura"
+	}
+}

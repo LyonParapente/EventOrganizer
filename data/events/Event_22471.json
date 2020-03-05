@@ -1,0 +1,43 @@
+{
+	"comments": [
+	{
+		"date": "2019-08-31T10:05:00.000Z",
+		"user": 5397,
+		"comment": "J'y serai le samedi, aller retour sur la journée."
+	},
+	{
+		"date": "2019-09-02T06:55:00.000Z",
+		"user": 5676,
+		"comment": "intéressée valentin de le faire à la journée avec toi!"
+	},
+	{
+		"date": "2019-09-16T12:41:00.000Z",
+		"user": 3490,
+		"comment": "Pour info, tous les trains de la région samedi sont à 5€. https://www.ter.sncf.com/auvergne-rhone-alpes/loisirs/evenements/journee-transport-public?utm_source=email&utm_medium=mkt_relationnel&utm_campaign=SNCF%20TER_AURA_Journ%c3%a9e+transport+public_sept+2019"
+	},
+	{
+		"date": "2019-09-20T09:28:00.000Z",
+		"user": 3088,
+		"comment": "Pour ceux qui viennent à la coupe, le téléphone étant toujours une galère sur place, je propose d’allumer les radios sur la fréquence club : 146.0375"
+	},
+	{
+		"date": "2019-09-20T09:55:00.000Z",
+		"user": 6051,
+		"comment": "Ok merci.  Je monte de grenoble maintenant. Pas sure de mettre ma radio.  Je serai au stand caisse/change du bar parateam& Duck au deco Sud . Benevole 16h30 à 19h. A plus!"
+	}],
+	"participants": [
+		3088,
+		3490,
+		5397,
+		5676,
+		6051
+	],
+	"users":
+	{
+		"3088": "Isabelle Mitaine",
+		"3490": "Simon LE",
+		"5397": "Valentin Gallecier",
+		"5676": "Julieta Rivosecchi",
+		"6051": "Claire Scheffer"
+	}
+}

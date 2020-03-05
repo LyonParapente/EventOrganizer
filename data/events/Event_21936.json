@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-02T18:09:00.000Z",
+		"user": 5508,
+		"comment": "je viens de m'inscrire, ça te dit camping à proximité la veille ?"
+	},
+	{
+		"date": "2019-07-03T07:46:00.000Z",
+		"user": 3490,
+		"comment": "Attention aux coups de fouet. \"En cas de non respect de ce règlement ou de mauvaise conduite, dangereuse ou irrespectueuse, l’organisation se réserve le droit de disqualifier ou de fouetter un participant pendant le reste de la montée\""
+	},
+	{
+		"date": "2019-07-04T18:42:00.000Z",
+		"user": 4145,
+		"comment": "Genre pour les maso. qui n'ont pas assez des 1100m de dénivelé positif.\nBonne gaufre alors !"
+	}],
+	"participants": [
+		3490,
+		4145,
+		5508
+	],
+	"users":
+	{
+		"3490": "Simon LE",
+		"4145": "Thibault ROHMER",
+		"5508": "Lucas Mura"
+	}
+}

@@ -1,0 +1,117 @@
+{
+	"comments": [
+	{
+		"date": "2019-10-24T19:23:00.000Z",
+		"user": 5676,
+		"comment": "intéressée !!! je te rejoins là bas!!"
+	},
+	{
+		"date": "2019-10-24T21:51:00.000Z",
+		"user": 2980,
+		"comment": "Tu vas essayer quoi ?"
+	},
+	{
+		"date": "2019-10-25T05:45:00.000Z",
+		"user": 5397,
+		"comment": "Une selette (advance, success4), si ils l'ont. Sinon ça sera un petit vol pour profiter du soleil c'est pas grave !"
+	},
+	{
+		"date": "2019-10-25T09:18:00.000Z",
+		"user": 3087,
+		"comment": "ça a pas l'air top St Hil samedi au niveau direction du vent, ça semble quand même léger sud..."
+	},
+	{
+		"date": "2019-10-25T09:42:00.000Z",
+		"user": 6131,
+		"comment": "Bon, au final, je puy de dôme samedi et dimanche départ ce soir, retour dans l'après midi j'ai une blablacar donc je ferai pas le trajet tout seul"
+	},
+	{
+		"date": "2019-10-25T10:11:00.000Z",
+		"user": 5397,
+		"comment": "Oui ça va donner 5km/h de sud. Mais ça ira pour moi, je veux juste passer 2 ploufs."
+	},
+	{
+		"date": "2019-10-25T10:33:00.000Z",
+		"user": 6693,
+		"comment": "Je suis partant également si tu peux m'emmener!"
+	},
+	{
+		"date": "2019-10-25T13:50:00.000Z",
+		"user": 2980,
+		"comment": "Chaud pour Saint Hil aussi, et je prends la voiture vu que je reste à Grenoble le soir, je sais pas comment on s'arrange"
+	},
+	{
+		"date": "2019-10-25T16:09:00.000Z",
+		"user": 5397,
+		"comment": "Tout dépend à quelle heure vous voulez partir. Perso je vise 8h pour prendre le premier funi, mais c'est pour aller chercher et régler le matos d'essai\nSi vous voulez, Adrien prends Maxime à l'aller pour partir un peu plus tard, et je ramène le soir tous ceux qui veulent rentrer à Lyon."
+	},
+	{
+		"date": "2019-10-25T16:39:00.000Z",
+		"user": 6746,
+		"comment": "Bonjour à tous, chaud aussi pour St Hil, jamais volé là-bas. Qqn bivouac ?\nJe pars de Fontaines et j'ai de la place au cas où. 8 heures là-bas c'est bien ça ?\nTenez-moi au courant.\n(07.71.08.94.50).\nRémy"
+	},
+	{
+		"date": "2019-10-25T16:57:00.000Z",
+		"user": 6693,
+		"comment": "Adrien tu partirais d'où et à quelle heure ?"
+	},
+	{
+		"date": "2019-10-25T17:17:00.000Z",
+		"user": 2980,
+		"comment": "Je suis place Bahadourian, vers Guillotière. Pour l'heure c'est comme tu veux, j'ai pas de contrainte particulière"
+	},
+	{
+		"date": "2019-10-25T17:41:00.000Z",
+		"user": 6693,
+		"comment": "Pour être la bas à 8h il faut partir de Lyon vers quelle heure ? Répond moi sur mon tél ça sera plus pratique. 0637099010"
+	},
+	{
+		"date": "2019-10-25T17:58:00.000Z",
+		"user": 5397,
+		"comment": "je disais 8h départ de lyon perso^^ pour info le premier funiculaire est à 10h, même si on aura visiblement suffisamment de voiture pour faire des rot."
+	},
+	{
+		"date": "2019-10-25T18:54:00.000Z",
+		"user": 5676,
+		"comment": "salut je vous rejouns a st hil vera 14/15h et chaud pour bivouac Rémy !!"
+	},
+	{
+		"date": "2019-10-25T19:04:00.000Z",
+		"user": 6746,
+		"comment": "C'est vrai que cela faisait un peu tôt 8 heures là-bas mais si c'est pour voler ce n'est pas bien grave. 10 heures sur place c'est bon pour moi, donc effectivement départ à 8 heures de Lyon.\nOn se tient au courant demain matin.\nBonne soirée à demain."
+	},
+	{
+		"date": "2019-10-25T19:14:00.000Z",
+		"user": 5397,
+		"comment": "Pour ceux qui n'auraient pas mon tél pour se retrouver sur place\nZero688960477"
+	},
+	{
+		"date": "2019-10-25T20:14:00.000Z",
+		"user": 5397,
+		"comment": "Comme on aura finalement plusieurs voitures, rendez-vous à l'attero pour organiser les bagnoles et avoir de quoi faire les rotations.\nA demain !"
+	},
+	{
+		"date": "2019-10-26T06:57:00.000Z",
+		"user": 6746,
+		"comment": "Désolé pas vu ton message Julieta. Prochaine fois le bivouac"
+	}],
+	"participants": [
+		2980,
+		3087,
+		5397,
+		5676,
+		6131,
+		6693,
+		6746
+	],
+	"users":
+	{
+		"2980": "Adrien MORY",
+		"3087": "Philou LT",
+		"5397": "Valentin Gallecier",
+		"5676": "Julieta Rivosecchi",
+		"6131": "Côme EDELINE",
+		"6693": "Maxime Robin",
+		"6746": "Rémy MARTIN"
+	}
+}

@@ -1,0 +1,93 @@
+{
+	"comments": [
+	{
+		"date": "2019-09-06T07:55:00.000Z",
+		"user": 5676,
+		"comment": "intéressée je te contacte valentin!"
+	},
+	{
+		"date": "2019-09-06T08:15:00.000Z",
+		"user": 6749,
+		"comment": "Selon ce qu'aura donné mon test de Quincié le matin, je passerai surement.\nPour le site de Marenne, je le trouve sur la carte FFVL mais je ne vois pas le site de Miribel, tu peux me donner plus d'info ?\nMerci"
+	},
+	{
+		"date": "2019-09-06T08:26:00.000Z",
+		"user": 5676,
+		"comment": "c'est au parc de miribel:\nhttps://goo.gl/maps/ZuenfgRRy7Bzi95h7"
+	},
+	{
+		"date": "2019-09-06T09:03:00.000Z",
+		"user": 6749,
+		"comment": "Merci"
+	},
+	{
+		"date": "2019-09-06T12:55:00.000Z",
+		"user": 6441,
+		"comment": "ca me dit bien un peu de gonflage, tu sais vers quelle heure tu y seras?"
+	},
+	{
+		"date": "2019-09-06T15:16:00.000Z",
+		"user": 5676,
+		"comment": "je me vois bien partir avec valentin vers 14h de lyon (marennes/miribel), plutôt que tôt le matin vers quincié...."
+	},
+	{
+		"date": "2019-09-06T17:56:00.000Z",
+		"user": 6749,
+		"comment": "Selon mon emploi du temps je me joindrais sûrement à vous. Tenez moi au courant de la destination"
+	},
+	{
+		"date": "2019-09-06T19:27:00.000Z",
+		"user": 5676,
+		"comment": "ok"
+	},
+	{
+		"date": "2019-09-07T08:24:00.000Z",
+		"user": 5092,
+		"comment": "Coucou on est motivé pour aller gonfler un peu. Vous avez décidé où ? L'heure ? Nous on irait plutôt vers Miribel en début d'aprem."
+	},
+	{
+		"date": "2019-09-07T08:51:00.000Z",
+		"user": 6441,
+		"comment": "Meribel en début d'aprem ça me va bien."
+	},
+	{
+		"date": "2019-09-07T10:48:00.000Z",
+		"user": 5397,
+		"comment": "Ceux qui ont besoin d'un chauffeur je vous laisse m'appeler"
+	},
+	{
+		"date": "2019-09-07T10:54:00.000Z",
+		"user": 6749,
+		"comment": "Finalement c’est de it dkaprem a Miribel-Jonage ? Je vous rejoins plus ou moins à l’heure"
+	},
+	{
+		"date": "2019-09-07T11:32:00.000Z",
+		"user": 5397,
+		"comment": "A priori Marennes n'est pas trop fort, donc on va ce diriger là-bas."
+	},
+	{
+		"date": "2019-09-07T11:45:00.000Z",
+		"user": 5397,
+		"comment": "J'ai rien dis, Amélie et Romu sont à Miribel, donc je les rejoins... Désolé je ne suis pas réveillé"
+	},
+	{
+		"date": "2019-09-07T12:10:00.000Z",
+		"user": 5092,
+		"comment": "Nous on maintient Miribel. On récupère Julien et on y va."
+	}],
+	"participants": [
+		5092,
+		5397,
+		5676,
+		6441,
+		6749
+	],
+	"users":
+	{
+		"5092": "Amélie GONGUET",
+		"5397": "Valentin Gallecier",
+		"5676": "Julieta Rivosecchi",
+		"6441": "Julien Roux",
+		"6749": "Alexandre Baleige"
+	}
+}

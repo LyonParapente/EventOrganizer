@@ -1,0 +1,49 @@
+{
+	"comments": [
+	{
+		"date": "2019-10-26T18:47:00.000Z",
+		"user": 5676,
+		"comment": "je vais faire la randovol au margeriaz. c'est sud , à priori bien orienté pour les prévisions de demain.\nhttps://www.bivouak.net/topos/topo-4358-mont-margeriaz-par-le-col-des-vernes-depuis-la-fougere-de-thormeroz-sport-16.html"
+	},
+	{
+		"date": "2019-10-26T19:45:00.000Z",
+		"user": 6746,
+		"comment": "Salut Julieta, tu pars d’où et à quelle heure demain ?"
+	},
+	{
+		"date": "2019-10-26T19:52:00.000Z",
+		"user": 5676,
+		"comment": "salut remy. je pars de la fougere (Thoiry) vers 10h"
+	},
+	{
+		"date": "2019-10-26T19:52:00.000Z",
+		"user": 5676,
+		"comment": "0750394973"
+	},
+	{
+		"date": "2019-10-26T20:56:00.000Z",
+		"user": 6746,
+		"comment": "Ok, je te tiens au courant par message demain matin"
+	},
+	{
+		"date": "2019-10-26T20:59:00.000Z",
+		"user": 5676,
+		"comment": "ok!"
+	},
+	{
+		"date": "2019-10-27T07:16:00.000Z",
+		"user": 3123,
+		"comment": "je pensais a un site plus proche.\nJE penses aller a Aiguebelette en debut d'apres midi et voir ce que ca donne"
+	}],
+	"participants": [
+		3123,
+		5676,
+		6746
+	],
+	"users":
+	{
+		"3123": "Norbert TECHENS",
+		"5676": "Julieta Rivosecchi",
+		"6746": "Rémy MARTIN"
+	}
+}

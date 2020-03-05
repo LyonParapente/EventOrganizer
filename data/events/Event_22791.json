@@ -1,0 +1,22 @@
+{
+	"comments": [
+	{
+		"date": "2019-11-14T16:25:00.000Z",
+		"user": 5676,
+		"comment": "Chamrousse a l'air d'être un spot fréquenté, météo ok pour samedi"
+	},
+	{
+		"date": "2019-11-15T20:24:00.000Z",
+		"user": 5508,
+		"comment": "attention manteau neigeux pas stable : http://www.meteofrance.com/previsions-meteo-montagne/bulletin-avalanches/isere/avdept38"
+	}],
+	"participants": [
+		5508,
+		5676
+	],
+	"users":
+	{
+		"5508": "Lucas Mura",
+		"5676": "Julieta Rivosecchi"
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-12T12:05:00.000Z",
+		"user": 5212,
+		"comment": "Bof, j'aime pas trop Mt Lamb. Je pensais plutôt Samoens ou découvrir Bourg St Maurice, deux endroits avec vent faible ce week-end."
+	},
+	{
+		"date": "2019-07-12T12:29:00.000Z",
+		"user": 4145,
+		"comment": "hmm bourg saint maurice y'a 30km annoncés à 2000m en AROME : https://www.meteociel.fr/previsions-haute-altitude-arome-1h/27334/bourg_saint_maurice.htm (et sur meteo-parapente aussi) ; par contre pas sur windy (https://www.windy.com/?arome,45.226,6.767,8,m:eVhagmr), même en modèle AROME, bizarre bizarre\nCa vaut un coup de phone aux locaux\n\nPar contre Samoëns à l'air surfumant donc ouvert à allé sur Mieussy/Samöens"
+	},
+	{
+		"date": "2019-07-12T13:22:00.000Z",
+		"user": 5212,
+		"comment": "Je n'avais pas arome sur mon appli, j'ai pas essayé de trouver d'autres modèles ailleurs"
+	},
+	{
+		"date": "2019-07-12T13:39:00.000Z",
+		"user": 5212,
+		"comment": "Toutes façons à Bourg Saint Maurice il ne faut pas être en l'air en été car trop de brise pour poser (c'est un peu ça à Samoens d'ailleurs mais après 16h30 c'est ok)"
+	},
+	{
+		"date": "2019-07-12T15:58:00.000Z",
+		"user": 5212,
+		"comment": "Je voulais dire qu'il ne fallait pas être en l'air après 14h...\nSamoens me paraît plus sûr ce week-end. On pense partir ce soir éventuellement."
+	},
+	{
+		"date": "2019-07-12T18:50:00.000Z",
+		"user": 4145,
+		"comment": "Yep va pour Samoëns du coup. Lucas sera là aussi, on s'organise pour le transport là.\nJ'emmène la tente pour rester 2 jours éventuellement.\nD'autres intéressés ? Il reste donc 1 place dans ma voiture."
+	}],
+	"participants": [
+		4145,
+		5212
+	],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"5212": "Romuald S"
+	}
+}

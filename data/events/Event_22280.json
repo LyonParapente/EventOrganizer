@@ -1,0 +1,47 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-22T13:28:00.000Z",
+		"user": 6482,
+		"comment": "Salut julieta. Je veux bien te retrouver à marennes ou miribel. Dis mois si ça se confirme; et quelle heure"
+	},
+	{
+		"date": "2019-07-22T14:12:00.000Z",
+		"user": 5676,
+		"comment": "salut! pour marennes j'ai pas de voiture. mais j'irais à miribel à vélo.... je crains qu'il y aura pas assez de vent.... tu en penses quoi? on essaie? je peux y être vers 18h"
+	},
+	{
+		"date": "2019-07-22T14:21:00.000Z",
+		"user": 5676,
+		"comment": "0750394973 je crois que j'y vais quand même jouer un peu avec la voile"
+	},
+	{
+		"date": "2019-07-22T14:24:00.000Z",
+		"user": 6482,
+		"comment": "Je pourrais te récupérer en voiture à Bron. Mais je crains qu'il y ait pas bcp d'air"
+	},
+	{
+		"date": "2019-07-22T14:34:00.000Z",
+		"user": 5676,
+		"comment": "merci Jb, je pense que j'irai en vélo pour la balade... ce sera max 10 km/h très peu...j'irai moi..."
+	},
+	{
+		"date": "2019-07-22T14:36:00.000Z",
+		"user": 6482,
+		"comment": "Ok je te dis si je bouge. mais je crains que la motivation soit inverse à la chaleur !"
+	},
+	{
+		"date": "2019-07-22T14:41:00.000Z",
+		"user": 5676,
+		"comment": "ok!"
+	}],
+	"participants": [
+		5676,
+		6482
+	],
+	"users":
+	{
+		"5676": "Julieta Rivosecchi",
+		"6482": "Jb  Michel"
+	}
+}

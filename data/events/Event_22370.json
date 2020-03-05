@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-08-11T07:56:00.000Z",
+		"user": 5676,
+		"comment": "on est à saint hilaire !!"
+	},
+	{
+		"date": "2019-08-11T11:13:00.000Z",
+		"user": 3087,
+		"comment": "ça donne quoi car la météo prévoit de grosses rafales"
+	},
+	{
+		"date": "2019-08-11T11:25:00.000Z",
+		"user": 5676,
+		"comment": "là c'est fini. le sud va rentrer et puis des orages. toutes posées isa, claire et moi"
+	}],
+	"participants": [
+		3087,
+		3123,
+		5676
+	],
+	"users":
+	{
+		"3087": "Philou LT",
+		"3123": "Norbert TECHENS",
+		"5676": "Julieta Rivosecchi"
+	}
+}

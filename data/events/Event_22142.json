@@ -1,0 +1,44 @@
+{
+	"comments": [
+	{
+		"date": "2019-06-26T16:00:00.000Z",
+		"user": 6441,
+		"comment": "Tu partirais a quelle heure ?"
+	},
+	{
+		"date": "2019-06-27T05:30:00.000Z",
+		"user": 5795,
+		"comment": "Je compte partir vers 16h, again. Mais je vais regarder comment évolue les conditions, j'ai l'impression que le vent a tourné... Je fais un point à midi"
+	},
+	{
+		"date": "2019-06-27T10:39:00.000Z",
+		"user": 4919,
+		"comment": "Peut être intéressé suivant horaire...\nQuel vent pour chassrnoud ?"
+	},
+	{
+		"date": "2019-06-27T11:47:00.000Z",
+		"user": 5795,
+		"comment": "A priori Nord. Je vais tenter.Au pire, ca fera une promenade"
+	},
+	{
+		"date": "2019-06-27T12:05:00.000Z",
+		"user": 6441,
+		"comment": "a priori nord 10km/h a 180h puis forcissant rapidement a 30km/heure... un peu fort pour moi un peu de gonflage a miribel?"
+	},
+	{
+		"date": "2019-06-27T12:53:00.000Z",
+		"user": 4919,
+		"comment": "Trop fort pour mes competences...."
+	}],
+	"participants": [
+		4919,
+		5795,
+		6441
+	],
+	"users":
+	{
+		"4919": "Philippe PELISSIER",
+		"5795": "Stephane Coupleux",
+		"6441": "Julien Roux"
+	}
+}

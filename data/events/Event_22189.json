@@ -1,0 +1,87 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-05T17:02:00.000Z",
+		"user": 5799,
+		"comment": "Bonne idée"
+	},
+	{
+		"date": "2019-07-05T18:38:00.000Z",
+		"user": 5397,
+		"comment": "Super idée, à confirmer si gouttes ou pas."
+	},
+	{
+		"date": "2019-07-06T16:49:00.000Z",
+		"user": 6117,
+		"comment": "Hello Thibault on serait intéressé avec David, yaurai de la place pour 2 personnes ? Pas sure qu'on puisse avoir un véhicule. En termes de niveau, plutôt petit, j'ai fait que 2 petit plouf cette année et il me semble que david a pas encore volé cette année."
+	},
+	{
+		"date": "2019-07-06T17:10:00.000Z",
+		"user": 4145,
+		"comment": "Hello\nBah du coup on peut prendre ma voiture et celle de Valentin et comme ça on peut faire les rotations facilement.\nValentin toujours ok ?\nNicolas partant ? Tu covoiture avec nous ou tu es autonome en transport ?\n\nAlois et David: n'oubliez pas de prendre votre licence pour avoir une RC, je n'en vois pas sur le site de la fédé.\n\nJ'attends vos réponses pour définir un horaire. Qu'est-ce qui vous ferais envie ?\n\nMon tél: zero six.33.71.78.quarante"
+	},
+	{
+		"date": "2019-07-06T17:44:00.000Z",
+		"user": 5397,
+		"comment": "Ok pour moi, ça permettra de faire les rotations facilement."
+	},
+	{
+		"date": "2019-07-06T18:07:00.000Z",
+		"user": 3088,
+		"comment": "Je vous rejoins pour la 2ème rotation"
+	},
+	{
+		"date": "2019-07-06T19:22:00.000Z",
+		"user": 3299,
+		"comment": "Bonsoir! Aujourd'hui on a volé à Aiguebelette après avoir dû renoncer à Annecy. Conditions assez décevantes."
+	},
+	{
+		"date": "2019-07-06T19:47:00.000Z",
+		"user": 6117,
+		"comment": "Niveau horaire on est pas difficile, on est dispo a partir de 10h du mat' sauf si tu recommandes de partir plus tôt. Bien vu pour la licence, je viens de reprendre ma licence et David va faire ça ce soir."
+	},
+	{
+		"date": "2019-07-06T19:54:00.000Z",
+		"user": 5799,
+		"comment": "Je peux vous rejoindre et covoiturer. Où et quand vous voulez"
+	},
+	{
+		"date": "2019-07-06T20:11:00.000Z",
+		"user": 5397,
+		"comment": "Qui covoit avec qui du coup? On part à 10h?"
+	},
+	{
+		"date": "2019-07-06T20:28:00.000Z",
+		"user": 4145,
+		"comment": "Pascal: merci pour ton message. J'ose espérer que ça sera un peu mieux demain à Aiguebelette, conformément aux prévisions meteo-parapente (de samedi et dimanche annoncé mieux).\n\nVa pour départ à 10H du coup.\nJ'ai contacté Aloïs et David.\nVu les adresses je propose que je récupère vers David qui est au sud Part-Dieu de mon côté.\nEt Valentin tu récupères Aloïs (il habite centre ville) + Nicolas vers Masséna ?"
+	},
+	{
+		"date": "2019-07-06T20:33:00.000Z",
+		"user": 5397,
+		"comment": "Ok, je fais un départ métro Masséna à 10h, on se retrouve à l'attero. Mon tél : zero688960477"
+	},
+	{
+		"date": "2019-07-07T08:04:00.000Z",
+		"user": 5799,
+		"comment": "Arrivé à Massena"
+	}],
+	"participants": [
+		3088,
+		3299,
+		4145,
+		5397,
+		5799,
+		5998,
+		6117
+	],
+	"users":
+	{
+		"3088": "Isabelle Mitaine",
+		"3299": "Pascal Ch",
+		"4145": "Thibault ROHMER",
+		"5397": "Valentin Gallecier",
+		"5799": "Nicolas Flamant",
+		"5998": "Florian Viricelle",
+		"6117": "Aloïs T"
+	}
+}

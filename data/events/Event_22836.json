@@ -1,0 +1,22 @@
+{
+	"comments": [
+	{
+		"date": "2019-11-24T14:37:00.000Z",
+		"user": 6405,
+		"comment": "Salut Julietta,\n\nJe suis sur annecy actuellement et si tu veux on peut aller voler ensemble. J'ai juste un impératif de 30-45mn à 14h"
+	},
+	{
+		"date": "2019-11-24T20:14:00.000Z",
+		"user": 5676,
+		"comment": "salut damien cool, on peut essayer de voler ensemble ! on a un plan! mon tel 0750394973"
+	}],
+	"participants": [
+		5676,
+		6405
+	],
+	"users":
+	{
+		"5676": "Julieta Rivosecchi",
+		"6405": "Damien GRINGET"
+	}
+}

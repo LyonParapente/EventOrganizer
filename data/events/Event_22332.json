@@ -1,0 +1,29 @@
+{
+	"comments": [
+	{
+		"date": "2019-08-01T11:13:00.000Z",
+		"user": 4919,
+		"comment": "Volontaire mais pas de radio...\n0603438526"
+	},
+	{
+		"date": "2019-08-01T12:09:00.000Z",
+		"user": 5158,
+		"comment": "Salut Adrien, je suis chaud ! Tu partirais vers quelle heure ? Je v1is voir si je peux récupérer une voiture ce soir... A plus"
+	},
+	{
+		"date": "2019-08-01T12:15:00.000Z",
+		"user": 2980,
+		"comment": "Vu l'absence de réponses j'ai zappé de prendre mon matos ce midi... Du coup si ça se fait faut que je repasse chez moi"
+	}],
+	"participants": [
+		2980,
+		4919,
+		5158
+	],
+	"users":
+	{
+		"2980": "Adrien MORY",
+		"4919": "Philippe PELISSIER",
+		"5158": "Aurelien Roehrig"
+	}
+}

@@ -1,0 +1,58 @@
+{
+	"comments": [
+	{
+		"date": "2019-08-05T07:37:00.000Z",
+		"user": 4145,
+		"comment": "Je propose le Bryan's Café\n\nCa sera un peu mieux pour discuter que d'autres grands bars."
+	},
+	{
+		"date": "2019-08-07T16:07:00.000Z",
+		"user": 5397,
+		"comment": "Bryan's fermé ce soit, plan B?"
+	},
+	{
+		"date": "2019-08-07T16:13:00.000Z",
+		"user": 5397,
+		"comment": "Est-ce qu'on tente entre Brotteaux et cours Virton? Je pense à celui qui fait l'angle, et qui à des tables dehors mais couvertes"
+	},
+	{
+		"date": "2019-08-07T16:25:00.000Z",
+		"user": 5092,
+		"comment": "Dans le coin il y a le lop's club ou lop's pub à côté de la mairie de Villeurbanne. C'est avenue Henri Barbusse.?"
+	},
+	{
+		"date": "2019-08-07T16:31:00.000Z",
+		"user": 5397,
+		"comment": "Je suis vers Brotteaux, il y a du monde. Peu importe maison truc ouvert !"
+	},
+	{
+		"date": "2019-08-07T16:33:00.000Z",
+		"user": 4145,
+		"comment": "arf damned ils étaient ouvert à midi mais fermé ce soir au Bryan's Cafe, message y'a 7h sur leur facebook...\n\nBrew Brothers ou Barabaar c'est souvent blindé et bruyant, mais peut-être moins de monde avec les vacances ?\nPlus trop de pluie annoncée\n\nBon allé go pour ca y'aura plus de chance pour trouver de la place.\n\nhttps://goo.gl/maps/Ms4hy8FVniQxXAdw8\n2 Boulevard des Brotteaux, 69006 Lyon\n\nBrew Brother ou Barabaar là ou y'a de la place"
+	},
+	{
+		"date": "2019-08-07T16:34:00.000Z",
+		"user": 5397,
+		"comment": "Ok on se retrouve là bas, et si il faut on cherchera à côté"
+	},
+	{
+		"date": "2019-08-07T16:48:00.000Z",
+		"user": 5397,
+		"comment": "Brews brother, à l'intérieur pénard"
+	}],
+	"participants": [
+		4145,
+		5092,
+		5212,
+		5397,
+		5676
+	],
+	"users":
+	{
+		"4145": "Thibault ROHMER",
+		"5092": "Amélie GONGUET",
+		"5212": "Romuald S",
+		"5397": "Valentin Gallecier",
+		"5676": "Julieta Rivosecchi"
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"comments": [
+	{
+		"date": "2019-08-29T06:21:00.000Z",
+		"user": 6746,
+		"comment": "Bonjour à tous.\nJe compte bien participer à la fête du vol libre et si des navettes partent de Lyon je suis preneur.\nÀ ce week-end.\nRémy"
+	},
+	{
+		"date": "2019-08-29T20:16:00.000Z",
+		"user": 5212,
+		"comment": "La meteo semble bien se dégrader. Samedi pluie vers 15h et dimanche nuageux. On comptait partir demain en fin d'après midi mais on n'est plus sûr du tout d'y aller."
+	},
+	{
+		"date": "2019-08-29T21:07:00.000Z",
+		"user": 6746,
+		"comment": "Oui c’est ce que j’ai vu aussi. Vu la météo je pense que je vais rester dans le coin et voler plus bas. Demain soir Aiguebelette et samedi on verra."
+	}],
+	"participants": [
+		5212,
+		6746
+	],
+	"users":
+	{
+		"5212": "Romuald S",
+		"6746": "Rémy MARTIN"
+	}
+}

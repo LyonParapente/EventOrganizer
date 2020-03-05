@@ -1,0 +1,22 @@
+{
+	"comments": [
+	{
+		"date": "2019-07-10T11:45:00.000Z",
+		"user": 6131,
+		"comment": "Attention la pente école est fermée jusqu'a la fin de semaine... (en tous cas c'est ce qui était indiqué quand j'y suis passé le mois dernier"
+	},
+	{
+		"date": "2019-07-10T13:59:00.000Z",
+		"user": 5508,
+		"comment": "ah merci Côme, j'ai appelé Alto c'est pas fermée mais il y a des restrictions. faut appeler ou attendre semaine pro le nouveau panneau =)"
+	}],
+	"participants": [
+		5508,
+		6131
+	],
+	"users":
+	{
+		"5508": "Lucas Mura",
+		"6131": "Côme EDELINE"
+	}
+}
