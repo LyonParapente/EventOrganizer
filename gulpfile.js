@@ -64,7 +64,8 @@ gulp.task("fullcalendar css", function()
 	[
 		'node_modules/@fullcalendar/core/main.min.css',
 		'node_modules/@fullcalendar/daygrid/main.min.css',
-		'node_modules/@fullcalendar/list/main.min.css'
+		'node_modules/@fullcalendar/list/main.min.css',
+		'node_modules/@fullcalendar/bootstrap/main.min.css'
 	];
 	return gulp.src(files)
 		.pipe(concat('fullcalendar.min.css'))
