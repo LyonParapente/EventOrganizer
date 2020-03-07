@@ -20,7 +20,7 @@ var Events_2020 =
 		"id": 4145,
 		"name": "Thibault ROHMER"
 	},
-	"desc": "Oh yeah!",
+	"desc": "Je serai bénévole vendredi et samedi dans ce festival qui est trop chouette !! Vraiment cool!! Si on est plusieurs on se fait un camping???!!!",
 	"time": "13h00",
 	"location": "Annecy"
 }

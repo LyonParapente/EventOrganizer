@@ -19,7 +19,13 @@ gulp.task('copy html', function ()
 		.pipe(gulp.dest(dist));
 });
 
-function bundlejs()
+gulp.task('copy js', function()
+{
+	return gulp.src('node_modules/html5tooltipsjs/versions/html5tooltips.1.7.3.min.js')
+		.pipe(gulp.dest(dist));
+});
+
+function compilejs()
 {
 	return browserify(
 	{
@@ -43,6 +49,12 @@ gulp.task("copy fontawesome", function()
 {
 	return gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
 		.pipe(rename('fontawesome-all.min.css'))
+		.pipe(gulp.dest(dist+"/css/"));
+});
+
+gulp.task("copy html5tooltips", function()
+{
+	return gulp.src('node_modules/html5tooltipsjs/html5tooltips.css')
 		.pipe(gulp.dest(dist+"/css/"));
 });
 
@@ -84,9 +96,14 @@ gulp.task("scss", function()
 
 function bundlecss()
 {
-	return gulp.parallel("copy fontawesome", "copy css themes", "copy webfonts", "fullcalendar css", "scss");
+	return gulp.parallel("copy fontawesome", "copy html5tooltips", "copy css themes", "copy webfonts", "fullcalendar css", "scss");
 }
 gulp.task("css", bundlecss());
+
+function bundlejs()
+{
+	return gulp.parallel("copy js", compilejs);
+}
 
 gulp.task('serve', function()
 {
@@ -105,8 +122,8 @@ gulp.task('serve', function()
 	});
 	
 	gulp.watch("src/*.html").on('change', gulp.series('copy html', browserSync.reload));
-	gulp.watch("src/**/*.ts").on('change', gulp.series(bundlejs, browserSync.reload));
+	gulp.watch("src/**/*.ts").on('change', gulp.series(bundlejs(), browserSync.reload));
 	gulp.watch(["src/css/**/*.scss", "src/css/**/*.css"]).on('change', gulp.series("css", browserSync.reload));
 });
 
-gulp.task("default", gulp.series("copy html", gulp.parallel(bundlejs, "css"), "serve"));
+gulp.task("default", gulp.series("copy html", gulp.parallel(bundlejs(), "css"), "serve"));

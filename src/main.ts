@@ -117,12 +117,23 @@ document.addEventListener('DOMContentLoaded', function()
 		},
 		eventRender: function(info)
 		{
-			/*TODO
-			if (info.event.desc)
+			var desc = info.event.extendedProps.desc;
+			if (desc)
 			{
-				//with popper.min.js
-				//$(element).tooltip({title: event.desc, html: true});
-			}*/
+				// @ts-ignore html5tooltips
+				var tooltip = new HTML5TooltipUIComponent;
+				var target = info.el;
+				tooltip.set(
+				{
+					contentText: desc,
+					stickTo: "bottom",
+					target: target,
+					maxWidth: 500
+				});
+				target.addEventListener('mouseenter', () => tooltip.show());
+				target.addEventListener('mouseleave', () => tooltip.hide());
+				tooltip.mount();
+			}
 		},
 		loading: function(isLoading)
 		{
