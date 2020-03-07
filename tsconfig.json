@@ -2,12 +2,12 @@
 	"compilerOptions":
 	{
 		"target": "es6",
-		"module": "umd",
+		"module": "UMD",
 		"moduleResolution": "node",
 		"noImplicitAny": false,
 		"sourceMap": true,
-		"outDir": "dist/",
-		"outFile": "dist/bundle.js"
+		"outDir": "dist/"/*,
+		"outFile": "dist/bundle.js"*/
 	},
 	"files":
 	[
