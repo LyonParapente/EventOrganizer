@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function()
 			}
 		}
 	});
+	(<any>window).calendar = calendar;
 	calendar.render();
-
 
 
 
@@ -192,3 +192,5 @@ function getColor(category)
 {
 	return getColorConf()[category];
 }
+
+
