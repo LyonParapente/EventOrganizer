@@ -84,26 +84,26 @@ document.addEventListener('DOMContentLoaded', function()
 
 		dateClick: function (infos)
 		{
-			var d = infos.dateStr;
-			console.log("Day clicked "+d);
+			console.log("Day clicked "+infos.dateStr);
+			var d = infos.date;
 			planAnEvent(d, d);
 		},
 		select: function(selectionInfo)
 		{
-
-			//TODO
-			debugger;
-
-			/*endDate.add(-1, 'days');
-			if (startDate.format() !== endDate.format())
+			// Remove 1 day because end is exclusive
+			var end = selectionInfo.end.getTime() - 86400000;
+			var start = selectionInfo.start.getTime();
+			if (start !== end)
 			{
-				console.log('Selected ' + startDate.format() + ' to ' + endDate.format());
-				planAnEvent(startDate, endDate);
+				var endDate = new Date(end);
+				var endDateStr = endDate.getFullYear()+'-'+(endDate.getMonth()+1)+'-'+endDate.getDate();
+				console.log('Selected ' + selectionInfo.startStr + ' to ' + endDateStr);
+				planAnEvent(selectionInfo.start, endDate);
 			}
 			else
 			{
 				// handled by dayClick
-			}*/
+			}
 		},
 		eventClick: showEvent,
 		eventDataTransform: function(event)
@@ -192,5 +192,4 @@ function getColor(category)
 {
 	return getColorConf()[category];
 }
-
 
