@@ -2,6 +2,7 @@ var gulp = require("gulp");
 var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var browserify = require("browserify");
+var watchify = require("watchify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
 var uglify = require('gulp-uglify-es').default;
@@ -18,24 +19,31 @@ gulp.task('copy-html', function ()
 		.pipe(gulp.dest(dist));
 });
 
+var b =  browserify(
+{
+	basedir: '.',
+	debug: true,
+	entries: ['src/main.ts'],
+	cache: {},
+	packageCache: {},
+	plugin: [watchify]
+});
+b.on('update', bundlejs);
+//b.on("update", bundlecss);
+b.on("log", console.log);
+
 function bundlejs()
 {
-	return browserify(
-	{
-		basedir: '.',
-		debug: true,
-		entries: ['src/main.ts'],
-		cache: {},
-		packageCache: {}
-	})
-	.plugin(tsify)
-	.bundle()
-	.pipe(source('bundle.min.js'))
-	.pipe(buffer())
-	.pipe(sourcemaps.init({loadMaps: true}))
-	.pipe(uglify())
-	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest(dist));
+	return b
+		.plugin(tsify)
+		.bundle()
+		.on('error', console.error)
+		.pipe(source('bundle.min.js'))
+		.pipe(buffer())
+		.pipe(sourcemaps.init({loadMaps: true}))
+		.pipe(uglify())
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest(dist));
 }
 
 gulp.task("copy fontawesome", function()
@@ -86,4 +94,3 @@ function bundlecss()
 }
 gulp.task("sass", bundlecss());
 gulp.task("default", gulp.series('copy-html', gulp.parallel(bundlejs, "sass")));
-

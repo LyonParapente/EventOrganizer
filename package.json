@@ -7,7 +7,8 @@
     "@fullcalendar/core": "^4.4.0",
     "@fullcalendar/daygrid": "^4.4.0",
     "@fullcalendar/interaction": "^4.4.0",
-    "@fullcalendar/list": "^4.4.0"
+    "@fullcalendar/list": "^4.4.0",
+    "watchify": "^3.11.1"
   },
   "devDependencies": {
     "browserify": "^16.5.0",
