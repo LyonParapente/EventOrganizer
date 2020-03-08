@@ -5,6 +5,7 @@ var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
 var uglify = require('gulp-uglify-es').default;
+var uglifycss = require('gulp-uglifycss');
 var sourcemaps = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
 var sass = require('gulp-sass');
@@ -21,7 +22,22 @@ gulp.task('copy html', function ()
 
 gulp.task('copy js', function()
 {
-	return gulp.src('node_modules/html5tooltipsjs/versions/html5tooltips.1.7.3.min.js')
+	var files =
+	[
+		'node_modules/jquery/dist/jquery.slim.min.js',
+		'node_modules/jquery/dist/jquery.slim.min.map',
+		'node_modules/bootstrap/dist/js/bootstrap.min.js',
+		'node_modules/bootstrap/dist/js/bootstrap.min.js.map'
+	];
+	return gulp.src(files)
+		.pipe(gulp.dest(dist));
+});
+
+gulp.task('copy html5tooltipsjs', function()
+{
+	return gulp.src('node_modules/html5tooltipsjs/html5tooltips.js')
+		.pipe(uglify())
+		.pipe(rename('html5tooltips.min.js'))
 		.pipe(gulp.dest(dist));
 });
 
@@ -54,7 +70,14 @@ gulp.task("copy fontawesome", function()
 
 gulp.task("copy html5tooltips", function()
 {
-	return gulp.src('node_modules/html5tooltipsjs/html5tooltips.css')
+	var files =
+	[
+		'node_modules/html5tooltipsjs/html5tooltips.css',
+		'node_modules/html5tooltipsjs/html5tooltips.animation.css'
+	];
+	return gulp.src(files)
+		.pipe(concat('html5tooltips.min.css'))
+		.pipe(uglifycss())
 		.pipe(gulp.dest(dist+"/css/"));
 });
 
@@ -102,7 +125,7 @@ gulp.task("css", bundlecss());
 
 function bundlejs()
 {
-	return gulp.parallel("copy js", compilejs);
+	return gulp.parallel("copy js", compilejs, "copy html5tooltipsjs");
 }
 
 gulp.task('serve', function()
