@@ -9,7 +9,6 @@ import { i18n, toDateString } from './trads';
 import theme from './theme';
 import settings from './settings';
 import planAnEvent from './event_plan';
-import { initMap } from "./map";
 import swipedetector from "./swipe";
 
 export var calendar;

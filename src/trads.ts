@@ -40,7 +40,8 @@ var trads =
 		"None": "Aucune",
 		"Copied to clipboard!": "Copié dans le presse-papier!",
 		"Open in Google Maps": "Ouvrir avec Google Maps",
-		"New Event": "Ajouter une sortie"
+		"New Event": "Ajouter une sortie",
+		"Reset": "Reset" // Prédéfini?
 	}
 };
 

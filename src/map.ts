@@ -1,5 +1,5 @@
 import settings from './settings';
-import { i18n } from './trads';
+import { i18n, i18n_inPlace } from './trads';
 
 declare var L; // Leaflet.js
 
@@ -113,12 +113,23 @@ export function initMap(elem_id, edit, gps?, location?)
 
 			sortie_RDV.addEventListener('change', function()
 			{
-				var latlng = marker.getLatLng();
-				if (latlng.lat === settings.default_map_center[0] &&
-					latlng.lng === settings.default_map_center[1])
+				findLocation(this.value, marker, map);
+			});
+			var timeoutID = null;
+			sortie_RDV.addEventListener('keyup', function()
+			{
+				clearTimeout(timeoutID);
+				timeoutID = setTimeout(function()
 				{
-					findLocation(this.value, marker, map);
-				}
+					findLocation(sortie_RDV.value, marker, map);
+				}, 400);
+			});
+
+			i18n_inPlace(['#sortie_RDV_reset']);
+			document.getElementById('sortie_RDV_reset').addEventListener('click', function()
+			{
+				sortie_RDV.value = '';
+				map.setView(defaultPoint, settings.default_map_zoom, {animate: false});
 			});
 		}
 	}
@@ -149,7 +160,7 @@ function findLocation(text, marker, map)
 	spinner_RDV.style.display = 'block';
 	L.esri.Geocoding.geocode().text(text).nearby(proximity, proximity_radius).run(function (error, response)
 	{
-		spinner_RDV.style.display = 'hide';
+		spinner_RDV.style.display = 'none';
 		if (response.results.length > 0)
 		{
 			var bestResult = response.results[0];

@@ -8,6 +8,10 @@
 	<link rel="stylesheet" href="css/calendar.min.css" />
 	<link rel="stylesheet" href="css/fontawesome-all.min.css" />
 	<link rel="stylesheet" href="css/html5tooltips.min.css" />
+
+	<link rel="stylesheet" href="css/leaflet/leaflet.css" />
+	<link rel="stylesheet" href="css/leaflet/geocoder/esri-leaflet-geocoder.css" />
+	<link rel="stylesheet" href="css/leaflet/fullscreen/leaflet.fullscreen.css" />
 </head>
 <body>
 
@@ -71,8 +75,13 @@
 					<div class="form-group row">
 						<label for="sortie_RDV" class="col-sm-3 col-form-label">Meeting location</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" id="sortie_RDV" />
-							<div class="spinner-border text-secondary" role="status" id="spinner_RDV"></div>
+							<div class="input-group">
+								<input type="text" class="form-control" id="sortie_RDV" />
+								<div class="input-group-append">
+									<div class="spinner-border text-secondary" role="status" id="spinner_RDV"></div>
+									<button class="btn btn-outline-primary btn-sm trad" type="button" id="sortie_RDV_reset">Reset</button>
+								</div>
+							</div>
 							<div id="sortie_map"></div>
 						</div>
 					</div>
@@ -250,6 +259,11 @@
 <script src="jquery.slim.min.js"></script>
 <script src="bootstrap.min.js"></script>
 <script src="html5tooltips.min.js"></script>
+
+<script src="leaflet.js"></script>
+<script src="esri-leaflet.js"></script>
+<script src="esri-leaflet-geocoder.js"></script>
+<script src="Leaflet.fullscreen.min.js"></script>
 
 <!-- dev: load events from disk -->
 <script src="events/2019.js"></script>

@@ -33,11 +33,26 @@ gulp.task('copy js', function()
 		.pipe(gulp.dest(dist));
 });
 
-gulp.task('copy html5tooltipsjs', function()
+gulp.task('copy js html5tooltips', function()
 {
 	return gulp.src('node_modules/html5tooltipsjs/html5tooltips.js')
 		.pipe(uglify())
 		.pipe(rename('html5tooltips.min.js'))
+		.pipe(gulp.dest(dist));
+});
+
+gulp.task('copy js leaflet', function()
+{
+	var files =
+	[
+		'node_modules/leaflet/dist/leaflet.js',
+		'node_modules/esri-leaflet/dist/esri-leaflet.js',
+		'node_modules/esri-leaflet/dist/esri-leaflet.js.map',
+		'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js',
+		'node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js.map',
+		'node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js'
+	];
+	return gulp.src(files)
 		.pipe(gulp.dest(dist));
 });
 
@@ -68,7 +83,7 @@ gulp.task("copy fontawesome", function()
 		.pipe(gulp.dest(dist+"/css/"));
 });
 
-gulp.task("copy html5tooltips", function()
+gulp.task("copy css html5tooltips", function()
 {
 	var files =
 	[
@@ -80,6 +95,37 @@ gulp.task("copy html5tooltips", function()
 		.pipe(uglifycss())
 		.pipe(gulp.dest(dist+"/css/"));
 });
+
+gulp.task("copy css leaflet", function()
+{
+	return gulp.src('node_modules/leaflet/dist/leaflet.css').pipe(gulp.dest(dist+"/css/leaflet/"));
+});
+gulp.task("copy leaflet-images", function()
+{
+	return gulp.src('node_modules/leaflet/dist/images/*').pipe(gulp.dest(dist+'/css/leaflet/images/'));
+});
+gulp.task("copy css leaflet-geocoder", function()
+{
+	return gulp.src('node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css').pipe(gulp.dest(dist+'/css/leaflet/geocoder/'));
+});
+gulp.task("copy leaflet-geocoder-images", function()
+{
+	return gulp.src('node_modules/esri-leaflet-geocoder/dist/img/*').pipe(gulp.dest(dist+'/css/leaflet/geocoder/img/'));
+});
+gulp.task("copy leaflet-fullscreen-images", function()
+{
+	var files =
+	[
+		'node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css',
+		'node_modules/leaflet-fullscreen/dist/fullscreen.png',
+		'node_modules/leaflet-fullscreen/dist/fullscreen@2x.png'
+	];
+	return gulp.src(files).pipe(gulp.dest(dist+'/css/leaflet/fullscreen/'));
+});
+function bundle_leaflet_css()
+{
+	return gulp.series("copy css leaflet", "copy leaflet-images", "copy css leaflet-geocoder", "copy leaflet-geocoder-images", "copy leaflet-fullscreen-images");
+}
 
 gulp.task("copy css themes", function()
 {
@@ -117,15 +163,15 @@ gulp.task("scss", function()
 		.pipe(gulp.dest(dist+"/css/"));
 });
 
-function bundlecss()
+function bundle_css()
 {
-	return gulp.parallel("copy fontawesome", "copy html5tooltips", "copy css themes", "copy webfonts", "fullcalendar css", "scss");
+	return gulp.parallel(gulp.series("copy fontawesome", "copy css themes", "copy webfonts", "fullcalendar css"), "scss", "copy css html5tooltips", bundle_leaflet_css());
 }
-gulp.task("css", bundlecss());
+gulp.task("css", bundle_css());
 
-function bundlejs()
+function bundle_js()
 {
-	return gulp.parallel("copy js", compilejs, "copy html5tooltipsjs");
+	return gulp.parallel("copy js", compilejs, "copy js html5tooltips", "copy js leaflet");
 }
 
 gulp.task('serve', function()
@@ -145,8 +191,8 @@ gulp.task('serve', function()
 	});
 	
 	gulp.watch("src/*.html").on('change', gulp.series('copy html', browserSync.reload));
-	gulp.watch("src/**/*.ts").on('change', gulp.series(bundlejs(), browserSync.reload));
+	gulp.watch("src/**/*.ts").on('change', gulp.series(bundle_js(), browserSync.reload));
 	gulp.watch(["src/css/**/*.scss", "src/css/**/*.css"]).on('change', gulp.series("css", browserSync.reload));
 });
 
-gulp.task("default", gulp.series("copy html", gulp.parallel(bundlejs(), "css"), "serve"));
+gulp.task("default", gulp.series("copy html", gulp.parallel(bundle_js(), "css"), "serve"));
