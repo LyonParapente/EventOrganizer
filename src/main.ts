@@ -5,18 +5,18 @@ import listPlugin from '@fullcalendar/list';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import { i18n, i18n_inPlace } from './trads';
+import { i18n, toDateString } from './trads';
 import theme from './theme';
 import settings from './settings';
-
+import planAnEvent from './event_plan';
 import { initMap } from "./map";
 import swipedetector from "./swipe";
 
 export var calendar;
 
+var id = document.getElementById.bind(document);
 document.addEventListener('DOMContentLoaded', function()
 {
-	var id = document.getElementById.bind(document);
 	var calendarEl = id('calendar'),
 		loadingEl = id('loading'),
 		loadingTimer;
@@ -96,8 +96,7 @@ document.addEventListener('DOMContentLoaded', function()
 			if (start !== end)
 			{
 				var endDate = new Date(end);
-				var endDateStr = endDate.getFullYear()+'-'+(endDate.getMonth()+1)+'-'+endDate.getDate();
-				console.log('Selected ' + selectionInfo.startStr + ' to ' + endDateStr);
+				console.log('Selected ' + selectionInfo.startStr + ' to ' + toDateString(endDate));
 				planAnEvent(selectionInfo.start, endDate);
 			}
 			else
@@ -171,11 +170,6 @@ document.addEventListener('DOMContentLoaded', function()
 	});
 });
 
-
-function planAnEvent(start_date, end_date)
-{
-	// TODO
-}
 
 function showEvent()
 {

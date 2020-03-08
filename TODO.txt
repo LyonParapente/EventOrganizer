@@ -1,2 +1,2 @@
 - bundle js pour fullcalendar vs bundle pour mon code
-- sortir les traductions dans un fichier à part (browser cache)
+- sortir les traductions dans un fichier Ã  part (browser cache)

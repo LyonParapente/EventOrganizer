@@ -8,7 +8,7 @@ var map,
 	mapList = {},
 	sortie_RDV = <HTMLInputElement>document.getElementById("sortie_RDV");
 
-export function initMap(elem_id, edit, gps, location)
+export function initMap(elem_id, edit, gps?, location?)
 {
 	var defaultPoint = gps || settings.default_map_center;
 	if (mapList.hasOwnProperty(elem_id))

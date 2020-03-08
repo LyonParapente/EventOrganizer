@@ -75,29 +75,49 @@ function i18nFormat (trad, replaceValues)
 
 var translated = new Set();
 
-export function i18n_inPlace (selectors, attr)
+export function i18n_inPlace (selectors, attr?)
 {
 	for (var i = 0; i < selectors.length; ++i)
 	{
 		var selector = selectors[i];
-		var $item = document.querySelector(selector);
-		if (!$item)
+		var item = typeof selector === "string" ? document.querySelector(selector) : selector;
+		if (!item)
 		{
 			console.warn("i18n was unable to find element:", selector);
 		}
-		if (!translated.has($item))
+		if (!translated.has(item))
 		{
 			if (attr)
 			{
-				var oldAttr = $item.getAttribute(attr);
-				$item.setAttribute(i18n(oldAttr));
+				var oldAttr = item.getAttribute(attr);
+				item.setAttribute(i18n(oldAttr));
 			}
 			else
 			{
-				var oldText = $item.textContent;
-				$item.textContent = i18n(oldText);
+				var oldText = item.textContent;
+				item.textContent = i18n(oldText);
 			}
-			translated.add($item);
+			translated.add(item);
 		}
 	}
+}
+
+export function toDateString (date)
+{
+	var year = date.getFullYear(),
+		month = date.getMonth() + 1,
+		day = date.getDate()/*,
+		hours = d.getHours(),
+		minutes = d.getMinutes(),
+		seconds = d.getSeconds(),
+		milliseconds = d.getMilliseconds()*/;
+
+	var YYYY = year.toString(),
+		MM = month < 10 ? '0' + month : month.toString(),
+		DD = day < 10 ? '0' + day : day.toString()/*,
+		hh = hh < 10 ? '0' + hh : hh.toString(),
+		mm = mm < 10 ? '0' + mm : mm.toString(),
+		ss = ss < 10 ? '0' + ss : ss.toString(),
+		ms = ms < 10 ? '00' + ms : (ms < 100 ? '0' + ms : ms.toString())*/;
+	return YYYY+"-"+MM+"-"+DD/*+" "+hh+":"+mm+":"+ss+"."+ms*/;
 }
