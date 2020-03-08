@@ -6,7 +6,8 @@ declare var L; // Leaflet.js
 var map,
 	marker,
 	mapList = {},
-	sortie_RDV = <HTMLInputElement>document.getElementById("sortie_RDV");
+	sortie_RDV = <HTMLInputElement>document.getElementById("sortie_RDV"),
+	spinner_RDV = document.getElementById('spinner_RDV');
 
 export function initMap(elem_id, edit, gps?, location?)
 {
@@ -16,16 +17,11 @@ export function initMap(elem_id, edit, gps?, location?)
 		map = mapList[elem_id].map;
 		marker = mapList[elem_id].marker;
 
-		// Reset positions
-		map.setView(defaultPoint, settings.default_map_zoom, {animate: false});
-
 		if (!gps)
 		{
 			marker.remove(map);
 		}
-		marker.off('move', onMarkerMove); // avoid issue with placeholder in edit mode
-		marker.setLatLng(defaultPoint);
-		marker.on('move', onMarkerMove);
+		resetMap(defaultPoint);
 	}
 	else
 	{
@@ -109,6 +105,14 @@ export function initMap(elem_id, edit, gps?, location?)
 				marker.addTo(map);
 				marker.setLatLng(e.latlng);
 				onMarkerMove();
+				
+				spinner_RDV.style.display = 'block';
+				L.esri.Geocoding.geocodeService().reverse().latlng(e.latlng).run(function (error, result)
+				{
+					spinner_RDV.style.display = 'none';
+					if (error) {return;}
+					sortie_RDV.value = result.address.Match_addr;
+				});
 			});
 
 			sortie_RDV.addEventListener('change', function()
@@ -129,7 +133,7 @@ export function initMap(elem_id, edit, gps?, location?)
 			document.getElementById('sortie_RDV_reset').addEventListener('click', function()
 			{
 				sortie_RDV.value = '';
-				map.setView(defaultPoint, settings.default_map_zoom, {animate: false});
+				resetMap(defaultPoint);
 			});
 		}
 	}
@@ -140,6 +144,14 @@ export function initMap(elem_id, edit, gps?, location?)
 			findLocation(location, marker, map);
 		}
 	}
+}
+
+function resetMap(point)
+{
+	map.setView(point, settings.default_map_zoom, {animate: false});
+	marker.off('move', onMarkerMove); // avoid issue with placeholder in edit mode
+	marker.setLatLng(point);
+	marker.on('move', onMarkerMove);
 }
 
 function onMarkerMove()
@@ -156,7 +168,6 @@ function findLocation(text, marker, map)
 {
 	var proximity = L.latLng(settings.default_map_center);
 	var proximity_radius = 100000;
-	var spinner_RDV = document.getElementById('spinner_RDV');
 	spinner_RDV.style.display = 'block';
 	L.esri.Geocoding.geocode().text(text).nearby(proximity, proximity_radius).run(function (error, response)
 	{
