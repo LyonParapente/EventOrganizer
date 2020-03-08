@@ -18,6 +18,7 @@ function planAnEvent(start_date, end_date)
 	var sortie_date_start = id("sortie_date_start");
 	var sortie_date_end = id("sortie_date_end");
 	var sortie_RDV = id("sortie_RDV");
+	var category = id("sortie_category");
 
 	i18n_inPlace(
 	[
@@ -30,17 +31,16 @@ function planAnEvent(start_date, end_date)
 		sortie_date_end.labels[0],
 		id("sortie_heure").labels[0],
 		id("sortie_description").labels[0],
-		id("sortie_category").labels[0],
-		"#sortie_save"
+		category.labels[0],
+		"#sortie_save",
+		"#createEventBody .invalid-feedback"
 	]);
 
-	var category = id("sortie_category");
 	category.innerHTML = '';
 	category.appendChild(document.createTextNode(i18n("None")));
 
 	var form = document.querySelector("#createEventBody form");
 	form.classList.remove('was-validated');
-	i18n_inPlace(form.querySelector('.invalid-feedback'));
 
 	var titles = settings.default_random_event_title;
 	var title = titles[getRandomInt(0, titles.length)];

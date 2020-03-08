@@ -1,5 +1,5 @@
 import settings from './settings';
-import { i18n, i18n_inPlace } from './trads';
+import { i18n } from './trads';
 
 declare var L; // Leaflet.js
 
@@ -129,7 +129,6 @@ export function initMap(elem_id, edit, gps?, location?)
 				}, 400);
 			});
 
-			i18n_inPlace(['#sortie_RDV_reset']);
 			document.getElementById('sortie_RDV_reset').addEventListener('click', function()
 			{
 				sortie_RDV.value = '';

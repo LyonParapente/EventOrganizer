@@ -81,24 +81,28 @@ export function i18n_inPlace (selectors, attr?)
 	for (var i = 0; i < selectors.length; ++i)
 	{
 		var selector = selectors[i];
-		var item = typeof selector === "string" ? document.querySelector(selector) : selector;
-		if (!item)
+		var items = typeof selector === "string" ? document.querySelectorAll(selector) : [selector];
+		for (var j = 0; j < items.length; ++j)
 		{
-			console.warn("i18n was unable to find element:", selector);
+			var item = items[j];
+			if (!translated.has(item))
+			{
+				if (attr)
+				{
+					var oldAttr = item.getAttribute(attr);
+					item.setAttribute(attr, i18n(oldAttr));
+				}
+				else
+				{
+					var oldText = item.textContent;
+					item.textContent = i18n(oldText);
+				}
+				translated.add(item);
+			}
 		}
-		if (!translated.has(item))
+		if (items.length === 0)
 		{
-			if (attr)
-			{
-				var oldAttr = item.getAttribute(attr);
-				item.setAttribute(i18n(oldAttr));
-			}
-			else
-			{
-				var oldText = item.textContent;
-				item.textContent = i18n(oldText);
-			}
-			translated.add(item);
+			console.warn("i18n was unable to find element(s):", selector);
 		}
 	}
 }

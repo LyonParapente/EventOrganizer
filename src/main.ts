@@ -5,7 +5,7 @@ import listPlugin from '@fullcalendar/list';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import { i18n, toDateString } from './trads';
+import { i18n, i18n_inPlace, toDateString } from './trads';
 import theme from './theme';
 import settings from './settings';
 import planAnEvent from './event_plan';
@@ -153,8 +153,7 @@ document.addEventListener('DOMContentLoaded', function()
 	(<any>window).calendar = calendar;
 	calendar.render();
 
-
-
+	i18n_inPlace(["#eventProperties .trad", "#createEvent .trad"]);
 
 	swipedetector(document, function(swipedir)
 	{
