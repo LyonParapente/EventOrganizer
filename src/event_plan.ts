@@ -6,7 +6,9 @@ var id = document.getElementById.bind(document);
 
 function planAnEvent(start_date, end_date)
 {
-	if (start_date.getTime() < new Date().getTime())
+	var today = new Date();
+	var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+	if (start_date.getTime() < todayMidnight.getTime())
 	{
 		console.warn(i18n("Cannot create event in the past"));
 		return;
