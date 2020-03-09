@@ -26,8 +26,10 @@ gulp.task('copy js', function()
 	[
 		'node_modules/jquery/dist/jquery.slim.min.js',
 		'node_modules/jquery/dist/jquery.slim.min.map',
-		'node_modules/bootstrap/dist/js/bootstrap.min.js',
-		'node_modules/bootstrap/dist/js/bootstrap.min.js.map'
+		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', // need Popper 1.x for sortie_category
+		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
+		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
+		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js.map'
 	];
 	return gulp.src(files)
 		.pipe(gulp.dest(dist));
@@ -76,10 +78,21 @@ function compilejs()
 	.pipe(gulp.dest(dist));
 }
 
-gulp.task("copy fontawesome", function()
+gulp.task("copy css fontawesome", function()
 {
 	return gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
 		.pipe(rename('fontawesome-all.min.css'))
+		.pipe(gulp.dest(dist+"/css/"));
+});
+
+gulp.task("copy css bootstrap-colorpicker", function()
+{
+	var files =
+	[
+		'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
+		'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css.map'
+	];
+	return gulp.src(files)
 		.pipe(gulp.dest(dist+"/css/"));
 });
 
@@ -165,13 +178,29 @@ gulp.task("scss", function()
 
 function bundle_css()
 {
-	return gulp.parallel(gulp.series("copy fontawesome", "copy css themes", "copy webfonts", "fullcalendar css"), "scss", "copy css html5tooltips", bundle_leaflet_css());
+	return gulp.parallel(
+		gulp.series(
+			"copy css fontawesome",
+			"copy css bootstrap-colorpicker",
+			"copy css themes",
+			"copy webfonts",
+			"fullcalendar css"
+		),
+		"scss",
+		"copy css html5tooltips",
+		bundle_leaflet_css()
+	);
 }
 gulp.task("css", bundle_css());
 
 function bundle_js()
 {
-	return gulp.parallel("copy js", compilejs, "copy js html5tooltips", "copy js leaflet");
+	return gulp.parallel(
+		"copy js",
+		compilejs,
+		"copy js html5tooltips",
+		"copy js leaflet"
+	);
 }
 
 gulp.task('serve', function()

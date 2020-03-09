@@ -155,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function()
 
 	i18n_inPlace(["#eventProperties .trad", "#createEvent .trad"]);
 
+	init_createEvent();
+
 	swipedetector(document, function(swipedir)
 	{
 		if (swipedir === 'left')
@@ -196,3 +198,122 @@ function getColor(category)
 	return getColorConf()[category];
 }
 
+function init_createEvent()
+{
+	$("#createEventBody .needs-validation").on('submit', function(e)
+	{
+		var form = <HTMLFormElement><unknown>e.target;
+		if (form.checkValidity())
+		{
+			//TODO: post ajax data
+		}
+		else
+		{
+			$(form).find(":invalid").first().focus();
+		}
+
+		form.classList.add('was-validated');
+
+		// Do not reload page
+		event.preventDefault();
+		event.stopPropagation();
+	});
+
+	$("#sortie_date_start").on('change', function()
+	{
+		// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+		// Dates before this are disabled on mobile and forbidden on desktop validation
+		$("#sortie_date_end").attr("min", (<HTMLInputElement><unknown>this).value);
+	});
+
+	// List of available categories
+	var $category_dd = $("#sortie_categories");
+	var badges_spacing = "ml-2 mb-2";
+	var colorConf = getColorConf();
+	for (var category in colorConf)
+	{
+		if (colorConf.hasOwnProperty(category))
+		{
+			var a = document.createElement('a');
+			a.className = "badge " + badges_spacing;
+			a.style.backgroundColor = getColor(category);
+			a.style.color = 'white';
+			a.href = "#";
+			a.appendChild(document.createTextNode(category));
+			$category_dd.append(a);
+		}
+	}
+	var $sortie_category = $("#sortie_category");
+	$category_dd.parent().on("click", "a", function()
+	{
+		var $cloneBadge = $(this).clone();
+		$sortie_category.empty();
+		if ($cloneBadge.hasClass("badge"))
+		{
+			$cloneBadge.removeClass(badges_spacing);
+			$sortie_category.append($cloneBadge);
+		}
+		else
+		{
+			$sortie_category.text(i18n("None"));
+		}
+	});
+
+	$("#sortie_color_box").colorpicker(
+	{
+		format: 'hex',
+		useAlpha: false,
+		inline: true,
+		fallbackColor: 'red',
+		autoInputFallback: false
+	})
+	.on("change", onColorPickerChange)
+	.on("colorpickerChange", onColorPickerChange);
+	
+	function onColorPickerChange(event: BootstrapColorpickerEvent)
+	{
+		if (event.color)
+		{
+			var colorBox = $("<div>").css(
+			{
+				display: 'inline-block',
+				backgroundColor: event.color.toString(),
+				color: event.color.isDark() ? 'white' : 'black'
+			}).text(event.color.toString());
+			$sortie_category.empty().append(colorBox);
+		}
+		else if ((event.target as HTMLInputElement).value.match(/^#[a-fA-F0-9]{6}$/))
+		{
+			// User is typing something
+			colorPicker.setValue((event.target as HTMLInputElement).value); // trigger colorpickerChange
+		}
+	}
+
+	var colorPicker = $("#sortie_color_box").data('colorpicker');
+	colorPicker.hide(); // default state
+	$("#sortie_color").on('focus', function()
+	{
+		colorPicker.show();
+	});
+
+	$sortie_category.parent().on('show.bs.dropdown', function()
+	{
+		var text = $sortie_category.text();
+		var val = text.indexOf('#') === 0 ? text : '';
+		$("#sortie_color").val(val);
+	})
+	.on('hide.bs.dropdown', function (event)
+	{
+		var clickEvent = (event as any).clickEvent;
+		if (clickEvent && clickEvent.target)
+		{
+			var target = clickEvent.target;
+			if (target.id != 'sortie_color_btn' && $(target).parents("#sortie_color_box").length)
+			{
+				event.preventDefault();
+				return false;
+			}
+		}
+		colorPicker.hide();
+	});
+}

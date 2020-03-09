@@ -12,6 +12,7 @@
     "@types/jquery": "^3.3.33",
     "@types/leaflet": "^1.5.10",
     "bootstrap": "^4.4.1",
+    "bootstrap-colorpicker": "^3.2.0",
     "browser-sync": "^2.26.7",
     "esri-leaflet": "^2.3.3",
     "esri-leaflet-geocoder": "^2.3.2",

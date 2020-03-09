@@ -1,2 +1,3 @@
 - bundle js pour fullcalendar vs bundle pour mon code
+https://www.typescriptlang.org/docs/handbook/project-references.html
 - sortir les traductions dans un fichier à part (browser cache)
