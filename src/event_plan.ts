@@ -1,10 +1,44 @@
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
 import { initMap } from './map';
+import { init_categories } from './event_plan_categories';
+import { init_colorPicker } from './event_plan_colorPicker';
 
 var id = document.getElementById.bind(document);
 
-function planAnEvent(start_date, end_date)
+export function init_createEvent()
+{
+	$("#createEventBody .needs-validation").on('submit', function(e)
+	{
+		var form = <HTMLFormElement><unknown>e.target;
+		if (form.checkValidity())
+		{
+			//TODO: post ajax data
+		}
+		else
+		{
+			$(form).find(":invalid").first().focus();
+		}
+
+		form.classList.add('was-validated');
+
+		// Do not reload page
+		event.preventDefault();
+		event.stopPropagation();
+	});
+
+	$("#sortie_date_start").on('change', function()
+	{
+		// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+		// Dates before this are disabled on mobile and forbidden on desktop validation
+		$("#sortie_date_end").attr("min", (<HTMLInputElement><unknown>this).value);
+	});
+
+	init_categories();
+	init_colorPicker();
+}
+
+export function planAnEvent(start_date, end_date)
 {
 	var today = new Date();
 	var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -70,5 +104,3 @@ function getRandomInt(min, max)
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
-
-export default planAnEvent;
