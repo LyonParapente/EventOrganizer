@@ -230,7 +230,7 @@ gulp.task('serve', function()
 	});
 	
 	gulp.watch("src/*.html").on('change', gulp.series('copy html', browserSync.reload));
-	gulp.watch("src/**/*.ts").on('change', gulp.series(bundle_js(), browserSync.reload));
+	gulp.watch("src/**/*.ts").on('change', gulp.series("tslint", bundle_js(), browserSync.reload));
 	gulp.watch(["src/css/**/*.scss", "src/css/**/*.css"]).on('change', gulp.series("css", browserSync.reload));
 });
 
