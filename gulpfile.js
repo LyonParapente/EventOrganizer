@@ -13,7 +13,9 @@ var sass = require('gulp-sass');
 sass.compiler = require('node-sass');
 const browserSync = require('browser-sync').create();
 
-var dist = "dist";
+var dist = "dist",
+	dist_js = dist+"/js/",
+	dist_css = dist+"/css/";
 
 gulp.task('copy html', function ()
 {
@@ -33,7 +35,7 @@ gulp.task('copy js', function()
 		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js.map'
 	];
 	return gulp.src(files)
-		.pipe(gulp.dest(dist));
+		.pipe(gulp.dest(dist_js));
 });
 
 gulp.task('copy js html5tooltips', function()
@@ -41,7 +43,7 @@ gulp.task('copy js html5tooltips', function()
 	return gulp.src('node_modules/html5tooltipsjs/html5tooltips.js')
 		.pipe(uglify())
 		.pipe(rename('html5tooltips.min.js'))
-		.pipe(gulp.dest(dist));
+		.pipe(gulp.dest(dist_js));
 });
 
 gulp.task('copy js leaflet', function()
@@ -56,7 +58,7 @@ gulp.task('copy js leaflet', function()
 		'node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js'
 	];
 	return gulp.src(files)
-		.pipe(gulp.dest(dist));
+		.pipe(gulp.dest(dist_js));
 });
 
 function compilejs()
@@ -76,7 +78,7 @@ function compilejs()
 	.pipe(sourcemaps.init({loadMaps: true}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
-	.pipe(gulp.dest(dist));
+	.pipe(gulp.dest(dist_js));
 }
 
 gulp.task('tslint', function()
@@ -90,7 +92,7 @@ gulp.task("copy css fontawesome", function()
 {
 	return gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
 		.pipe(rename('fontawesome-all.min.css'))
-		.pipe(gulp.dest(dist+"/css/"));
+		.pipe(gulp.dest(dist_css));
 });
 
 gulp.task("copy css bootstrap-colorpicker", function()
@@ -101,7 +103,7 @@ gulp.task("copy css bootstrap-colorpicker", function()
 		'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css.map'
 	];
 	return gulp.src(files)
-		.pipe(gulp.dest(dist+"/css/"));
+		.pipe(gulp.dest(dist_css));
 });
 
 gulp.task("copy css html5tooltips", function()
@@ -114,7 +116,7 @@ gulp.task("copy css html5tooltips", function()
 	return gulp.src(files)
 		.pipe(concat('html5tooltips.min.css'))
 		.pipe(uglifycss())
-		.pipe(gulp.dest(dist+"/css/"));
+		.pipe(gulp.dest(dist_css));
 });
 
 gulp.task("copy css leaflet", function()
@@ -171,7 +173,7 @@ gulp.task("fullcalendar css", function()
 	];
 	return gulp.src(files)
 		.pipe(concat('fullcalendar.min.css'))
-		.pipe(gulp.dest(dist+"/css/"));
+		.pipe(gulp.dest(dist_css));
 });
 
 gulp.task("scss", function()
@@ -181,7 +183,7 @@ gulp.task("scss", function()
 		.pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
 		//.pipe(sourcemaps.write())
 		.pipe(concat('calendar.min.css'))
-		.pipe(gulp.dest(dist+"/css/"));
+		.pipe(gulp.dest(dist_css));
 });
 
 function bundle_css()
