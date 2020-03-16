@@ -1,4 +1,5 @@
 import { i18n, toRelativeTimeString } from './trads';
+import { requestJson } from '@fullcalendar/core';
 
 export default function loadComments(id, isFinished)
 {
@@ -12,13 +13,23 @@ export default function loadComments(id, isFinished)
 	});
 
 	var event_comments = document.getElementById('event_comments');
-	event_comments.innerHTML = '<div class="spinner-border m-auto" role="status"></div>';
+	var comments_spinner = document.createElement('div');
+	comments_spinner.setAttribute("role", "status");
+	comments_spinner.className = "spinner-border m-auto";
+	event_comments.innerHTML = '';
+	event_comments.appendChild(comments_spinner);
+
+	function removeCommentsSpinner()
+	{
+		event_comments.removeChild(comments_spinner);
+	}
 
 	var $event_participants = $("#event_participants").empty();
 	var $event_interested = $("#event_interested").empty();
 
-	jQuery.getJSON("events/Event_"+id+".json", function(data)
+	requestJson("GET", "events/Event_"+id+".json", null, function(data)
 	{
+		removeCommentsSpinner();
 		var a, i, avatar;
 		event_comments.innerHTML = ''; // rendering optim to avoid repaint in .always()
 		for (i = 0; i < data.comments.length; ++i)
@@ -115,13 +126,12 @@ export default function loadComments(id, isFinished)
 				console.warn("Missing interested user "+interested);
 			}
 		}
-	}).fail(function(o, type, ex)
+	},
+	function(type, ex)
 	{
-		console.error(ex);
+		console.error(type, ex);
 		$errorBox.show();
 		$errorBox.clone().removeAttr("id").appendTo($event_participants);
-	}).always(function()
-	{
-		$(".spinner-border, event_comments").remove();
+		removeCommentsSpinner();
 	});
 }
