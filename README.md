@@ -21,7 +21,7 @@ Main goals:
 ## Requirements
 
 * Front: [Node & NPM](https://nodejs.org/)
-* Back: [Golang](https://golang.org/doc/install)
+* Back: WIP
 
 ## Front
 
@@ -30,7 +30,7 @@ First time: `npm install`
 I'm using [gulp.js](https://gulpjs.com/) to "compile" the front.
 
 Just execute: `gulp`
-and your browser should open http://localhost:3000/calendar.dev.html
+and your browser should open http://localhost:3000/calendar.html
 
 There is a default task (see `gulpfile.js`) which launch a small http server on port 3000.
 This does not use the go server implementation.
@@ -40,24 +40,11 @@ Each time you save a source file, [browserSync](https://www.browsersync.io) relo
 
 ## Back
 
-First, make sure this repository is located at `GOPATH/src/github.com/LyonParapente/EventOrganizer`.
-
-Compile:  
-```
-cd %GOPATH%/src/github.com/LyonParapente/EventOrganizer/back/go
-go build -o EventOrganizer.exe
-```
-
-Execute:  
-```
-./EventOrganizer.exe
-```
-
-
+WIP
 
 # Stack
 
-* [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com) & [Moment.js](https://momentjs.com) & [jQuery](https://jquery.com/)
+* [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com) & [jQuery](https://jquery.com/)
 * [Font Awesome](https://fontawesome.com/)
 * [Leaflet](https://leafletjs.com) with [OpenStreetMap](https://www.openstreetmap.org/about) and [Esri](https://esri.github.io/esri-leaflet/)
-* [GoLang](https://golang.org/)
+

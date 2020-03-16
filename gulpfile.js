@@ -24,8 +24,8 @@ gulp.task('copy js', function()
 {
 	var files =
 	[
-		'node_modules/jquery/dist/jquery.slim.min.js',
-		'node_modules/jquery/dist/jquery.slim.min.map',
+		'node_modules/jquery/dist/jquery.min.js',
+		'node_modules/jquery/dist/jquery.min.map',
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', // need Popper 1.x for sortie_category
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
 		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',

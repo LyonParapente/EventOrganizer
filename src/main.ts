@@ -8,6 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
 import { init_createEvent, planAnEvent } from './event_plan';
+import showEvent from './event_show';
 import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
 
@@ -169,9 +170,3 @@ document.addEventListener('DOMContentLoaded', function()
 		}
 	});
 });
-
-
-function showEvent()
-{
-	//TODO
-}
