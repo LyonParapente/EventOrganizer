@@ -55,7 +55,7 @@ export default function loadComments(id, isFinished)
 						a.appendChild(document.createTextNode(username));
 					comment_infos.appendChild(a);
 					comment_infos.appendChild(document.createTextNode(' - ' + dateText));
-					
+
 					col.appendChild(comment_infos);
 					var p = document.createElement("p");
 					p.className = 'blockquote my-1 text-dark';

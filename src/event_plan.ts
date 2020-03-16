@@ -13,7 +13,7 @@ export function init_createEvent()
 		var form = <HTMLFormElement><unknown>e.target;
 		if (form.checkValidity())
 		{
-			//TODO: post ajax data
+			// TODO: post ajax data
 		}
 		else
 		{
@@ -102,5 +102,6 @@ function getRandomInt(min, max)
 {
 	min = Math.ceil(min);
 	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+	// The maximum is exclusive and the minimum is inclusive
+	return Math.floor(Math.random() * (max - min)) + min;
 }

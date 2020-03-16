@@ -82,7 +82,7 @@ export default function showEvent(clickInfos)
 		$("#event_date_the").hide();
 	}
 
-	//----------------------
+	// ----------------------
 	// Activity location
 
 	var event_location_text = calEvent.extendedProps.location || "";
@@ -97,7 +97,7 @@ export default function showEvent(clickInfos)
 		$("#event_location_box").hide();
 	}
 
-	//----------------------
+	// ----------------------
 	// Rendez-vous location
 
 	$("#event_rdv_time").text(calEvent.extendedProps.time || "");
@@ -130,7 +130,7 @@ export default function showEvent(clickInfos)
 	$("#event_rdv_location").val(rdv_location_text).attr("placeholder", settings.default_location);
 	$("#event_rdv_location_box").show();
 
-	//----------------------
+	// ----------------------
 
 	$el.show(); // for next time we show an event
 	$el2.hide();
@@ -148,13 +148,13 @@ export default function showEvent(clickInfos)
 		var el2 = $el2[0];
 		$el2.css('height', el2.scrollHeight + (el2.offsetHeight - el2.clientHeight));
 
-		//---
+		// -----
 
 		// Retro-compatibility with old events
 		var location_text = calEvent.gps_location || calEvent.location;
 		initMap('event_map', false, calEvent.gps, location_text);
 
 		// Avoid keyboard popping on mobile
-		//$("#event_comment").focus();
+		// $("#event_comment").focus();
 	}).modal('show');
 }

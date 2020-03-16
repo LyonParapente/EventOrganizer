@@ -51,7 +51,8 @@ export function init_colorPicker()
 		if (clickEvent && clickEvent.target)
 		{
 			var target = clickEvent.target;
-			if (target.id != 'sortie_color_btn' && $(target).parents("#sortie_color_box").length)
+			if (target.id !== 'sortie_color_btn' &&
+				$(target).parents("#sortie_color_box").length)
 			{
 				event.preventDefault();
 				return false;

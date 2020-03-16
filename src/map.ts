@@ -3,15 +3,14 @@ import { i18n } from './trads';
 
 declare var L; // Leaflet.js
 
-var map,
-	marker,
-	mapList = {},
-	sortie_RDV = <HTMLInputElement>document.getElementById("sortie_RDV"),
+var mapList = {},
+	sortie_RDV = <HTMLInputElement>document.getElementById('sortie_RDV'),
 	spinner_RDV = document.getElementById('spinner_RDV');
 
 export function initMap(elem_id, edit, gps?, location?)
 {
 	var defaultPoint = gps || settings.default_map_center;
+	var map, marker;
 	if (mapList.hasOwnProperty(elem_id))
 	{
 		map = mapList[elem_id].map;
@@ -21,7 +20,7 @@ export function initMap(elem_id, edit, gps?, location?)
 		{
 			marker.remove(map);
 		}
-		resetMap(defaultPoint);
+		resetMap(map, defaultPoint, marker);
 	}
 	else
 	{
@@ -50,7 +49,7 @@ export function initMap(elem_id, edit, gps?, location?)
 		{
 			marker.addTo(map);
 		}
-		mapList[elem_id] = {map: map, marker: marker};
+		mapList[elem_id] = {map, marker};
 
 		marker.on('click', function()
 		{
@@ -63,6 +62,7 @@ export function initMap(elem_id, edit, gps?, location?)
 		if (edit)
 		{
 			marker.on('move', onMarkerMove);
+			marker.on('movestart', () => {marker.unbindPopup();});
 
 			var searchControl = new L.esri.Geocoding.geosearch(
 			{
@@ -79,8 +79,9 @@ export function initMap(elem_id, edit, gps?, location?)
 				results.clearLayers();
 				if (data.results.length === 1)
 				{
-					marker.setLatLng(data.results[0].latlng);
-					onMarkerMove();
+					let latlng = data.results[0].latlng;
+					marker.setLatLng(latlng);
+					onMarkerMove({latlng});
 				}
 				else
 				{
@@ -91,9 +92,10 @@ export function initMap(elem_id, edit, gps?, location?)
 						results.addLayer(searchMarker);
 						searchMarker.on('click', function()
 						{
-							marker.setLatLng(this.getLatLng());
+							let latlng = this.getLatLng();
+							marker.setLatLng(latlng);
 							marker.addTo(map);
-							onMarkerMove();
+							onMarkerMove({latlng});
 							results.clearLayers();
 						});
 					}
@@ -104,8 +106,8 @@ export function initMap(elem_id, edit, gps?, location?)
 			{
 				marker.addTo(map);
 				marker.setLatLng(e.latlng);
-				onMarkerMove();
-				
+				onMarkerMove({latlng: e.latlng});
+
 				spinner_RDV.style.display = 'block';
 				L.esri.Geocoding.geocodeService().reverse().latlng(e.latlng).run(function (error, result)
 				{
@@ -132,7 +134,7 @@ export function initMap(elem_id, edit, gps?, location?)
 			document.getElementById('sortie_RDV_reset').addEventListener('click', function()
 			{
 				sortie_RDV.value = '';
-				resetMap(defaultPoint);
+				resetMap(map, defaultPoint, marker);
 			});
 		}
 	}
@@ -145,7 +147,7 @@ export function initMap(elem_id, edit, gps?, location?)
 	}
 }
 
-function resetMap(point)
+function resetMap(map, point, marker)
 {
 	map.setView(point, settings.default_map_zoom, {animate: false});
 	marker.off('move', onMarkerMove); // avoid issue with placeholder in edit mode
@@ -153,13 +155,11 @@ function resetMap(point)
 	marker.on('move', onMarkerMove);
 }
 
-function onMarkerMove()
+function onMarkerMove(evt)
 {
-	marker.unbindPopup();
-	var latlng = marker.getLatLng();
 	if (sortie_RDV.value.length === 0 || sortie_RDV.value.match(/\d+\.\d+, \d+\.\d+/))
 	{
-		sortie_RDV.value = latlng.lat+', '+latlng.lng;
+		sortie_RDV.value = evt.latlng.lat+', '+evt.latlng.lng;
 	}
 }
 
@@ -176,7 +176,6 @@ function findLocation(text, marker, map)
 			var bestResult = response.results[0];
 			marker.addTo(map);
 			marker.setLatLng(bestResult.latlng);
-			//map.fitBounds(bestResult.bounds); // immediate
 			map.flyToBounds(bestResult.bounds); // animation
 		}
 	});

@@ -4,6 +4,7 @@ var concat = require('gulp-concat');
 var browserify = require("browserify");
 var source = require('vinyl-source-stream');
 var tsify = require("tsify");
+var tslint = require("gulp-tslint");
 var uglify = require('gulp-uglify-es').default;
 var uglifycss = require('gulp-uglifycss');
 var sourcemaps = require('gulp-sourcemaps');
@@ -77,6 +78,13 @@ function compilejs()
 	.pipe(sourcemaps.write('./'))
 	.pipe(gulp.dest(dist));
 }
+
+gulp.task('tslint', function()
+{
+	return gulp.src('src/**/*.ts', { base: '.' })
+		.pipe(tslint())
+		.pipe(tslint.report({emitError: false}));
+});
 
 gulp.task("copy css fontawesome", function()
 {
@@ -224,4 +232,4 @@ gulp.task('serve', function()
 	gulp.watch(["src/css/**/*.scss", "src/css/**/*.css"]).on('change', gulp.series("css", browserSync.reload));
 });
 
-gulp.task("default", gulp.series("copy html", gulp.parallel(bundle_js(), "css"), "serve"));
+gulp.task("default", gulp.series("copy html", "tslint", gulp.parallel(bundle_js(), "css"), "serve"));

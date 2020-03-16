@@ -46,7 +46,7 @@ function getColorConf()
 	}
 	else
 	{
-		colorConf = settings.categories["default"];
+		colorConf = settings.categories.default;
 	}
 	return colorConf;
 }

@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function()
 			if (desc)
 			{
 				// @ts-ignore html5tooltips
-				var tooltip = new HTML5TooltipUIComponent;
+				var tooltip = new HTML5TooltipUIComponent();
 				var target = info.el;
 				tooltip.set(
 				{
