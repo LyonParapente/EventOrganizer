@@ -1,5 +1,5 @@
 import { Calendar } from '@fullcalendar/core';
-import frLocale from '@fullcalendar/core/locales/fr';
+import * as frLocale from '@fullcalendar/core/locales/fr';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function()
 			}
 		},
 
-		//locales: [frLocale],
+		locales: [frLocale],
 		locale: settings.lang,
 		timeZone: 'local',
 
