@@ -3,11 +3,11 @@ import { getColor } from './event_plan_categories';
 import { initMap } from './map';
 import loadComments from './event_comments';
 import settings from './settings';
+import { router } from './routing';
 
-export default function showEvent(clickInfos)
+export default function showEvent(calEvent)
 {
-	var calEvent = clickInfos.event,
-		start = calEvent.start,
+	var start = calEvent.start,
 		end = calEvent.end;
 
 	if (end)
@@ -136,25 +136,32 @@ export default function showEvent(clickInfos)
 	$el2.hide();
 	$el2.css('height', 'auto');
 
-	$eventProperties.one('shown.bs.modal', function()
-	{
-		// Step 1 - Compute textarea height according to width
-		var w = $el.width();
-		$el.hide();
-		$el2.show();
-		$el2.width(w);
+	router.navigate("event:"+calEvent.id);
+	$eventProperties
+		.one('shown.bs.modal', function()
+		{
+			// Step 1 - Compute textarea height according to width
+			var w = $el.width();
+			$el.hide();
+			$el2.show();
+			$el2.width(w);
 
-		// Step 2 - Adjust textarea height
-		var el2 = $el2[0];
-		$el2.css('height', el2.scrollHeight + (el2.offsetHeight - el2.clientHeight));
+			// Step 2 - Adjust textarea height
+			var el2 = $el2[0];
+			$el2.css('height', el2.scrollHeight + (el2.offsetHeight - el2.clientHeight));
 
-		// -----
+			// -----
 
-		// Retro-compatibility with old events
-		var location_text = calEvent.gps_location || calEvent.location;
-		initMap('event_map', false, calEvent.gps, location_text);
+			// Retro-compatibility with old events
+			var location_text = calEvent.gps_location || calEvent.location;
+			initMap('event_map', false, calEvent.gps, location_text);
 
-		// Avoid keyboard popping on mobile
-		// $("#event_comment").focus();
-	}).modal('show');
+			// Avoid keyboard popping on mobile
+			// $("#event_comment").focus();
+		})
+		.one('hide.bs.modal', function()
+		{
+			router.navigate("planning");
+		})
+		.modal('show');
 }

@@ -215,17 +215,31 @@ function bundle_js()
 
 gulp.task('serve', function()
 {
+	var SPA = "calendar.html";
 	browserSync.init(
 	{
+		ghostMode: false,
 		server:
 		{
 			baseDir: "dist",
-			index: "calendar.html",
+			index: SPA,
 			routes:
 			{
 				"/events": "data/events",
 				"/avatars": "data/avatars"
 			}
+		},
+
+		// Routing
+		middleware: function(req,res,next)
+		{
+			if (req.url === '/planning' ||
+				req.url.match(/event:[0-9]+$/))
+			{
+				console.log(req.url);
+				req.url = '/'+SPA;
+			}
+			return next();
 		}
 	});
 	

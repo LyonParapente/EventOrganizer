@@ -3,6 +3,7 @@ import settings from './settings';
 import { initMap } from './map';
 import { init_categories } from './event_plan_categories';
 import { init_colorPicker } from './event_plan_colorPicker';
+import { router } from './routing';
 
 var id = document.getElementById.bind(document);
 
@@ -88,11 +89,18 @@ export function planAnEvent(start_date, end_date)
 
 	$(sortie_date_start).trigger('change'); // ensure "min" attribute is set
 
-	$("#createEvent").modal('show').one('shown.bs.modal', function()
-	{
-		initMap('sortie_map', true);
-		sortie_title.focus();
-	})
+	router.navigate("event:new");
+	$("#createEvent")
+		.one('shown.bs.modal', function()
+		{
+			initMap('sortie_map', true);
+			sortie_title.focus();
+		})
+		.one('hide.bs.modal', function()
+		{
+			router.navigate("planning");
+		})
+		.modal('show');
 }
 
 /* Returns a random integer between the specified values.

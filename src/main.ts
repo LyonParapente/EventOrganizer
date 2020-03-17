@@ -11,12 +11,15 @@ import { init_createEvent, planAnEvent } from './event_plan';
 import showEvent from './event_show';
 import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
+import { router } from './routing';
 
 export var calendar;
 
 var id = document.getElementById.bind(document);
 document.addEventListener('DOMContentLoaded', function()
 {
+	init_routing();
+
 	var calendarEl = id('calendar'),
 		loadingEl = id('loading'),
 		loadingTimer;
@@ -63,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function()
 				text: i18n('New Event'),
 				click: function()
 				{
-					var d = new Date(); // TODO
+					var d = new Date();
 					planAnEvent(d, d);
 				}
 			}
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function()
 			var d = infos.date;
 			planAnEvent(d, d);
 		},
-		select: function(selectionInfo)
+		select: function (selectionInfo)
 		{
 			// Remove 1 day because end is exclusive
 			var end = selectionInfo.end.getTime() - 86400000;
@@ -104,8 +107,11 @@ document.addEventListener('DOMContentLoaded', function()
 				// handled by dayClick
 			}
 		},
-		eventClick: showEvent,
-		eventDataTransform: function(event)
+		eventClick: function (clickInfos)
+		{
+			showEvent(clickInfos.event);
+		},
+		eventDataTransform: function (event)
 		{
 			if (event.hasOwnProperty('category'))
 			{
@@ -114,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function()
 			event.desc = event.desc.replace(/\n/g, '<br/>');
 			return event;
 		},
-		eventRender: function(info)
+		eventRender: function (info)
 		{
 			var desc = info.event.extendedProps.desc;
 			if (desc)
@@ -134,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function()
 				tooltip.mount();
 			}
 		},
-		loading: function(isLoading)
+		loading: function (isLoading)
 		{
 			if (isLoading)
 			{
@@ -158,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function()
 
 	init_createEvent();
 
-	swipedetector(document, function(swipedir)
+	swipedetector(document, function (swipedir)
 	{
 		if (swipedir === 'left')
 		{
@@ -170,3 +176,49 @@ document.addEventListener('DOMContentLoaded', function()
 		}
 	});
 });
+
+function init_routing ()
+{
+	router
+		.add("planning", function ()
+		{
+			console.log('Show the planning');
+			$("#eventProperties").modal('hide');
+			$("#createEvent").modal('hide');
+		})
+		.add("event:new", function ()
+		{
+			console.log('Create a new event');
+			var d = new Date();
+			planAnEvent(d, d);
+		})
+		.add(/event:([0-9]+)$/, function (num)
+		{
+			console.log('Showing event:'+num);
+			var now = new Date();
+			(function findAndShowEvent()
+			{
+				var event = calendar && calendar.getEventById(parseInt(num, 10));
+				if (event)
+				{
+					showEvent(event);
+				}
+				else // Wait for ajax data, poor solution
+				{
+					if (new Date().getTime() - now.getTime() > 1000*5) return;
+					setTimeout(function()
+					{
+						findAndShowEvent();
+					}, 200);
+				}
+			}());
+		});
+	if (history.state)
+	{
+		router.check(history.state.path);
+	}
+	else
+	{
+		router.replace('planning');
+	}
+}
