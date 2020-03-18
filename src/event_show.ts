@@ -136,7 +136,7 @@ export default function showEvent(calEvent)
 	$el2.hide();
 	$el2.css('height', 'auto');
 
-	router.navigate("event:"+calEvent.id);
+	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
 	$eventProperties
 		.one('shown.bs.modal', function()
 		{
@@ -161,7 +161,7 @@ export default function showEvent(calEvent)
 		})
 		.one('hide.bs.modal', function()
 		{
-			router.navigate("planning");
+			router.navigate("planning", i18n("Planning"));
 		})
 		.modal('show');
 }

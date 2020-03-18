@@ -89,7 +89,7 @@ export function planAnEvent(start_date, end_date)
 
 	$(sortie_date_start).trigger('change'); // ensure "min" attribute is set
 
-	router.navigate("event:new");
+	router.navigate("event:new", i18n("Plan an event"));
 	$("#createEvent")
 		.one('shown.bs.modal', function()
 		{
@@ -98,7 +98,7 @@ export function planAnEvent(start_date, end_date)
 		})
 		.one('hide.bs.modal', function()
 		{
-			router.navigate("planning");
+			router.navigate("planning", i18n("Planning"));
 		})
 		.modal('show');
 }

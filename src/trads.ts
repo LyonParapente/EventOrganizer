@@ -43,11 +43,13 @@ var trads =
 		"Copied to clipboard!": "Copié dans le presse-papier!",
 		"Open in Google Maps": "Ouvrir avec Google Maps",
 		"New Event": "Ajouter une sortie",
-		"Reset": "Reset" // Prédéfini?
+		"Reset": "Reset", // Prédéfini?
+		"Planning": "Calendrier",
+		"EventTitle": "Event #{0}"
 	}
 };
 
-export function i18n (key/*, arg1, arg2, ...*/)
+export function i18n (key, ...args: any[])
 {
 	var dic = trads[settings.lang];
 	if (dic)
@@ -55,7 +57,6 @@ export function i18n (key/*, arg1, arg2, ...*/)
 		if (dic.hasOwnProperty(key))
 		{
 			var trad = dic[key];
-			var args = Array.prototype.slice.call(arguments, 1);
 			return i18nFormat(trad, args);
 		}
 		else

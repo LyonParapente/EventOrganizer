@@ -43,20 +43,31 @@ export var router =
 		}
 		return this;
 	},
-	navigate: function (path = '', state = null, trigger = false)
+	navigate: function (path = '', title = null, state = null, trigger = false)
 	{
 		var stateObj = state || {path};
-		history.pushState(stateObj, null, this.root + path);
+		history.pushState(stateObj, title, this.root + path);
+		this.title(title);
 		if (trigger)
 		{
 			this.check(path);
 		}
 		return this;
 	},
-	replace: function (path = '', state = null)
+	replace: function (path = '', title = null, state = null)
 	{
-		history.replaceState(state, null, this.root + path);
+		history.replaceState(state, title, this.root + path);
+		this.title(title);
 		return this;
+	},
+	title: function (text)
+	{
+		if (text === null) return;
+		try
+		{
+			document.getElementsByTagName('title')[0].innerHTML = text.replace('<','&lt;').replace('>','&gt;').replace(' & ',' &amp; ');
+		}
+		catch (ex) { }
 	}
 };
 
