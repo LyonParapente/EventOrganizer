@@ -234,7 +234,8 @@ gulp.task('serve', function()
 		middleware: function(req,res,next)
 		{
 			if (req.url === '/planning' ||
-				req.url.match(/event:[0-9]+$/))
+				req.url.match(/event:[0-9]+$/) ||
+				req.url.match(/[0-9]{4}-[0-9]{2}$/))
 			{
 				console.log(req.url);
 				req.url = '/'+SPA;

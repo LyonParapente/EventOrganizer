@@ -18,8 +18,6 @@ export var calendar;
 var id = document.getElementById.bind(document);
 document.addEventListener('DOMContentLoaded', function()
 {
-	init_routing();
-
 	var calendarEl = id('calendar'),
 		loadingEl = id('loading'),
 		loadingTimer;
@@ -68,6 +66,24 @@ document.addEventListener('DOMContentLoaded', function()
 				{
 					var d = new Date();
 					planAnEvent(d, d);
+				}
+			},
+			prev:
+			{
+				text: '', // doesn't matter but need to be here for .ts
+				click: function()
+				{
+					calendar.prev();
+					updateUrlWithCurrentMonth();
+				}
+			},
+			next:
+			{
+				text: '', // doesn't matter but need to be here for .ts
+				click: function()
+				{
+					calendar.next();
+					updateUrlWithCurrentMonth();
 				}
 			}
 		},
@@ -160,6 +176,8 @@ document.addEventListener('DOMContentLoaded', function()
 	(<any>window).calendar = calendar;
 	calendar.render();
 
+	init_routing();
+
 	i18n_inPlace(["#eventProperties .trad", "#createEvent .trad"]);
 
 	init_createEvent();
@@ -198,7 +216,7 @@ function init_routing ()
 			var now = new Date();
 			(function findAndShowEvent()
 			{
-				var event = calendar && calendar.getEventById(parseInt(num, 10));
+				var event = calendar.getEventById(parseInt(num, 10));
 				if (event)
 				{
 					showEvent(event);
@@ -212,6 +230,11 @@ function init_routing ()
 					}, 200);
 				}
 			}());
+		})
+		.add(/([0-9]{4})-([0-9]{2})/, function (year, month)
+		{
+			console.log('Showing month '+month+' of year '+year);
+			calendar.gotoDate(new Date(year*1, month*1-1, 1));
 		});
 
 	if (location.pathname === router.root)
@@ -226,4 +249,17 @@ function init_routing ()
 	{
 		router.check(location.pathname.substr(router.root.length));
 	}
+}
+
+function updateUrlWithCurrentMonth()
+{
+	var now = calendar.getDate();
+
+	var monthTrad = new Intl.DateTimeFormat(settings.lang, {month: "long"}).format(now);
+	monthTrad = monthTrad.charAt(0).toLocaleUpperCase(settings.lang) + monthTrad.substr(1);
+
+	var YYYY = now.getFullYear();
+	var MM = now.getMonth() + 1;
+	var monthNum = MM < 10 ? '0' + MM : MM.toString();
+	router.navigate(YYYY+"-"+monthNum, monthTrad+" "+YYYY);
 }
