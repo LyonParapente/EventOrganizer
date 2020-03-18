@@ -5,7 +5,7 @@ export function init_colorPicker()
 		format: 'hex',
 		useAlpha: false,
 		inline: true,
-		fallbackColor: '',
+		fallbackColor: 'fff',
 		autoInputFallback: false
 	})
 	.on("change", onColorPickerChange)
