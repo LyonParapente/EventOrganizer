@@ -213,12 +213,17 @@ function init_routing ()
 				}
 			}());
 		});
-	if (history.state)
+
+	if (location.pathname === router.root)
+	{
+		router.replace('planning', i18n('Planning'));
+	}
+	else if (history.state)
 	{
 		router.check(history.state.path);
 	}
 	else
 	{
-		router.replace('planning');
+		router.check(location.pathname.substr(router.root.length));
 	}
 }
