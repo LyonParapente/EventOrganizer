@@ -15,7 +15,7 @@ export function init_categories()
 			a.className = "badge " + badges_spacing;
 			a.style.backgroundColor = getColor(category);
 			a.style.color = 'white';
-			a.href = "#";
+			a.href = "javascript:;";
 			a.appendChild(document.createTextNode(category));
 			$category_dd.append(a);
 		}

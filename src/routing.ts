@@ -63,6 +63,11 @@ export var router =
 // Detect browser going back
 window.addEventListener('popstate', function()
 {
+	if (this.location.href.endsWith('#'))
+	{
+		// Click on dummy <a href="#"> ; do nothing
+		return;
+	}
 	var fragment = location.pathname + this.location.search;
 	if (fragment.indexOf(router.root) === 0)
 	{
