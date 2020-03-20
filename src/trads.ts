@@ -1,6 +1,6 @@
 import settings from './settings';
 
-var trads =
+const trads =
 {
 	fr:
 	{
@@ -49,7 +49,7 @@ var trads =
 	}
 };
 
-export function i18n (key, ...args: any[])
+export function i18n (key: string, ...args: string[]): string
 {
 	var dic = trads[settings.lang];
 	if (dic)
@@ -67,7 +67,7 @@ export function i18n (key, ...args: any[])
 	return "[["+key+"]]"; // not translated yet
 }
 
-function i18nFormat (trad, replaceValues)
+function i18nFormat (trad: string, replaceValues: string[]): string
 {
 	for (var i = 0; i < replaceValues.length; ++i)
 	{
@@ -79,12 +79,12 @@ function i18nFormat (trad, replaceValues)
 
 var translated = new Set();
 
-export function i18n_inPlace (selectors, attr?)
+export function i18n_inPlace (selectors: string[]|JQuery<HTMLElement>, attr?: string): void
 {
 	for (var i = 0; i < selectors.length; ++i)
 	{
 		var selector = selectors[i];
-		var items = typeof selector === "string" ? document.querySelectorAll(selector) : [selector];
+		var items = (typeof selector === "string" ? document.querySelectorAll(selector) : [selector]);
 		for (var j = 0; j < items.length; ++j)
 		{
 			var item = items[j];
@@ -110,7 +110,7 @@ export function i18n_inPlace (selectors, attr?)
 	}
 }
 
-export function toDateString (date)
+export function toDateString (date: Date): string
 {
 	var YYYY = date.getFullYear(),
 		MM = date.getMonth() + 1,
@@ -130,7 +130,7 @@ export function toDateString (date)
 	return year+"-"+month+"-"+day/*+" "+hours+":"+minutes+":"+seconds+"."+milliseconds*/;
 }
 
-export function toTimeString (date)
+export function toTimeString (date: Date): string
 {
 	var hh = date.getHours(),
 		mm = date.getMinutes();
@@ -140,7 +140,7 @@ export function toTimeString (date)
 	return hours+"h"+minutes;
 }
 
-export function toRelativeTimeString (date)
+export function toRelativeTimeString (date: Date): string
 {
 	var now = new Date();
 	var nowMinus1Day = new Date(now.getTime() - 86400000);

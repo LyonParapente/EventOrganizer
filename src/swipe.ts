@@ -1,5 +1,5 @@
 // Taken & adapted from http://www.javascriptkit.com/javatutors/touchevents2.shtml
-export default function swipedetector(el, callback)
+export default function swipedetector(el: HTMLElement|Document, callback: (direction: string) => void)
 {
 	var threshold = 150, // required min distance traveled to be considered swipe
 		restraint = 100, // maximum distance allowed at the same time in perpendicular direction
@@ -15,7 +15,7 @@ export default function swipedetector(el, callback)
 	startTime,
 	handleswipe = callback || function(){}; // tslint:disable-line
 
-	touchsurface.addEventListener('touchstart', function(e)
+	touchsurface.addEventListener('touchstart', function (e: TouchEvent)
 	{
 		var touchobj = e.changedTouches[0];
 		swipedir = 'none';
@@ -26,7 +26,7 @@ export default function swipedetector(el, callback)
 		startTime = new Date().getTime(); // record time when finger first makes contact with surface
 	}, false);
 
-	touchsurface.addEventListener('touchend', function(e)
+	touchsurface.addEventListener('touchend', function (e: TouchEvent)
 	{
 		var touchobj = e.changedTouches[0];
 		distX = touchobj.pageX - startX; // get horizontal dist traveled by finger while in contact with surface

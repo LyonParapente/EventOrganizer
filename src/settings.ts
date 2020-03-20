@@ -1,4 +1,22 @@
-const settings =
+interface Settings
+{
+	lang: string,
+	listDayAltFormat: string,
+	default_event_color: string,
+	default_random_event_title: string[],
+	default_location: string,
+	default_map_center: [number, number],
+	default_map_zoom: number,
+	categories:
+	{
+		default:
+		{
+			[key: string]: string
+		}
+	}
+};
+
+const settings: Settings =
 {
 	lang: "fr", // see `trads` under
 	listDayAltFormat: 'DD/MM/YYYY', // affects the text on the right side of the day headings in list view.

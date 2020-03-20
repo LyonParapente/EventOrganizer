@@ -1,5 +1,5 @@
 var theme;
-document.addEventListener('DOMContentLoaded', function()
+document.addEventListener('DOMContentLoaded', function ()
 {
 	var themeSelector = <HTMLSelectElement>document.getElementById('themeSelector');
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function()
 		}
 	}
 
-	themeSelector.addEventListener('change', function()
+	themeSelector.addEventListener('change', function ()
 	{
 		SetTheme(this.value);
 	});
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function()
 	SetTheme(favoriteTheme || themeSelector.value);
 
 	var currentStylesheet;
-	function SetTheme(themeName)
+	function SetTheme (themeName: string): void
 	{
 		var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
 
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function()
 		link.setAttribute('href', stylesheetUrl);
 		document.head.appendChild(link);
 
-		WhenStylesheetLoaded(link, function()
+		WhenStylesheetLoaded(link, function ()
 		{
 			if (currentStylesheet)
 			{
@@ -54,12 +54,12 @@ document.addEventListener('DOMContentLoaded', function()
 		});
 	}
 
-	function GetThemeCookie()
+	function GetThemeCookie (): string
 	{
 		return document.cookie.replace(/(?:(?:^|.*;\s*)theme\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 	}
 
-	function WhenStylesheetLoaded(linkNode, callback)
+	function WhenStylesheetLoaded (linkNode: HTMLLinkElement, callback: () => void): void
 	{
 		var isReady = false;
 		function ready()
@@ -76,4 +76,5 @@ document.addEventListener('DOMContentLoaded', function()
 		setTimeout(ready, 2000); // max wait. also handles browsers that don't support onload
 	}
 });
+
 export default theme;

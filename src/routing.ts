@@ -6,17 +6,12 @@ export var router =
 	root: '/',
 	// ----------
 	// Get notified every time URL changes and matches a certain regex
-	add: function (re, handler)
+	add: function (re: string|RegExp, handler: () => void)
 	{
-		if (typeof re === 'function')
-		{
-			handler = re;
-			re = '';
-		}
 		this.routes.push({re, handler});
 		return this;
 	},
-	remove: function (param)
+	remove: function (param: string|RegExp)
 	{
 		for (var i = 0; i < this.routes.length; i++)
 		{
@@ -29,7 +24,7 @@ export var router =
 		}
 		return this;
 	},
-	check: function (path)
+	check: function (path: string)
 	{
 		for (var i = 0; i < this.routes.length; i++)
 		{
@@ -43,7 +38,7 @@ export var router =
 		}
 		return this;
 	},
-	navigate: function (path = '', title = null, state = null, trigger = false)
+	navigate: function (path: string = '', title: string = null, state: {} = null, trigger: boolean = false)
 	{
 		var stateObj = state || {path};
 		history.pushState(stateObj, title, this.root + path);
@@ -54,13 +49,13 @@ export var router =
 		}
 		return this;
 	},
-	replace: function (path = '', title = null, state = null)
+	replace: function (path: string = '', title: string = null, state: {} = null)
 	{
 		history.replaceState(state, title, this.root + path);
 		this.title(title);
 		return this;
 	},
-	title: function (text)
+	title: function (text: string)
 	{
 		if (text === null) return;
 		try
@@ -72,7 +67,7 @@ export var router =
 };
 
 // Detect browser going back
-window.addEventListener('popstate', function()
+window.addEventListener('popstate', function ()
 {
 	if (this.location.href.endsWith('#'))
 	{
