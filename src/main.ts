@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function ()
 {
 	var calendarEl = id('calendar'),
 		loadingEl = id('loading'),
-		loadingTimer;
+		loadingTimer: number;
 
 	calendar = new Calendar(calendarEl,
 	{
@@ -235,7 +235,7 @@ function init_routing ()
 		.add(/([0-9]{4})-([0-9]{2})/, function (year, month)
 		{
 			console.log('Showing month '+month+' of year '+year);
-			calendar.gotoDate(new Date(year*1, month*1-1, 1));
+			calendar.gotoDate(new Date(+year, +month-1, 1));
 		});
 
 	if (location.pathname === router.root)

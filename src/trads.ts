@@ -51,7 +51,7 @@ const trads =
 
 export function i18n (key: string, ...args: string[]): string
 {
-	var dic = trads[settings.lang];
+	var dic = (trads as any)[settings.lang];
 	if (dic)
 	{
 		if (dic.hasOwnProperty(key))

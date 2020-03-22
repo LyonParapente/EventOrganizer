@@ -4,7 +4,7 @@ interface Router
 {
 	routes: string[];
 	root: string;
-	add (re: string|RegExp, handler: (...args) => void): Router;
+	add (re: string|RegExp, handler: (...args: string[]) => void): Router;
 	remove (param: string|RegExp): Router;
 	check (path: string): Router;
 	navigate (path: string, title?: string, state?: {}, trigger?: boolean): Router;

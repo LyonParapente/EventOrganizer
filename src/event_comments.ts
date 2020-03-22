@@ -18,12 +18,12 @@ export default function loadComments (id: string, isFinished: boolean): void
 	var $participants = $("#event_participants").empty();
 	var $interested = $("#event_interested").empty();
 
-	requestJson("GET", "events/Event_"+id+".json", null, function (data)
+	requestJson("GET", "events/Event_"+id+".json", null, function (data: JSON)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
 		receiveEventInfos(data, event_comments, isFinished, $participants, $interested);
 	},
-	function (type, ex)
+	function (type: string, ex: Error)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
 		console.error(type, ex);
@@ -39,7 +39,7 @@ interface Comment
 	comment: string;
 }
 
-function receiveEventInfos(data, event_comments: HTMLElement, isFinished: boolean, $participants: JQuery, $interested: JQuery): void
+function receiveEventInfos(data: any, event_comments: HTMLElement, isFinished: boolean, $participants: JQuery, $interested: JQuery): void
 {
 	for (var i = 0; i < data.comments.length; ++i)
 	{
@@ -132,7 +132,7 @@ function createInterested(interested: number[], users: object, isFinished: boole
 	for (var i = 0; i < interested.length; ++i)
 	{
 		var interested_user = interested[i].toString();
-		if (users[interested_user])
+		if (users.hasOwnProperty(interested_user))
 		{
 			var a = document.createElement('a');
 			a.href = "user/"+interested_user;
