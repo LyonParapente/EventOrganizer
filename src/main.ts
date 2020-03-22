@@ -13,7 +13,7 @@ import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
 import { router } from './routing';
 
-export var calendar;
+export var calendar: Calendar;
 
 var id = document.getElementById.bind(document);
 document.addEventListener('DOMContentLoaded', function ()
@@ -216,7 +216,7 @@ function init_routing ()
 			var now = new Date();
 			(function findAndShowEvent()
 			{
-				var event = calendar.getEventById(parseInt(num, 10));
+				var event = calendar.getEventById(num);
 				if (event)
 				{
 					showEvent(event);

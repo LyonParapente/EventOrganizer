@@ -4,8 +4,9 @@ import { initMap } from './map';
 import loadComments from './event_comments';
 import settings from './settings';
 import { router } from './routing';
+import { EventApi } from '@fullcalendar/core';
 
-export default function showEvent(calEvent)
+export default function showEvent (calEvent: EventApi): void
 {
 	var start = calEvent.start,
 		end = calEvent.end;
@@ -41,11 +42,12 @@ export default function showEvent(calEvent)
 	// Fill event infos
 	$("#event_title").text(calEvent.title);
 	$("#event_description").html(calEvent.extendedProps.desc || i18n('No description'));
-	if (calEvent.category)
+	var category = calEvent.extendedProps.category;
+	if (category)
 	{
-		$("#event_category").text(calEvent.category).css(
+		$("#event_category").text(category).css(
 		{
-			'backgroundColor': getColor(calEvent.category),
+			'backgroundColor': getColor(category),
 			'color': 'white'
 		});
 	}
@@ -85,10 +87,11 @@ export default function showEvent(calEvent)
 	// ----------------------
 	// Activity location
 
-	var event_location_text = calEvent.extendedProps.location || "";
+	var location = calEvent.extendedProps.location;
+	var event_location_text = location || "";
 	var $el = $("#event_location").text(event_location_text);
 	var $el2 = $("#event_location2").text(event_location_text);
-	if (calEvent.location)
+	if (location)
 	{
 		$("#event_location_box").show();
 	}
@@ -100,8 +103,9 @@ export default function showEvent(calEvent)
 	// ----------------------
 	// Rendez-vous location
 
-	$("#event_rdv_time").text(calEvent.extendedProps.time || "");
-	if (calEvent.time)
+	var time = calEvent.extendedProps.time;
+	$("#event_rdv_time").text(time || "");
+	if (time)
 	{
 		$("#event_rdv_time_box").show();
 	}
@@ -111,21 +115,15 @@ export default function showEvent(calEvent)
 	}
 
 	var rdv_location_text = '';
-	if (calEvent.gps || calEvent.gps_location)
+	var gps = calEvent.extendedProps.gps;
+	if (gps)
 	{
-		if (calEvent.gps_location)
-		{
-			rdv_location_text = calEvent.gps_location;
-		}
-		else
-		{
-			rdv_location_text = calEvent.gps.join(', ');
-		}
+		rdv_location_text = gps.join(', ');
 	}
 	else
 	{
 		// Retro-compatibility with old events
-		rdv_location_text = calEvent.location || "";
+		rdv_location_text = location || "";
 	}
 	$("#event_rdv_location").val(rdv_location_text).attr("placeholder", settings.default_location);
 	$("#event_rdv_location_box").show();
@@ -138,7 +136,7 @@ export default function showEvent(calEvent)
 
 	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
 	$eventProperties
-		.one('shown.bs.modal', function()
+		.one('shown.bs.modal', function ()
 		{
 			// Step 1 - Compute textarea height according to width
 			var w = $el.width();
@@ -152,12 +150,12 @@ export default function showEvent(calEvent)
 
 			// -----
 
-			initMap('event_map', false, calEvent.gps, calEvent.location);
+			initMap('event_map', false, gps, location);
 
 			// Avoid keyboard popping on mobile
 			// $("#event_comment").focus();
 		})
-		.one('hide.bs.modal', function()
+		.one('hide.bs.modal', function ()
 		{
 			router.navigate("planning", i18n("Planning"));
 		})
