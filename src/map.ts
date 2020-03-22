@@ -1,16 +1,18 @@
 import settings from './settings';
 import { i18n } from './trads';
 
-declare var L; // Leaflet.js
+/// <reference types="leaflet" />
+/// <reference types="esri-leaflet" />
+/// <reference types="esri-leaflet-geocoder" />
 
 var mapList = {},
 	sortie_RDV = <HTMLInputElement>document.getElementById('sortie_RDV'),
 	spinner_RDV = document.getElementById('spinner_RDV');
 
-export function initMap(elem_id, edit, gps?, location?)
+export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, location?: string): void
 {
-	var defaultPoint = gps || settings.default_map_center;
-	var map, marker;
+	var defaultPoint: L.LatLngTuple = gps || settings.default_map_center;
+	var map: L.Map, marker: L.Marker;
 	if (mapList.hasOwnProperty(elem_id))
 	{
 		map = mapList[elem_id].map;
@@ -18,7 +20,7 @@ export function initMap(elem_id, edit, gps?, location?)
 
 		if (!gps)
 		{
-			marker.remove(map);
+			marker.remove();
 		}
 		resetMap(map, defaultPoint, marker);
 	}
@@ -33,10 +35,10 @@ export function initMap(elem_id, edit, gps?, location?)
 		map.zoomControl.setPosition('topright');
 		L.control.scale().addTo(map);
 
-		map.on('fullscreenchange', function()
+		map.on('fullscreenchange', function ()
 		{
 			// re-center on marker when making fullscreen or exiting
-			map.setView(marker.getLatLng());
+			map.setView(marker.getLatLng(), map.getZoom());
 		});
 
 		L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
@@ -51,7 +53,7 @@ export function initMap(elem_id, edit, gps?, location?)
 		}
 		mapList[elem_id] = {map, marker};
 
-		marker.on('click', function()
+		marker.on('click', function ()
 		{
 			var latlng = marker.getLatLng();
 			var url = "http://maps.google.com/maps?daddr=loc:"+latlng.lat+"+"+latlng.lng;
@@ -64,7 +66,7 @@ export function initMap(elem_id, edit, gps?, location?)
 			marker.on('move', onMarkerMove);
 			marker.on('movestart', () => {marker.unbindPopup();});
 
-			var searchControl = new L.esri.Geocoding.geosearch(
+			var searchControl = L.esri.Geocoding.geosearch(
 			{
 				position: 'topleft',
 				useMapBounds: false, // difficult to get head around otherwise
@@ -74,23 +76,25 @@ export function initMap(elem_id, edit, gps?, location?)
 			}).addTo(map);
 
 			var results = new L.LayerGroup().addTo(map);
-			searchControl.on('results', function(data)
+			searchControl.on('results', function (data)
 			{
+				// data is of type L.esri.Geocoding.Results
+				var dataResults = (data as any).results;
 				results.clearLayers();
-				if (data.results.length === 1)
+				if (dataResults.length === 1)
 				{
-					let latlng = data.results[0].latlng;
+					let latlng = dataResults[0].latlng;
 					marker.setLatLng(latlng);
 					onMarkerMove({latlng});
 				}
 				else
 				{
 					marker.removeFrom(map);
-					for (var i = data.results.length - 1; i >= 0; i--)
+					for (var i = dataResults.length - 1; i >= 0; i--)
 					{
-						var searchMarker = L.marker(data.results[i].latlng);
+						var searchMarker = L.marker(dataResults[i].latlng);
 						results.addLayer(searchMarker);
-						searchMarker.on('click', function()
+						searchMarker.on('click', function ()
 						{
 							let latlng = this.getLatLng();
 							marker.setLatLng(latlng);
@@ -102,7 +106,7 @@ export function initMap(elem_id, edit, gps?, location?)
 				}
 			});
 
-			map.on('click', function (e)
+			map.on('click', function (e: L.LeafletMouseEvent)
 			{
 				marker.addTo(map);
 				marker.setLatLng(e.latlng);
@@ -113,16 +117,16 @@ export function initMap(elem_id, edit, gps?, location?)
 				{
 					spinner_RDV.style.display = 'none';
 					if (error) {return;}
-					sortie_RDV.value = result.address.Match_addr;
+					sortie_RDV.value = (result.address as any).Match_addr;
 				});
 			});
 
-			sortie_RDV.addEventListener('change', function()
+			sortie_RDV.addEventListener('change', function ()
 			{
 				findLocation(this.value, marker, map);
 			});
 			var timeoutID = null;
-			sortie_RDV.addEventListener('keyup', function()
+			sortie_RDV.addEventListener('keyup', function ()
 			{
 				clearTimeout(timeoutID);
 				timeoutID = setTimeout(function()
@@ -131,7 +135,7 @@ export function initMap(elem_id, edit, gps?, location?)
 				}, 400);
 			});
 
-			document.getElementById('sortie_RDV_reset').addEventListener('click', function()
+			document.getElementById('sortie_RDV_reset').addEventListener('click', function ()
 			{
 				sortie_RDV.value = '';
 				resetMap(map, defaultPoint, marker);
@@ -147,7 +151,7 @@ export function initMap(elem_id, edit, gps?, location?)
 	}
 }
 
-function resetMap(map, point, marker)
+function resetMap (map: L.Map, point: L.LatLngTuple, marker: L.Marker): void
 {
 	map.setView(point, settings.default_map_zoom, {animate: false});
 	marker.off('move', onMarkerMove); // avoid issue with placeholder in edit mode
@@ -155,7 +159,7 @@ function resetMap(map, point, marker)
 	marker.on('move', onMarkerMove);
 }
 
-function onMarkerMove(evt)
+function onMarkerMove (evt): void
 {
 	if (sortie_RDV.value.length === 0 || sortie_RDV.value.match(/\d+\.\d+, \d+\.\d+/))
 	{
@@ -163,7 +167,7 @@ function onMarkerMove(evt)
 	}
 }
 
-function findLocation(text, marker, map)
+function findLocation (text: string, marker: L.Marker, map: L.Map): void
 {
 	var proximity = L.latLng(settings.default_map_center);
 	var proximity_radius = 100000;

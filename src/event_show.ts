@@ -152,9 +152,7 @@ export default function showEvent(calEvent)
 
 			// -----
 
-			// Retro-compatibility with old events
-			var location_text = calEvent.gps_location || calEvent.location;
-			initMap('event_map', false, calEvent.gps, location_text);
+			initMap('event_map', false, calEvent.gps, calEvent.location);
 
 			// Avoid keyboard popping on mobile
 			// $("#event_comment").focus();

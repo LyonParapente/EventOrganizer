@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function()
 
 	init_createEvent();
 
-	swipedetector(document, function (swipedir)
+	swipedetector(document, function (swipedir: string)
 	{
 		if (swipedir === 'left')
 		{
