@@ -53,7 +53,11 @@ export var router: Router =
 	navigate: function (path = '', title = null, state = null, trigger = false)
 	{
 		var stateObj = state || {path};
-		history.pushState(stateObj, title, this.root + path);
+		try
+		{
+			history.pushState(stateObj, title, this.root + path);
+		}
+		catch (ex) { }
 		this.title(title);
 		if (trigger)
 		{
@@ -63,7 +67,11 @@ export var router: Router =
 	},
 	replace: function (path = '', title = null, state = null)
 	{
-		history.replaceState(state, title, this.root + path);
+		try
+		{
+			history.replaceState(state, title, this.root + path);
+		}
+		catch (ex) { }
 		this.title(title);
 		return this;
 	},
