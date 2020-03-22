@@ -16,7 +16,7 @@ import { router } from './routing';
 export var calendar;
 
 var id = document.getElementById.bind(document);
-document.addEventListener('DOMContentLoaded', function()
+document.addEventListener('DOMContentLoaded', function ()
 {
 	var calendarEl = id('calendar'),
 		loadingEl = id('loading'),
@@ -210,7 +210,7 @@ function init_routing ()
 			var d = new Date();
 			planAnEvent(d, d);
 		})
-		.add(/event:([0-9]+)$/, function (num)
+		.add(/event:([0-9]+)$/, function (num: string)
 		{
 			console.log('Showing event:'+num);
 			var now = new Date();
@@ -251,7 +251,7 @@ function init_routing ()
 	}
 }
 
-function updateUrlWithCurrentMonth()
+function updateUrlWithCurrentMonth ()
 {
 	var now = calendar.getDate();
 

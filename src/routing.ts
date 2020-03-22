@@ -1,17 +1,29 @@
 // Similar lib: https://github.com/KidkArolis/location-bar
 
-export var router =
+interface Router
+{
+	routes: string[];
+	root: string;
+	add (re: string|RegExp, handler: (...args) => void): Router;
+	remove (param: string|RegExp): Router;
+	check (path: string): Router;
+	navigate (path: string, title?: string, state?: {}, trigger?: boolean): Router;
+	replace (path: string, title?: string, state?: {}): Router;
+	title (text: string): void;
+}
+
+export var router: Router =
 {
 	routes: [],
 	root: '/',
 	// ----------
 	// Get notified every time URL changes and matches a certain regex
-	add: function (re: string|RegExp, handler: () => void)
+	add: function (re, handler)
 	{
 		this.routes.push({re, handler});
 		return this;
 	},
-	remove: function (param: string|RegExp)
+	remove: function (param)
 	{
 		for (var i = 0; i < this.routes.length; i++)
 		{
@@ -24,7 +36,7 @@ export var router =
 		}
 		return this;
 	},
-	check: function (path: string)
+	check: function (path)
 	{
 		for (var i = 0; i < this.routes.length; i++)
 		{
@@ -38,7 +50,7 @@ export var router =
 		}
 		return this;
 	},
-	navigate: function (path: string = '', title: string = null, state: {} = null, trigger: boolean = false)
+	navigate: function (path = '', title = null, state = null, trigger = false)
 	{
 		var stateObj = state || {path};
 		history.pushState(stateObj, title, this.root + path);
@@ -49,13 +61,13 @@ export var router =
 		}
 		return this;
 	},
-	replace: function (path: string = '', title: string = null, state: {} = null)
+	replace: function (path = '', title = null, state = null)
 	{
 		history.replaceState(state, title, this.root + path);
 		this.title(title);
 		return this;
 	},
-	title: function (text: string)
+	title: function (text)
 	{
 		if (text === null) return;
 		try
