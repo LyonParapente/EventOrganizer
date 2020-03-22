@@ -1,24 +1,17 @@
 {
 	"compilerOptions":
 	{
-		"target": "es6",
-		"module": "UMD",
+		"target": "ES6",
+		"module": "commonjs",
 		"moduleResolution": "node",
 		"noImplicitAny": false,
 		"sourceMap": true,
 		"outDir": "dist/"/*,
-		"outFile": "dist/bundle.js"*/
+		"outFile": "dist/bundle.js"*/,
+		"typeRoots" : ["./types/", "./node_modules/@types/"]
 	},
 	"files":
 	[
 		"src/main.ts"
-	],
-	"include":
-	[
-		"types/bootstrap-colorpicker.d.ts"
-	],
-	"exclude":
-	[
-		"node_modules"
 	]
 }
