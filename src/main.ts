@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function ()
 		},
 		footer:
 		{
-			left: 'dayGridWeek dayGridMonth listMonth listYear',
+			left: 'dayGridWeek,dayGridMonth listMonth,listYear',
 			right: 'newEvent'
 		},
 		views:
