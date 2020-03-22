@@ -1,7 +1,7 @@
 interface Settings
 {
 	lang: string,
-	listDayAltFormat: string,
+	listDayAltFormat: object,
 	default_event_color: string,
 	default_random_event_title: string[],
 	default_location: string,
@@ -19,7 +19,10 @@ interface Settings
 const settings: Settings =
 {
 	lang: "fr", // see `trads` under
-	listDayAltFormat: 'DD/MM/YYYY', // affects the text on the right side of the day headings in list view.
+	listDayAltFormat: // https://fullcalendar.io/docs/date-formatting
+	{
+		month: 'long'
+	},
 	default_event_color: "#3A87AD",
 	default_random_event_title:
 	[

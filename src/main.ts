@@ -1,6 +1,7 @@
 import { Calendar } from '@fullcalendar/core';
 import * as frLocale from '@fullcalendar/core/locales/fr';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -24,19 +25,19 @@ document.addEventListener('DOMContentLoaded', function ()
 
 	calendar = new Calendar(calendarEl,
 	{
-		plugins: [bootstrapPlugin, dayGridPlugin, listPlugin, interactionPlugin],
+		plugins: [bootstrapPlugin, dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
 
 		themeSystem: 'bootstrap',
 
 		header:
 		{
-			left: 'month basicWeek prev',
+			left: 'prev',
 			center: 'title',
-			right: 'next today'
+			right: 'next'
 		},
 		footer:
 		{
-			left: 'listMonth listYear',
+			left: 'dayGridWeek dayGridMonth listMonth listYear',
 			right: 'newEvent'
 		},
 		views:
