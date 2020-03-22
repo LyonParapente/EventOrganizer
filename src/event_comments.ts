@@ -1,7 +1,7 @@
 import { i18n, toRelativeTimeString } from './trads';
 import { requestJson } from '@fullcalendar/core';
 
-export default function loadComments(id, isFinished)
+export default function loadComments (id: string, isFinished: boolean): void
 {
 	var $errorBox = $("#event_comments_error").hide();
 	$("#event_comment_avatar").attr(
@@ -18,12 +18,12 @@ export default function loadComments(id, isFinished)
 	var $participants = $("#event_participants").empty();
 	var $interested = $("#event_interested").empty();
 
-	requestJson("GET", "events/Event_"+id+".json", null, function(data)
+	requestJson("GET", "events/Event_"+id+".json", null, function (data)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
 		receiveEventInfos(data, event_comments, isFinished, $participants, $interested);
 	},
-	function(type, ex)
+	function (type, ex)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
 		console.error(type, ex);
@@ -32,10 +32,15 @@ export default function loadComments(id, isFinished)
 	});
 }
 
-
-function receiveEventInfos(data, event_comments, isFinished, $participants, $interested)
+interface Comment
 {
-	// Comments
+	date: string;
+	user: number;
+	comment: string;
+}
+
+function receiveEventInfos(data, event_comments: HTMLElement, isFinished: boolean, $participants: JQuery, $interested: JQuery): void
+{
 	for (var i = 0; i < data.comments.length; ++i)
 	{
 		var comment = data.comments[i],
@@ -55,7 +60,7 @@ function receiveEventInfos(data, event_comments, isFinished, $participants, $int
 	createInterested(data.interested || [], data.users, isFinished, $interested);
 }
 
-function createCommentEntry(comment, userid, username)
+function createCommentEntry (comment: Comment, userid: number, username: string): HTMLElement
 {
 	var dateText = toRelativeTimeString(new Date(comment.date));
 
@@ -91,7 +96,7 @@ function createCommentEntry(comment, userid, username)
 	return groupitem;
 }
 
-function createParticipants(participants, users, isFinished, $event_participants)
+function createParticipants(participants: number[], users: object, isFinished: boolean, $event_participants: JQuery): void
 {
 	var participants_badge = $('<span class="badge badge-success"></span>').text(participants.length);
 	var participants_button = isFinished ? '' : $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm in"));
@@ -99,7 +104,7 @@ function createParticipants(participants, users, isFinished, $event_participants
 	$event_participants.append(participants_header);
 	for (var i = 0; i < participants.length; ++i)
 	{
-		var participant = participants[i];
+		var participant = participants[i].toString();
 		if (users.hasOwnProperty(participant))
 		{
 			var a = document.createElement('a');
@@ -118,7 +123,7 @@ function createParticipants(participants, users, isFinished, $event_participants
 	}
 }
 
-function createInterested(interested, users, isFinished, $event_interested)
+function createInterested(interested: number[], users: object, isFinished: boolean, $event_interested: JQuery): void
 {
 	var interested_badge = $('<span class="badge badge-info"></span>').text(interested.length);
 	var interested_button = isFinished ? '' : $('<button type="button" class="btn btn-outline-info float-right"></button>').text(i18n("I'm interested"));
@@ -126,14 +131,14 @@ function createInterested(interested, users, isFinished, $event_interested)
 	$event_interested.append(interested_header);
 	for (var i = 0; i < interested.length; ++i)
 	{
-		var interested = interested[i];
-		if (users[interested])
+		var interested_user = interested[i].toString();
+		if (users[interested_user])
 		{
 			var a = document.createElement('a');
-			a.href = "user/"+interested;
+			a.href = "user/"+interested_user;
 				var avatar = new Image();
-				avatar.src = "avatars/"+interested+"-2.jpg";
-				avatar.alt = users[interested];
+				avatar.src = "avatars/"+interested_user+"-2.jpg";
+				avatar.alt = users[interested_user];
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);
 			$event_interested.append(a);

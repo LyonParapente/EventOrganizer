@@ -1,4 +1,4 @@
-export function init_colorPicker()
+export function init_colorPicker (): void
 {
 	$("#sortie_color_box").colorpicker(
 	{
@@ -13,7 +13,7 @@ export function init_colorPicker()
 
 	var $sortie_category = $("#sortie_category");
 
-	function onColorPickerChange(event: BootstrapColorpickerEvent)
+	function onColorPickerChange (event: BootstrapColorpickerEvent): void
 	{
 		if (event.color)
 		{
@@ -34,12 +34,12 @@ export function init_colorPicker()
 
 	var colorPicker = $("#sortie_color_box").data('colorpicker');
 	colorPicker.hide(); // default state
-	$("#sortie_color").on('focus', function()
+	$("#sortie_color").on('focus', function ()
 	{
 		colorPicker.show();
 	});
 
-	$sortie_category.parent().on('show.bs.dropdown', function()
+	$sortie_category.parent().on('show.bs.dropdown', function ()
 	{
 		var text = $sortie_category.text();
 		var val = text.indexOf('#') === 0 ? text : '';

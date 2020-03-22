@@ -2,7 +2,7 @@ import settings from './settings';
 import theme from './theme';
 import { i18n } from './trads';
 
-export function init_categories()
+export function init_categories (): void
 {
 	var $category_dd = $("#sortie_categories");
 	var badges_spacing = "ml-2 mb-2";
@@ -21,7 +21,7 @@ export function init_categories()
 		}
 	}
 	var $sortie_category = $("#sortie_category");
-	$category_dd.parent().on("click", "a", function()
+	$category_dd.parent().on("click", "a", function ()
 	{
 		var $cloneBadge = $(this).clone();
 		$sortie_category.empty();
@@ -37,7 +37,7 @@ export function init_categories()
 	});
 }
 
-function getColorConf()
+function getColorConf (): object
 {
 	var colorConf;
 	if (settings.categories.hasOwnProperty(theme))
@@ -51,7 +51,7 @@ function getColorConf()
 	return colorConf;
 }
 
-export function getColor(category)
+export function getColor (category: string): string
 {
 	return getColorConf()[category];
 }

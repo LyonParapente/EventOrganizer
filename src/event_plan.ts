@@ -7,9 +7,9 @@ import { router } from './routing';
 
 var id = document.getElementById.bind(document);
 
-export function init_createEvent()
+export function init_createEvent (): void
 {
-	$("#createEventBody .needs-validation").on('submit', function(e)
+	$("#createEventBody .needs-validation").on('submit', function (e)
 	{
 		var form = <HTMLFormElement><unknown>e.target;
 		if (form.checkValidity())
@@ -28,7 +28,7 @@ export function init_createEvent()
 		event.stopPropagation();
 	});
 
-	$("#sortie_date_start").on('change', function()
+	$("#sortie_date_start").on('change', function ()
 	{
 		// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 		// Dates before this are disabled on mobile and forbidden on desktop validation
@@ -39,7 +39,7 @@ export function init_createEvent()
 	init_colorPicker();
 }
 
-export function planAnEvent(start_date, end_date)
+export function planAnEvent (start_date: Date, end_date: Date): void
 {
 	var today = new Date();
 	var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -91,12 +91,12 @@ export function planAnEvent(start_date, end_date)
 
 	router.navigate("event:new", i18n("Plan an event"));
 	$("#createEvent")
-		.one('shown.bs.modal', function()
+		.one('shown.bs.modal', function ()
 		{
 			initMap('sortie_map', true);
 			sortie_title.focus();
 		})
-		.one('hide.bs.modal', function()
+		.one('hide.bs.modal', function ()
 		{
 			router.navigate("planning", i18n("Planning"));
 		})
@@ -106,7 +106,7 @@ export function planAnEvent(start_date, end_date)
 /* Returns a random integer between the specified values.
 The value is no lower than min (or the next integer greater than min if min isn't an integer),
 and is less than (but not equal to) max. */
-function getRandomInt(min, max)
+function getRandomInt(min: number, max: number): number
 {
 	min = Math.ceil(min);
 	max = Math.floor(max);
