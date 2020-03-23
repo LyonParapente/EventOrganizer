@@ -6,6 +6,8 @@ import settings from './settings';
 import { router } from './routing';
 import { EventApi } from '@fullcalendar/core';
 
+var id = document.getElementById.bind(document);
+
 export default function showEvent (calEvent: EventApi): void
 {
 	var start = calEvent.start,
@@ -172,32 +174,37 @@ export default function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Clipboard copy
 
-	var $event_rdv_location_title = $('#event_rdv_location_title');
-	$event_rdv_location_title.on("click", function()
+	ClipboardCopyLocation(id('event_location_title'), id('event_location2'));
+	ClipboardCopyLocation(id('event_rdv_location_title'), id('event_rdv_location'));
+}
+
+function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement)
+{
+	clickTarget.addEventListener("click", function ()
 	{
-		var el = <HTMLInputElement>document.getElementById('event_rdv_location');
-		if (!el.value) {return;}
+		if (!copyTarget.value) {return;}
 
-		el.select();
+		copyTarget.select();
 		document.execCommand('copy');
-		el.setSelectionRange(0, 0);
+		copyTarget.setSelectionRange(0, 0);
 
-		var url = "http://maps.google.com/maps?daddr="+encodeURIComponent(el.value);
+		var url = "http://maps.google.com/maps?daddr="+encodeURIComponent(copyTarget.value);
 		var text = i18n('Copied to clipboard!')+
 			'<br/><a href="'+url+'" target="_blank">'+
 			i18n('Open in Google Maps')+'</a>';
 
-		ShowClipboarTooltip($event_rdv_location_title[0], text);
+		ShowClipboarTooltip(clickTarget, text);
 	});
 }
 
-function ShowClipboarTooltip (element, text)
+function ShowClipboarTooltip (element: HTMLElement, html: string)
 {
 	// @ts-ignore html5tooltips
 	var tooltip = new HTML5TooltipUIComponent();
 	tooltip.set(
 	{
-		contentText: text,
+		animateFunction: "spin",
+		contentText: html,
 		stickTo: "top",
 		target: element
 	});
