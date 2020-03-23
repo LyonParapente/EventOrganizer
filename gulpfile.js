@@ -61,7 +61,7 @@ gulp.task('copy js leaflet', function ()
 		.pipe(gulp.dest(dist_js));
 });
 
-function compilejs()
+function compile_js()
 {
 	return browserify(
 	{
@@ -207,7 +207,7 @@ function bundle_js ()
 {
 	return gulp.parallel(
 		"copy js",
-		compilejs,
+		compile_js,
 		"copy js html5tooltips",
 		"copy js leaflet"
 	);

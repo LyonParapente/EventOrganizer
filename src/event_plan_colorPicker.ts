@@ -1,7 +1,5 @@
 export function init_colorPicker (): void
 {
-	if (!jQuery.colorpicker) return;
-
 	$("#sortie_color_box").colorpicker(
 	{
 		format: 'hex',

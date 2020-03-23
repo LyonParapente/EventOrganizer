@@ -1,12 +1,7 @@
 {
 	"compilerOptions":
 	{
-		"target": "ES5",
-		"lib":
-		[
-			"DOM",
-			"ES2015"
-		],
+		"target": "ES6",
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"allowUmdGlobalAccess": true, // Leaflet
