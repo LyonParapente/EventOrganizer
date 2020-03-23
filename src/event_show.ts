@@ -175,7 +175,10 @@ export default function showEvent (calEvent: EventApi): void
 	// Clipboard copy
 
 	ClipboardCopyLocation(id('event_location_title'), id('event_location2'));
+	ClipboardCopyLocation(id('event_location2'), id('event_location2'));
+
 	ClipboardCopyLocation(id('event_rdv_location_title'), id('event_rdv_location'));
+	ClipboardCopyLocation(id('event_rdv_location'), id('event_rdv_location'));
 }
 
 function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement)
