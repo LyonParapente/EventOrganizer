@@ -6,8 +6,9 @@ import { i18n } from './trads';
 /// <reference types="esri-leaflet-geocoder" />
 
 var mapList = {},
-	sortie_RDV = <HTMLInputElement>document.getElementById('sortie_RDV'),
-	spinner_RDV = document.getElementById('spinner_RDV');
+	id = document.getElementById.bind(document),
+	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
+	spinner_RDV = id('spinner_RDV');
 
 export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, location?: string): void
 {
@@ -135,7 +136,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 				}, 400);
 			});
 
-			document.getElementById('sortie_RDV_reset').addEventListener('click', function ()
+			id('sortie_RDV_reset').addEventListener('click', function ()
 			{
 				sortie_RDV.value = '';
 				resetMap(map, defaultPoint, marker);
