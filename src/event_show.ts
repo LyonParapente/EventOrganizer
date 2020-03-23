@@ -135,6 +135,7 @@ export default function showEvent (calEvent: EventApi): void
 	$el2.css('height', 'auto');
 
 	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
+
 	$eventProperties
 		.one('shown.bs.modal', function ()
 		{
@@ -160,4 +161,41 @@ export default function showEvent (calEvent: EventApi): void
 			router.navigate("planning", i18n("Planning"));
 		})
 		.modal('show');
+
+	// ----------------------
+	// Clipboard copy
+
+	var $event_rdv_location_title = $('#event_rdv_location_title');
+	$event_rdv_location_title.on("click", function()
+	{
+		var el = <HTMLInputElement>document.getElementById('event_rdv_location');
+		if (!el.value) {return;}
+
+		el.select();
+		document.execCommand('copy');
+		el.setSelectionRange(0, 0);
+
+		var url = "http://maps.google.com/maps?daddr="+encodeURIComponent(el.value);
+		var text = i18n('Copied to clipboard!')+
+			'<br/><a href="'+url+'" target="_blank">'+
+			i18n('Open in Google Maps')+'</a>';
+
+		ShowClipboarTooltip($event_rdv_location_title[0], text);
+	});
+}
+
+function ShowClipboarTooltip (element, text)
+{
+	// @ts-ignore html5tooltips
+	var tooltip = new HTML5TooltipUIComponent();
+	tooltip.set(
+	{
+		contentText: text,
+		stickTo: "top",
+		target: element
+	});
+	tooltip.mount();
+	tooltip.show();
+
+	setTimeout(() => tooltip.destroy(), 3000);
 }
