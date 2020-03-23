@@ -115,14 +115,21 @@ export default function showEvent (calEvent: EventApi): void
 	}
 
 	var rdv_location_text = '';
-	var gps = calEvent.extendedProps.gps;
-	if (gps)
+	var eP = calEvent.extendedProps;
+	if (eP.gps || eP.gps_location)
 	{
-		rdv_location_text = gps.join(', ');
+		if (eP.gps_location)
+		{
+			rdv_location_text = eP.gps_location;
+		}
+		else
+		{
+			rdv_location_text = eP.gps.join(', ');
+		}
 	}
 	else
 	{
-		// Retro-compatibility with old events
+		// Retro-compatibility with old events that don't have .gps or .gps_location
 		rdv_location_text = location || "";
 	}
 	$("#event_rdv_location").val(rdv_location_text).attr("placeholder", settings.default_location);
@@ -151,7 +158,7 @@ export default function showEvent (calEvent: EventApi): void
 
 			// -----
 
-			initMap('event_map', false, gps, location);
+			initMap('event_map', false, eP.gps, location);
 
 			// Avoid keyboard popping on mobile
 			// $("#event_comment").focus();
