@@ -153,8 +153,15 @@ document.addEventListener('DOMContentLoaded', function ()
 					target: target,
 					maxWidth: 500
 				});
+
+				// on mobile, touchstart happens first
+				// destroy tooltip which cause visual glitch when the
+				// even properties modal appear
+				target.addEventListener('touchstart', () => tooltip.destroy());
+
 				target.addEventListener('mouseenter', () => tooltip.show());
 				target.addEventListener('mouseleave', () => tooltip.hide());
+
 				tooltip.mount();
 			}
 		},
