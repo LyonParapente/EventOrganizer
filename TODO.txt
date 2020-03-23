@@ -1,6 +1,4 @@
 - bundle js pour fullcalendar vs bundle pour mon code
-https://www.typescriptlang.org/docs/handbook/project-references.html
-- sortir les traductions dans un fichier à part (browser cache)
+https://github.com/TiTi/fusebox-codesplitting-issue
 
-- seen on https://www.npmjs.com/package/tsify
-"Browserify does not support ES2015 modules"
+- sortir les traductions dans un fichier à part (browser cache)

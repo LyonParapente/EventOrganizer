@@ -89,7 +89,7 @@ export var router: Router =
 // Detect browser going back
 window.addEventListener('popstate', function ()
 {
-	if (this.location.href.endsWith('#'))
+	if (this.location.href.charAt(this.location.href.length - 1) === '#')
 	{
 		// Click on dummy <a href="#"> ; do nothing
 		return;
