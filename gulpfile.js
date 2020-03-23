@@ -23,7 +23,7 @@ gulp.task('copy html', function ()
 		.pipe(gulp.dest(dist));
 });
 
-gulp.task('copy js', function()
+gulp.task('copy js', function ()
 {
 	var files =
 	[
@@ -38,7 +38,7 @@ gulp.task('copy js', function()
 		.pipe(gulp.dest(dist_js));
 });
 
-gulp.task('copy js html5tooltips', function()
+gulp.task('copy js html5tooltips', function ()
 {
 	return gulp.src('node_modules/html5tooltipsjs/html5tooltips.js')
 		.pipe(uglify())
@@ -46,7 +46,7 @@ gulp.task('copy js html5tooltips', function()
 		.pipe(gulp.dest(dist_js));
 });
 
-gulp.task('copy js leaflet', function()
+gulp.task('copy js leaflet', function ()
 {
 	var files =
 	[
@@ -81,21 +81,21 @@ function compilejs()
 	.pipe(gulp.dest(dist_js));
 }
 
-gulp.task('tslint', function()
+gulp.task('tslint', function ()
 {
 	return gulp.src('src/**/*.ts', { base: '.' })
 		.pipe(tslint())
 		.pipe(tslint.report({emitError: false}));
 });
 
-gulp.task("copy css fontawesome", function()
+gulp.task("copy css fontawesome", function ()
 {
 	return gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
 		.pipe(rename('fontawesome-all.min.css'))
 		.pipe(gulp.dest(dist_css));
 });
 
-gulp.task("copy css bootstrap-colorpicker", function()
+gulp.task("copy css bootstrap-colorpicker", function ()
 {
 	var files =
 	[
@@ -106,7 +106,7 @@ gulp.task("copy css bootstrap-colorpicker", function()
 		.pipe(gulp.dest(dist_css));
 });
 
-gulp.task("copy css html5tooltips", function()
+gulp.task("copy css html5tooltips", function ()
 {
 	var files =
 	[
@@ -119,23 +119,23 @@ gulp.task("copy css html5tooltips", function()
 		.pipe(gulp.dest(dist_css));
 });
 
-gulp.task("copy css leaflet", function()
+gulp.task("copy css leaflet", function ()
 {
 	return gulp.src('node_modules/leaflet/dist/leaflet.css').pipe(gulp.dest(dist+"/css/leaflet/"));
 });
-gulp.task("copy leaflet-images", function()
+gulp.task("copy leaflet-images", function ()
 {
 	return gulp.src('node_modules/leaflet/dist/images/*').pipe(gulp.dest(dist+'/css/leaflet/images/'));
 });
-gulp.task("copy css leaflet-geocoder", function()
+gulp.task("copy css leaflet-geocoder", function ()
 {
 	return gulp.src('node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css').pipe(gulp.dest(dist+'/css/leaflet/geocoder/'));
 });
-gulp.task("copy leaflet-geocoder-images", function()
+gulp.task("copy leaflet-geocoder-images", function ()
 {
 	return gulp.src('node_modules/esri-leaflet-geocoder/dist/img/*').pipe(gulp.dest(dist+'/css/leaflet/geocoder/img/'));
 });
-gulp.task("copy leaflet-fullscreen-images", function()
+gulp.task("copy leaflet-fullscreen-images", function ()
 {
 	var files =
 	[
@@ -150,19 +150,19 @@ function bundle_leaflet_css()
 	return gulp.series("copy css leaflet", "copy leaflet-images", "copy css leaflet-geocoder", "copy leaflet-geocoder-images", "copy leaflet-fullscreen-images");
 }
 
-gulp.task("copy css themes", function()
+gulp.task("copy css themes", function ()
 {
 	return gulp.src('src/css/themes/*')
 		.pipe(gulp.dest(dist+"/css/theme/"));
 });
 
-gulp.task("copy webfonts", function()
+gulp.task("copy webfonts", function ()
 {
 	return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
 		.pipe(gulp.dest(dist+"/webfonts/"));
 });
 
-gulp.task("fullcalendar css", function()
+gulp.task("fullcalendar css", function ()
 {
 	var files =
 	[
@@ -176,7 +176,7 @@ gulp.task("fullcalendar css", function()
 		.pipe(gulp.dest(dist_css));
 });
 
-gulp.task("scss", function()
+gulp.task("scss", function ()
 {
 	return gulp.src('src/css/*.scss')
 		//.pipe(sourcemaps.init())
@@ -186,7 +186,7 @@ gulp.task("scss", function()
 		.pipe(gulp.dest(dist_css));
 });
 
-function bundle_css()
+function bundle_css ()
 {
 	return gulp.parallel(
 		gulp.series(
@@ -203,7 +203,7 @@ function bundle_css()
 }
 gulp.task("css", bundle_css());
 
-function bundle_js()
+function bundle_js ()
 {
 	return gulp.parallel(
 		"copy js",
@@ -213,7 +213,7 @@ function bundle_js()
 	);
 }
 
-gulp.task('serve', function()
+gulp.task('serve', function ()
 {
 	var SPA = "calendar.html";
 	browserSync.init(
@@ -231,9 +231,10 @@ gulp.task('serve', function()
 		},
 
 		// Routing
-		middleware: function(req,res,next)
+		middleware: function (req, res, next)
 		{
 			if (req.url === '/planning' ||
+				req.url === '/event:new' ||
 				req.url.match(/event:[0-9]+$/) ||
 				req.url.match(/[0-9]{4}-[0-9]{2}$/))
 			{
