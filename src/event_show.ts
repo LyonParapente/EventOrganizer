@@ -10,19 +10,18 @@ var id = document.getElementById.bind(document);
 
 export function init_showEvent (): void
 {
+	var form: HTMLFormElement = document.querySelector("#eventProperties .needs-validation");
 	// Submit a comment
-	$("#eventProperties .needs-validation").on('submit', function (e)
+	form.addEventListener('submit', function ()
 	{
-		var form = <HTMLFormElement><unknown>e.target;
 		if (form.checkValidity())
 		{
 			// TODO: post ajax data
 		}
 		else
 		{
-			$(form).find(":invalid").first().focus();
+			(form.querySelectorAll(":invalid")[0] as HTMLElement).focus();
 		}
-
 		form.classList.add('was-validated');
 
 		// Do not reload page

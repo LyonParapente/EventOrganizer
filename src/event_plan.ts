@@ -7,21 +7,23 @@ import { router } from './routing';
 
 var id = document.getElementById.bind(document);
 
+var sortie_date_start = id("sortie_date_start");
+var sortie_date_end = id("sortie_date_end");
+
 export function init_createEvent (): void
 {
+	var form: HTMLFormElement = document.querySelector("#createEventBody .needs-validation");
 	// Submit an event
-	$("#createEventBody .needs-validation").on('submit', function (e)
+	form.addEventListener('submit', function ()
 	{
-		var form = <HTMLFormElement><unknown>e.target;
 		if (form.checkValidity())
 		{
 			// TODO: post ajax data
 		}
 		else
 		{
-			$(form).find(":invalid").first().focus();
+			(form.querySelectorAll(":invalid")[0] as HTMLElement).focus();
 		}
-
 		form.classList.add('was-validated');
 
 		// Do not reload page
@@ -29,12 +31,13 @@ export function init_createEvent (): void
 		event.stopPropagation();
 	});
 
-	$("#sortie_date_start").on('change', function ()
+	sortie_date_start.addEventListener('change', function ()
 	{
 		// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 		// Dates before this are disabled on mobile and forbidden on desktop validation
-		$("#sortie_date_end").attr("min", (<HTMLInputElement><unknown>this).value);
-	}).attr("min", toDateString(new Date()));
+		sortie_date_end.setAttribute("min", (<HTMLInputElement><unknown>this).value);
+	});
+	sortie_date_start.setAttribute("min", toDateString(new Date()));
 
 	init_categories();
 	init_colorPicker();
@@ -51,8 +54,6 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	}
 
 	var sortie_title = id("sortie_title");
-	var sortie_date_start = id("sortie_date_start");
-	var sortie_date_end = id("sortie_date_end");
 	var sortie_RDV = id("sortie_RDV");
 	var category = id("sortie_category");
 	category.innerHTML = 'None';
@@ -88,10 +89,8 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	sortie_date_end.value = toDateString(end_date);
 	sortie_date_end.setAttribute("min", sortie_date_start.value);
 
-	$(sortie_date_start).trigger('change'); // ensure "min" attribute is set
-
 	router.navigate("event:new", i18n("Plan an event"));
-	$("#createEvent")
+	jQuery("#createEvent")
 		.one('shown.bs.modal', function ()
 		{
 			initMap('sortie_map', true);
