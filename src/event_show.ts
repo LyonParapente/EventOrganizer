@@ -62,7 +62,7 @@ export function showEvent (calEvent: EventApi): void
 	var $eventProperties = $("#eventProperties");
 	var $form = $eventProperties.find("form");
 	$form.removeClass('was-validated');
-	i18n_inPlace($form.find('.invalid-feedback'));
+	i18n_inPlace($form[0].querySelectorAll('.invalid-feedback'));
 
 	// Fill event infos
 	$("#event_title").text(calEvent.title);
