@@ -85,6 +85,7 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 
 	sortie_date_start.value = toDateString(start_date);
 	sortie_date_end.value = toDateString(end_date);
+	sortie_date_end.setAttribute("min", sortie_date_start.value);
 
 	$(sortie_date_start).trigger('change'); // ensure "min" attribute is set
 
