@@ -1,3 +1,7 @@
+var sortie_category = document.getElementById("sortie_category");
+
+var colorPicker: BootstrapColorpicker = null;
+
 export function init_colorPicker (): void
 {
 	var $sortie_color_box = jQuery("#sortie_color_box").colorpicker(
@@ -10,35 +14,8 @@ export function init_colorPicker (): void
 	})
 	.on("colorpickerChange", onColorPickerChange);
 
-	var colorPicker = $sortie_color_box.data('colorpicker');
+	colorPicker = $sortie_color_box.data('colorpicker');
 	colorPicker.hide(); // default state
-
-	var sortie_category = document.getElementById("sortie_category");
-
-	function onColorPickerChange (event: BootstrapColorpickerEvent): void
-	{
-		if (event.color)
-		{
-			var colorBox = document.createElement('div');
-			var css =
-			{
-				display: 'inline-block',
-				backgroundColor: event.color.toString(),
-				color: event.color.isDark() ? 'white' : 'black'
-			};
-			Object.keys(css).forEach(option => colorBox.style[option] = css[option]);
-
-			colorBox.textContent = event.color.toString();
-
-			sortie_category.innerHTML = '';
-			sortie_category.appendChild(colorBox);
-		}
-		else if ((event.target as HTMLInputElement).value.match(/^#[a-fA-F0-9]{6}$/))
-		{
-			// User is typing something
-			colorPicker.setValue((event.target as HTMLInputElement).value); // trigger colorpickerChange
-		}
-	}
 
 	var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
 	sortie_color.addEventListener('focus', function ()
@@ -68,6 +45,31 @@ export function init_colorPicker (): void
 		}
 		colorPicker.hide();
 	});
+}
+
+function onColorPickerChange (event: BootstrapColorpickerEvent): void
+{
+	if (event.color)
+	{
+		var colorBox = document.createElement('div');
+		var css =
+		{
+			display: 'inline-block',
+			backgroundColor: event.color.toString(),
+			color: event.color.isDark() ? 'white' : 'black'
+		};
+		Object.keys(css).forEach(option => colorBox.style[option] = css[option]);
+
+		colorBox.textContent = event.color.toString();
+
+		sortie_category.innerHTML = '';
+		sortie_category.appendChild(colorBox);
+	}
+	else if ((event.target as HTMLInputElement).value.match(/^#[a-fA-F0-9]{6}$/))
+	{
+		// User is typing something
+		colorPicker.setValue((event.target as HTMLInputElement).value); // trigger colorpickerChange
+	}
 }
 
 function hasParentWithId (element: Element, id: string): boolean
