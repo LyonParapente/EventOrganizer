@@ -4,7 +4,7 @@ import { i18n } from './trads';
 
 export function init_categories (): void
 {
-	var $category_dd = $("#sortie_categories");
+	var category_dd = document.getElementById("sortie_categories");
 	var badges_spacing = "ml-2 mb-2";
 	var colorConf = getColorConf();
 	for (var category in colorConf)
@@ -17,22 +17,26 @@ export function init_categories (): void
 			a.style.color = 'white';
 			a.href = "javascript:;";
 			a.appendChild(document.createTextNode(category));
-			$category_dd.append(a);
+			category_dd.appendChild(a);
 		}
 	}
-	var $sortie_category = $("#sortie_category");
-	$category_dd.parent().on("click", "a", function ()
+
+	var sortie_category = document.getElementById("sortie_category");
+	category_dd.parentNode.addEventListener("click", function (evt)
 	{
-		var $cloneBadge = $(this).clone();
-		$sortie_category.empty();
-		if ($cloneBadge.hasClass("badge"))
+		var node = <HTMLElement>evt.target;
+		if (node.nodeName !== 'A') return;
+
+		var cloneBadge = node.cloneNode(true) as HTMLElement;
+		sortie_category.innerHTML = '';
+		if (cloneBadge.classList.contains("badge"))
 		{
-			$cloneBadge.removeClass(badges_spacing);
-			$sortie_category.append($cloneBadge);
+			cloneBadge.classList.remove(...badges_spacing.split(' '));
+			sortie_category.appendChild(cloneBadge);
 		}
 		else
 		{
-			$sortie_category.text(i18n("None"));
+			sortie_category.textContent = i18n("None");
 		}
 	});
 }
