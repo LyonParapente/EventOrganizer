@@ -10,6 +10,7 @@ var id = document.getElementById.bind(document);
 
 export function init_showEvent (): void
 {
+	// Submit a comment
 	$("#eventProperties .needs-validation").on('submit', function (e)
 	{
 		var form = <HTMLFormElement><unknown>e.target;
@@ -28,7 +29,6 @@ export function init_showEvent (): void
 		event.preventDefault();
 		event.stopPropagation();
 	});
-
 }
 
 export function showEvent (calEvent: EventApi): void

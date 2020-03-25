@@ -9,6 +9,7 @@ var id = document.getElementById.bind(document);
 
 export function init_createEvent (): void
 {
+	// Submit an event
 	$("#createEventBody .needs-validation").on('submit', function (e)
 	{
 		var form = <HTMLFormElement><unknown>e.target;
