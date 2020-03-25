@@ -33,7 +33,7 @@ export function init_createEvent (): void
 		// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
 		// Dates before this are disabled on mobile and forbidden on desktop validation
 		$("#sortie_date_end").attr("min", (<HTMLInputElement><unknown>this).value);
-	});
+	}).attr("min", toDateString(new Date()));
 
 	init_categories();
 	init_colorPicker();

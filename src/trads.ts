@@ -22,7 +22,7 @@ const trads =
 		"DateThe": "Le",
 		"Please provide a title": "Veuillez saisir un nom de sortie",
 		"Please provide a location": "Veuillez saisir un lieu",
-		"Date is required": "Date requise",
+		"Invalid date": "Date invalide",
 		"Cannot end before start": "Egale ou après la date de début",
 		"By": "Par",
 		"Comments:": "Commentaires :",
