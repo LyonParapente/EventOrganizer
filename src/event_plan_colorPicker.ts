@@ -1,6 +1,6 @@
 export function init_colorPicker (): void
 {
-	$("#sortie_color_box").colorpicker(
+	var $sortie_color_box = jQuery("#sortie_color_box").colorpicker(
 	{
 		format: 'hex',
 		useAlpha: false,
@@ -8,22 +8,30 @@ export function init_colorPicker (): void
 		fallbackColor: 'fff',
 		autoInputFallback: false
 	})
-	.on("change", onColorPickerChange)
 	.on("colorpickerChange", onColorPickerChange);
 
-	var $sortie_category = $("#sortie_category");
+	var colorPicker = $sortie_color_box.data('colorpicker');
+	colorPicker.hide(); // default state
+
+	var sortie_category = document.getElementById("sortie_category");
 
 	function onColorPickerChange (event: BootstrapColorpickerEvent): void
 	{
 		if (event.color)
 		{
-			var colorBox = $("<div>").css(
+			var colorBox = document.createElement('div');
+			var css =
 			{
 				display: 'inline-block',
 				backgroundColor: event.color.toString(),
 				color: event.color.isDark() ? 'white' : 'black'
-			}).text(event.color.toString());
-			$sortie_category.empty().append(colorBox);
+			};
+			Object.keys(css).forEach(option => colorBox.style[option] = css[option]);
+
+			colorBox.textContent = event.color.toString();
+
+			sortie_category.innerHTML = '';
+			sortie_category.appendChild(colorBox);
 		}
 		else if ((event.target as HTMLInputElement).value.match(/^#[a-fA-F0-9]{6}$/))
 		{
@@ -32,18 +40,18 @@ export function init_colorPicker (): void
 		}
 	}
 
-	var colorPicker = $("#sortie_color_box").data('colorpicker');
-	colorPicker.hide(); // default state
-	$("#sortie_color").on('focus', function ()
+	var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
+	sortie_color.addEventListener('focus', function ()
 	{
 		colorPicker.show();
 	});
 
-	$sortie_category.parent().on('show.bs.dropdown', function ()
+	jQuery(sortie_category.parentElement)
+	.on('show.bs.dropdown', function ()
 	{
-		var text = $sortie_category.text();
+		var text = sortie_category.textContent;
 		var val = text.indexOf('#') === 0 ? text : '';
-		$("#sortie_color").val(val);
+		sortie_color.value = val;
 	})
 	.on('hide.bs.dropdown', function (event)
 	{
@@ -52,7 +60,7 @@ export function init_colorPicker (): void
 		{
 			var target = clickEvent.target;
 			if (target.id !== 'sortie_color_btn' &&
-				$(target).parents("#sortie_color_box").length)
+				hasParentWithId(target, "sortie_color_box"))
 			{
 				event.preventDefault();
 				return false;
@@ -60,4 +68,18 @@ export function init_colorPicker (): void
 		}
 		colorPicker.hide();
 	});
+}
+
+function hasParentWithId (element: Element, id: string): boolean
+{
+	var current = element;
+	while (current !== document.body)
+	{
+		if (current.id === id)
+		{
+			return true;
+		}
+		current = current.parentElement;
+	}
+	return false;
 }
