@@ -9,7 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
 import { init_createEvent, planAnEvent } from './event_plan';
-import showEvent from './event_show';
+import { init_showEvent, showEvent } from './event_show';
 import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
 import { router } from './routing';
@@ -185,11 +185,12 @@ document.addEventListener('DOMContentLoaded', function ()
 	(<any>window).calendar = calendar;
 	calendar.render();
 
-	init_routing();
-
 	i18n_inPlace(["#eventProperties .trad", "#createEvent .trad"]);
 
+	// Once and for all
+	init_routing();
 	init_createEvent();
+	init_showEvent();
 
 	swipedetector(document, function (swipedir: string)
 	{

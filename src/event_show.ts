@@ -8,7 +8,30 @@ import { EventApi } from '@fullcalendar/core';
 
 var id = document.getElementById.bind(document);
 
-export default function showEvent (calEvent: EventApi): void
+export function init_showEvent (): void
+{
+	$("#eventProperties .needs-validation").on('submit', function (e)
+	{
+		var form = <HTMLFormElement><unknown>e.target;
+		if (form.checkValidity())
+		{
+			// TODO: post ajax data
+		}
+		else
+		{
+			$(form).find(":invalid").first().focus();
+		}
+
+		form.classList.add('was-validated');
+
+		// Do not reload page
+		event.preventDefault();
+		event.stopPropagation();
+	});
+
+}
+
+export function showEvent (calEvent: EventApi): void
 {
 	var start = calEvent.start,
 		end = calEvent.end;
