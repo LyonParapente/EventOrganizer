@@ -54,6 +54,7 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	var sortie_date_end = id("sortie_date_end");
 	var sortie_RDV = id("sortie_RDV");
 	var category = id("sortie_category");
+	category.innerHTML = 'None';
 
 	i18n_inPlace(
 	[
@@ -66,13 +67,11 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 		sortie_date_end.labels[0],
 		id("sortie_heure").labels[0],
 		id("sortie_description").labels[0],
+		category,
 		category.labels[0],
 		"#sortie_save",
 		"#createEventBody .invalid-feedback"
 	]);
-
-	category.innerHTML = '';
-	category.appendChild(document.createTextNode(i18n("None")));
 
 	var form = document.querySelector("#createEventBody form");
 	form.classList.remove('was-validated');
