@@ -211,8 +211,8 @@ function init_routing ()
 		.add("planning", function ()
 		{
 			console.log('Show the planning');
-			$("#eventProperties").modal('hide');
-			$("#createEvent").modal('hide');
+			jQuery("#eventProperties").modal('hide');
+			jQuery("#createEvent").modal('hide');
 		})
 		.add("event:new", function ()
 		{
