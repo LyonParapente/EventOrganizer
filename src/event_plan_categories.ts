@@ -22,10 +22,17 @@ export function init_categories (): void
 	}
 
 	var sortie_category = document.getElementById("sortie_category");
-	category_dd.parentNode.addEventListener("click", function (evt)
+	category_dd.parentElement.addEventListener("click", function (evt)
 	{
 		var node = <HTMLElement>evt.target;
-		if (node.nodeName !== 'A') return;
+		if (node.nodeName !== 'A')
+		{
+			if (node.id !== 'sortie_color_btn')
+			{
+				evt.stopPropagation();
+			}
+			return;
+		}
 
 		var cloneBadge = node.cloneNode(true) as HTMLElement;
 		sortie_category.innerHTML = '';
