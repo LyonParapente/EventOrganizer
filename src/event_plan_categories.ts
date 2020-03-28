@@ -1,5 +1,5 @@
 import settings from './settings';
-import theme from './theme';
+import GetTheme from './theme';
 import { i18n } from './trads';
 
 export function init_categories (): void
@@ -50,6 +50,7 @@ export function init_categories (): void
 
 function getColorConf (): object
 {
+	var theme = GetTheme();
 	var colorConf;
 	if (settings.categories.hasOwnProperty(theme))
 	{

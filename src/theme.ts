@@ -1,17 +1,46 @@
-const localStorage_key = 'theme';
-
 var theme;
+export default function GetTheme ()
+{
+	return theme;
+}
+
+document.addEventListener('DOMContentLoaded', function ()
+{
+	var themeSelector = <HTMLSelectElement>document.getElementById('themeSelector');
+	SelectFavoriteTheme(themeSelector);
+	theme = themeSelector.value;
+
+	SetTheme(theme);
+
+	themeSelector.addEventListener('change', function ()
+	{
+		SetTheme(this.value);
+	});
+});
+
+
 
 interface FavoriteTheme
 {
 	theme: string;
 	lastModified: number;
 }
+const localStorage_key = 'theme';
 
-document.addEventListener('DOMContentLoaded', function ()
+function GetFavoriteTheme (): FavoriteTheme
 {
-	var themeSelector = <HTMLSelectElement>document.getElementById('themeSelector');
+	try
+	{
+		return JSON.parse(localStorage.getItem(localStorage_key));
+	}
+	catch(e)
+	{
+		localStorage.removeItem(localStorage_key);
+	}
+}
 
+function SelectFavoriteTheme (themeSelector: HTMLSelectElement): void
+{
 	var favorite = GetFavoriteTheme();
 	if (favorite)
 	{
@@ -25,74 +54,55 @@ document.addEventListener('DOMContentLoaded', function ()
 			{
 				option.selected = true;
 				option.setAttribute('selected', 'selected');
-				theme = favorite.theme;
+				return;
 			}
 		}
 	}
+}
 
-	themeSelector.addEventListener('change', function ()
+
+
+var currentStylesheet;
+function SetTheme (themeName: string): void
+{
+	var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
+
+	var link = document.createElement('link');
+	link.setAttribute('rel', 'stylesheet');
+	link.setAttribute('href', stylesheetUrl);
+	document.head.appendChild(link);
+
+	WhenStylesheetLoaded(link, function ()
 	{
-		SetTheme(this.value);
+		if (currentStylesheet)
+		{
+			document.head.removeChild(currentStylesheet);
+		}
+		currentStylesheet = link;
+
+		if (theme != themeName)
+		{
+			theme = themeName;
+
+			var infos = JSON.stringify({theme: themeName, lastModified: Date.now()});
+			localStorage.setItem(localStorage_key, infos);
+		}
 	});
+}
 
-	SetTheme(themeSelector.value);
-
-	var currentStylesheet;
-	function SetTheme (themeName: string): void
+function WhenStylesheetLoaded (linkNode: HTMLLinkElement, callback: () => void): void
+{
+	var isReady = false;
+	function ready()
 	{
-		var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
-
-		var link = document.createElement('link');
-		link.setAttribute('rel', 'stylesheet');
-		link.setAttribute('href', stylesheetUrl);
-		document.head.appendChild(link);
-
-		WhenStylesheetLoaded(link, function ()
+		if (!isReady)
 		{
-			if (currentStylesheet)
-			{
-				document.head.removeChild(currentStylesheet);
-			}
-			currentStylesheet = link;
-
-			if (theme != themeName)
-			{
-				theme = themeName;
-
-				var infos = JSON.stringify({theme: themeName, lastModified: Date.now()});
-				localStorage.setItem(localStorage_key, infos);
-			}
-		});
-	}
-
-	function GetFavoriteTheme (): FavoriteTheme
-	{
-		try
-		{
-			return JSON.parse(localStorage.getItem(localStorage_key));
-		}
-		catch(e)
-		{
-			localStorage.removeItem(localStorage_key);
+			// avoid double-call
+			isReady = true;
+			callback();
 		}
 	}
 
-	function WhenStylesheetLoaded (linkNode: HTMLLinkElement, callback: () => void): void
-	{
-		var isReady = false;
-		function ready()
-		{
-			if (!isReady)
-			{
-				// avoid double-call
-				isReady = true;
-				callback();
-			}
-		}
-
-		linkNode.onload = ready; // does not work cross-browser
-		setTimeout(ready, 2000); // max wait. also handles browsers that don't support onload
-	}
-});
-
-export default theme;
+	linkNode.onload = ready; // does not work cross-browser
+	setTimeout(ready, 2000); // max wait. also handles browsers that don't support onload
+}
