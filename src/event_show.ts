@@ -58,54 +58,54 @@ export function showEvent (calEvent: EventApi): void
 	], "title");
 
 	// Reset submission checks
-	var $eventProperties = $("#eventProperties");
-	var $form = $eventProperties.find("form");
-	$form.removeClass('was-validated');
-	i18n_inPlace($form[0].querySelectorAll('.invalid-feedback'));
+	var form = document.querySelector("#createEventBody form");
+	form.classList.remove('was-validated');
+	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 
 	// Fill event infos
-	$("#event_title").text(calEvent.title);
-	$("#event_description").html(calEvent.extendedProps.desc || i18n('No description'));
+	id("event_title").textContent = calEvent.title;
+	id("event_description").innerHTML = calEvent.extendedProps.desc || i18n('No description');
 	var category = calEvent.extendedProps.category;
+	var event_category = id("event_category");
 	if (category)
 	{
-		$("#event_category").text(category).css(
-		{
-			'backgroundColor': getColor(category),
-			'color': 'white'
-		});
+		event_category.textContent = category;
+		event_category.style.backgroundColor = getColor(category);
+		event_category.style.color = 'white';
 	}
 	else
 	{
-		$("#event_category").text('');
+		event_category.textContent = '';
 	}
 	var user = calEvent.extendedProps.user;
-	$("#event_author").text(user.name);
+	id("event_author").textContent = user.name;
 	var author_img = new Image();
 	author_img.alt = user.name;
 	author_img.src = "avatars/"+user.id+"-1.jpg";
-	$("#event_author_img").attr("href", "user/"+user.id)
-		.empty().append(author_img);
+	var event_author_img = id("event_author_img");
+	event_author_img.setAttribute("href", "user/"+user.id);
+	event_author_img.innerHTML = '';
+	event_author_img.appendChild(author_img);
 
 	var date_start = toDateString(start);
 	var date_end = toDateString(end);
 	if (date_start === date_end)
 	{
-		$("#event_date_start").text('');
-		$("#event_date_end").text('');
-		$("#event_date_day").text(date_start);
-		$("#event_date_from").hide();
-		$("#event_date_to").hide();
-		$("#event_date_the").show();
+		id("event_date_start").textContent = '';
+		id("event_date_end").textContent  = '';
+		id("event_date_day").textContent = date_start;
+		id("event_date_from").style.display = 'none';
+		id("event_date_to").style.display = 'none';
+		id("event_date_the").style.display = '';
 	}
 	else
 	{
-		$("#event_date_start").text(date_start);
-		$("#event_date_end").text(date_end);
-		$("#event_date_day").text('');
-		$("#event_date_from").show();
-		$("#event_date_to").show();
-		$("#event_date_the").hide();
+		id("event_date_start").textContent = date_start;
+		id("event_date_end").textContent  = date_end;
+		id("event_date_day").textContent = '';
+		id("event_date_from").style.display = '';
+		id("event_date_to").style.display = '';
+		id("event_date_the").style.display = 'none';
 	}
 
 	// ----------------------
@@ -113,30 +113,18 @@ export function showEvent (calEvent: EventApi): void
 
 	var location = calEvent.extendedProps.location;
 	var event_location_text = location || "";
-	var $el = $("#event_location").text(event_location_text);
-	var $el2 = $("#event_location2").text(event_location_text);
-	if (location)
-	{
-		$("#event_location_box").show();
-	}
-	else
-	{
-		$("#event_location_box").hide();
-	}
+	var event_location = id("event_location"),
+		event_location2 = id("event_location2");
+	event_location.textContent = event_location_text;
+	event_location2.textContent = event_location_text;
+	id("event_location_box").style.display = location ? '' : 'none';
 
 	// ----------------------
 	// Rendez-vous location
 
 	var time = calEvent.extendedProps.time;
-	$("#event_rdv_time").text(time || "");
-	if (time)
-	{
-		$("#event_rdv_time_box").show();
-	}
-	else
-	{
-		$("#event_rdv_time_box").hide();
-	}
+	id("event_rdv_time").textContent = time || "";
+	id("event_rdv_time_box").style.display = time ? '' : 'none';
 
 	var rdv_location_text = '';
 	var eP = calEvent.extendedProps;
@@ -156,36 +144,41 @@ export function showEvent (calEvent: EventApi): void
 		// Retro-compatibility with old events that don't have .gps or .gps_location
 		rdv_location_text = location || "";
 	}
-	$("#event_rdv_location").val(rdv_location_text).attr("placeholder", settings.default_location);
-	$("#event_rdv_location_box").show();
+	var event_rdv_location = id ("event_rdv_location");
+	event_rdv_location.value = rdv_location_text;
+	event_rdv_location.setAttribute("placeholder", settings.default_location);
+	id("event_rdv_location_box").style.display = '';
 
 	// ----------------------
 
-	$el.show(); // for next time we show an event
-	$el2.hide();
-	$el2.css('height', 'auto');
+	// for next time we show an event
+	event_location.style.display = '';
+	event_location2.style.display = 'none';
+	event_location2.style.height = 'auto';
 
 	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
 
-	$eventProperties
+	jQuery("#eventProperties")
 		.one('shown.bs.modal', function ()
 		{
 			// Step 1 - Compute textarea height according to width
-			var w = $el.width();
-			$el.hide();
-			$el2.show();
-			$el2.width(w);
+			var w = event_location.offsetWidth;
+			event_location2.style.width = w+'px';
+
+			event_location.style.display = 'none';
+			event_location2.style.display = '';
 
 			// Step 2 - Adjust textarea height
-			var el2 = $el2[0];
-			$el2.css('height', el2.scrollHeight + (el2.offsetHeight - el2.clientHeight));
+			var el2 = event_location2;
+			var height = el2.scrollHeight + (el2.offsetHeight - el2.clientHeight);
+			event_location2.style.height = height+'px';
 
 			// -----
 
 			initMap('event_map', false, eP.gps, location);
 
 			// Avoid keyboard popping on mobile
-			// $("#event_comment").focus();
+			// id("event_comment").focus();
 		})
 		.one('hide.bs.modal', function ()
 		{
@@ -196,18 +189,18 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Clipboard copy
 
-	ClipboardCopyLocation(id('event_location_title'), id('event_location2'));
-	ClipboardCopyLocation(id('event_location2'), id('event_location2'));
+	ClipboardCopyLocation(id('event_location_title'), event_location2);
+	ClipboardCopyLocation(event_location2, event_location2);
 
-	ClipboardCopyLocation(id('event_rdv_location_title'), id('event_rdv_location'));
-	ClipboardCopyLocation(id('event_rdv_location'), id('event_rdv_location'));
+	ClipboardCopyLocation(id('event_rdv_location_title'), event_rdv_location);
+	ClipboardCopyLocation(event_rdv_location, event_rdv_location);
 }
 
 function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement)
 {
 	clickTarget.addEventListener("click", function ()
 	{
-		if (!copyTarget.value) {return;}
+		if (!copyTarget.value) {return}
 
 		copyTarget.select();
 		document.execCommand('copy');
@@ -222,7 +215,7 @@ function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputE
 	});
 }
 
-function ShowClipboarTooltip (element: HTMLElement, html: string)
+function ShowClipboarTooltip (element: HTMLElement, html: string): void
 {
 	// @ts-ignore html5tooltips
 	var tooltip = new HTML5TooltipUIComponent();
