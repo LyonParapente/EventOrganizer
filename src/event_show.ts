@@ -58,7 +58,7 @@ export function showEvent (calEvent: EventApi): void
 	], "title");
 
 	// Reset submission checks
-	var form = document.querySelector("#createEventBody form");
+	var form = document.querySelector("#eventProperties form");
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 
