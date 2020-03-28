@@ -6,7 +6,7 @@ import { i18n } from './trads';
 /// <reference types="esri-leaflet-geocoder" />
 
 var mapList = {},
-	id = document.getElementById.bind(document),
+	id: (string) => HTMLElement = document.getElementById.bind(document),
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
 	spinner_RDV = id('spinner_RDV');
 

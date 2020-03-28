@@ -6,7 +6,7 @@ import settings from './settings';
 import { router } from './routing';
 import { EventApi } from '@fullcalendar/core';
 
-var id = document.getElementById.bind(document);
+var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 export function init_showEvent (): void
 {
@@ -114,7 +114,7 @@ export function showEvent (calEvent: EventApi): void
 	var location = calEvent.extendedProps.location;
 	var event_location_text = location || "";
 	var event_location = id("event_location"),
-		event_location2 = id("event_location2");
+		event_location2 = id("event_location2") as HTMLTextAreaElement;
 	event_location.textContent = event_location_text;
 	event_location2.textContent = event_location_text;
 	id("event_location_box").style.display = location ? '' : 'none';
@@ -144,7 +144,7 @@ export function showEvent (calEvent: EventApi): void
 		// Retro-compatibility with old events that don't have .gps or .gps_location
 		rdv_location_text = location || "";
 	}
-	var event_rdv_location = id ("event_rdv_location");
+	var event_rdv_location = id("event_rdv_location") as HTMLInputElement;
 	event_rdv_location.value = rdv_location_text;
 	event_rdv_location.setAttribute("placeholder", settings.default_location);
 	id("event_rdv_location_box").style.display = '';
@@ -196,7 +196,7 @@ export function showEvent (calEvent: EventApi): void
 	ClipboardCopyLocation(event_rdv_location, event_rdv_location);
 }
 
-function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement)
+function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement|HTMLTextAreaElement)
 {
 	clickTarget.addEventListener("click", function ()
 	{

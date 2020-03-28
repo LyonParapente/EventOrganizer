@@ -16,7 +16,7 @@ import { router } from './routing';
 
 export var calendar: Calendar;
 
-var id = document.getElementById.bind(document);
+var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 document.addEventListener('DOMContentLoaded', function ()
 {

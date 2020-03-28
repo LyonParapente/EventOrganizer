@@ -5,10 +5,10 @@ import { init_categories } from './event_plan_categories';
 import { init_colorPicker } from './event_plan_colorPicker';
 import { router } from './routing';
 
-var id = document.getElementById.bind(document);
+var id: (string) => HTMLElement = document.getElementById.bind(document);
 
-var sortie_date_start = id("sortie_date_start");
-var sortie_date_end = id("sortie_date_end");
+var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
+var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
 export function init_createEvent (): void
 {
@@ -53,22 +53,23 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 		return;
 	}
 
-	var sortie_title = id("sortie_title");
-	var sortie_RDV = id("sortie_RDV");
-	var category = id("sortie_category");
+	var sortie_title = id("sortie_title") as HTMLInputElement;
+	var sortie_RDV = id("sortie_RDV") as HTMLInputElement;
+	var category = id("sortie_category") as HTMLButtonElement;
 	category.innerHTML = 'None';
 
+	console.log(category.labels[0])
 	i18n_inPlace(
 	[
 		"#createEventTitle",
 		sortie_title.labels[0],
-		id("sortie_lieu").labels[0],
+		(id("sortie_lieu") as HTMLInputElement).labels[0],
 		sortie_RDV.labels[0],
 		"#createEventBody .date",
 		sortie_date_start.labels[0],
 		sortie_date_end.labels[0],
-		id("sortie_heure").labels[0],
-		id("sortie_description").labels[0],
+		(id("sortie_heure") as HTMLInputElement).labels[0],
+		(id("sortie_description") as HTMLTextAreaElement).labels[0],
 		category,
 		category.labels[0],
 		"#sortie_save",
