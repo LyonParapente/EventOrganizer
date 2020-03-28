@@ -34,7 +34,6 @@ export function showEvent (calEvent: EventApi): void
 {
 	var start = calEvent.start,
 		end = calEvent.end;
-
 	if (end)
 	{
 		// Remove 1 day because end is exclusive
@@ -44,7 +43,6 @@ export function showEvent (calEvent: EventApi): void
 	{
 		end = start;
 	}
-
 	var isFinished = end.getTime() < new Date().getTime();
 	loadComments(calEvent.id, isFinished);
 
@@ -62,9 +60,13 @@ export function showEvent (calEvent: EventApi): void
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 
-	// Fill event infos
+	// Title & description
 	id("event_title").textContent = calEvent.title;
 	id("event_description").innerHTML = calEvent.extendedProps.desc || i18n('No description');
+
+	// ----------------------
+	// Category
+
 	var category = calEvent.extendedProps.category;
 	var event_category = id("event_category");
 	if (category)
@@ -77,6 +79,10 @@ export function showEvent (calEvent: EventApi): void
 	{
 		event_category.textContent = '';
 	}
+
+	// ----------------------
+	// Author
+
 	var user = calEvent.extendedProps.user;
 	id("event_author").textContent = user.name;
 	var author_img = new Image();
@@ -86,6 +92,9 @@ export function showEvent (calEvent: EventApi): void
 	event_author_img.setAttribute("href", "user/"+user.id);
 	event_author_img.innerHTML = '';
 	event_author_img.appendChild(author_img);
+
+	// ----------------------
+	// Dates
 
 	var date_start = toDateString(start);
 	var date_end = toDateString(end);
@@ -120,7 +129,7 @@ export function showEvent (calEvent: EventApi): void
 	id("event_location_box").style.display = location ? '' : 'none';
 
 	// ----------------------
-	// Rendez-vous location
+	// Rendez-vous time & location
 
 	var time = calEvent.extendedProps.time;
 	id("event_rdv_time").textContent = time || "";
@@ -151,12 +160,12 @@ export function showEvent (calEvent: EventApi): void
 
 	// ----------------------
 
-	// for next time we show an event
+	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
+
+	// Make sure of state (for next time we show an event)
 	event_location.style.display = '';
 	event_location2.style.display = 'none';
 	event_location2.style.height = 'auto';
-
-	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
 
 	jQuery("#eventProperties")
 		.one('shown.bs.modal', function ()

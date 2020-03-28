@@ -79,7 +79,7 @@ function i18nFormat (trad: string, replaceValues: string[]): string
 
 var translated = new Set();
 
-export function i18n_inPlace (selectors: Array<string|HTMLElement>|NodeListOf<Element>, attr?: string): void
+export function i18n_inPlace (selectors: (string|HTMLElement)[]|NodeListOf<Element>, attr?: string): void
 {
 	for (var i = 0; i < selectors.length; ++i)
 	{

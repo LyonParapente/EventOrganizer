@@ -80,7 +80,7 @@ function SetTheme (themeName: string): void
 		}
 		currentStylesheet = link;
 
-		if (theme != themeName)
+		if (theme !== themeName)
 		{
 			theme = themeName;
 

@@ -71,12 +71,16 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 		(id("sortie_description") as HTMLTextAreaElement).labels[0],
 		category,
 		category.labels[0],
-		"#sortie_save",
-		"#createEventBody .invalid-feedback"
+		"#sortie_save"
 	]);
 
+	// Reset submission checks
 	var form = document.querySelector("#createEventBody form");
 	form.classList.remove('was-validated');
+	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
+
+	// ----------------------
+	// Set up fields
 
 	var titles = settings.default_random_event_title;
 	var title = titles[getRandomInt(0, titles.length)];
@@ -90,6 +94,7 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	sortie_date_end.setAttribute("min", sortie_date_start.value);
 
 	router.navigate("event:new", i18n("Plan an event"));
+
 	jQuery("#createEvent")
 		.one('shown.bs.modal', function ()
 		{
