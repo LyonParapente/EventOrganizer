@@ -1,10 +1,19 @@
+const localStorage_key = 'theme';
+
 var theme;
+
+interface FavoriteTheme
+{
+	theme: string;
+	lastModified: number;
+}
+
 document.addEventListener('DOMContentLoaded', function ()
 {
 	var themeSelector = <HTMLSelectElement>document.getElementById('themeSelector');
 
-	var favoriteTheme = GetThemeCookie();
-	if (favoriteTheme)
+	var favorite = GetFavoriteTheme();
+	if (favorite)
 	{
 		var options = themeSelector.options;
 		for (var i = 0; i < options.length; ++i)
@@ -12,10 +21,11 @@ document.addEventListener('DOMContentLoaded', function ()
 			var option = options[i];
 			option.selected = false;
 			option.removeAttribute('selected');
-			if (option.value === favoriteTheme)
+			if (option.value === favorite.theme)
 			{
 				option.selected = true;
 				option.setAttribute('selected', 'selected');
+				theme = favorite.theme;
 			}
 		}
 	}
@@ -25,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function ()
 		SetTheme(this.value);
 	});
 
-	SetTheme(favoriteTheme || themeSelector.value);
+	SetTheme(themeSelector.value);
 
 	var currentStylesheet;
 	function SetTheme (themeName: string): void
@@ -45,18 +55,26 @@ document.addEventListener('DOMContentLoaded', function ()
 			}
 			currentStylesheet = link;
 
-			var date = new Date();
-			var nbDays = 400; // cookie expiration
-			date.setTime(date.getTime()+(nbDays*24*60*60*1000));
-			var expires = "; expires="+date.toUTCString();
-			document.cookie = "theme=" + themeName + expires;
-			theme = themeName;
+			if (theme != themeName)
+			{
+				theme = themeName;
+
+				var infos = JSON.stringify({theme: themeName, lastModified: Date.now()});
+				localStorage.setItem(localStorage_key, infos);
+			}
 		});
 	}
 
-	function GetThemeCookie (): string
+	function GetFavoriteTheme (): FavoriteTheme
 	{
-		return document.cookie.replace(/(?:(?:^|.*;\s*)theme\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+		try
+		{
+			return JSON.parse(localStorage.getItem(localStorage_key));
+		}
+		catch(e)
+		{
+			localStorage.removeItem(localStorage_key);
+		}
 	}
 
 	function WhenStylesheetLoaded (linkNode: HTMLLinkElement, callback: () => void): void
