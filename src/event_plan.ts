@@ -58,7 +58,6 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	var category = id("sortie_category") as HTMLButtonElement;
 	category.innerHTML = 'None';
 
-	console.log(category.labels[0])
 	i18n_inPlace(
 	[
 		"#createEventTitle",
