@@ -1,0 +1,22 @@
+{
+	"compilerOptions":
+	{
+		"target": "ES6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"allowUmdGlobalAccess": true, // Leaflet
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"outDir": "dist/",
+		//"outFile": "dist/bundle.js",
+		"typeRoots" : ["./types/", "./node_modules/@types/"]
+	},
+	"files":
+	[
+		"./src/main.ts"
+	],
+	"include":
+	[
+		"./types/bootstrap-colorpicker.d.ts"
+	]
+}
