@@ -1,4 +1,0 @@
-- bundle js pour fullcalendar vs bundle pour mon code
-https://github.com/TiTi/fusebox-codesplitting-issue
-
-- sortir les traductions dans un fichier à part (browser cache)

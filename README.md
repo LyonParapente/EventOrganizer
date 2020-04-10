@@ -21,7 +21,7 @@ Main goals:
 ## Requirements
 
 * Front: [Node & NPM](https://nodejs.org/)
-* Back: WIP
+* Back: Python
 
 ## Front
 
@@ -40,7 +40,8 @@ Each time you save a source file, [browserSync](https://www.browsersync.io) relo
 
 ## Back
 
-WIP
+See [[Back]]
+
 
 # Stack
 

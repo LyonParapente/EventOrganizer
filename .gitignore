@@ -1,8 +1,0 @@
-.idea/
-*.exe
-
-node_modules/
-package-lock.json
-
-dist/
-data/
