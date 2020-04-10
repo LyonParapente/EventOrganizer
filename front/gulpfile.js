@@ -13,7 +13,7 @@ var sass = require('gulp-sass');
 sass.compiler = require('node-sass');
 const browserSync = require('browser-sync').create();
 
-var dist = "dist",
+var dist = "../back/static",
 	dist_js = dist+"/js/",
 	dist_css = dist+"/css/";
 
@@ -221,7 +221,7 @@ gulp.task('serve', function ()
 		ghostMode: false,
 		server:
 		{
-			baseDir: "dist",
+			baseDir: dist,
 			index: SPA,
 			routes:
 			{
