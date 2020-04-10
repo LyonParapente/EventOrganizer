@@ -30,6 +30,8 @@ First time: `npm install`
 I'm using [gulp.js](https://gulpjs.com/) to "compile" the front.
 
 Just execute: `gulp`
+
+If you want a webserver with live reload: `gulp serve`  
 and your browser should open http://localhost:3000/calendar.html
 
 There is a default task (see `gulpfile.js`) which launch a small http server on port 3000.

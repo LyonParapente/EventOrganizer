@@ -92,7 +92,8 @@ az webapp create -g $ResourceGroup -p $Plan -n $AppName --runtime $Runtime
 
 ## Configure Python
 
-Then add the following extension: Python 3.6.4 x64  
+Then add the following extension: Python 3.6.4 x64   
+(Is the latest available right now on windows with wfastcgi installation)
 The extension will properly register wfastcgi in `C:\Windows\System32\inetsrv\Config\applicationHost.config`
 
 (cannot be done with az webapp...)
@@ -127,6 +128,7 @@ And install requirements like so:
 
 `D:\home\python364x64>python.exe -m pip install --upgrade -r d:\home\site\wwwroot\requirements.txt`
 
+Then don't forget to apply the manual fixes (see top), using Kudu Advanced Tools.
 
 ## Python + Azure links:
 * https://github.com/azure/azure-python-siteextensions

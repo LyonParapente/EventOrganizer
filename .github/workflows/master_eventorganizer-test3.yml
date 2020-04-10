@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@master
@@ -20,11 +20,10 @@ jobs:
       with:
         node-version: '12.13.0'
 
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
+    - name: Compile front with Gulp
+      uses: elstudio/actions-js-build/build@v2
+      with:
+        wdPath: './front'
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v1
@@ -32,4 +31,4 @@ jobs:
         app-name: 'eventorganizer-test3'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_f93d84aeb9974c028f8ffa75ac200681 }}
-        package: .
+        package: back
