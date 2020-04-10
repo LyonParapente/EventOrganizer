@@ -40,7 +40,7 @@ Each time you save a source file, [browserSync](https://www.browsersync.io) relo
 
 ## Back
 
-See [[Back]]
+See [Back](BACK.md)
 
 
 # Stack
