@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS "users" (
 "email" TEXT NOT NULL UNIQUE,
 "password" TEXT NOT NULL,
 "phone" TEXT,
-"licence" TEXT
+"licence" TEXT,
+"creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS "events" (
@@ -21,7 +22,12 @@ CREATE TABLE IF NOT EXISTS "events" (
 "category" TEXT,
 "color" TEXT,
 "creator_id" INTEGER NOT NULL,
+"creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (creator_id) REFERENCES users(id)
+);
+
+CREATE INDEX IF NOT EXISTS "start_date_idx" ON "events" (
+	"start_date"
 );
 
 CREATE TABLE IF NOT EXISTS "events_registration" (
@@ -29,6 +35,7 @@ CREATE TABLE IF NOT EXISTS "events_registration" (
 "event_id" INTEGER NOT NULL,
 "user_id" INTEGER NOT NULL,
 "interest" INTEGER DEFAULT 2,
+"lastupdate_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (event_id) REFERENCES events(id),
 FOREIGN KEY (user_id) REFERENCES users(id)
 );
