@@ -56,6 +56,9 @@ class EventItem(Schema):
     }
     required = ['title', 'start_date']
 
+class EventItemList(Schema):
+    type = 'array'
+    items = EventItem
 
 def _convert_to_datetime(text):
     try:
@@ -105,10 +108,10 @@ class EventListAPI(Resource):
         ],
         'responses': {
             '200': {
-                'description': 'Events',
+                'description': 'List of events',
                 'content': {
                     'application/json': {
-                        'schema': EventItem
+                        'schema': EventItemList
                     }
                 }
             }
