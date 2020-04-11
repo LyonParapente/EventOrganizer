@@ -147,8 +147,8 @@ class EventsDb(object):
     cursor.execute(get_event, (event_id,))
     db.commit()
 
-  def get_event_list(self, year_to_list):
+  def get_event_list(self, year):
     db, cursor = self._connect()
     get_event = "SELECT * FROM events WHERE strftime('%Y', start_date)=?"
-    cursor.execute(get_event, (str(year_to_list),))
+    cursor.execute(get_event, (str(year),))
     return cursor.fetchall()
