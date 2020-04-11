@@ -11,10 +11,7 @@ class EventsDb(object):
   def __init__(self, db_file):
     self.db_file = db_file
 
-    db = self._connect()
-    cursor = db.cursor()
-
-    cursor.execute("PRAGMA foreign_keys = ON")
+    db, cursor = self._connect()
     with open('./create_db.sql', 'r') as sql_file:
       cursor.executescript(sql_file.read())
 
@@ -38,7 +35,12 @@ class EventsDb(object):
     db = sqlite3.connect(self.db_file)
     if db is None:
       raise Exception("Can not connect to database")
-    return db
+
+    db.row_factory = _dict_factory
+    cursor = db.cursor()
+    # Foreign keys constraint enforcement shall be enabled upon every connection to DB
+    cursor.execute("PRAGMA foreign_keys = ON")
+    return db, cursor
 
   # Insert a user in the database
   # Force use of keyworded arguments to prevent from field mismatch and interface incompatibility
@@ -58,8 +60,7 @@ class EventsDb(object):
     insert_user = """INSERT INTO users(firstname,lastname,email,password,phone,licence)
                     VALUES(?,?,?,?,?,?)"""
 
-    db = self._connect()
-    cursor = db.cursor()
+    db, cursor = self._connect()
     cursor.execute(insert_user, tuple(new_user.values()))
     db.commit()
 
@@ -92,19 +93,14 @@ class EventsDb(object):
     insert_event = """INSERT INTO events(title,start_date,end_date,time,description,location,gps,gps_location,category,color,creator_id)
                     VALUES(?,?,?,?,?,?,?,?,?,?,?)"""
 
-    db = self._connect()
-    cursor = db.cursor()
-    # Foreign keys constraint enforcement shall be enabled upon every connection to DB
-    cursor.execute("PRAGMA foreign_keys = ON")
+    db, cursor = self._connect()
     cursor.execute(insert_event, tuple(new_event.values()))
     db.commit()
 
     return cursor.lastrowid
 
   def get_event(self, event_id):
-    db = self._connect()
-    db.row_factory = _dict_factory
-    cursor = db.cursor()
+    db, cursor = self._connect()
     get_event = """SELECT * FROM events WHERE id=?"""
     cursor.execute(get_event, (event_id,))
     return cursor.fetchone()
@@ -141,25 +137,18 @@ class EventsDb(object):
       # Add id to the fields dictionary. Note that the insertion order is important
       fields_to_update['id'] = event_id
 
-      db = self._connect()
-      cursor = db.cursor()
-      # Foreign keys constraint enforcement shall be enabled upon every connection to DB
-      cursor.execute("PRAGMA foreign_keys = ON")
+      db, cursor = self._connect()
       cursor.execute(update_event, tuple(fields_to_update.values()))
       db.commit()
 
   def delete_event(self, event_id):
-    db = self._connect()
-    db.row_factory = _dict_factory
-    cursor = db.cursor()
+    db, cursor = self._connect()
     get_event = "DELETE FROM events WHERE id=?"
     cursor.execute(get_event, (event_id,))
     db.commit()
 
   def get_event_list(self, year_to_list):
-    db = self._connect()
-    db.row_factory = _dict_factory
-    cursor = db.cursor()
+    db, cursor = self._connect()
     get_event = "SELECT * FROM events WHERE strftime('%Y', start_date)=?"
     cursor.execute(get_event, (str(year_to_list),))
     return cursor.fetchall()
