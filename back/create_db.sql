@@ -30,7 +30,7 @@ CREATE INDEX IF NOT EXISTS "start_date_idx" ON "events" (
 	"start_date"
 );
 
-CREATE TABLE IF NOT EXISTS "events_registration" (
+CREATE TABLE IF NOT EXISTS "events_registrations" (
 "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 "event_id" INTEGER NOT NULL,
 "user_id" INTEGER NOT NULL,

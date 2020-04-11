@@ -20,7 +20,7 @@ class EventsDb(object):
     if cursor.fetchone() is None:
       cursor.execute("INSERT INTO sqlite_sequence VALUES('events', 10000)")
       cursor.execute("INSERT INTO sqlite_sequence VALUES('users', 100)")
-      cursor.execute("INSERT INTO sqlite_sequence VALUES('events_registration', 0)")
+      cursor.execute("INSERT INTO sqlite_sequence VALUES('events_registrations', 0)")
       cursor.execute("INSERT INTO sqlite_sequence VALUES('messages', 0)")
 
     # Default user to test API
@@ -49,12 +49,12 @@ class EventsDb(object):
     # Note that the keys insertion order in the dictionary is important and allow the use of
     # new_user.values() whose element order shall match the sqlite insertion command
     new_user = {
-        'firstname': firstname,
-        'lastname': lastname,
-        'email': email,
-        'password': password,
-        'phone': phone,
-        'licence': licence
+      'firstname': firstname,
+      'lastname': lastname,
+      'email': email,
+      'password': password,
+      'phone': phone,
+      'licence': licence
     }
 
     insert_user = """INSERT INTO users(firstname,lastname,email,password,phone,licence)
@@ -77,17 +77,17 @@ class EventsDb(object):
     # Note 2: there is no check in sqlite the the foreign key reference (i.e. creator_id) exists unless a specific
     # pragma is set upon each connection to the db.
     new_event = {
-        'title': title,
-        'start_date': start_date,
-        'end_date': end_date,  # When None means = start_date (full day event)
-        'time': time,
-        'description': description,
-        'location': location,
-        'gps': gps,
-        'gps_location': gps_location,
-        'category': category,
-        'color': color,
-        'creator_id': creator_id
+      'title': title,
+      'start_date': start_date,
+      'end_date': end_date,  # When None means = start_date (full day event)
+      'time': time,
+      'description': description,
+      'location': location,
+      'gps': gps,
+      'gps_location': gps_location,
+      'category': category,
+      'color': color,
+      'creator_id': creator_id
     }
 
     insert_event = """INSERT INTO events(title,start_date,end_date,time,description,location,gps,gps_location,category,color,creator_id)
