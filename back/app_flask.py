@@ -135,8 +135,58 @@ class EventListAPI(Resource):
             public_event_list.append(EventItem(**streamlined_event))
         return public_event_list
 
+api.add_resource(EventListAPI, api_path+'/events', endpoint='events')
+
+
+class EventAPI(Resource):
+
+    update_parser = RequestParser()
+    add_event_args(update_parser)
+
     @swagger.doc({
-        'tags': ['events'],
+        'tags': ['event'],
+        'description': 'Returns an event',
+        'parameters': [
+            {
+                'name': 'event_id',
+                'required': True,
+                'description': 'Event identifier',
+                'in': 'path',
+                'schema': {
+                    'type': 'integer'
+                }
+            }
+        ],
+        'responses': {
+            '200': {
+                'description': 'Event',
+                'content': {
+                    'application/json': {
+                        'schema': EventItem
+                     }
+                }
+            },
+            '404': {
+                'description': 'Event not found'
+            }
+        }
+    })
+    def get(self, event_id):
+        """Get details of an event"""
+        event = db.get_event(event_id)
+        if type(event) is not dict:
+            abort(404)
+        # TODO: maybe do a conversion and back conversion to get proper format transmitted
+        #event["start_date"] = _convert_to_datetime(event["start_date"])
+        #event["end_date"] = _convert_to_datetime(event["end_date"])
+        # Remove private keys
+        del event["creator_id"]
+        streamlined_event = {k: v for k, v in event.items() if v is not None}
+        return EventItem(**streamlined_event)
+
+
+    @swagger.doc({
+        'tags': ['event'],
         'description': 'Create an event',
         'requestBody': {
             'required': True,
@@ -193,55 +243,6 @@ class EventListAPI(Resource):
         streamlined_event = {k: v for k, v in event.items() if v is not None}
         return EventItem(**streamlined_event)
 
-
-api.add_resource(EventListAPI, api_path+'/events', endpoint='events')
-
-
-class EventAPI(Resource):
-
-    update_parser = RequestParser()
-    add_event_args(update_parser)
-
-    @swagger.doc({
-        'tags': ['event'],
-        'description': 'Returns an event',
-        'parameters': [
-            {
-                'name': 'event_id',
-                'required': True,
-                'description': 'Event identifier',
-                'in': 'path',
-                'schema': {
-                    'type': 'integer'
-                }
-            }
-        ],
-        'responses': {
-            '200': {
-                'description': 'Event',
-                'content': {
-                    'application/json': {
-                        'schema': EventItem
-                     }
-                }
-            },
-            '404': {
-                'description': 'Event not found'
-            }
-        }
-    })
-    def get(self, event_id):
-        """Get details of an event"""
-        event = db.get_event(event_id)
-        if type(event) is not dict:
-            abort(404)
-        # TODO: maybe do a conversion and back conversion to get proper format transmitted
-        #event["start_date"] = _convert_to_datetime(event["start_date"])
-        #event["end_date"] = _convert_to_datetime(event["end_date"])
-        # Remove private keys
-        del event["creator_id"]
-        streamlined_event = {k: v for k, v in event.items() if v is not None}
-        return EventItem(**streamlined_event)
 
     @swagger.doc({
         'tags': ['event'],
@@ -332,7 +333,7 @@ class EventAPI(Resource):
         return 'Event deleted', 200
 
 
-api.add_resource(EventAPI, api_path+'/events/<int:event_id>', endpoint='event')
+api.add_resource(EventAPI, api_path+'/event/<int:event_id>', endpoint='event')
 
 
 @app.route('/')
