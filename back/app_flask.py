@@ -36,8 +36,8 @@ users = [
 class EventItem(Schema):
     type = 'object'
     properties = {
+        'id': {'type': 'integer', 'readOnly': True},
         'title': {'type': 'string'},
-        'location': {'type': 'string'},
         'start_date': {
             'type': 'string',
             'format': 'date'
@@ -46,11 +46,15 @@ class EventItem(Schema):
             'type': 'string',
             'format': 'date'
         },
+        'time': {'type': 'string'},
         'description': {'type': 'string'},
-        'creator': {'type': 'string', 'readOnly': True},
-        'event_id': {'type': 'integer', 'readOnly': True}
+        'location': {'type': 'string'},
+        'gps': {'type': 'string'},
+        'gps_location': {'type': 'string'},
+        'category': {'type': 'string'},
+        'color': {'type': 'string'}
     }
-    required = ['title', 'start_date', 'event_id']
+    required = ['title', 'start_date']
 
 
 def _convert_to_datetime(text):
@@ -68,12 +72,17 @@ def convert_string_to_date_object(p):
 
 def add_event_args(parser):
     parser.add_argument('title', type=str, required=True, location='json')
-    parser.add_argument('location', type=str, location='json')
     parser.add_argument('start_date', type=convert_string_to_date_object, required=True, location='json',
                         help='Use Date format')
-    parser.add_argument('end_date', type=convert_string_to_date_object, location='json',
+    parser.add_argument('end_date', type=convert_string_to_date_object, required=False, location='json',
                         help='Use Date format') # Can be missing after parsing
+    parser.add_argument('time', type=str, location='json')
     parser.add_argument('description', type=str, location='json')
+    parser.add_argument('location', type=str, location='json')
+    parser.add_argument('gps', type=str, location='json')
+    parser.add_argument('gps_location', type=str, location='json')
+    parser.add_argument('category', type=str, location='json')
+    parser.add_argument('color', type=str, location='json')
 
 
 class EventListAPI(Resource):
@@ -82,8 +91,7 @@ class EventListAPI(Resource):
 
     @swagger.doc({
         'tags': ['events'],
-        'description': '''Download the list of all events in the given year.\n
-                Note that you are already forced to enter a year in the query but this is not used yet''',
+        'description': 'Download the list of all events in the given year',
         'parameters': [
             {
                 'name': 'year',
@@ -107,7 +115,7 @@ class EventListAPI(Resource):
         }
     })
     def get(self, _parser):
-        """'Download the list of all events in the given year'"""
+        """Download the list of all events in the given year"""
         query = _parser.parse_args(strict=True)
 
         event_list = db.get_event_list(query["year"])
@@ -117,10 +125,8 @@ class EventListAPI(Resource):
         for event in event_list:
             #event["start_date"] = _convert_to_datetime(event["start_date"])
             #event["end_date"] = _convert_to_datetime(event["end_date"])
-            # Temporary until DB change
-            event["event_id"] = event["id"]
+
             # Remove private keys
-            del event["id"]
             del event["creator_id"]
             streamlined_event = {k: v for k, v in event.items() if v is not None}
             public_event_list.append(EventItem(**streamlined_event))
@@ -129,8 +135,14 @@ class EventListAPI(Resource):
     @swagger.doc({
         'tags': ['events'],
         'description': 'Create an event',
-        'reqparser': {'name': 'Event parser',
-                      'parser': post_parser},
+        'requestBody': {
+            'required': True,
+            'content': {
+                'application/json': {
+                    'schema': EventItem
+                }
+            }
+        },
         'responses': {
             '201': {
                 'description': 'Created event',
@@ -155,19 +167,22 @@ class EventListAPI(Resource):
             # If the request is authenticated the user does exist
         # Checking the type of creating_user covers both the case of anonymous request and authorized user not find
         if type(creating_user) is not dict:
-            creating_user = {'pseudo': 'Anonymous', 'id': 1}
+            creating_user = {'id': 101}
 
         event = {
             'title': args['title'],
-            'location': args.get('location'),
             'start_date': args['start_date'],
             'end_date': args.get('end_date'),  # When None means = start_date (full day event)
+            'time': args.get('time'),
             'description': args.get('description'),
-            'creator': creating_user['pseudo'],
+            'location': args.get('location'),
+            'gps': args.get('gps'),
+            'gps_location': args.get('gps_location'),
+            'category': args.get('category'),
+            'color': args.get('color'),
             'creator_id': creating_user['id'],
         }
-        event_id = db.insert_event(**event)
-        event['event_id'] = event_id
+        event['id'] = db.insert_event(**event)
         del event['creator_id']
         event['start_date'] = str(event['start_date'])
         if event['end_date']:
@@ -190,6 +205,7 @@ class EventAPI(Resource):
         'parameters': [
             {
                 'name': 'event_id',
+                'required': True,
                 'description': 'Event identifier',
                 'in': 'path',
                 'schema': {
@@ -205,6 +221,9 @@ class EventAPI(Resource):
                         'schema': EventItem
                      }
                 }
+            },
+            '404': {
+                'description': 'Event not found'
             }
         }
     })
@@ -216,10 +235,7 @@ class EventAPI(Resource):
         # TODO: maybe do a conversion and back conversion to get proper format transmitted
         #event["start_date"] = _convert_to_datetime(event["start_date"])
         #event["end_date"] = _convert_to_datetime(event["end_date"])
-        # Temporary until DB change
-        event["event_id"] = event["id"]
         # Remove private keys
-        del event["id"]
         del event["creator_id"]
         streamlined_event = {k: v for k, v in event.items() if v is not None}
         return EventItem(**streamlined_event)
@@ -230,6 +246,7 @@ class EventAPI(Resource):
         'parameters': [
             {
                 'name': 'event_id',
+                'required': True,
                 'description': 'Event identifier',
                 'in': 'path',
                 'schema': {
@@ -242,10 +259,7 @@ class EventAPI(Resource):
             'required': True,
             'content': {
                 'application/json': {
-                    'schema': {
-                        # By luck this works as long as the POST request uses the same parser
-                        '$ref': '#/components/schemas/Event parser'
-                    }
+                    'schema': EventItem
                 }
             }
         },
@@ -258,6 +272,9 @@ class EventAPI(Resource):
                         'schema': EventItem
                     }
                 }
+            },
+            '404': {
+                'description': 'Event not found'
             }
         }
     })
@@ -270,12 +287,12 @@ class EventAPI(Resource):
 
         # Retrieve updated event
         updated_event = db.get_event(event_id)
+        if type(updated_event) is not dict:
+            abort(404)
         #updated_event["start_date"] = _convert_to_datetime(updated_event["start_date"])
         #updated_event["end_date"] = _convert_to_datetime(updated_event["end_date"])
-        # Temporary until DB change
-        updated_event["event_id"] = updated_event["id"]
+
         # Remove private keys
-        del updated_event["id"]
         del updated_event["creator_id"]
         streamlined_event = {k: v for k, v in updated_event.items() if v is not None}
         return EventItem(**streamlined_event)
@@ -286,6 +303,7 @@ class EventAPI(Resource):
         'parameters': [
             {
                 'name': 'event_id',
+                'required': True,
                 'description': 'Event identifier',
                 'in': 'path',
                 'schema': {
