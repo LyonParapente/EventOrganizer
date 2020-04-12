@@ -96,8 +96,8 @@ class EventListAPI(Resource):
     'description': 'Download a list of events (in a date range)',
     'parameters': [
       {
-        'name': 'start_date',
-        'description': 'Start of the interval being fetched',
+        'name': 'start',
+        'description': 'Start date of the interval being fetched',
         'in': 'query',
         'required': False,
         'schema': {
@@ -105,8 +105,8 @@ class EventListAPI(Resource):
         }
       },
       {
-        'name': 'end_date',
-        'description': 'Exclusive end of the interval being fetched',
+        'name': 'end',
+        'description': 'Exclusive end date of the interval being fetched',
         'in': 'query',
         'required': False,
         'schema': {
@@ -128,7 +128,7 @@ class EventListAPI(Resource):
   def get(self, _parser):
     """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)
-    event_list = db.get_event_list(query["start_date"], query["end_date"])
+    event_list = db.get_event_list(query["start"], query["end"])
     if type(event_list) is not list:
       abort(404)
     return event_list
