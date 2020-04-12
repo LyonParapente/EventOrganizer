@@ -92,15 +92,24 @@ def add_event_args(parser):
 class EventListAPI(Resource):
   @swagger.doc({
     'tags': ['events'],
-    'description': 'Download the list of all events in the given year',
+    'description': 'Download a list of events (in a date range)',
     'parameters': [
       {
-        'name': 'year',
-        'description': 'Year to get events of',
+        'name': 'start_date',
+        'description': 'Start of the interval being fetched',
         'in': 'query',
-        'required': True,
+        'required': False,
         'schema': {
-          'type': 'integer'
+          'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
+        }
+      },
+      {
+        'name': 'end_date',
+        'description': 'Exclusive end of the interval being fetched',
+        'in': 'query',
+        'required': False,
+        'schema': {
+          'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
         }
       }
     ],
@@ -116,21 +125,12 @@ class EventListAPI(Resource):
     }
   })
   def get(self, _parser):
-    """Download the list of all events in the given year"""
+    """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)
-    event_list = db.get_event_list(query["year"])
+    event_list = db.get_event_list(query["start_date"], query["end_date"])
     if type(event_list) is not list:
       abort(404)
-    public_event_list = []
-    for event in event_list:
-      #event["start_date"] = _convert_to_datetime(event["start_date"])
-      #event["end_date"] = _convert_to_datetime(event["end_date"])
-
-      # Remove private keys
-      del event["creator_id"]
-      streamlined_event = {k: v for k, v in event.items() if v is not None}
-      public_event_list.append(EventItem(**streamlined_event))
-    return public_event_list
+    return event_list
 
 api.add_resource(EventListAPI, api_path+'/events', endpoint='events')
 

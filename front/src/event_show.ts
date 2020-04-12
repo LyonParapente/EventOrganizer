@@ -62,7 +62,7 @@ export function showEvent (calEvent: EventApi): void
 
 	// Title & description
 	id("event_title").textContent = calEvent.title;
-	id("event_description").innerHTML = calEvent.extendedProps.desc || i18n('No description');
+	id("event_description").innerHTML = calEvent.extendedProps.description || i18n('No description');
 
 	// ----------------------
 	// Category
@@ -83,13 +83,14 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Author
 
-	var user = calEvent.extendedProps.user;
-	id("event_author").textContent = user.name;
+	var author = calEvent.extendedProps.creator_fullname;
+	var creator_id = calEvent.extendedProps.creator_id;
+	id("event_author").textContent = author;
 	var author_img = new Image();
-	author_img.alt = user.name;
-	author_img.src = "avatars/"+user.id+"-1.jpg";
+	author_img.alt = author;
+	author_img.src = "avatars/"+creator_id.id+"-1.jpg";
 	var event_author_img = id("event_author_img");
-	event_author_img.setAttribute("href", "user/"+user.id);
+	event_author_img.setAttribute("href", "user/"+creator_id.id);
 	event_author_img.innerHTML = '';
 	event_author_img.appendChild(author_img);
 

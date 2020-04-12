@@ -37,6 +37,8 @@ class EventsDb(object):
       raise Exception("Can not connect to database")
 
     db.row_factory = _dict_factory
+    #db.set_trace_callback(print)
+
     cursor = db.cursor()
     # Foreign keys constraint enforcement shall be enabled upon every connection to DB
     cursor.execute("PRAGMA foreign_keys = ON")
@@ -147,8 +149,41 @@ class EventsDb(object):
     cursor.execute(get_event, (event_id,))
     db.commit()
 
-  def get_event_list(self, year):
+  def get_event_list(self, start, end):
     db, cursor = self._connect()
-    get_event = "SELECT * FROM events WHERE strftime('%Y', start_date)=?"
-    cursor.execute(get_event, (str(year),))
-    return cursor.fetchall()
+
+    parameters = []
+    where_start = where_end = ''
+    if start is not None:
+      start_before_range = "(datetime(start_date) < datetime(?) AND datetime(end_date_bis) > datetime(?))"
+      where_start = " AND (datetime(start_date) >= datetime(?) OR "+start_before_range+")"
+      parameters.append(str(start))
+      parameters.append(str(start))
+      parameters.append(str(end))
+    if end is not None:
+      end_after_range = "(datetime(end_date_bis) > datetime(?) AND datetime(start_date) <= datetime(?))"
+      where_end = " AND (datetime(end_date_bis) <= datetime(?) OR "+end_after_range+")"
+      parameters.append(str(end))
+      parameters.append(str(end))
+      parameters.append(str(start))
+
+    get_event = """SELECT
+        e.id,e.title,e.start_date,e.end_date,e.time,e.description,e.location,e.gps,e.gps_location,e.category,e.color,e.creator_id,e.creation_datetime,
+        CASE 
+          WHEN e.end_date IS NULL THEN e.start_date
+          ELSE e.end_date
+        END end_date_bis,
+        u.firstname || ' ' || u.lastname AS creator_fullname
+      FROM events AS e, users AS u
+      WHERE e.creator_id=u.id
+      """ + where_start + where_end + """
+      ORDER BY datetime(start_date) ASC
+    """
+    #print(get_event)
+    cursor.execute(get_event, parameters)
+    event_list = cursor.fetchall()
+
+    for event in event_list:
+      del event["end_date_bis"]
+    return event_list
+
