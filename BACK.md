@@ -79,34 +79,12 @@ Then this might help:
 ## Create WebApp
 
 You can create a web app with the following powershell:
-```
-$ResourceGroup = "MyResourceGroup"
-$AppName = "MyUniqueAppName"
-$Plan = "ASP-$AppName"
-$location = "francecentral"
-$SKU = "B1"
-# Use `az webapp list-runtimes` for available list.
-$Runtime = '"python|3.6"'
 
-az appservice plan create -g $ResourceGroup -n $Plan -l $location --sku $SKU
-az webapp create -g $ResourceGroup -p $Plan -n $AppName --runtime $Runtime
-```
-
-## Configure Python
-
-Then add the following extension: Python 3.6.4 x64   
-(Is the latest available right now on windows with wfastcgi installation)
-The extension will properly register wfastcgi in `C:\Windows\System32\inetsrv\Config\applicationHost.config`
-
-(cannot be done with az webapp...)
-* Go to Configuration > General settings
-* Set Stack = Python
-* Python Version = 3.6
-* Platform = 64bit
-* Hit "Save"
-
+[azure.ps1](azure.ps1)
 
 ## Configure deployment
+
+For instance, if you just want a simple git deployment:
 ```
 $res = az webapp deployment source config-local-git --name $AppName --resource-group $ResourceGroup
 $o = $res|ConvertFrom-Json
@@ -119,6 +97,8 @@ git push --set-upstream azure master
 ```
 
 ## Install pip requirements
+
+Edit: this is now done with azure.ps1 (via a webjob), even the fix!
 
 It will create a python virtual environment automatically because of requirements.txt  
 It might be of interest with httpPlatform.  
