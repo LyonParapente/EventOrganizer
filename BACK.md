@@ -14,6 +14,7 @@ py -m pip install -r .\requirements.txt
 ```
 
 ## /!\ Manual fix #1 required
+For 'Event parser'  
 Edit `env\Lib\site-packages\flask_restful_swagger_3\__init__.py`  
 Line 436, replace  
 ` f.__swagger_type = type_`
@@ -28,6 +29,7 @@ Function should look like this:
 ```
 
 ## /!\ Manual fix #2
+Only necessary if you're using httpPlatform.  
 Edit `env\Lib\site-packages\werkzeug\_reloader.py`  
 Line 313, in def ensure_echo_on():, replace  
 ` if not sys.stdin.isatty():`

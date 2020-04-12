@@ -213,6 +213,8 @@ function bundle_js ()
 	);
 }
 
+gulp.task('ts', compile_js);
+
 gulp.task('serve', function ()
 {
 	var SPA = "calendar.html";

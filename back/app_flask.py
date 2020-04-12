@@ -75,7 +75,8 @@ def convert_string_to_date_object(p):
 
 
 def add_event_args(parser):
-  parser.add_argument('title', type=str, required=True, location='json')
+  parser.add_argument('title', type=str, required=True, location='json',
+                      help='Missing title')
   parser.add_argument('start_date', type=convert_string_to_date_object, required=True, location='json',
                       help='Use Date format')
   parser.add_argument('end_date', type=convert_string_to_date_object, required=False, location='json',
@@ -340,7 +341,7 @@ api.add_resource(EventAPI, api_path+'/event/<int:event_id>', endpoint='event')
 
 @app.route('/')
 def index():
-  return 'Hello!<br/><a href="/swagger">Swagger</a>'
+  return 'Hello!<br/><a href="/swagger">Swagger</a><br/><a href="/static/calendar.html">Calendar</a>'
 
 @app.route('/swagger')
 def swag():
