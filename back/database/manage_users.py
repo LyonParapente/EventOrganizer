@@ -1,8 +1,10 @@
 import datetime
 
-# Insert a user in the database
 def insert_user(self, *,
     firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False):
+  """Insert a user in the database.
+  Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
+
   new_user = {
     'firstname': firstname,
     'lastname': lastname,

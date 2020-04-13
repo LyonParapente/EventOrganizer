@@ -1,10 +1,10 @@
 import datetime
 
-# Insert an event in the database
-# Force use of keyworded arguments to prevent from field mismatch and interface incompatibility
 def insert_event(self, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
     location=None, gps=None, gps_location=None, category=None, color=None, creator_id=None):
+  """Insert an event in the database
+  Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
   # Note: the keys insertion order in the dictionary is important and allow the use of
   # new_event.values() whose element order shall match the sqlite insertion command
@@ -37,6 +37,7 @@ def insert_event(self, *,
   return new_event
 
 def get_event(self, event_id):
+  """Fetch a specific event from database"""
   db, cursor = self._connect()
   try:
     get_event = """SELECT * FROM events WHERE id=?"""
@@ -45,12 +46,13 @@ def get_event(self, event_id):
   finally:
     db.close()
 
-# Update an event in the database
-# Force use of keyworded arguments to prevent from field mismatch and interface incompatibility
 def update_event(self, event_id, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
     location=None, gps=None, gps_location=None, category=None, color=None):
-  # Note: cannot update creator_id
+  """Update an event in the database
+  Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
+
+  # Note: forbids update of creator_id
   fields_to_update = {
     'title': title,
     'start_date': start_date,
@@ -88,6 +90,7 @@ def update_event(self, event_id, *,
   return 0
 
 def delete_event(self, event_id):
+  """Delete a specific event from database"""
   db, cursor = self._connect()
   del_event = "DELETE FROM events WHERE id=?"
   try:
@@ -98,6 +101,7 @@ def delete_event(self, event_id):
     db.close()
 
 def get_events_list(self, start, end):
+  """Fetch a list of events (in a date range) from database"""
   db, cursor = self._connect()
 
   parameters = []
