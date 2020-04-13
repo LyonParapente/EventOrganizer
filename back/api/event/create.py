@@ -2,7 +2,7 @@ from flask import request
 from flask_restful_swagger_3 import Resource, swagger
 from flask_restful.reqparse import RequestParser
 from api.parser import add_event_args
-from api.EventItem import EventItem
+from models import Event
 from database import db
 
 users = [
@@ -30,7 +30,7 @@ class EventAPICreate(Resource):
       'required': True,
       'content': {
         'application/json': {
-          'schema': EventItem
+          'schema': Event
         }
       }
     },
@@ -39,7 +39,7 @@ class EventAPICreate(Resource):
         'description': 'Created event',
         'content': {
           'application/json': {
-            'schema': EventItem
+            'schema': Event
           }
         }
       }
@@ -79,4 +79,4 @@ class EventAPICreate(Resource):
     if event['end_date']:
       event['end_date'] = str(event['end_date'])
     streamlined_event = {k: v for k, v in event.items() if v is not None}
-    return EventItem(**streamlined_event)
+    return Event(**streamlined_event)

@@ -1,10 +1,6 @@
 from flask_restful_swagger_3 import Schema, Resource, swagger
-from api.EventItem import EventItem
+from models import EventList
 from database import db
-
-class EventItemList(Schema):
-  type = 'array'
-  items = EventItem
 
 class EventsAPI(Resource):
   @swagger.doc({
@@ -35,7 +31,7 @@ class EventsAPI(Resource):
         'description': 'List of events',
         'content': {
           'application/json': {
-            'schema': EventItemList
+            'schema': EventList
           }
         }
       }

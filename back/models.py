@@ -1,6 +1,6 @@
 from flask_restful_swagger_3 import Schema
 
-class EventItem(Schema):
+class Event(Schema):
   type = 'object'
   properties = {
     'id': {'type': 'integer', 'readOnly': True},
@@ -23,3 +23,7 @@ class EventItem(Schema):
     'creation_datetime': {'type': 'string', 'format': 'datetime', 'readOnly': True}
   }
   required = ['title', 'start_date']
+
+class EventList(Schema):
+  type = 'array'
+  items = Event

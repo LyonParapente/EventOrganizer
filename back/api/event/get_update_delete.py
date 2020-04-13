@@ -1,7 +1,7 @@
 from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
 from flask_restful.reqparse import RequestParser
-from api.EventItem import EventItem
+from models import Event
 from api.parser import add_event_args
 from database import db
 
@@ -28,7 +28,7 @@ class EventAPI(Resource):
         'description': 'Event',
         'content': {
           'application/json': {
-            'schema': EventItem
+            'schema': Event
            }
         }
       },
@@ -48,7 +48,7 @@ class EventAPI(Resource):
     # Remove private keys
     del event["creator_id"]
     streamlined_event = {k: v for k, v in event.items() if v is not None}
-    return EventItem(**streamlined_event)
+    return Event(**streamlined_event)
 
 
   @swagger.doc({
@@ -70,7 +70,7 @@ class EventAPI(Resource):
       'required': True,
       'content': {
         'application/json': {
-          'schema': EventItem
+          'schema': Event
         }
       }
     },
@@ -80,7 +80,7 @@ class EventAPI(Resource):
         'description': 'Updated event',
         'content': {
           'application/json': {
-            'schema': EventItem
+            'schema': Event
           }
         }
       },
@@ -106,7 +106,7 @@ class EventAPI(Resource):
     # Remove private keys
     del updated_event["creator_id"]
     streamlined_event = {k: v for k, v in updated_event.items() if v is not None}
-    return EventItem(**streamlined_event)
+    return Event(**streamlined_event)
 
   @swagger.doc({
     'tags': ['event'],
