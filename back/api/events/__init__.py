@@ -41,6 +41,4 @@ class EventsAPI(Resource):
     """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)
     events_list = db.get_events_list(query["start"], query["end"])
-    if type(events_list) is not list:
-      abort(404)
     return events_list
