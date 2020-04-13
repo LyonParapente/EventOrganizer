@@ -97,16 +97,18 @@ class DBManage(object):
       'gps_location': gps_location,
       'category': category,
       'color': color,
-      'creator_id': creator_id
+      'creator_id': creator_id,
+      'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-
-    insert_event = """INSERT INTO events(title,start_date,end_date,time,description,location,gps,gps_location,category,color,creator_id)
-                    VALUES(?,?,?,?,?,?,?,?,?,?,?)"""
+    columns = ','.join(list(new_event))
+    insert_event = """INSERT INTO events(%s)
+                    VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"""%(columns)
 
     db, cursor = self._connect()
     cursor.execute(insert_event, tuple(new_event.values()))
     db.commit()
-    return cursor.lastrowid
+    new_event['id'] = cursor.lastrowid
+    return new_event
 
   def get_event(self, event_id):
     db, cursor = self._connect()

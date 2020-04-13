@@ -57,23 +57,13 @@ class EventAPICreate(Resource):
     if type(creating_user) is not dict:
       creating_user = {'id': 101}
 
-    event = {
-      'title': args['title'],
-      'start_date': args['start_date'],
-      'end_date': args.get('end_date'),  # When None means = start_date (full day event)
-      'time': args.get('time'),
-      'description': args.get('description'),
-      'location': args.get('location'),
-      'gps': args.get('gps'),
-      'gps_location': args.get('gps_location'),
-      'category': args.get('category'),
-      'color': args.get('color'),
-      'creator_id': creating_user['id'],
-    }
-    event['id'] = db.insert_event(**event)
+    args['creator_id'] = creating_user['id']
+    event = db.insert_event(**args)
     del event['creator_id']
+
     event['start_date'] = str(event['start_date'])
     if event['end_date']:
       event['end_date'] = str(event['end_date'])
+
     streamlined_event = {k: v for k, v in event.items() if v is not None}
     return Event(**streamlined_event)
