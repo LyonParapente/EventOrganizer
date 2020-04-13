@@ -48,6 +48,3 @@ class EventsAPI(Resource):
     if type(event_list) is not list:
       abort(404)
     return event_list
-
-def declare_events(api, api_path):
-  api.add_resource(EventsAPI, api_path+'/events', endpoint='events')

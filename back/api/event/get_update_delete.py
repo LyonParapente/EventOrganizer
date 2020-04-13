@@ -138,6 +138,3 @@ class EventAPI(Resource):
     # TODO: Check that the event author is the user requesting the deletion. Shall we delete or set CANCELLED status?
     db.delete_event(event_id)
     return 'Event deleted', 200
-
-def declare_event(api, api_path):
-  api.add_resource(EventAPI, api_path+'/event/<int:event_id>', endpoint='event')

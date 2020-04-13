@@ -80,6 +80,3 @@ class EventAPICreate(Resource):
       event['end_date'] = str(event['end_date'])
     streamlined_event = {k: v for k, v in event.items() if v is not None}
     return EventItem(**streamlined_event)
-
-def declare_create_event(api, api_path):
-  api.add_resource(EventAPICreate, api_path+'/event')
