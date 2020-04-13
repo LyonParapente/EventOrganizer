@@ -7,7 +7,7 @@ def _dict_factory(cursor, row):
     d[col[0]] = row[idx]
   return d
 
-class EventsDb(object):
+class DBManage(object):
   def __init__(self, db_file):
     self.db_file = db_file
 
@@ -187,3 +187,7 @@ class EventsDb(object):
       del event["end_date_bis"]
     return event_list
 
+db = None
+def init(db_filepath):
+  global db
+  db = DBManage(db_filepath)
