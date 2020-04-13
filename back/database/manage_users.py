@@ -59,19 +59,19 @@ def update_user(self, user_id, *,
 
   if not len(fields_to_update) == 0:
     # Build the update sql command
-    update_event = "UPDATE users SET "
+    update_user = "UPDATE users SET "
     for k in fields_to_update.keys():
-        update_event += k + "=?,"
+        update_user += k + "=?,"
     # Remove trailing column
-    update_event = update_event.rstrip(',')
-    update_event += " WHERE id=?"
+    update_user = update_user.rstrip(',')
+    update_user += " WHERE id=?"
 
     # Add id to the fields dictionary. Note that the insertion order is important
     fields_to_update['id'] = user_id
 
     db, cursor = self._connect()
     try:
-      cursor.execute(update_event, tuple(fields_to_update.values()))
+      cursor.execute(update_user, tuple(fields_to_update.values()))
       db.commit()
       return cursor.rowcount
     finally:
