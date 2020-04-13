@@ -1,5 +1,5 @@
-from flask_restful_swagger_3 import Schema, Resource, swagger
-from models import EventList
+from flask_restful_swagger_3 import Resource, swagger
+from models.event import Event, EventList
 from database import db
 
 class EventsAPI(Resource):

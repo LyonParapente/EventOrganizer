@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful_swagger_3 import Resource, swagger
-from api.event_parser import get as get_post_parser
-from models import Event
+from models.event import Event
+from models.event_parser import get as get_post_parser
 from database import db
 
 users = [

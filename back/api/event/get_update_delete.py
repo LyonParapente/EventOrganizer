@@ -1,8 +1,7 @@
 from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_restful.reqparse import RequestParser
-from models import Event
-from api.event_parser import get as get_update_parser
+from models.event import Event
+from models.event_parser import get as get_update_parser
 from database import db
 
 def _convert_to_datetime(text):
