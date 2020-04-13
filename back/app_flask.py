@@ -25,8 +25,8 @@ from api.event.get_update_delete import EventAPI
 from api.events import EventsAPI
 
 api.add_resource(EventAPICreate, settings.api_path+'/event')
-api.add_resource(EventAPI,       settings.api_path+'/event/<int:event_id>', endpoint='event')
-api.add_resource(EventsAPI,      settings.api_path+'/events', endpoint='events')
+api.add_resource(EventAPI,       settings.api_path+'/event/<int:event_id>')
+api.add_resource(EventsAPI,      settings.api_path+'/events')
 
 # ------------------------------
 # Routes
