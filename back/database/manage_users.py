@@ -2,7 +2,7 @@ import datetime
 
 def insert_user(self, *,
     firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False):
-  """Insert a user in the database.
+  """Insert a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
   new_user = {
@@ -30,6 +30,7 @@ def insert_user(self, *,
   return new_user
 
 def get_user(self, user_id):
+  """Fetch a specific user from database"""
   db, cursor = self._connect()
   get_user = """SELECT * FROM users WHERE id=?"""
   try:
@@ -38,9 +39,11 @@ def get_user(self, user_id):
   finally:
     db.close()
 
-# Update a user in the database
 def update_user(self, user_id, *,
     firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None):
+  """Update a user in the database
+  Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
+
   fields_to_update = {
     'firstname': firstname,
     'lastname': lastname,
@@ -76,6 +79,7 @@ def update_user(self, user_id, *,
   return 0
 
 def delete_user(self, user_id):
+  """Delete a specific user from database"""
   db, cursor = self._connect()
   del_user = "DELETE FROM users WHERE id=?"
   try:
