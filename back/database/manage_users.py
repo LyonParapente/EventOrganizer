@@ -40,13 +40,13 @@ def get_user(self, user_id):
 def update_user(self, user_id, *,
     firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None):
   fields_to_update = {
-      'firstname': firstname,
-      'lastname': lastname,
-      'email': email,
-      'password': password,
-      'share_email': share_email,
-      'phone': phone,
-      'share_phone': share_phone
+    'firstname': firstname,
+    'lastname': lastname,
+    'email': email,
+    'password': password,
+    'share_email': share_email,
+    'phone': phone,
+    'share_phone': share_phone
   }
 
   # Delete keys whose value is None

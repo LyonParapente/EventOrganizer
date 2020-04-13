@@ -40,6 +40,7 @@ class UserAPI(Resource):
     if type(user) is not dict:
       abort(404)
 
+    # Silence some fields
     if user['share_email'] == 0:
       user['email'] = ''
     if user['share_phone'] == 0:
@@ -128,6 +129,7 @@ class UserAPI(Resource):
   })
   def delete(self, user_id):
     """Delete a user entry"""
+    # TODO: Foreign keys: shall we delete or set CANCELLED status?
     rowcount = db.delete_user(user_id)
     if rowcount < 1:
       abort(404)
