@@ -26,7 +26,7 @@ export default function loadComments (event_id: string, isFinished: boolean): vo
 	var interested = id("event_interested");
 	participants.innerHTML = interested.innerHTML = '';
 
-	requestJson("GET", "events/Event_"+event_id+".json", null, function (data: JSON)
+	requestJson("GET", "/api/messages?event_id="+event_id, null, function (data: JSON)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
 		receiveEventInfos(data, event_comments, isFinished, participants, interested);
@@ -50,20 +50,32 @@ interface Comment
 	comment: string;
 }
 
+interface User
+{
+	name: string;
+	phone?: string;
+	email?: string;
+}
+
+interface UsersDictionary
+{
+	[x: string]: User;
+}
+
 function receiveEventInfos(data: any, event_comments: HTMLElement, isFinished: boolean, participants: HTMLElement, interested: HTMLElement): void
 {
 	for (var i = 0; i < data.comments.length; ++i)
 	{
 		var comment = data.comments[i],
 			userid = comment.user,
-			username = data.users[userid];
+			user = data.users[userid];
 
-		if (!username)
+		if (!user)
 		{
 			console.warn("Missing user "+userid);
 		}
 
-		var groupitem = createCommentEntry(comment, userid, username);
+		var groupitem = createCommentEntry(comment, userid, user);
 		event_comments.appendChild(groupitem);
 	}
 
@@ -71,7 +83,7 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, isFinished: b
 	createInterested(data.interested || [], data.users, isFinished, interested);
 }
 
-function createCommentEntry (comment: Comment, userid: number, username: string): HTMLElement
+function createCommentEntry (comment: Comment, userid: number, user: User): HTMLElement
 {
 	var dateText = toRelativeTimeString(new Date(comment.date));
 
@@ -82,7 +94,7 @@ function createCommentEntry (comment: Comment, userid: number, username: string)
 			a.href = "user/"+userid;
 				var avatar = new Image();
 				avatar.src = "avatars/"+userid+"-2.jpg";
-				avatar.alt = username;
+				avatar.alt = user.name;
 			a.appendChild(avatar);
 		d.appendChild(a);
 		groupitem.appendChild(d);
@@ -93,7 +105,7 @@ function createCommentEntry (comment: Comment, userid: number, username: string)
 			comment_infos.className = 'border-bottom border-light';
 				a = document.createElement('a');
 				a.href = "user/"+userid;
-				a.appendChild(document.createTextNode(username));
+				a.appendChild(document.createTextNode(user.name));
 			comment_infos.appendChild(a);
 			comment_infos.appendChild(document.createTextNode(' - ' + dateText));
 
@@ -107,7 +119,7 @@ function createCommentEntry (comment: Comment, userid: number, username: string)
 	return groupitem;
 }
 
-function createParticipants(participants: number[], users: object, isFinished: boolean, event_participants: HTMLElement): void
+function createParticipants(participants: number[], users: UsersDictionary, isFinished: boolean, event_participants: HTMLElement): void
 {
 	var participants_badge = document.createElement('span');
 	participants_badge.classList.add('badge', 'badge-success');
@@ -135,7 +147,7 @@ function createParticipants(participants: number[], users: object, isFinished: b
 			a.href = "user/"+participant;
 				var avatar = new Image();
 				avatar.src = "avatars/"+participant+"-2.jpg";
-				avatar.alt = users[participant];
+				avatar.alt = users[participant].name;
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);
 			event_participants.appendChild(a);
@@ -147,7 +159,7 @@ function createParticipants(participants: number[], users: object, isFinished: b
 	}
 }
 
-function createInterested(interested: number[], users: object, isFinished: boolean, event_interested: HTMLElement): void
+function createInterested(interested: number[], users: UsersDictionary, isFinished: boolean, event_interested: HTMLElement): void
 {
 	var interested_badge = document.createElement('span');
 	interested_badge.classList.add('badge', 'badge-info');
@@ -175,7 +187,7 @@ function createInterested(interested: number[], users: object, isFinished: boole
 			a.href = "user/"+interested_user;
 				var avatar = new Image();
 				avatar.src = "avatars/"+interested_user+"-2.jpg";
-				avatar.alt = users[interested_user];
+				avatar.alt = users[interested_user].name;
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);
 			event_interested.appendChild(a);

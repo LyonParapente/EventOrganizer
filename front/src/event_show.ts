@@ -88,9 +88,9 @@ export function showEvent (calEvent: EventApi): void
 	id("event_author").textContent = author;
 	var author_img = new Image();
 	author_img.alt = author;
-	author_img.src = "avatars/"+creator_id.id+"-1.jpg";
+	author_img.src = "avatars/"+creator_id+"-1.jpg";
 	var event_author_img = id("event_author_img");
-	event_author_img.setAttribute("href", "user/"+creator_id.id);
+	event_author_img.setAttribute("href", "user/"+creator_id);
 	event_author_img.innerHTML = '';
 	event_author_img.appendChild(author_img);
 
