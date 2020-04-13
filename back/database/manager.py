@@ -34,7 +34,7 @@ class DBManage(object):
     # Default user to test API
     cursor.execute('SELECT * FROM users')
     if cursor.fetchone() is None:
-      cursor.execute("INSERT INTO users(email,password) VALUES('admin','')")
+      cursor.execute("INSERT INTO users(firstname,email,password) VALUES('admin','admin','')")
       print("Default user id: %d" % cursor.lastrowid)
 
     # Save
