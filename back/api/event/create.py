@@ -1,7 +1,6 @@
 from flask import request
 from flask_restful_swagger_3 import Resource, swagger
-from models.event import Event
-from models.event_parser import get as get_post_parser
+from models.event import Event, get_event_parser
 from database import db
 
 users = [
@@ -19,7 +18,7 @@ users = [
 
 
 class EventAPICreate(Resource):
-  post_parser = get_post_parser()
+  post_parser = get_event_parser()
 
   @swagger.doc({
     'tags': ['event'],

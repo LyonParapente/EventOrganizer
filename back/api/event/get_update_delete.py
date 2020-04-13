@@ -1,7 +1,6 @@
 from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.event import Event
-from models.event_parser import get as get_update_parser
+from models.event import Event, get_event_parser
 from database import db
 
 def _convert_to_datetime(text):
@@ -12,7 +11,7 @@ def _convert_to_datetime(text):
   return date
 
 class EventAPI(Resource):
-  update_parser = get_update_parser()
+  update_parser = get_event_parser()
 
   @swagger.doc({
     'tags': ['event'],
