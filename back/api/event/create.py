@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful_swagger_3 import Resource, swagger
 from models.event import Event, get_event_parser
-from database import db
+from database.manager import db
 
 users = [
   {

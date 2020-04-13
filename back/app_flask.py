@@ -7,8 +7,8 @@ from flask_cors import CORS
 # Database initialization
 
 import settings
-import database
-database.init(settings.db_filepath)
+import database.manager
+database.manager.init(settings.db_filepath)
 
 # ------------------------------
 # Flask initialization

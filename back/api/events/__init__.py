@@ -1,6 +1,6 @@
 from flask_restful_swagger_3 import Resource, swagger
 from models.event import Event, EventList
-from database import db
+from database.manager import db
 
 class EventsAPI(Resource):
   @swagger.doc({

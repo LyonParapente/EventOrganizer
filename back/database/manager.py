@@ -12,7 +12,7 @@ class DBManage(object):
     self.db_file = db_file
 
     db, cursor = self._connect()
-    with open('./create_db.sql', 'r') as sql_file:
+    with open('./database/create_db.sql', 'r') as sql_file:
       cursor.executescript(sql_file.read())
 
     # Default sequences values
@@ -23,19 +23,19 @@ class DBManage(object):
       cursor.execute("INSERT INTO sqlite_sequence VALUES('events_registrations', 0)")
       cursor.execute("INSERT INTO sqlite_sequence VALUES('messages', 0)")
 
-    # Default user to test API
-    cursor.execute('SELECT * FROM users')
-    if cursor.fetchone() is None:
-      cursor.execute("INSERT INTO users(email,password) VALUES('admin','')")
-      print("Default user id: %d" % cursor.lastrowid)
-
     # Patch 1
     cursor.execute('PRAGMA table_info(users)')
     users_columns = [i['name'] for i in cursor.fetchall()]
     if 'share_email' not in users_columns:
       print("Applying patch 1")
-      with open('./patch1.sql', 'r') as sql_file:
+      with open('./database/patch1.sql', 'r') as sql_file:
         cursor.executescript(sql_file.read())
+
+    # Default user to test API
+    cursor.execute('SELECT * FROM users')
+    if cursor.fetchone() is None:
+      cursor.execute("INSERT INTO users(email,password) VALUES('admin','')")
+      print("Default user id: %d" % cursor.lastrowid)
 
     # Save
     db.commit()
