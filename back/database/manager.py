@@ -72,16 +72,22 @@ class DBManage(object):
                     VALUES(%s)"""%(columns,questions)
 
     db, cursor = self._connect()
-    cursor.execute(insert_user, tuple(new_user.values()))
-    db.commit()
-    new_user['id'] = cursor.lastrowid
+    try:
+      cursor.execute(insert_user, tuple(new_user.values()))
+      db.commit()
+      new_user['id'] = cursor.lastrowid
+    finally:
+      db.close()
     return new_user
 
   def get_user(self, user_id):
     db, cursor = self._connect()
     get_user = """SELECT * FROM users WHERE id=?"""
-    cursor.execute(get_user, (user_id,))
-    return cursor.fetchone()
+    try:
+      cursor.execute(get_user, (user_id,))
+      return cursor.fetchone()
+    finally:
+      db.close()
 
   # Update a user in the database
   def update_user(self, user_id, *,
@@ -112,17 +118,23 @@ class DBManage(object):
       fields_to_update['id'] = user_id
 
       db, cursor = self._connect()
-      cursor.execute(update_event, tuple(fields_to_update.values()))
-      db.commit()
-      return cursor.rowcount
+      try:
+        cursor.execute(update_event, tuple(fields_to_update.values()))
+        db.commit()
+        return cursor.rowcount
+      finally:
+        db.close()
     return 0
 
   def delete_user(self, user_id):
     db, cursor = self._connect()
     del_user = "DELETE FROM users WHERE id=?"
-    cursor.execute(del_user, (user_id,))
-    db.commit()
-    return cursor.rowcount
+    try:
+      cursor.execute(del_user, (user_id,))
+      db.commit()
+      return cursor.rowcount
+    finally:
+      db.close()
 
 
 
@@ -158,16 +170,22 @@ class DBManage(object):
                     VALUES(%s)"""%(columns,questions)
 
     db, cursor = self._connect()
-    cursor.execute(insert_event, tuple(new_event.values()))
-    db.commit()
-    new_event['id'] = cursor.lastrowid
-    return new_event
+    try:
+      cursor.execute(insert_event, tuple(new_event.values()))
+      db.commit()
+      new_event['id'] = cursor.lastrowid
+      return new_event
+    finally:
+      db.close()
 
   def get_event(self, event_id):
     db, cursor = self._connect()
-    get_event = """SELECT * FROM events WHERE id=?"""
-    cursor.execute(get_event, (event_id,))
-    return cursor.fetchone()
+    try:
+      get_event = """SELECT * FROM events WHERE id=?"""
+      cursor.execute(get_event, (event_id,))
+      return cursor.fetchone()
+    finally:
+      db.close()
 
   # Update an event in the database
   # Force use of keyworded arguments to prevent from field mismatch and interface incompatibility
@@ -202,17 +220,23 @@ class DBManage(object):
       fields_to_update['id'] = event_id
 
       db, cursor = self._connect()
-      cursor.execute(update_event, tuple(fields_to_update.values()))
-      db.commit()
-      return cursor.rowcount
+      try:
+        cursor.execute(update_event, tuple(fields_to_update.values()))
+        db.commit()
+        return cursor.rowcount
+      finally:
+        db.close()
     return 0
 
   def delete_event(self, event_id):
     db, cursor = self._connect()
     del_event = "DELETE FROM events WHERE id=?"
-    cursor.execute(del_event, (event_id,))
-    db.commit()
-    return cursor.rowcount
+    try:
+      cursor.execute(del_event, (event_id,))
+      db.commit()
+      return cursor.rowcount
+    finally:
+      db.close()
 
   def get_event_list(self, start, end):
     db, cursor = self._connect()
@@ -245,8 +269,11 @@ class DBManage(object):
       ORDER BY datetime(start_date) ASC
     """
     #print(get_event)
-    cursor.execute(get_event, parameters)
-    event_list = cursor.fetchall()
+    try:
+      cursor.execute(get_event, parameters)
+      event_list = cursor.fetchall()
+    finally:
+      db.close()
 
     for event in event_list:
       del event["end_date_bis"]
