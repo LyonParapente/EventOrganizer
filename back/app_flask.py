@@ -29,7 +29,9 @@ api.add_resource(EventAPI,       settings.api_path+'/event/<int:event_id>')
 api.add_resource(EventsAPI,      settings.api_path+'/events')
 
 from api.user.create import UserAPICreate
+from api.user.get_update_delete import UserAPI
 api.add_resource(UserAPICreate, settings.api_path+'/user')
+api.add_resource(UserAPI,       settings.api_path+'/user/<int:user_id>')
 
 # ------------------------------
 # Routes

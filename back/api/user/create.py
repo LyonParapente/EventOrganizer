@@ -32,5 +32,7 @@ class UserAPICreate(Resource):
     """Create a user"""
     args = self.post_parser.parse_args(strict=True)
     user = db.insert_user(**args)
+    for field in User.always_filtered:
+      user[field] = None
     streamlined_user = {k: v for k, v in user.items() if v is not None}
     return User(**streamlined_user)
