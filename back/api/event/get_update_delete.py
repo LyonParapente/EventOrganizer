@@ -1,3 +1,4 @@
+from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
 from flask_restful.reqparse import RequestParser
 from api.EventItem import EventItem
