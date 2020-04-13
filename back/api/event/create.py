@@ -59,11 +59,12 @@ class EventAPICreate(Resource):
 
     args['creator_id'] = creating_user['id']
     event = db.insert_event(**args)
-    del event['creator_id']
 
     event['start_date'] = str(event['start_date'])
     if event['end_date']:
       event['end_date'] = str(event['end_date'])
 
+    for field in Event.always_filtered:
+      event[field] = None
     streamlined_event = {k: v for k, v in event.items() if v is not None}
     return Event(**streamlined_event)

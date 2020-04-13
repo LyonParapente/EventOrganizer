@@ -46,11 +46,13 @@ class EventAPI(Resource):
     event = db.get_event(event_id)
     if type(event) is not dict:
       abort(404)
+
     # TODO: maybe do a conversion and back conversion to get proper format transmitted
     #event["start_date"] = _convert_to_datetime(event["start_date"])
     #event["end_date"] = _convert_to_datetime(event["end_date"])
-    # Remove private keys
-    del event["creator_id"]
+
+    for field in Event.always_filtered:
+      event[field] = None
     streamlined_event = {k: v for k, v in event.items() if v is not None}
     return Event(**streamlined_event)
 
@@ -95,22 +97,13 @@ class EventAPI(Resource):
   })
   def put(self, event_id):
     """Update an event entry"""
-    # TODO: Check that the user requesting the update is the author of the event
-    # Use strict for security and prevent request from overriding non writeable keys (like creator...)
+
     args = self.update_parser.parse_args(strict=True)
     db.update_event(event_id, **args)
 
     # Retrieve updated event
-    updated_event = db.get_event(event_id)
-    if type(updated_event) is not dict:
-      abort(404)
-    #updated_event["start_date"] = _convert_to_datetime(updated_event["start_date"])
-    #updated_event["end_date"] = _convert_to_datetime(updated_event["end_date"])
+    return self.get(event_id)
 
-    # Remove private keys
-    del updated_event["creator_id"]
-    streamlined_event = {k: v for k, v in updated_event.items() if v is not None}
-    return Event(**streamlined_event)
 
   @swagger.doc({
     'tags': ['event'],
@@ -142,7 +135,7 @@ class EventAPI(Resource):
   })
   def delete(self, event_id):
     """Delete an event entry"""
-    # TODO: Check that the event author is the user requesting the deletion. Shall we delete or set CANCELLED status?
+    # TODO: Foreign keys: shall we delete or set CANCELLED status?
     rowcount = db.delete_event(event_id)
     if rowcount < 1:
       abort(404)

@@ -29,6 +29,7 @@ class Event(Schema):
     'creation_datetime': {'type': 'string', 'format': 'datetime', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   required = ['title', 'start_date']
+  always_filtered = ['creator_id']
 
 def get_event_parser():
   parser = RequestParser()
