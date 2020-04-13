@@ -119,7 +119,7 @@ def get_events_list(self, start, end):
     parameters.append(str(end))
     parameters.append(str(start))
 
-  get_event = """SELECT
+  get_events = """SELECT
       e.id,e.title,e.start_date,e.end_date,e.time,e.description,e.location,e.gps,e.gps_location,e.category,e.color,e.creator_id,e.creation_datetime,
       CASE 
         WHEN e.end_date IS NULL THEN e.start_date
@@ -131,9 +131,9 @@ def get_events_list(self, start, end):
     """ + where_start + where_end + """
     ORDER BY datetime(start_date) ASC
   """
-  #print(get_event)
+  #print(get_events)
   try:
-    cursor.execute(get_event, parameters)
+    cursor.execute(get_events, parameters)
     event_list = cursor.fetchall()
   finally:
     db.close()
