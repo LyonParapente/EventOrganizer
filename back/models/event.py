@@ -26,10 +26,11 @@ class Event(Schema):
     'gps_location': {'type': 'string', 'example': 'La Halle Mode & Chaussures | Bron'},
     'category': {'type': 'string', 'example': 'conference'},
     'color': {'type': 'string', 'example': '#662C67'},
+    'creator_id': {'type': 'integer', 'example': 101},
     'creation_datetime': {'type': 'string', 'format': 'datetime', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   required = ['title', 'start_date']
-  always_filtered = ['creator_id']
+  always_filtered = []
 
 def get_event_parser():
   parser = RequestParser()
@@ -46,6 +47,9 @@ def get_event_parser():
   parser.add_argument('gps_location', type=str, location='json')
   parser.add_argument('category', type=str, location='json')
   parser.add_argument('color', type=str, location='json')
+  # creator_id declared to avoid error when "Create an event" with suggested json
+  # we overwrite the value in create anyway, and it's not used in update
+  parser.add_argument('creator_id', type=str, location='json')
   return parser
 
 class EventList(Schema):

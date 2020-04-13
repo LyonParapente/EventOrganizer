@@ -50,6 +50,7 @@ def get_event(self, event_id):
 def update_event(self, event_id, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
     location=None, gps=None, gps_location=None, category=None, color=None):
+  # Note: cannot update creator_id
   fields_to_update = {
     'title': title,
     'start_date': start_date,
