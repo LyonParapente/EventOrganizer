@@ -18,6 +18,41 @@ def get_message_parser():
   parser.add_argument('comment', type=str, location='json')
   return parser
 
-class MessageList(Schema):
-  type = 'array'
-  items = Message
+#--------------------------------------------------
+
+class CommentResponse(Schema):
+  type = 'object'
+  properties = {
+    'date': {'type': 'datetime', 'example': '2020-04-13 16:30:04'},
+    'user': {'type': 'integer', 'example': 101},
+    'comment': {'type': 'string', 'example': 'This is my message'}
+  }
+
+class UserResponse(Schema):
+  type = 'object'
+  properties = {
+    'name': {'type': 'string', 'example': 'John DOE'},
+    'phone': {'type': 'string', 'example': '01.02.03.04.05'}, # if shared
+    'email': {'type': 'string', 'example': 'john.doe@gmail.com'} # if shared
+  }
+
+class MessagesResponse(Schema):
+  type = 'object'
+  properties = {
+    'users': {
+      'type': 'object',
+      'additionalProperties': UserResponse
+    },
+    'comments': {
+      'type': 'array',
+      'items': CommentResponse
+    },
+    'participants': {
+      'type': 'array',
+      'items': {'type': 'integer', 'example': 101}
+    },
+    'interested': {
+      'type': 'array',
+      'items': {'type': 'integer', 'example': [102,103]}
+    }
+  }

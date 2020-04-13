@@ -24,3 +24,9 @@ def get_user_parser():
   parser.add_argument('phone', type=str, location='json')
   parser.add_argument('share_phone', type=bool, location='json')
   return parser
+
+def silence_user_fields(user):
+  if user['share_email'] == 0:
+    user['email'] = ''
+  if user['share_phone'] == 0:
+    user['phone'] = ''

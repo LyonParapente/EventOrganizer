@@ -31,16 +31,26 @@ def get_messages_list(self, event_id):
   db, cursor = self._connect()
   get_messages = """SELECT
       m.comment,m.creation_datetime,m.author_id,
+      u.phone,u.share_phone,u.email,u.share_email,
       u.firstname || ' ' || u.lastname AS author_fullname
     FROM messages AS m, users AS u
     WHERE m.author_id=u.id
     AND m.event_id=?
     ORDER BY datetime(m.creation_datetime) ASC
   """
-  #print(get_messages)
+  get_registrations = """SELECT r.user_id,r.interest,
+      u.phone,u.share_phone,u.email,u.share_email,
+      u.firstname || ' ' || u.lastname AS user_fullname
+    FROM events_registrations r, users u
+    WHERE r.user_id=u.id
+    AND r.event_id=?
+  """
   try:
     cursor.execute(get_messages, (event_id,))
     messages_list = cursor.fetchall()
+
+    cursor.execute(get_registrations, (event_id,))
+    registrations_list = cursor.fetchall()
   finally:
     db.close()
-  return messages_list
+  return messages_list, registrations_list
