@@ -1,4 +1,3 @@
 version = '1.0'
-api_path = '/api/v'+version
-
+api_path = '/api'
 db_filepath = './events.db'

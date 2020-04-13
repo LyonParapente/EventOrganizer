@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function ()
 			}
 		},
 
-		events: '/api/v1.0/events',
+		events: '/api/events',
 
 		locales: [frLocale],
 		locale: settings.lang,
