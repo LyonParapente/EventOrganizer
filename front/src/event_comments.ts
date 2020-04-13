@@ -113,7 +113,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var p = document.createElement("p");
 			p.className = 'blockquote my-1 text-dark';
 			p.appendChild(document.createTextNode(comment.comment));
-			p.innerHTML = p.innerHTML.replace(/\n/g, '<br/>');
+			p.innerHTML = p.innerHTML.replace(/\\n/g, '<br/>');
 		col.appendChild(p);
 	groupitem.appendChild(col);
 	return groupitem;
