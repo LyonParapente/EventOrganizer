@@ -65,7 +65,6 @@ class DBManage(object):
     db, cursor = self._connect()
     cursor.execute(insert_user, tuple(new_user.values()))
     db.commit()
-
     return cursor.lastrowid
 
   # Insert an event in the database
@@ -98,7 +97,6 @@ class DBManage(object):
     db, cursor = self._connect()
     cursor.execute(insert_event, tuple(new_event.values()))
     db.commit()
-
     return cursor.lastrowid
 
   def get_event(self, event_id):
@@ -142,12 +140,15 @@ class DBManage(object):
       db, cursor = self._connect()
       cursor.execute(update_event, tuple(fields_to_update.values()))
       db.commit()
+      return cursor.rowcount
+    return 0
 
   def delete_event(self, event_id):
     db, cursor = self._connect()
     get_event = "DELETE FROM events WHERE id=?"
     cursor.execute(get_event, (event_id,))
     db.commit()
+    return cursor.rowcount
 
   def get_event_list(self, start, end):
     db, cursor = self._connect()

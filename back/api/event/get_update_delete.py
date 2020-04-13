@@ -130,11 +130,16 @@ class EventAPI(Resource):
             'type': 'string'
           }
         }
+      },
+      '404': {
+        'description': 'Event not found'
       }
     }
   })
   def delete(self, event_id):
     """Delete an event entry"""
     # TODO: Check that the event author is the user requesting the deletion. Shall we delete or set CANCELLED status?
-    db.delete_event(event_id)
+    rowcount = db.delete_event(event_id)
+    if rowcount < 1:
+      abort(404)
     return 'Event deleted', 200
