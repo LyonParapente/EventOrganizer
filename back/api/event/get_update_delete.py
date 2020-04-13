@@ -2,12 +2,18 @@ from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
 from flask_restful.reqparse import RequestParser
 from models import Event
-from api.parser import add_event_args
+from api.event_parser import get as get_update_parser
 from database import db
 
+def _convert_to_datetime(text):
+  try:
+    date = datetime.datetime.strptime(text, "%Y-%m-%d %H:%M:%S")
+  except:
+    date = None
+  return date
+
 class EventAPI(Resource):
-  update_parser = RequestParser()
-  add_event_args(update_parser)
+  update_parser = get_update_parser()
 
   @swagger.doc({
     'tags': ['event'],
