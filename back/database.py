@@ -29,6 +29,15 @@ class DBManage(object):
       cursor.execute("INSERT INTO users(email,password) VALUES('admin','')")
       print("Default user id: %d" % cursor.lastrowid)
 
+    # Patch 1
+    cursor.execute('PRAGMA table_info(users)')
+    users_columns = [i['name'] for i in cursor.fetchall()]
+    if 'share_email' not in users_columns:
+      print("Applying patch 1")
+      with open('./patch1.sql', 'r') as sql_file:
+        cursor.executescript(sql_file.read())
+
+    # Save
     db.commit()
 
   def _connect(self):

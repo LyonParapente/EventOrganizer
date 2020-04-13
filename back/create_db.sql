@@ -3,9 +3,10 @@ CREATE TABLE IF NOT EXISTS "users" (
 "firstname" TEXT,
 "lastname" TEXT,
 "email" TEXT NOT NULL UNIQUE,
+"share_email" BOOLEAN DEFAULT 0,
 "password" TEXT NOT NULL,
 "phone" TEXT,
-"licence" TEXT,
+"share_phone" BOOLEAN DEFAULT 0,
 "creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
