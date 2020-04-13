@@ -134,10 +134,10 @@ def get_events_list(self, start, end):
   #print(get_events)
   try:
     cursor.execute(get_events, parameters)
-    event_list = cursor.fetchall()
+    events_list = cursor.fetchall()
   finally:
     db.close()
 
-  for event in event_list:
+  for event in events_list:
     del event["end_date_bis"]
-  return event_list
+  return events_list
