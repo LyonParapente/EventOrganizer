@@ -54,27 +54,30 @@ class DBManage(object):
     return db, cursor
 
   # Insert a user in the database
-  # Force use of keyworded arguments to prevent from field mismatch and interface incompatibility
-  def insert_user(self, *, firstname=None, lastname=None, email=None, password=None, phone=None, licence=None):
-
-    # Note that the keys insertion order in the dictionary is important and allow the use of
-    # new_user.values() whose element order shall match the sqlite insertion command
+  def insert_user(self, *, firstname=None, lastname=None, email=None, share_email=False, password=None, phone=None, share_phone=False, licence=None):
     new_user = {
       'firstname': firstname,
       'lastname': lastname,
       'email': email,
+      'share_email': 1 if share_email else 0,
       'password': password,
       'phone': phone,
-      'licence': licence
+      'share_phone': 1 if share_phone else 0,
+      'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-
-    insert_user = """INSERT INTO users(firstname,lastname,email,password,phone,licence)
-                    VALUES(?,?,?,?,?,?)"""
+    columns = ','.join(tuple(new_user))
+    questions = ','.join(['?' for x in new_user])
+    insert_user = """INSERT INTO users(%s)
+                    VALUES(%s)"""%(columns,questions)
 
     db, cursor = self._connect()
     cursor.execute(insert_user, tuple(new_user.values()))
     db.commit()
-    return cursor.lastrowid
+    new_user['id'] = cursor.lastrowid
+    del new_user['password']
+    del new_user['share_email']
+    del new_user['share_phone']
+    return new_user
 
   # Insert an event in the database
   # Force use of keyworded arguments to prevent from field mismatch and interface incompatibility
@@ -100,9 +103,10 @@ class DBManage(object):
       'creator_id': creator_id,
       'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-    columns = ','.join(list(new_event))
+    columns = ','.join(tuple(new_event))
+    questions = ','.join(['?' for x in new_event])
     insert_event = """INSERT INTO events(%s)
-                    VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"""%(columns)
+                    VALUES(%s)"""%(columns,questions)
 
     db, cursor = self._connect()
     cursor.execute(insert_event, tuple(new_event.values()))
