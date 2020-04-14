@@ -51,7 +51,3 @@ def get_event_parser():
   # we overwrite the value in create anyway, and it's not used in update
   parser.add_argument('creator_id', type=str, location='json')
   return parser
-
-class EventList(Schema):
-  type = 'array'
-  items = Event

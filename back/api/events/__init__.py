@@ -1,5 +1,5 @@
 from flask_restful_swagger_3 import Resource, swagger
-from models.event import Event, EventList
+from models.event import Event
 from database.manager import db
 
 class EventsAPI(Resource):
@@ -31,7 +31,7 @@ class EventsAPI(Resource):
         'description': 'List of events',
         'content': {
           'application/json': {
-            'schema': EventList
+            'schema': Event.array()
           }
         }
       }
