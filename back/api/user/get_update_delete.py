@@ -83,11 +83,11 @@ class UserAPI(Resource):
 
     try:
       # Validate request body with schema model
-      args = User(**request.get_json())
+      user = User(**request.get_json())
     except ValueError as e:
       return ErrorModel(**{'message': e.args[0]}), 400
 
-    db.update_user(user_id, **args)
+    db.update_user(user_id, **user)
 
     # Retrieve updated user with filtered properties
     return self.get(user_id)

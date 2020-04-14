@@ -35,12 +35,17 @@ class UserAPICreate(Resource):
     """Create a user"""
     try:
       # Validate request body with schema model
-      args = User(**request.get_json())
+      user = User(**request.get_json())
     except ValueError as e:
       return ErrorModel(**{'message': e.args[0]}), 400
 
+    # email is not required in order
+    # to be removed in silence_user_fields
+    if user.get('email') is None:
+      return ErrorModel(**{'message': 'The attribute "email" is required'}), 400
+
     try:
-      props = db.insert_user(**args)
+      props = db.insert_user(**user)
     except sqlite3.IntegrityError as err:
       if str(err) == "UNIQUE constraint failed: users.email":
         abort(409, 'Email already registered')
