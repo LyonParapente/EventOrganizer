@@ -20,7 +20,7 @@ def get_message_parser():
 
 #--------------------------------------------------
 
-class CommentResponse(Schema):
+class MessageCommentResponse(Schema):
   type = 'object'
   properties = {
     'date': {'type': 'datetime', 'example': '2020-04-13 16:30:04'},
@@ -28,12 +28,12 @@ class CommentResponse(Schema):
     'comment': {'type': 'string', 'example': 'This is my message'}
   }
 
-class UserResponse(Schema):
+class MessageUserResponse(Schema):
   type = 'object'
   properties = {
     'name': {'type': 'string', 'example': 'John DOE'},
     'phone': {'type': 'string', 'example': '01.02.03.04.05'}, # if shared
-    'email': {'type': 'string', 'example': 'john.doe@gmail.com'} # if shared
+    'email': {'type': 'string', 'format': 'email', 'example': 'john.doe@gmail.com'} # if shared
   }
 
 class MessagesResponse(Schema):
@@ -41,11 +41,11 @@ class MessagesResponse(Schema):
   properties = {
     'users': {
       'type': 'object',
-      'additionalProperties': UserResponse
+      'additionalProperties': MessageUserResponse
     },
     'comments': {
       'type': 'array',
-      'items': CommentResponse
+      'items': MessageCommentResponse
     },
     'participants': {
       'type': 'array',
