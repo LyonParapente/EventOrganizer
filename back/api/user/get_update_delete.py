@@ -1,6 +1,6 @@
 from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.user import User, silence_user_fields
+from models.user import User, filter_user_response
 from database.manager import db
 
 class UserAPI(Resource):
@@ -34,15 +34,10 @@ class UserAPI(Resource):
   })
   def get(self, user_id):
     """Get details of a user"""
-    user = db.get_user(user_id)
+    props = db.get_user(user_id)
     if type(user) is not dict:
       abort(404)
-
-    silence_user_fields(user)
-    for field in User.always_filtered:
-      user[field] = None
-    streamlined_user = {k: v for k, v in user.items() if v is not None}
-    return User(**streamlined_user)
+    return User(**filter_user_response(props))
 
 
   @swagger.doc({

@@ -21,7 +21,17 @@ class User(Schema):
   required = ['firstname', 'lastname', 'email']
   always_filtered = ['password','share_email','share_phone']
 
+
+def filter_user_response(props):
+  silence_user_fields(props)
+  for field in User.always_filtered:
+    props[field] = None
+  streamlined_user = {k: v for k, v in props.items() if v is not None}
+  return streamlined_user
+
 def silence_user_fields(user):
+   # we can't delete those fields to respect model
+   # but at least we can silence them
   if user['share_email'] == 0:
     user['email'] = ''
   if user['share_phone'] == 0:
