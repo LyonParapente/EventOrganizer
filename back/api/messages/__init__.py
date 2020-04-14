@@ -1,5 +1,5 @@
 from flask_restful_swagger_3 import Resource, swagger
-from models.message import MessagesResponse, MessageCommentResponse, MessageUserResponse
+from models.message import Messages, MessagesComment, MessagesUser
 from models.user import silence_user_fields
 from database.manager import db
 
@@ -23,7 +23,7 @@ class MessagesAPI(Resource):
         'description': 'List of messages',
         'content': {
           'application/json': {
-            'schema': MessagesResponse
+            'schema': Messages
           }
         }
       }
@@ -41,7 +41,7 @@ class MessagesAPI(Resource):
 
     for registration in registrations_list:
       silence_user_fields(registration)
-      user = MessageUserResponse(**{
+      user = MessagesUser(**{
         'name': registration['user_fullname'],
         'phone': registration.get('phone', ''),
         'email': registration.get('email', '')
@@ -57,7 +57,7 @@ class MessagesAPI(Resource):
 
     for message in messages_list:
       silence_user_fields(message)
-      user = MessageUserResponse(**{
+      user = MessagesUser(**{
         'name': message['author_fullname'],
         'phone': message.get('phone', ''),
         'email': message.get('email', '')
@@ -65,7 +65,7 @@ class MessagesAPI(Resource):
       # Add user to list (or overwrite)
       users[str(message['author_id'])] = user
 
-      comments.append(MessageCommentResponse(**{
+      comments.append(MessagesComment(**{
         'date': message['creation_datetime'],
         'user': message['author_id'],
         'comment': message['comment']
@@ -85,4 +85,4 @@ class MessagesAPI(Resource):
       'participants': participants,
       'interested': interested
     }
-    return MessagesResponse(**result)
+    return Messages(**result)
