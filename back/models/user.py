@@ -4,26 +4,22 @@ from flask_restful.reqparse import RequestParser
 class User(Schema):
   type = 'object'
   properties = {
-    'id': {'type': 'integer', 'readOnly': True},
+    'id': {'type': 'integer', 'readOnly': True, 'example': 101},
     'firstname': {'type': 'string', 'example': 'John'},
     'lastname': {'type': 'string', 'example': 'DOE'},
     'email': {'type': 'string', 'format': 'email', 'example': 'john.doe@gmail.com'},
+    'share_email': {'type': 'boolean', 'writeOnly': True,
+      'example': False, 'default': False,
+      'description': 'Does the user allow his/her email to be public?'},
+    'password': {'type': 'string', 'writeOnly': True, 'example': 'password'},
     'phone': {'type': 'string', 'example': '01.02.03.04.05'},
-    'creation_datetime': {'type': 'string', 'format': 'datetime', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
+    'share_phone': {'type': 'boolean', 'writeOnly': True,
+      'example': False, 'default': False,
+      'description': 'Does the user allow his/her phone to be public?'},
+    'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   required = ['firstname', 'lastname', 'email']
   always_filtered = ['password','share_email','share_phone']
-
-def get_user_parser():
-  parser = RequestParser()
-  parser.add_argument('firstname', type=str, location='json')
-  parser.add_argument('lastname', type=str, location='json')
-  parser.add_argument('email', type=str, location='json')
-  parser.add_argument('password', type=str, location='json')
-  parser.add_argument('share_email', type=bool, location='json')
-  parser.add_argument('phone', type=str, location='json')
-  parser.add_argument('share_phone', type=bool, location='json')
-  return parser
 
 def silence_user_fields(user):
   if user['share_email'] == 0:

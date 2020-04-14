@@ -10,9 +10,9 @@ def insert_user(self, *,
     'lastname': lastname,
     'email': email,
     'password': password,
-    'share_email': 1 if share_email else 0,
+    'share_email': share_email,
     'phone': phone,
-    'share_phone': 1 if share_phone else 0,
+    'share_phone': share_phone,
     'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   }
   columns = ','.join(tuple(new_user))

@@ -1,11 +1,9 @@
 from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.user import User, get_user_parser, silence_user_fields
+from models.user import User, silence_user_fields
 from database.manager import db
 
 class UserAPI(Resource):
-  update_parser = get_user_parser()
-
   @swagger.doc({
     'tags': ['user'],
     'description': 'Returns a user',
@@ -88,7 +86,12 @@ class UserAPI(Resource):
   def put(self, user_id):
     """Update a user entry"""
 
-    args = self.update_parser.parse_args(strict=True)
+    try:
+      # Validate request body with schema model
+      args = User(**request.get_json())
+    except ValueError as e:
+      return ErrorModel(**{'message': e.args[0]}), 400
+
     db.update_user(user_id, **args)
 
     # Retrieve updated user with filtered properties
