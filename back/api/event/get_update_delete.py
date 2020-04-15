@@ -1,21 +1,11 @@
-from flask import abort
+from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.event import Event, get_event_parser
+from models.event import Event, filter_event_response
 from database.manager import db
 
-def _convert_to_datetime(text):
-  try:
-    date = datetime.datetime.strptime(text, "%Y-%m-%d %H:%M:%S")
-  except:
-    date = None
-  return date
-
 class EventAPI(Resource):
-  update_parser = get_event_parser()
-
   @swagger.doc({
     'tags': ['event'],
-    'description': 'Returns an event',
     'parameters': [
       {
         'name': 'event_id',
@@ -43,23 +33,14 @@ class EventAPI(Resource):
   })
   def get(self, event_id):
     """Get details of an event"""
-    event = db.get_event(event_id)
-    if type(event) is not dict:
-      abort(404)
-
-    # TODO: maybe do a conversion and back conversion to get proper format transmitted
-    #event["start_date"] = _convert_to_datetime(event["start_date"])
-    #event["end_date"] = _convert_to_datetime(event["end_date"])
-
-    for field in Event.always_filtered:
-      event[field] = None
-    streamlined_event = {k: v for k, v in event.items() if v is not None}
-    return Event(**streamlined_event)
+    props = db.get_event(event_id)
+    if type(props) is not dict:
+      abort(404, 'Event not found')
+    return Event(**filter_event_response(props))
 
 
   @swagger.doc({
     'tags': ['event'],
-    'description': 'Update an event',
     'parameters': [
       {
         'name': 'event_id',
@@ -72,7 +53,6 @@ class EventAPI(Resource):
       }
     ],
     'requestBody': {
-      'description': 'Data to update an event',
       'required': True,
       'content': {
         'application/json': {
@@ -82,7 +62,7 @@ class EventAPI(Resource):
     },
 
     'responses': {
-      '201': {
+      '200': {
         'description': 'Updated event',
         'content': {
           'application/json': {
@@ -96,18 +76,24 @@ class EventAPI(Resource):
     }
   })
   def put(self, event_id):
-    """Update an event entry"""
+    """Update an event"""
 
-    args = self.update_parser.parse_args(strict=True)
-    db.update_event(event_id, **args)
+    if request.json.get('creator_id'):
+      abort(400, 'Cannot change the creator of an event')
 
-    # Retrieve updated event
+    #TODO: cannot modify an event if its in the past
+
+    try:
+      db.update_event(event_id, **request.json)
+    except TypeError as e:
+      return abort(400, e.args[0])
+
+    # Retrieve updated event with filtered properties
     return self.get(event_id)
 
 
   @swagger.doc({
     'tags': ['event'],
-    'description': 'Deletes an event',
     'parameters': [
       {
         'name': 'event_id',
@@ -121,12 +107,7 @@ class EventAPI(Resource):
     ],
     'responses': {
       '200': {
-        'description': 'Event',
-        'content': {
-          'text/plain': {
-            'type': 'string'
-          }
-        }
+        'description': 'Confirmation message',
       },
       '404': {
         'description': 'Event not found'
@@ -134,9 +115,9 @@ class EventAPI(Resource):
     }
   })
   def delete(self, event_id):
-    """Delete an event entry"""
+    """Delete an event"""
     # TODO: Foreign keys: shall we delete or set CANCELLED status?
     rowcount = db.delete_event(event_id)
     if rowcount < 1:
-      abort(404)
-    return 'Event deleted', 200
+      abort(404, 'No event was deleted')
+    return {'message': 'Event deleted'}, 200

@@ -1,6 +1,6 @@
-from flask import request
+from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.event import Event, get_event_parser
+from models.event import Event, filter_event_response
 from database.manager import db
 
 users = [
@@ -18,11 +18,8 @@ users = [
 
 
 class EventAPICreate(Resource):
-  post_parser = get_event_parser()
-
   @swagger.doc({
     'tags': ['event'],
-    'description': 'Create an event',
     'requestBody': {
       'required': True,
       'content': {
@@ -44,7 +41,12 @@ class EventAPICreate(Resource):
   })
   def post(self):
     """Create an event"""
-    args = self.post_parser.parse_args(strict=True)
+    try:
+      # Validate request body with schema model
+      event = Event(**request.json)
+    except ValueError as e:
+      return abort(400, e.args[0])
+
     creating_user = None
     if request.authorization is not None:
       creating_user = request.authorization.get("username")
@@ -57,14 +59,11 @@ class EventAPICreate(Resource):
     if type(creating_user) is not dict:
       creating_user = {'id': 101}
 
-    args['creator_id'] = creating_user['id']
-    event = db.insert_event(**args)
+    event['creator_id'] = creating_user['id']
+    props = db.insert_event(**event)
 
-    event['start_date'] = str(event['start_date'])
-    if event['end_date']:
-      event['end_date'] = str(event['end_date'])
+    props['start_date'] = str(props['start_date'])
+    if props['end_date']:
+      props['end_date'] = str(props['end_date'])
 
-    for field in Event.always_filtered:
-      event[field] = None
-    streamlined_event = {k: v for k, v in event.items() if v is not None}
-    return Event(**streamlined_event)
+    return Event(**filter_event_response(props)), 201, {'Location': request.path + '/' + str(props['id'])}

@@ -5,7 +5,6 @@ from database.manager import db
 class EventsAPI(Resource):
   @swagger.doc({
     'tags': ['events'],
-    'description': 'Download a list of events (in a date range)',
     'parameters': [
       {
         'name': 'start',
