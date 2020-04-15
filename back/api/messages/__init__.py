@@ -6,7 +6,6 @@ from database.manager import db
 class MessagesAPI(Resource):
   @swagger.doc({
     'tags': ['messages'],
-    'description': 'Download the list of messages for an event',
     'parameters': [
       {
         'name': 'event_id',
@@ -30,7 +29,7 @@ class MessagesAPI(Resource):
     }
   })
   def get(self, _parser):
-    """Download a list of messages"""
+    """Download the list of messages for an event"""
     query = _parser.parse_args(strict=True)
     messages_list, registrations_list = db.get_messages_list(query["event_id"])
 

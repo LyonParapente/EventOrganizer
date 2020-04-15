@@ -53,7 +53,6 @@ class UserAPI(Resource):
       }
     ],
     'requestBody': {
-      'description': 'Data to update a user',
       'required': True,
       'content': {
         'application/json': {
@@ -63,7 +62,7 @@ class UserAPI(Resource):
     },
 
     'responses': {
-      '201': {
+      '200': {
         'description': 'Updated user',
         'content': {
           'application/json': {
