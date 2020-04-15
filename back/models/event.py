@@ -1,4 +1,3 @@
-from flask_restful.reqparse import RequestParser
 from flask_restful_swagger_3 import Schema
 
 class Event(Schema):
