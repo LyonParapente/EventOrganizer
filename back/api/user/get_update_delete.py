@@ -106,12 +106,7 @@ class UserAPI(Resource):
     ],
     'responses': {
       '200': {
-        'description': 'Confirmation',
-        'content': {
-          'text/plain': {
-            'type': 'string'
-          }
-        }
+        'description': 'Confirmation message'
       },
       '404': {
         'description': 'User not found'
@@ -124,4 +119,4 @@ class UserAPI(Resource):
     rowcount = db.delete_user(user_id)
     if rowcount < 1:
       abort(404, 'No user was deleted')
-    return 'User deleted', 200
+    return {'message': 'User deleted'}, 200
