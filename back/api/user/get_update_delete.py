@@ -79,12 +79,9 @@ class UserAPI(Resource):
     """Update a user"""
 
     try:
-      # Validate request body with schema model
-      user = User(**request.json)
-    except ValueError as e:
+      db.update_user(user_id, **request.json)
+    except TypeError as e:
       return abort(400, e.args[0])
-
-    db.update_user(user_id, **user)
 
     # Retrieve updated user with filtered properties
     return self.get(user_id)

@@ -22,7 +22,7 @@ class User(Schema):
   }
   # - email is required, but managed in create to
   # be able to silence it if share_email is false, like phone
-  required = ['firstname', 'lastname']
+  required = ['firstname', 'lastname', 'password']
 
 
 def filter_user_response(props):
