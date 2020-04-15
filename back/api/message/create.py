@@ -1,25 +1,11 @@
-from flask import request
+from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.message import Message, get_message_parser
+from models.message import Message
 from database.manager import db
 
 class MessageAPICreate(Resource):
-  post_parser = get_message_parser()
-
   @swagger.doc({
     'tags': ['message'],
-    'description': 'Create a message',
-    'parameters': [
-      {
-        'name': 'event_id',
-        'description': 'Event identifier',
-        'in': 'query',
-        'required': True,
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
     'requestBody': {
       'required': True,
       'content': {
@@ -41,11 +27,14 @@ class MessageAPICreate(Resource):
   })
   def post(self):
     """Create a message"""
-    args = self.post_parser.parse_args(strict=True)
+    args = request.json
+    args['author_id'] = 101 #TODO: use connected user
 
-    #TODO: use connected user
-    args['author_id'] = 101
+    try:
+      # Validate request body with schema model
+      message = Message(**args)
+    except ValueError as e:
+      return abort(400, e.args[0])
 
-    message = db.insert_message(**args)
-    streamlined_user = {k: v for k, v in message.items() if v is not None}
-    return Message(**streamlined_user)
+    props = db.insert_message(**message)
+    return Message(**props), 201, {'Location': request.path + '/' + str(props['id'])}

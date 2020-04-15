@@ -42,7 +42,8 @@ class MessagesAPI(Resource):
     for registration in registrations_list:
       silence_user_fields(registration)
       user = MessagesUser(**{
-        'name': registration['user_fullname'],
+        'firstname': registration['firstname'],
+        'lastname': registration['lastname'],
         'phone': registration.get('phone', ''),
         'email': registration.get('email', '')
       })
@@ -58,7 +59,8 @@ class MessagesAPI(Resource):
     for message in messages_list:
       silence_user_fields(message)
       user = MessagesUser(**{
-        'name': message['author_fullname'],
+        'firstname': message['firstname'],
+        'lastname': message['lastname'],
         'phone': message.get('phone', ''),
         'email': message.get('email', '')
       })

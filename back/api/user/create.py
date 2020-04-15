@@ -33,7 +33,7 @@ class UserAPICreate(Resource):
     """Create a user"""
     try:
       # Validate request body with schema model
-      user = User(**request.get_json())
+      user = User(**request.json)
     except ValueError as e:
       return abort(400, e.args[0])
 
