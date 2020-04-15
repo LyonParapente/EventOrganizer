@@ -1,14 +1,12 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
 from models.user import User, filter_user_response
-from models.error import ErrorModel
 from database.manager import db
 import sqlite3
 
 class UserAPICreate(Resource):
   @swagger.doc({
     'tags': ['user'],
-    'description': 'Create a user',
     'requestBody': {
       'required': True,
       'content': {
@@ -37,12 +35,12 @@ class UserAPICreate(Resource):
       # Validate request body with schema model
       user = User(**request.get_json())
     except ValueError as e:
-      return ErrorModel(**{'message': e.args[0]}), 400
+      return abort(400, e.args[0])
 
     # email is not required in order
-    # to be removed in silence_user_fields
+    # to be potentially removed in silence_user_fields
     if user.get('email') is None:
-      return ErrorModel(**{'message': 'The attribute "email" is required'}), 400
+      return abort(400, 'The attribute "email" is required')
 
     try:
       props = db.insert_user(**user)

@@ -6,7 +6,6 @@ from database.manager import db
 class UserAPI(Resource):
   @swagger.doc({
     'tags': ['user'],
-    'description': 'Returns a user',
     'parameters': [
       {
         'name': 'user_id',
@@ -35,14 +34,13 @@ class UserAPI(Resource):
   def get(self, user_id):
     """Get details of a user"""
     props = db.get_user(user_id)
-    if type(user) is not dict:
-      abort(404)
+    if type(props) is not dict:
+      abort(404, 'User not found')
     return User(**filter_user_response(props))
 
 
   @swagger.doc({
     'tags': ['user'],
-    'description': 'Update a user',
     'parameters': [
       {
         'name': 'user_id',
@@ -79,13 +77,13 @@ class UserAPI(Resource):
     }
   })
   def put(self, user_id):
-    """Update a user entry"""
+    """Update a user"""
 
     try:
       # Validate request body with schema model
       user = User(**request.get_json())
     except ValueError as e:
-      return ErrorModel(**{'message': e.args[0]}), 400
+      return abort(400, e.args[0])
 
     db.update_user(user_id, **user)
 
@@ -95,7 +93,6 @@ class UserAPI(Resource):
 
   @swagger.doc({
     'tags': ['user'],
-    'description': 'Deletes a user',
     'parameters': [
       {
         'name': 'user_id',
@@ -109,7 +106,7 @@ class UserAPI(Resource):
     ],
     'responses': {
       '200': {
-        'description': 'User',
+        'description': 'Confirmation',
         'content': {
           'text/plain': {
             'type': 'string'
@@ -122,9 +119,9 @@ class UserAPI(Resource):
     }
   })
   def delete(self, user_id):
-    """Delete a user entry"""
-    # TODO: Foreign keys: shall we delete or set CANCELLED status?
+    """Delete a user"""
+    # TODO: Foreign keys (ex: messages): shall we delete or set CANCELLED status?
     rowcount = db.delete_user(user_id)
     if rowcount < 1:
-      abort(404)
+      abort(404, 'No user was deleted')
     return 'User deleted', 200
