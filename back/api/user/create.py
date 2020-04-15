@@ -50,4 +50,4 @@ class UserAPICreate(Resource):
       else:
         raise
 
-    return User(**filter_user_response(props))
+    return User(**filter_user_response(props)), 201, {'Location': request.path + '/' + str(props['id'])}
