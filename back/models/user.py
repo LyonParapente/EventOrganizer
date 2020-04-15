@@ -20,14 +20,19 @@ class User(Schema):
       'description': 'Does the user allow his/her phone to be public?'},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
-  required = ['firstname', 'lastname'] # email managed in create
-  always_filtered = ['password','share_email','share_phone']
+  # - email is required, but managed in create to
+  # be able to silence it if share_email is false, like phone
+  required = ['firstname', 'lastname']
 
 
 def filter_user_response(props):
   silence_user_fields(props)
-  for field in User.always_filtered:
-    props[field] = None
+
+  # Always remove writeOnly fields for output
+  for field in User.properties:
+    if User.properties[field].get('writeOnly') is True:
+      props[field] = None
+
   streamlined_user = {k: v for k, v in props.items() if v is not None}
   return streamlined_user
 
