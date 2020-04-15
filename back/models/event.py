@@ -18,7 +18,6 @@ class Event(Schema):
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   required = ['title', 'start_date']
-  always_filtered = []
 
 def filter_event_response(props):
   # Always remove writeOnly fields for output
