@@ -1,4 +1,4 @@
-from flask import abort
+from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
 from models.user import User, filter_user_response
 from database.manager import db
