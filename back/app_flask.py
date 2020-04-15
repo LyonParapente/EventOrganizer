@@ -20,20 +20,18 @@ api = Api(app, version=settings.version)
 # ------------------------------
 # API
 
-from api.event.create import EventAPICreate
-from api.event.get_update_delete import EventAPI
+from api.event import EventAPICreate, EventAPI
 api.add_resource(EventAPICreate, settings.api_path+'/event')
 api.add_resource(EventAPI,       settings.api_path+'/event/<int:event_id>')
 
 from api.events import EventsAPI
 api.add_resource(EventsAPI,      settings.api_path+'/events')
 
-from api.user.create import UserAPICreate
-from api.user.get_update_delete import UserAPI
+from api.user import UserAPICreate, UserAPI
 api.add_resource(UserAPICreate, settings.api_path+'/user')
 api.add_resource(UserAPI,       settings.api_path+'/user/<int:user_id>')
 
-from api.message.create import MessageAPICreate
+from api.message import MessageAPICreate
 api.add_resource(MessageAPICreate, settings.api_path+'/message')
 
 from api.messages import MessagesAPI
