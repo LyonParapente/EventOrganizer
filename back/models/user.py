@@ -19,10 +19,25 @@ class User(Schema):
       'description': 'Does the user allow his/her phone to be public?'},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
-  # - email is required, but managed in create to
-  # be able to silence it if share_email is false, like phone
-  required = ['firstname', 'lastname']
+  # required on response:
+  required = ['id', 'firstname', 'lastname', 'creation_datetime']
 
+
+# The following classes do not appear in swagger
+class UserCreate(User):
+  required = ['firstname', 'lastname', 'lastname', 'email', 'password']
+class UserUpdate(User):
+  required = []
+
+def validate_user(json, create=False, update=False):
+  try:
+    if create == True:
+      user = UserCreate(**json)
+    elif update == True:
+      user = UserUpdate(**json)
+  except ValueError as e:
+    abort(400, e.args[0])
+  return user
 
 def filter_user_response(props):
   silence_user_fields(props)

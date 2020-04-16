@@ -17,7 +17,25 @@ class Event(Schema):
     'creator_id': {'type': 'integer', 'example': 101, 'readOnly': True},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
+  # required on response:
+  required = ['id', 'title', 'start_date', 'creator_id', 'creation_datetime']
+
+
+# The following classes do not appear in swagger
+class EventCreate(Event):
   required = ['title', 'start_date']
+class EventUpdate(Event):
+  required = []
+
+def validate_event(json, create=False, update=False):
+  try:
+    if create == True:
+      user = EventCreate(**json)
+    elif update == True:
+      user = EventUpdate(**json)
+  except ValueError as e:
+    abort(400, e.args[0])
+  return user
 
 def filter_event_response(props):
   # Always remove writeOnly fields for output

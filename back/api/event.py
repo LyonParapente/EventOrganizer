@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.event import Event, filter_event_response
+from models.event import Event, validate_event, filter_event_response
 from database.manager import db
 
 
@@ -42,11 +42,8 @@ class EventAPICreate(Resource):
   })
   def post(self):
     """Create an event"""
-    try:
-      # Validate request body with schema model
-      event = Event(**request.json)
-    except ValueError as e:
-      return abort(400, e.args[0])
+    # Validate request body with schema model
+    event = validate_event(request.json, create=True)
 
     creating_user = None
     if request.authorization is not None:
@@ -61,7 +58,10 @@ class EventAPICreate(Resource):
       creating_user = {'id': 101}
 
     event['creator_id'] = creating_user['id']
-    props = db.insert_event(**event)
+    try:
+      props = db.insert_event(**event)
+    except Exception as e:
+      abort(500, e.args[0])
 
     props['start_date'] = str(props['start_date'])
     if props['end_date']:
@@ -144,16 +144,18 @@ class EventAPI(Resource):
   })
   def put(self, event_id):
     """Update an event"""
-
-    if request.json.get('creator_id'):
-      abort(400, 'Cannot change the creator of an event')
+    # Validate request body with schema model
+    event = validate_event(request.json, update=True)
 
     #TODO: cannot modify an event if its in the past
+    #db_event = self.get(event_id)
+    #if something:
+    #  abort(400, 'Cannot modify a past event')
 
     try:
       db.update_event(event_id, **request.json)
-    except TypeError as e:
-      return abort(400, e.args[0])
+    except Exception as e:
+      abort(500, e.args[0])
 
     # Retrieve updated event with filtered properties
     return self.get(event_id)

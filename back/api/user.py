@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from models.user import User, filter_user_response
+from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
 
@@ -31,24 +31,17 @@ class UserAPICreate(Resource):
   })
   def post(self):
     """Create a user"""
-    try:
-      # Validate request body with schema model
-      user = User(**request.json)
-    except ValueError as e:
-      return abort(400, e.args[0])
-
-    # email is not required in order
-    # to be potentially removed in silence_user_fields
-    if user.get('email') is None:
-      return abort(400, 'The attribute "email" is required')
+    # Validate request body with schema model
+    user = validate_user(request.json, create=True)
 
     try:
       props = db.insert_user(**user)
     except sqlite3.IntegrityError as err:
       if str(err) == "UNIQUE constraint failed: users.email":
         abort(409, 'Email already registered')
-      else:
-        raise
+      abort(500, err.args[0])
+    except Exception as e:
+      abort(500, e.args[0])
 
     return User(**filter_user_response(props)), 201, {'Location': request.path + '/' + str(props['id'])}
 
@@ -127,13 +120,15 @@ class UserAPI(Resource):
   })
   def put(self, user_id):
     """Update a user"""
+    # Validate request body with schema model
+    user = validate_user(request.json, update=True)
 
     try:
-      db.update_user(user_id, **request.json)
-    except TypeError as e:
-      return abort(400, e.args[0])
+      db.update_user(user_id, **user)
+    except Exception as e:
+      abort(500, e.args[0])
 
-    # Retrieve updated user with filtered properties
+    # Retrieve updated user with all public properties
     return self.get(user_id)
 
 

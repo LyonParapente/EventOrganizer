@@ -10,6 +10,9 @@ class Message(Schema):
     'creation_datetime': {'type': 'string', 'format': 'date-time',
       'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
+  required = ['id', 'comment', 'author_id', 'event_id', 'creation_datetime']
+
+class MessageCreate(Message):
   required = ['comment', 'author_id', 'event_id']
 
 #--------------------------------------------------
