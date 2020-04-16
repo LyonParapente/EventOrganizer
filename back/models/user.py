@@ -1,4 +1,5 @@
 from flask_restful_swagger_3 import Schema
+from flask import abort
 
 class User(Schema):
   type = 'object'
