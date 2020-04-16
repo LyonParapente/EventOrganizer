@@ -12,7 +12,7 @@ var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
 export function init_createEvent (): void
 {
-	var form: HTMLFormElement = document.querySelector("#createEventBody .needs-validation");
+	var form: HTMLFormElement = document.querySelector("#createEventBody form.needs-validation");
 	// Submit an event
 	form.addEventListener('submit', function ()
 	{

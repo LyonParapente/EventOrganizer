@@ -1,5 +1,5 @@
 import { i18n, toRelativeTimeString } from './trads';
-import { requestJson } from '@fullcalendar/core';
+import requestJson from './request_json';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
@@ -31,10 +31,10 @@ export default function loadComments (event_id: string, isFinished: boolean): vo
 		event_comments.innerHTML = ''; // Remove spinner
 		receiveEventInfos(data, event_comments, isFinished, participants, interested);
 	},
-	function (type: string, ex: Error)
+	function (type: string, ex: XMLHttpRequest)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
-		console.error(type, ex);
+		console.error(type, ex.responseText);
 		error_box.style.display = '';
 
 		var clone = error_box.cloneNode(true) as HTMLElement;
@@ -119,7 +119,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var p = document.createElement("p");
 			p.className = 'blockquote my-1 text-dark';
 			p.appendChild(document.createTextNode(comment.comment));
-			p.innerHTML = p.innerHTML.replace(/\\n/g, '<br/>');
+			p.innerHTML = p.innerHTML.replace(/\n/g, '<br/>');
 		col.appendChild(p);
 	groupitem.appendChild(col);
 	return groupitem;

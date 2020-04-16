@@ -2,21 +2,44 @@ import { i18n, i18n_inPlace, toDateString } from './trads';
 import { getColor } from './event_plan_categories';
 import { initMap } from './map';
 import loadComments from './event_comments';
+import requestJson from './request_json';
 import settings from './settings';
 import { router } from './routing';
 import { EventApi } from '@fullcalendar/core';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
+var event_id: number = null;
+var event_isFinished: boolean;
+
 export function init_showEvent (): void
 {
-	var form: HTMLFormElement = document.querySelector("#eventProperties .needs-validation");
+	var form: HTMLFormElement = document.querySelector("#eventProperties form.needs-validation");
+
 	// Submit a comment
 	form.addEventListener('submit', function ()
 	{
 		if (form.checkValidity())
 		{
-			// TODO: post ajax data
+			var textarea = id('event_comment') as HTMLTextAreaElement;
+			var body =
+			{
+				event_id: event_id,
+				comment: textarea.value
+			};
+			requestJson("POST", "/api/message", body, function (data: any)
+			{
+				textarea.value = '';
+				form.classList.remove('was-validated');
+
+				// Reload all comments because there are new comments from others
+				loadComments(event_id.toString(), event_isFinished);
+			},
+			function (type: string, ex: XMLHttpRequest)
+			{
+				console.error(type, ex.responseText)
+				form.classList.remove('was-validated');
+			});
 		}
 		else
 		{
@@ -43,8 +66,11 @@ export function showEvent (calEvent: EventApi): void
 	{
 		end = start;
 	}
-	var isFinished = end.getTime() < new Date().getTime();
-	loadComments(calEvent.id, isFinished);
+	event_isFinished = end.getTime() < new Date().getTime();
+	loadComments(calEvent.id, event_isFinished);
+
+	id('event_id').textContent = calEvent.id;
+	event_id = parseInt(calEvent.id, 10);
 
 	// Trads
 	i18n_inPlace(["#event_comment"], "placeholder");

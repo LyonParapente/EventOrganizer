@@ -107,3 +107,7 @@ cursor: pointer;
 flex-grow-1 & flex make it grow to fill the space*/
 width: 5px;
 }
+
+#event_id:before {
+content: '#';
+}
