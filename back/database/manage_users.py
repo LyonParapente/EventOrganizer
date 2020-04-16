@@ -73,10 +73,9 @@ def update_user(self, user_id, *,
     try:
       cursor.execute(update_user, tuple(fields_to_update.values()))
       db.commit()
-      return cursor.rowcount
     finally:
       db.close()
-  return 0
+  return fields_to_update
 
 def delete_user(self, user_id):
   """Delete a specific user from database"""

@@ -84,10 +84,9 @@ def update_event(self, event_id, *,
     try:
       cursor.execute(update_event, tuple(fields_to_update.values()))
       db.commit()
-      return cursor.rowcount
     finally:
       db.close()
-  return 0
+  return fields_to_update
 
 def delete_event(self, event_id):
   """Delete a specific event from database"""
