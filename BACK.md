@@ -13,30 +13,6 @@ py -m venv env
 py -m pip install -r .\requirements.txt
 ```
 
-## /!\ Manual fix #1 required
-For 'Event parser'  
-Edit `env\Lib\site-packages\flask_restful_swagger_3\__init__.py`  
-Line 436, replace  
-` f.__swagger_type = type_`
-with  
-` f.swagger_type = type_`
-
-Function should look like this:
-```
-    def inner(f):
-        f.swagger_type = type_
-        return f
-```
-
-## /!\ Manual fix #2
-Only necessary if you're using httpPlatform.  
-Edit `env\Lib\site-packages\werkzeug\_reloader.py`  
-Line 313, in def ensure_echo_on():, replace  
-` if not sys.stdin.isatty():`
-with  
-` if sys.stdin is None or not sys.stdin.isatty():`
-
-
 # Local run
 
 `py .\app_flask.py "./event.db"`
@@ -98,7 +74,7 @@ git push --set-upstream azure master
 
 ## Install pip requirements
 
-Edit: this is now done with azure.ps1 (via a webjob), even the fix!
+Edit: this is now done with azure.ps1 (via a webjob)
 
 It will create a python virtual environment automatically because of requirements.txt  
 It might be of interest with httpPlatform.  
@@ -110,7 +86,6 @@ And install requirements like so:
 
 `D:\home\python364x64>python.exe -m pip install --upgrade -r d:\home\site\wwwroot\requirements.txt`
 
-Then don't forget to apply the manual fixes (see top), using Kudu Advanced Tools.
 
 ## Python + Azure links:
 * https://github.com/azure/azure-python-siteextensions

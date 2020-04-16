@@ -7,7 +7,8 @@ class Message(Schema):
     'comment': {'type': 'string', 'example': 'This is my message', 'minLength': 1},
     'author_id': {'type': 'integer', 'example': 101, 'readOnly': True},
     'event_id': {'type': 'integer', 'example': 12345, 'readOnly': False},
-    'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
+    'creation_datetime': {'type': 'string', 'format': 'date-time',
+      'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   required = ['comment', 'author_id', 'event_id']
 

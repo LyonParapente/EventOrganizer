@@ -75,10 +75,10 @@ PUSHD D:\home\python364x64
 # Run pip
 CMD /C python.exe -m pip install --upgrade -r `$r
 
-# Fix flask_restful_swagger_3
-`$c = Get-Content Lib\site-packages\flask_restful_swagger_3\__init__.py
-`$c2 = `$c.Replace('f.__swagger_type = type_', 'f.swagger_type = type_')
-Set-Content Lib\site-packages\flask_restful_swagger_3\__init__.py `$c2
+# Fix flask_restful_swagger_3 ; edit: no more required
+#`$c = Get-Content Lib\site-packages\flask_restful_swagger_3\__init__.py
+#`$c2 = `$c.Replace('f.__swagger_type = type_', 'f.swagger_type = type_')
+#Set-Content Lib\site-packages\flask_restful_swagger_3\__init__.py `$c2
 
 POPD
 "@
