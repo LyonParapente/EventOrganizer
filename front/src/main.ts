@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function ()
 			{
 				event.color = getColor(event.category);
 			}
-			event.description = event.description.replace(/\n/g, '<br/>');
+			event.description = (event.description || '').replace(/\n/g, '<br/>');
 			// re-map start & end to expected properties
 			event.start = event.start_date;
 			event.end = event.end_date;
