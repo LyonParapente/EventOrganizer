@@ -68,7 +68,7 @@ export function showEvent (calEvent: EventApi): void
 	var form = document.querySelector("#eventProperties form");
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
-	id('event_post_error').style.display = 'none';
+	id('comment_post_error').style.display = 'none';
 
 	// Title & description
 	id("event_title").textContent = calEvent.title;
@@ -255,8 +255,8 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 function SubmitComment ()
 {
 	var textarea = id('event_comment') as HTMLTextAreaElement;
-	var event_post_error = id('event_post_error');
-	event_post_error.style.display = 'none';
+	var comment_post_error = id('comment_post_error');
+	comment_post_error.style.display = 'none';
 	var body =
 	{
 		event_id: event_id,
@@ -274,7 +274,7 @@ function SubmitComment ()
 	{
 		console.error(type, ex.responseText)
 
-		event_post_error.innerHTML = i18n('Unable to save comment, please retry');
-		event_post_error.style.display = '';
+		comment_post_error.innerHTML = i18n('Unable to save comment, please retry');
+		comment_post_error.style.display = '';
 	});
 }
