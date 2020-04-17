@@ -273,8 +273,7 @@ function SubmitComment ()
 	function (type: string, ex: XMLHttpRequest)
 	{
 		console.error(type, ex.responseText)
-
-		comment_post_error.innerHTML = i18n('Unable to save comment, please retry');
+		comment_post_error.innerHTML = i18n('Unable to save, please retry');
 		comment_post_error.style.display = '';
 	});
 }

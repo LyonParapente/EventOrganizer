@@ -131,18 +131,7 @@ document.addEventListener('DOMContentLoaded', function ()
 		{
 			showEvent(clickInfos.event);
 		},
-		eventDataTransform: function (event)
-		{
-			if (event.hasOwnProperty('category'))
-			{
-				event.color = getColor(event.category);
-			}
-			event.description = (event.description || '').replace(/\n/g, '<br/>');
-			// re-map start & end to expected properties
-			event.start = event.start_date;
-			event.end = event.end_date;
-			return event;
-		},
+		eventDataTransform: eventDataTransform,
 		eventRender: function (info)
 		{
 			var desc = info.event.extendedProps.description;
@@ -194,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function ()
 
 	// Once and for all
 	init_routing();
-	init_createEvent();
+	init_createEvent(onCreateEvent);
 	init_showEvent();
 
 	swipedetector(document, function (swipedir: string)
@@ -277,4 +266,28 @@ function updateUrlWithCurrentMonth ()
 	var MM = now.getMonth() + 1;
 	var monthNum = MM < 10 ? '0' + MM : MM.toString();
 	router.navigate(YYYY+"-"+monthNum, monthTrad+" "+YYYY);
+}
+
+// Adapt server response to fullcalendar expected fields
+function eventDataTransform (event)
+{
+	if (event.hasOwnProperty('category'))
+	{
+		event.color = getColor(event.category);
+	}
+	event.description = (event.description || '').replace(/\n/g, '<br/>');
+
+	// re-map start & end to expected properties
+	event.start = event.start_date;
+	event.end = event.end_date;
+	delete event.start_date;
+	delete event.end_date;
+
+	return event;
+}
+
+function onCreateEvent (event: object)
+{
+	eventDataTransform(event);
+	calendar.addEvent(event);
 }

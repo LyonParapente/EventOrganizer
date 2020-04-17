@@ -11,7 +11,7 @@ var id: (string) => HTMLElement = document.getElementById.bind(document);
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
-export function init_createEvent (): void
+export function init_createEvent (onCreate): void
 {
 	var form: HTMLFormElement = document.querySelector("#createEventBody form.needs-validation");
 	// Submit an event
@@ -20,7 +20,7 @@ export function init_createEvent (): void
 		if (form.checkValidity())
 		{
 			form.classList.remove('was-validated');
-			SubmitEvent();
+			SubmitEvent(onCreate);
 		}
 		else
 		{
@@ -80,6 +80,7 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	var form = document.querySelector("#createEventBody form");
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
+	id('event_post_error').style.display = 'none';
 
 	// ----------------------
 	// Set up fields
@@ -121,8 +122,11 @@ function getRandomInt(min: number, max: number): number
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function SubmitEvent ()
+function SubmitEvent (onCreate)
 {
+	var event_post_error = id('event_post_error');
+	event_post_error.style.display = 'none';
+
 	var title = id("sortie_title") as HTMLInputElement;
 	var lieu = id("sortie_lieu") as HTMLInputElement;
 	var rdv = id("sortie_RDV") as HTMLInputElement;
@@ -151,14 +155,13 @@ function SubmitEvent ()
 	requestJson("POST", "/api/event", body,
 	function (data: any)
 	{
-
-		// TODO: show a message, add event to calendar
+		onCreate(data);
 		jQuery("#createEvent").modal("hide");
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
 		console.error(type, ex.responseText)
-
-		// TODO: show a message to user
+		event_post_error.innerHTML = i18n('Unable to save, please retry');
+		event_post_error.style.display = '';
 	});
 }
