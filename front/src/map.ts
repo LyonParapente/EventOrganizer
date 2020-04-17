@@ -28,25 +28,37 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 	}
 	else
 	{
+		var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+		{
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>'
+		});
+		var opentopomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+		{
+			attribution: '&copy; <a href="https://www.openstreetmap.org>/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
+		});
+
 		map = L.map(elem_id,
 		{
 			center: defaultPoint,
 			zoom: settings.default_map_zoom,
-			fullscreenControl: true
+			fullscreenControl: true,
+			layers: [openstreetmap]
 		});
 		map.zoomControl.setPosition('topright');
 		L.control.scale().addTo(map);
+		L.control.layers(
+			{
+				"OpenStreetMap": openstreetmap,
+				"OpenTopoMap": opentopomap
+			})
+			.setPosition('bottomright')
+			.addTo(map);
 
 		map.on('fullscreenchange', function ()
 		{
 			// re-center on marker when making fullscreen or exiting
 			map.setView(marker.getLatLng(), map.getZoom());
 		});
-
-		L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
-		{
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
 
 		marker = L.marker(defaultPoint, {draggable: edit})
 		if (gps || edit)
