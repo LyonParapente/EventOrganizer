@@ -1,5 +1,5 @@
 
-export default function requestJson(method, url, params, successCallback, failureCallback) {
+export default function requestJson (method: string, url: string, params: object, successCallback, failureCallback) {
   method = method.toUpperCase();
   var body = null;
   if (method === 'GET') {
@@ -15,12 +15,16 @@ export default function requestJson(method, url, params, successCallback, failur
   }
   xhr.onload = function () {
     if (xhr.status >= 200 && xhr.status < 400) {
+      var res;
       try {
-        var res = JSON.parse(xhr.responseText);
-        successCallback(res, xhr);
+        res = JSON.parse(xhr.responseText);
       }
       catch (err) {
-        failureCallback('Failure parsing JSON', xhr);
+        failureCallback('Failure parsing JSON: '+err.message, xhr);
+      }
+      if (res)
+      {
+        successCallback(res, xhr);
       }
     }
     else {
@@ -33,12 +37,12 @@ export default function requestJson(method, url, params, successCallback, failur
   xhr.send(body);
 }
 
-function injectQueryStringParams(url, params) {
+function injectQueryStringParams (url: string, params: object) {
   return url +
     (url.indexOf('?') === -1 ? '?' : '&') +
     encodeParams(params);
 }
-function encodeParams(params) {
+function encodeParams (params: object) {
   var parts = [];
   for (var key in params) {
     if (params.hasOwnProperty(key)) {
