@@ -19,13 +19,14 @@ export function init_createEvent (): void
 	{
 		if (form.checkValidity())
 		{
-			SubmitEvent(form);
+			form.classList.remove('was-validated');
+			SubmitEvent();
 		}
 		else
 		{
+			form.classList.add('was-validated');
 			(form.querySelectorAll(":invalid")[0] as HTMLElement).focus();
 		}
-		form.classList.add('was-validated');
 
 		// Do not reload page
 		event.preventDefault();
@@ -120,7 +121,7 @@ function getRandomInt(min: number, max: number): number
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function SubmitEvent (form: HTMLFormElement)
+function SubmitEvent ()
 {
 	var title = id("sortie_title") as HTMLInputElement;
 	var lieu = id("sortie_lieu") as HTMLInputElement;
@@ -147,9 +148,9 @@ function SubmitEvent (form: HTMLFormElement)
 		color:color.value
 	};
 	Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
-	requestJson("POST", "/api/event", body, function (data: any)
+	requestJson("POST", "/api/event", body,
+	function (data: any)
 	{
-		form.classList.remove('was-validated');
 
 		// TODO: show a message, add event to calendar
 		jQuery("#createEvent").modal("hide");
@@ -157,7 +158,6 @@ function SubmitEvent (form: HTMLFormElement)
 	function (type: string, ex: XMLHttpRequest)
 	{
 		console.error(type, ex.responseText)
-		form.classList.remove('was-validated');
 
 		// TODO: show a message to user
 	});

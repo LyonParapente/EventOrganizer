@@ -45,7 +45,8 @@ const trads =
 		"New Event": "Ajouter une sortie",
 		"Reset": "Reset", // Prédéfini?
 		"Planning": "Calendrier",
-		"EventTitle": "Event #{0}"
+		"EventTitle": "Event #{0}",
+		"Unable to save comment, please retry": "Impossible de sauvegarder, veuillez réessayer"
 	}
 };
 

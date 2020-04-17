@@ -21,13 +21,14 @@ export function init_showEvent (): void
 	{
 		if (form.checkValidity())
 		{
-			SubmitComment(form);
+			form.classList.remove('was-validated');
+			SubmitComment();
 		}
 		else
 		{
+			form.classList.add('was-validated');
 			(form.querySelectorAll(":invalid")[0] as HTMLElement).focus();
 		}
-		form.classList.add('was-validated');
 
 		// Do not reload page
 		event.preventDefault();
@@ -67,6 +68,7 @@ export function showEvent (calEvent: EventApi): void
 	var form = document.querySelector("#eventProperties form");
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
+	id('event_post_error').style.display = 'none';
 
 	// Title & description
 	id("event_title").textContent = calEvent.title;
@@ -250,18 +252,20 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 	setTimeout(() => tooltip.destroy(), 3000);
 }
 
-function SubmitComment (form: HTMLFormElement)
+function SubmitComment ()
 {
 	var textarea = id('event_comment') as HTMLTextAreaElement;
+	var event_post_error = id('event_post_error');
+	event_post_error.style.display = 'none';
 	var body =
 	{
 		event_id: event_id,
 		comment: textarea.value
 	};
-	requestJson("POST", "/api/message", body, function (data: any)
+	requestJson("POST", "/api/message", body,
+	function ()
 	{
 		textarea.value = '';
-		form.classList.remove('was-validated');
 
 		// Reload all comments because there are new comments from others
 		loadComments(event_id.toString(), event_isFinished);
@@ -269,8 +273,8 @@ function SubmitComment (form: HTMLFormElement)
 	function (type: string, ex: XMLHttpRequest)
 	{
 		console.error(type, ex.responseText)
-		form.classList.remove('was-validated');
 
-		// TODO: show a message to user
+		event_post_error.innerHTML = i18n('Unable to save comment, please retry');
+		event_post_error.style.display = '';
 	});
 }
