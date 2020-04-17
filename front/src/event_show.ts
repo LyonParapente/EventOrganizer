@@ -109,7 +109,7 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Author
 
-	var author = calEvent.extendedProps.creator_fullname;
+	var author = calEvent.extendedProps.creator_fullname; // TODO: is undefined!!
 	var creator_id = calEvent.extendedProps.creator_id;
 	id("event_author").textContent = author;
 	var author_img = new Image();

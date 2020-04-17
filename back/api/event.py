@@ -57,6 +57,8 @@ class EventAPICreate(Resource):
     if type(creating_user) is not dict:
       creating_user = {'id': 101}
 
+    #TODO: forbid to create event in the past
+
     event['creator_id'] = creating_user['id']
     try:
       props = db.insert_event(**event)

@@ -123,8 +123,7 @@ def get_events_list(self, start, end):
       CASE 
         WHEN e.end_date IS NULL THEN e.start_date
         ELSE e.end_date
-      END end_date_bis,
-      u.firstname || ' ' || u.lastname AS creator_fullname
+      END end_date_bis
     FROM events AS e, users AS u
     WHERE e.creator_id=u.id
     """ + where_start + where_end + """

@@ -40,4 +40,10 @@ class EventsAPI(Resource):
     """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)
     events_list = db.get_events_list(query["start"], query["end"])
+
+    for i in range(len(events_list)):
+      event = events_list[i]
+      streamlined_event = {k: v for k, v in event.items() if v is not None}
+      events_list[i] = Event(**streamlined_event)
+
     return events_list
