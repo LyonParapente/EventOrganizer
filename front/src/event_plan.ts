@@ -4,6 +4,7 @@ import { initMap } from './map';
 import { init_categories } from './event_plan_categories';
 import { init_colorPicker } from './event_plan_colorPicker';
 import { router } from './routing';
+import requestJson from './request_json';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
@@ -18,7 +19,7 @@ export function init_createEvent (): void
 	{
 		if (form.checkValidity())
 		{
-			// TODO: post ajax data
+			SubmitEvent(form);
 		}
 		else
 		{
@@ -117,4 +118,47 @@ function getRandomInt(min: number, max: number): number
 	max = Math.floor(max);
 	// The maximum is exclusive and the minimum is inclusive
 	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function SubmitEvent (form: HTMLFormElement)
+{
+	var title = id("sortie_title") as HTMLInputElement;
+	var lieu = id("sortie_lieu") as HTMLInputElement;
+	var rdv = id("sortie_RDV") as HTMLInputElement;
+	var rdv_gps = id("sortie_RDV_gps") as HTMLInputElement;
+	var date_start = id("sortie_date_start") as HTMLInputElement;
+	var date_end = id("sortie_date_end") as HTMLInputElement;
+	var heure = id("sortie_heure") as HTMLInputElement;
+	var description = id("sortie_description") as HTMLTextAreaElement;
+	var category = id("sortie_category") as HTMLButtonElement;
+	var color = id("sortie_color") as HTMLInputElement;
+
+	var body =
+	{
+		title: title.value,
+		start_date: date_start.value,
+		end_date: date_end.value,
+		time: heure.value,
+		description: description.value,
+		location: lieu.value,
+		gps: rdv_gps.value,
+		gps_location: rdv.value,
+		category: category.value,
+		color:color.value
+	};
+	Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
+	requestJson("POST", "/api/event", body, function (data: any)
+	{
+		form.classList.remove('was-validated');
+
+		// TODO: show a message, add event to calendar
+		jQuery("#createEvent").modal("hide");
+	},
+	function (type: string, ex: XMLHttpRequest)
+	{
+		console.error(type, ex.responseText)
+		form.classList.remove('was-validated');
+
+		// TODO: show a message to user
+	});
 }

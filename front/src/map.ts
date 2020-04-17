@@ -8,6 +8,7 @@ import { i18n } from './trads';
 var mapList = {},
 	id: (string) => HTMLElement = document.getElementById.bind(document),
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
+	sortie_RDV_gps = <HTMLInputElement>id('sortie_RDV_gps'),
 	spinner_RDV = id('spinner_RDV');
 
 export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, location?: string): void
@@ -162,9 +163,11 @@ function resetMap (map: L.Map, point: L.LatLngTuple, marker: L.Marker): void
 
 function onMarkerMove (evt): void
 {
+	var position = evt.latlng.lat+', '+evt.latlng.lng;
+	sortie_RDV_gps.value = position;
 	if (sortie_RDV.value.length === 0 || sortie_RDV.value.match(/\d+\.\d+, \d+\.\d+/))
 	{
-		sortie_RDV.value = evt.latlng.lat+', '+evt.latlng.lng;
+		sortie_RDV.value = position;
 	}
 }
 
