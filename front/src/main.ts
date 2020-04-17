@@ -283,6 +283,11 @@ function eventDataTransform (event)
 	delete event.start_date;
 	delete event.end_date;
 
+	if (typeof event.gps === 'string')
+	{
+		event.gps = event.gps.split(', ');
+	}
+
 	return event;
 }
 
