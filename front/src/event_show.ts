@@ -21,25 +21,7 @@ export function init_showEvent (): void
 	{
 		if (form.checkValidity())
 		{
-			var textarea = id('event_comment') as HTMLTextAreaElement;
-			var body =
-			{
-				event_id: event_id,
-				comment: textarea.value
-			};
-			requestJson("POST", "/api/message", body, function (data: any)
-			{
-				textarea.value = '';
-				form.classList.remove('was-validated');
-
-				// Reload all comments because there are new comments from others
-				loadComments(event_id.toString(), event_isFinished);
-			},
-			function (type: string, ex: XMLHttpRequest)
-			{
-				console.error(type, ex.responseText)
-				form.classList.remove('was-validated');
-			});
+			SubmitComment(form);
 		}
 		else
 		{
@@ -55,6 +37,9 @@ export function init_showEvent (): void
 
 export function showEvent (calEvent: EventApi): void
 {
+	id('event_id').textContent = calEvent.id;
+	event_id = parseInt(calEvent.id, 10);
+
 	var start = calEvent.start,
 		end = calEvent.end;
 	if (end)
@@ -68,9 +53,6 @@ export function showEvent (calEvent: EventApi): void
 	}
 	event_isFinished = end.getTime() < new Date().getTime();
 	loadComments(calEvent.id, event_isFinished);
-
-	id('event_id').textContent = calEvent.id;
-	event_id = parseInt(calEvent.id, 10);
 
 	// Trads
 	i18n_inPlace(["#event_comment"], "placeholder");
@@ -266,4 +248,29 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 	tooltip.show();
 
 	setTimeout(() => tooltip.destroy(), 3000);
+}
+
+function SubmitComment (form: HTMLFormElement)
+{
+	var textarea = id('event_comment') as HTMLTextAreaElement;
+	var body =
+	{
+		event_id: event_id,
+		comment: textarea.value
+	};
+	requestJson("POST", "/api/message", body, function (data: any)
+	{
+		textarea.value = '';
+		form.classList.remove('was-validated');
+
+		// Reload all comments because there are new comments from others
+		loadComments(event_id.toString(), event_isFinished);
+	},
+	function (type: string, ex: XMLHttpRequest)
+	{
+		console.error(type, ex.responseText)
+		form.classList.remove('was-validated');
+
+		// TODO: show a message to user
+	});
 }
