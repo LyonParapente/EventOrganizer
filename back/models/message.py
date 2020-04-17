@@ -5,8 +5,8 @@ class Message(Schema):
   properties = {
     'id': {'type': 'integer', 'readOnly': True, 'example': 54321},
     'comment': {'type': 'string', 'example': 'This is my message', 'minLength': 1},
-    'author_id': {'type': 'integer', 'example': 101, 'readOnly': True},
-    'event_id': {'type': 'integer', 'example': 12345, 'readOnly': False},
+    'author_id': {'type': 'integer', 'readOnly': True, 'example': 101},
+    'event_id': {'type': 'integer', 'readOnly': False, 'example': 12345},
     'creation_datetime': {'type': 'string', 'format': 'date-time',
       'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }

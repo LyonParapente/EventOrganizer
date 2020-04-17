@@ -15,7 +15,7 @@ class Event(Schema):
     'gps_location': {'type': 'string', 'example': 'La Halle Mode & Chaussures | Bron'},
     'category': {'type': 'string', 'example': 'conference'},
     'color': {'type': 'string', 'example': '#662C67'},
-    'creator_id': {'type': 'integer', 'example': 101, 'readOnly': True},
+    'creator_id': {'type': 'integer', 'readOnly': True, 'example': 101},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   # required on response:
