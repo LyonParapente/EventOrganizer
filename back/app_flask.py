@@ -60,4 +60,4 @@ def swag():
 
 if __name__ == '__main__':
   # local development
-  app.run(debug=True, port=os.environ.get("HTTP_PLATFORM_PORT"))
+  app.run(debug=True, host='0.0.0.0', port=os.environ.get("HTTP_PLATFORM_PORT"))
