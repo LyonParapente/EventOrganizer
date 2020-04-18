@@ -94,12 +94,13 @@ margin-top: 3px;
 resize: none;
 }
 
-#sortie_categories {
-max-width: 400px;
-}
-
+#event_rdv_location, #event_location2,
 #event_rdv_location_title, #event_location_title {
 cursor: pointer;
+}
+
+#sortie_categories {
+max-width: 400px;
 }
 
 #event_rdv_location {
