@@ -30,11 +30,11 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 	{
 		var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
 		{
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>'
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> | <a href="//openstreetmap.fr">OSM France</a>'
 		});
 		var opentopomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
 		{
-			attribution: '&copy; <a href="https://www.openstreetmap.org>/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
+			attribution: '&copy; <a href="https://www.openstreetmap.org>/copyright">OpenStreetMap</a> | <a href="http://viewfinderpanoramas.org">SRTM</a> | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
 		});
 
 		map = L.map(elem_id,
