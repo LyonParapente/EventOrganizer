@@ -131,7 +131,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 	groupitem.className = 'list-group-item p-1 d-flex';
 		var d = document.createElement('div');
 			var a = document.createElement('a');
-			a.href = "/user/"+userid;
+			a.href = "/user:"+userid;
 				var avatar = new Image();
 				avatar.src = "/static/avatars/"+userid+"-2.jpg";
 				avatar.alt = getUserName(user);
@@ -144,7 +144,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var comment_infos = document.createElement('span');
 			comment_infos.className = 'border-bottom border-light';
 				a = document.createElement('a');
-				a.href = "/user/"+userid;
+				a.href = "/user:"+userid;
 				a.appendChild(document.createTextNode(getUserName(user)));
 			comment_infos.appendChild(a);
 			comment_infos.appendChild(document.createTextNode(' - ' + dateText));
@@ -184,7 +184,7 @@ function createParticipants(participants: number[], users: UsersDictionary, isFi
 		if (users.hasOwnProperty(participant))
 		{
 			var a = document.createElement('a');
-			a.href = "/user/"+participant;
+			a.href = "/user:"+participant;
 				var avatar = new Image();
 				avatar.src = "/static/avatars/"+participant+"-2.jpg";
 				avatar.alt = getUserName(users[participant]);
@@ -224,7 +224,7 @@ function createInterested(interested: number[], users: UsersDictionary, isFinish
 		if (users.hasOwnProperty(interested_user))
 		{
 			var a = document.createElement('a');
-			a.href = "/user/"+interested_user;
+			a.href = "/user:"+interested_user;
 				var avatar = new Image();
 				avatar.src = "/static/avatars/"+interested_user+"-2.jpg";
 				avatar.alt = getUserName(users[interested_user]);

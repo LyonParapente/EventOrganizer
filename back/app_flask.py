@@ -73,10 +73,15 @@ def swag():
 #def environ():
 #  return "{} <br/><br/><br/> {}".format(request.environ, os.environ)
 
-@app.route('/user/<id>')
+api_user = UserAPI()
+
+@app.route('/user:<int:id>')
 def user(id):
-  """User"""
-  return "User = " + id
+  """User details"""
+  user_item = api_user.get(id)
+  return render_template('user.html',
+    title='Utilisateur', lang='fr',
+    user=user_item)
 
 # ------------------------------
 
