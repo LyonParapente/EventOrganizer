@@ -153,9 +153,9 @@
 			</div>
 			<div class="modal-body" id="eventPropertiesBody">
 				<div class="container mx-0">
-					<div class="row d-flex justify-content-center">
+					<div class="row justify-content-center">
 
-						<div class="col-6 px-0 d-flex flex-column justify-content-center">
+						<div class="col-auto ml-auto px-0 d-flex flex-column">
 							<div class="form-inline mt-auto pt-1" id="event_date_from">
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -196,15 +196,38 @@
 							<div class="mt-auto"></div>
 						</div>
 
-						<div class="col-auto ml-3 p-0">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="input-group-text trad">By</div>
+						<div class="ml-auto"></div>
+
+						<div class="col-auto ml-auto p-0">
+							<div class="row">
+								<div class="col-auto px-0">
+									<div class="text-center mt-1"><a id="event_author_img"></a></div>
 								</div>
-								<span class="form-control" id="event_author"></span>
+								<div class="col-auto pr-0 flex-column form-inline align-items-start">
+									<div class="input-group mt-auto pt-1">
+										<div class="input-group-prepend">
+											<div class="input-group-text trad">By</div>
+										</div>
+										<span class="form-control" id="event_author"></span>
+									</div>
+									<div class="input-group mt-auto pt-1" id="event_author_phone_box">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
+										</div>
+										<span class="form-control" id="event_author_phone"></span>
+									</div>
+									<div class="input-group mt-auto pt-1" id="event_author_email_box">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div><!-- trad -->
+										</div>
+										<span class="form-control" id="event_author_email"></span>
+									</div>
+									<div class="mt-auto"></div>
+								</div>
 							</div>
-							<div class="text-center mt-1"><a id="event_author_img"></a></div>
 						</div>
+
+						<div class="ml-auto"></div>
 					</div>
 				</div>
 

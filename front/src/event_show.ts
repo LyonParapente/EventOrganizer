@@ -63,6 +63,8 @@ export function showEvent (calEvent: EventApi): void
 	i18n_inPlace(["#event_comment"], "placeholder");
 	i18n_inPlace(
 	[
+		"#event_author_phone_box i",
+		"#event_author_email_box i",
 		"#event_rdv_time_title",
 		"#event_rdv_location_title i",
 		"#event_location_title i"
@@ -77,6 +79,13 @@ export function showEvent (calEvent: EventApi): void
 	// Title & description
 	id("event_title").textContent = calEvent.title;
 	id("event_description").innerHTML = calEvent.extendedProps.description || i18n('No description');
+
+	// Will be set by loadComments, cleanup any previously open
+	id("event_author").textContent = '';
+	id('event_author_phone_box').style.display = 'none'
+	id('event_author_email_box').style.display = 'none'
+	id("event_author_phone").innerHTML = '';
+	id("event_author_email").innerHTML = '';
 
 	// ----------------------
 	// Category
@@ -99,7 +108,7 @@ export function showEvent (calEvent: EventApi): void
 
 	var creator_id = calEvent.extendedProps.creator_id;
 	var author_img = new Image();
-	author_img.src = "/avatars/"+creator_id+"-1.jpg";
+	author_img.src = "/static/avatars/"+creator_id+"-1.jpg";
 	var event_author_img = id("event_author_img");
 	event_author_img.setAttribute("href", "/user/"+creator_id);
 	event_author_img.innerHTML = '';

@@ -12,7 +12,7 @@ export default function loadComments (event: CurrentEvent): void
 	{
 		// TODO: replace by current connected user id
 		"alt": "Thibault ROHMER",
-		"src": "avatars/4145-1.jpg",
+		"src": "/static/avatars/4145-1.jpg",
 		"height": 110
 	};
 	var event_comment_avatar = id("event_comment_avatar");
@@ -65,8 +65,7 @@ interface UsersDictionary
 
 function receiveEventInfos(data: any, event_comments: HTMLElement, event: CurrentEvent, participants: HTMLElement, interested: HTMLElement): void
 {
-	// Sensitive information not exposed in /api/events
-	id("event_author").textContent = getUserName(data.users[event.creator_id]);
+	fillCreator(data.users[event.creator_id]);
 
 	for (var i = 0; i < data.comments.length; ++i)
 	{
@@ -92,6 +91,38 @@ function getUserName (user: User)
 	return user.firstname + ' ' + user.lastname;
 }
 
+function nicePhone (phone: string)
+{
+	if (phone.length === 10)
+	{
+		var p = phone.split('');
+		return p[0]+p[1]+'.'+p[2]+p[3]+'.'+p[4]+p[5]+'.'+p[6]+p[7]+'.'+p[8]+p[9];
+	}
+	return phone;
+}
+
+function fillCreator (creator: User)
+{
+	// Sensitive information not exposed in /api/events
+	id("event_author").textContent = getUserName(creator);
+	if (creator.phone)
+	{
+		let a = document.createElement('a');
+		a.href = "tel:"+creator.phone;
+		a.innerHTML = nicePhone(creator.phone);
+		id("event_author_phone").appendChild(a);
+		id('event_author_phone_box').style.display = ''
+	}
+	if (creator.email)
+	{
+		let a = document.createElement('a');
+		a.href = "mailto:"+creator.email;
+		a.innerHTML = creator.email;
+		id("event_author_email").appendChild(a);
+		id('event_author_email_box').style.display = ''
+	}
+}
+
 function createCommentEntry (comment: Comment, userid: number, user: User): HTMLElement
 {
 	var dateText = toRelativeTimeString(new Date(comment.date));
@@ -102,7 +133,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var a = document.createElement('a');
 			a.href = "/user/"+userid;
 				var avatar = new Image();
-				avatar.src = "/avatars/"+userid+"-2.jpg";
+				avatar.src = "/static/avatars/"+userid+"-2.jpg";
 				avatar.alt = getUserName(user);
 			a.appendChild(avatar);
 		d.appendChild(a);
@@ -155,7 +186,7 @@ function createParticipants(participants: number[], users: UsersDictionary, isFi
 			var a = document.createElement('a');
 			a.href = "/user/"+participant;
 				var avatar = new Image();
-				avatar.src = "/avatars/"+participant+"-2.jpg";
+				avatar.src = "/static/avatars/"+participant+"-2.jpg";
 				avatar.alt = getUserName(users[participant]);
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);
@@ -195,7 +226,7 @@ function createInterested(interested: number[], users: UsersDictionary, isFinish
 			var a = document.createElement('a');
 			a.href = "/user/"+interested_user;
 				var avatar = new Image();
-				avatar.src = "/avatars/"+interested_user+"-2.jpg";
+				avatar.src = "/static/avatars/"+interested_user+"-2.jpg";
 				avatar.alt = getUserName(users[interested_user]);
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);

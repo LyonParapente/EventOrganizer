@@ -46,7 +46,9 @@ const trads =
 		"Reset": "Reset", // Prédéfini?
 		"Planning": "Calendrier",
 		"EventTitle": "Event #{0}",
-		"Unable to save, please retry": "Impossible de sauvegarder, veuillez réessayer"
+		"Unable to save, please retry": "Impossible de sauvegarder, veuillez réessayer",
+		"Phone": "Téléphone",
+		"Email": "Email"
 	}
 };
 
