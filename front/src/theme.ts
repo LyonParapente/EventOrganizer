@@ -65,7 +65,7 @@ function SelectFavoriteTheme (themeSelector: HTMLSelectElement): void
 var currentStylesheet;
 function SetTheme (themeName: string): void
 {
-	var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
+	var stylesheetUrl = "static/css/theme/"+themeName+".bootstrap.min.css";
 
 	var link = document.createElement('link');
 	link.setAttribute('rel', 'stylesheet');

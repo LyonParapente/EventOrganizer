@@ -1,7 +1,8 @@
 import os
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 from flask_restful_swagger_3 import Api
 from flask_cors import CORS
+from werkzeug.routing import BaseConverter
 
 # ------------------------------
 # Database initialization
@@ -40,13 +41,29 @@ api.add_resource(MessagesAPI,      settings.api_path+'/messages')
 # ------------------------------
 # Routes
 
+class RegexConverter(BaseConverter):
+  def __init__(self, url_map, *items):
+    super(RegexConverter, self).__init__(url_map)
+    self.regex = items[0]
+
+app.url_map.converters['regex'] = RegexConverter
+
 @app.route('/')
-def index():
-  return 'Hello!<br/><a href="/swagger">Swagger</a><br/><a href="/static/calendar.html">Calendar</a>'
+@app.route('/planning')
+@app.route('/event:new')
+@app.route('/event:<int:id>')
+@app.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
+def index(id=None):
+  """Calendar"""
+  return render_template('calendar.html',
+    title='Calendrier', lang='fr')
 
 @app.route('/swagger')
 def swag():
+  """Redirect to Swagger UI"""
   hostname = request.environ["SERVER_NAME"]
+  if hostname == "0.0.0.0":
+    hostname = 'localhost'
   port = request.environ["SERVER_PORT"]
   protocol = request.environ["wsgi.url_scheme"]
   url = "http://petstore.swagger.io/?url={}://{}:{}/api/swagger.json".format(protocol, hostname, port)
@@ -55,6 +72,11 @@ def swag():
 #@app.route("/environ")
 #def environ():
 #  return "{} <br/><br/><br/> {}".format(request.environ, os.environ)
+
+@app.route('/user/<id>')
+def user(id):
+  """User"""
+  return "User = " + id
 
 # ------------------------------
 
