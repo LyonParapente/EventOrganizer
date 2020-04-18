@@ -13,6 +13,7 @@ import { init_showEvent, showEvent } from './event_show';
 import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
 import { router } from './routing';
+import requestJson from './request_json';
 
 export var calendar: Calendar;
 
@@ -216,24 +217,15 @@ function init_routing ()
 		})
 		.add(/event:([0-9]+)$/, function (num: string)
 		{
-			console.log('Showing event:'+num);
-			var now = new Date();
-			(function findAndShowEvent()
+			console.log('Fetching event:'+num);
+			requestJson('GET', '/api/event/'+num, null, function (data: object)
 			{
+				console.log('Showing event:'+num);
+				onCreateEvent(data);
 				var event = calendar.getEventById(num);
-				if (event)
-				{
-					showEvent(event);
-				}
-				else // Wait for ajax data, poor solution
-				{
-					if (new Date().getTime() - now.getTime() > 1000*5) return;
-					setTimeout(function()
-					{
-						findAndShowEvent();
-					}, 200);
-				}
-			}());
+				showEvent(event);
+				calendar.gotoDate(event.start);
+			}, function(){}); // tslint:disable-line
 		})
 		.add(/([0-9]{4})-([0-9]{2})/, function (year, month)
 		{
