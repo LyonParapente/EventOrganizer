@@ -38,12 +38,20 @@ def get_messages_list(self, event_id):
     AND m.event_id=?
     ORDER BY datetime(m.creation_datetime) ASC
   """
-  get_registrations = """SELECT r.user_id,r.interest,
+  get_registrations = """SELECT
+      r.user_id,r.interest,
       u.phone,u.share_phone,u.email,u.share_email,
       u.firstname, u.lastname
     FROM events_registrations r, users u
     WHERE r.user_id=u.id
     AND r.event_id=?
+  """
+  get_creator = """SELECT
+      u.id, u.firstname,u.lastname,
+      u.phone,u.share_phone,u.email,u.share_email
+    FROM users AS u, events AS e
+    WHERE u.id=e.creator_id
+    AND e.id=?
   """
   try:
     cursor.execute(get_messages, (event_id,))
@@ -51,6 +59,9 @@ def get_messages_list(self, event_id):
 
     cursor.execute(get_registrations, (event_id,))
     registrations_list = cursor.fetchall()
+
+    cursor.execute(get_creator, (event_id,))
+    creator = cursor.fetchone()
   finally:
     db.close()
-  return messages_list, registrations_list
+  return messages_list, registrations_list, creator

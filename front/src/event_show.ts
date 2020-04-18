@@ -9,8 +9,7 @@ import { EventApi } from '@fullcalendar/core';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
-var event_id: number = null;
-var event_isFinished: boolean;
+var current_event: CurrentEvent;
 
 export function init_showEvent (): void
 {
@@ -39,7 +38,6 @@ export function init_showEvent (): void
 export function showEvent (calEvent: EventApi): void
 {
 	id('event_id').textContent = calEvent.id;
-	event_id = parseInt(calEvent.id, 10);
 
 	var start = calEvent.start,
 		end = calEvent.end;
@@ -52,8 +50,14 @@ export function showEvent (calEvent: EventApi): void
 	{
 		end = start;
 	}
-	event_isFinished = end.getTime() < new Date().getTime();
-	loadComments(calEvent.id, event_isFinished);
+
+	current_event =
+	{
+		event_id: parseInt(calEvent.id, 10),
+		creator_id: calEvent.extendedProps.creator_id,
+		isFinished: end.getTime() < new Date().getTime()
+	}
+	loadComments(current_event);
 
 	// Trads
 	i18n_inPlace(["#event_comment"], "placeholder");
@@ -93,14 +97,11 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Author
 
-	var author = calEvent.extendedProps.creator_fullname; // TODO: is undefined!!
 	var creator_id = calEvent.extendedProps.creator_id;
-	id("event_author").textContent = author;
 	var author_img = new Image();
-	author_img.alt = author;
-	author_img.src = "avatars/"+creator_id+"-1.jpg";
+	author_img.src = "/avatars/"+creator_id+"-1.jpg";
 	var event_author_img = id("event_author_img");
-	event_author_img.setAttribute("href", "user/"+creator_id);
+	event_author_img.setAttribute("href", "/user/"+creator_id);
 	event_author_img.innerHTML = '';
 	event_author_img.appendChild(author_img);
 
@@ -259,7 +260,7 @@ function SubmitComment ()
 	comment_post_error.style.display = 'none';
 	var body =
 	{
-		event_id: event_id,
+		event_id: current_event.event_id,
 		comment: textarea.value
 	};
 	requestJson("POST", "/api/message", body,
@@ -268,7 +269,7 @@ function SubmitComment ()
 		textarea.value = '';
 
 		// Reload all comments because there are new comments from others
-		loadComments(event_id.toString(), event_isFinished);
+		loadComments(current_event);
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{

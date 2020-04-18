@@ -17,6 +17,6 @@
 	],
 	"include":
 	[
-		"./types/bootstrap-colorpicker.d.ts"
+		"./types/"
 	]
 }

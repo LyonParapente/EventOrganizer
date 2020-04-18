@@ -3,7 +3,7 @@ import requestJson from './request_json';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
-export default function loadComments (event_id: string, isFinished: boolean): void
+export default function loadComments (event: CurrentEvent): void
 {
 	var error_box = id("event_comments_error");
 	error_box.style.display = 'none';
@@ -26,10 +26,10 @@ export default function loadComments (event_id: string, isFinished: boolean): vo
 	var interested = id("event_interested");
 	participants.innerHTML = interested.innerHTML = '';
 
-	requestJson("GET", "/api/messages?event_id="+event_id, null, function (data: JSON)
+	requestJson("GET", "/api/messages?event_id="+event.event_id.toString(), null, function (data: JSON)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
-		receiveEventInfos(data, event_comments, isFinished, participants, interested);
+		receiveEventInfos(data, event_comments, event, participants, interested);
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
@@ -63,8 +63,11 @@ interface UsersDictionary
 	[x: string]: User;
 }
 
-function receiveEventInfos(data: any, event_comments: HTMLElement, isFinished: boolean, participants: HTMLElement, interested: HTMLElement): void
+function receiveEventInfos(data: any, event_comments: HTMLElement, event: CurrentEvent, participants: HTMLElement, interested: HTMLElement): void
 {
+	// Sensitive information not exposed in /api/events
+	id("event_author").textContent = getUserName(data.users[event.creator_id]);
+
 	for (var i = 0; i < data.comments.length; ++i)
 	{
 		var comment = data.comments[i],
@@ -80,8 +83,8 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, isFinished: b
 		event_comments.appendChild(groupitem);
 	}
 
-	createParticipants(data.participants || [], data.users, isFinished, participants);
-	createInterested(data.interested || [], data.users, isFinished, interested);
+	createParticipants(data.participants || [], data.users, event.isFinished, participants);
+	createInterested(data.interested || [], data.users, event.isFinished, interested);
 }
 
 function getUserName (user: User)
@@ -97,9 +100,9 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 	groupitem.className = 'list-group-item p-1 d-flex';
 		var d = document.createElement('div');
 			var a = document.createElement('a');
-			a.href = "user/"+userid;
+			a.href = "/user/"+userid;
 				var avatar = new Image();
-				avatar.src = "avatars/"+userid+"-2.jpg";
+				avatar.src = "/avatars/"+userid+"-2.jpg";
 				avatar.alt = getUserName(user);
 			a.appendChild(avatar);
 		d.appendChild(a);
@@ -110,7 +113,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var comment_infos = document.createElement('span');
 			comment_infos.className = 'border-bottom border-light';
 				a = document.createElement('a');
-				a.href = "user/"+userid;
+				a.href = "/user/"+userid;
 				a.appendChild(document.createTextNode(getUserName(user)));
 			comment_infos.appendChild(a);
 			comment_infos.appendChild(document.createTextNode(' - ' + dateText));
@@ -150,9 +153,9 @@ function createParticipants(participants: number[], users: UsersDictionary, isFi
 		if (users.hasOwnProperty(participant))
 		{
 			var a = document.createElement('a');
-			a.href = "user/"+participant;
+			a.href = "/user/"+participant;
 				var avatar = new Image();
-				avatar.src = "avatars/"+participant+"-2.jpg";
+				avatar.src = "/avatars/"+participant+"-2.jpg";
 				avatar.alt = getUserName(users[participant]);
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);
@@ -190,9 +193,9 @@ function createInterested(interested: number[], users: UsersDictionary, isFinish
 		if (users.hasOwnProperty(interested_user))
 		{
 			var a = document.createElement('a');
-			a.href = "user/"+interested_user;
+			a.href = "/user/"+interested_user;
 				var avatar = new Image();
-				avatar.src = "avatars/"+interested_user+"-2.jpg";
+				avatar.src = "/avatars/"+interested_user+"-2.jpg";
 				avatar.alt = getUserName(users[interested_user]);
 				avatar.className = "mr-1 mb-1";
 			a.appendChild(avatar);

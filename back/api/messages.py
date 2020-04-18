@@ -31,14 +31,14 @@ class MessagesAPI(Resource):
   def get(self, _parser):
     """Download the list of messages for an event"""
     query = _parser.parse_args(strict=True)
-    messages_list, registrations_list = db.get_messages_list(query["event_id"])
+    messages, registrations, creator = db.get_messages_list(query["event_id"])
 
     comments = []
     users = {}
     participants = []
     interested = []
 
-    for registration in registrations_list:
+    for registration in registrations:
       silence_user_fields(registration)
       user = MessagesUser(**{
         'firstname': registration['firstname'],
@@ -55,7 +55,7 @@ class MessagesAPI(Resource):
       elif registration['interest'] == 2:
         participants.append(user_id)
 
-    for message in messages_list:
+    for message in messages:
       silence_user_fields(message)
       user = MessagesUser(**{
         'firstname': message['firstname'],
@@ -71,6 +71,16 @@ class MessagesAPI(Resource):
         'user': message['author_id'],
         'comment': message['comment']
       }))
+
+    # Add creator to list
+    silence_user_fields(creator)
+    user = MessagesUser(**{
+      'firstname': creator['firstname'],
+      'lastname': creator['lastname'],
+      'phone': creator.get('phone', ''),
+      'email': creator.get('email', '')
+    })
+    users[str(creator['id'])] = user
 
     # Remove empty phone or email
     for user_id in users:
