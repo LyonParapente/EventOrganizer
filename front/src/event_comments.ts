@@ -4,6 +4,7 @@ import requestJson from './request_json';
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 // TODO: when authenticated
+var connected_user_id: number = 101;
 var connected_user: User = {firstname: "John", lastname: "DOE"};
 
 export default function loadComments (event: CurrentEvent): void
@@ -66,6 +67,15 @@ interface UsersDictionary
 	[x: string]: User;
 }
 
+interface RegistrationInfos
+{
+	badge: string,
+	title: string,
+	button: string,
+	buttonMsg: string,
+	interest: number
+}
+
 function receiveEventInfos(data: any, event_comments: HTMLElement, event: CurrentEvent, participants: HTMLElement, interested: HTMLElement): void
 {
 	fillCreator(data.users[event.creator_id]);
@@ -85,8 +95,22 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 		event_comments.appendChild(groupitem);
 	}
 
-	createParticipants(data.participants || [], data.users, event.isFinished, participants, event.event_id);
-	createInterested(data.interested || [], data.users, event.isFinished, interested, event.event_id);
+	createRegistrations(data.participants || [], data.users, event.isFinished, participants, event.event_id,
+	{
+		badge: 'badge-success',
+		title: 'Participants ',
+		button: 'participants_button',
+		buttonMsg: "I'm in",
+		interest: 2
+	});
+	createRegistrations(data.interested || [], data.users, event.isFinished, interested, event.event_id,
+	{
+		badge: 'badge-info',
+		title: 'Interested ',
+		button: 'interested_button',
+		buttonMsg: "I'm interested",
+		interest: 1
+	});
 }
 
 function getUserName (user: User)
@@ -162,41 +186,44 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 	return groupitem;
 }
 
-function createParticipants(participants: number[], users: UsersDictionary, isFinished: boolean, event_participants: HTMLElement, event_id: number): void
+function createRegistrations(registrations: number[], users: UsersDictionary, isFinished: boolean, container: HTMLElement, event_id: number, props: RegistrationInfos): void
 {
 	var participants_badge = document.createElement('span');
-	participants_badge.classList.add('badge', 'badge-success');
-	participants_badge.textContent = participants.length.toString();
+	participants_badge.classList.add('badge', props.badge);
+	participants_badge.textContent = registrations.length.toString();
 
 	var participants_header = document.createElement('h4');
-	participants_header.textContent = i18n("Participants ");
+	participants_header.textContent = i18n(props.title);
 	participants_header.appendChild(participants_badge);
 	if (!isFinished)
 	{
-		var button_id = 'participants_button';
 		var participants_button = document.createElement('button');
-		participants_button.id = button_id;
+		participants_button.id = props.button;
 		participants_button.setAttribute('type', 'button');
 		participants_button.classList.add('btn', 'btn-outline-info', 'float-right');
-		participants_button.textContent = i18n("I'm in");
+		participants_button.textContent = i18n(props.buttonMsg);
+		if (registrations.indexOf(connected_user_id) !== -1)
+		{
+			participants_button.style.display = 'none';
+		}
 		participants_header.appendChild(participants_button);
 		participants_button.addEventListener('click', function()
 		{
-			registerToEvent(event_id, 2, event_participants, button_id);
+			registerToEvent(event_id, props.interest, container, props.button);
 		});
 	}
-	event_participants.appendChild(participants_header);
+	container.appendChild(participants_header);
 
-	for (var i = 0; i < participants.length; ++i)
+	for (var i = 0; i < registrations.length; ++i)
 	{
-		var participant = participants[i].toString();
-		if (users.hasOwnProperty(participant))
+		var registration = registrations[i].toString();
+		if (users.hasOwnProperty(registration))
 		{
-			addRegistration(participant, users[participant], event_participants);
+			addRegistration(registration, users[registration], container);
 		}
 		else
 		{
-			console.warn("Missing participant user "+participant);
+			console.warn("Missing user "+registration);
 		}
 	}
 }
@@ -211,45 +238,6 @@ function addRegistration (user_id: string, user: User, container: HTMLElement)
 		avatar.className = "mr-1 mb-1";
 	a.appendChild(avatar);
 	container.appendChild(a);
-}
-
-function createInterested(interested: number[], users: UsersDictionary, isFinished: boolean, event_interested: HTMLElement, event_id: number): void
-{
-	var interested_badge = document.createElement('span');
-	interested_badge.classList.add('badge', 'badge-info');
-	interested_badge.textContent = interested.length.toString();
-
-	var interested_header = document.createElement('h4');
-	interested_header.textContent = i18n("Interested ");
-	interested_header.appendChild(interested_badge);
-	if (!isFinished)
-	{
-		var button_id = 'interested_button';
-		var interested_button = document.createElement('button');
-		interested_button.id = button_id;
-		interested_button.setAttribute('type', 'button');
-		interested_button.classList.add('btn', 'btn-outline-info', 'float-right');
-		interested_button.textContent = i18n("I'm interested");
-		interested_header.appendChild(interested_button);
-		interested_button.addEventListener('click', function()
-		{
-			registerToEvent(event_id, 1, event_interested, button_id);
-		});
-	}
-	event_interested.appendChild(interested_header);
-
-	for (var i = 0; i < interested.length; ++i)
-	{
-		var interested_user = interested[i].toString();
-		if (users.hasOwnProperty(interested_user))
-		{
-			addRegistration(interested_user, users[interested_user], event_interested);
-		}
-		else
-		{
-			console.warn("Missing interested user "+interested);
-		}
-	}
 }
 
 function registerToEvent (event_id: number, interest: number, container: HTMLElement, button_id: string)
