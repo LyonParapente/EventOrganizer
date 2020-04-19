@@ -14,9 +14,8 @@ export default function loadComments (event: CurrentEvent): void
 
 	var attributes =
 	{
-		// TODO: replace by current connected user id
-		"alt": "Thibault ROHMER",
-		"src": "/static/avatars/4145-1.jpg",
+		"alt": getUserName(connected_user),
+		"src": "/static/avatars/"+connected_user_id+"-1.jpg",
 		"height": 110
 	};
 	var event_comment_avatar = id("event_comment_avatar");
@@ -73,10 +72,11 @@ interface RegistrationInfos
 	title: string,
 	button: string,
 	buttonMsg: string,
+	buttonDelMsg: string,
 	interest: number
 }
 
-function receiveEventInfos(data: any, event_comments: HTMLElement, event: CurrentEvent, participants: HTMLElement, interested: HTMLElement): void
+function receiveEventInfos(data: any, event_comments: HTMLElement, event: CurrentEvent, participantsEl: HTMLElement, interestedEl: HTMLElement): void
 {
 	fillCreator(data.users[event.creator_id]);
 
@@ -95,20 +95,29 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 		event_comments.appendChild(groupitem);
 	}
 
-	createRegistrations(data.participants || [], data.users, event.isFinished, participants, event.event_id,
+	var participants = data.participants || [];
+	var interested = data.interested || [];
+
+	var in_participants = participants.indexOf(connected_user_id) !== -1;
+
+	createRegistrations(participants, data.users,
+		event.isFinished, participantsEl, event.event_id, false,
 	{
 		badge: 'badge-success',
 		title: 'Participants ',
 		button: 'participants_button',
 		buttonMsg: "I'm in",
+		buttonDelMsg: "I'm out",
 		interest: 2
 	});
-	createRegistrations(data.interested || [], data.users, event.isFinished, interested, event.event_id,
+	createRegistrations(interested, data.users,
+		event.isFinished, interestedEl, event.event_id, in_participants,
 	{
 		badge: 'badge-info',
 		title: 'Interested ',
 		button: 'interested_button',
 		buttonMsg: "I'm interested",
+		buttonDelMsg: "I'm not interested",
 		interest: 1
 	});
 }
@@ -186,33 +195,54 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 	return groupitem;
 }
 
-function createRegistrations(registrations: number[], users: UsersDictionary, isFinished: boolean, container: HTMLElement, event_id: number, props: RegistrationInfos): void
+function createRegistrations(registrations: number[], users: UsersDictionary, isFinished: boolean, container: HTMLElement, event_id: number, hideButtons: boolean, props: RegistrationInfos): void
 {
-	var participants_badge = document.createElement('span');
-	participants_badge.classList.add('badge', props.badge);
-	participants_badge.textContent = registrations.length.toString();
+	var badge = document.createElement('span');
+	badge.classList.add('badge', props.badge);
+	badge.textContent = registrations.length.toString();
 
-	var participants_header = document.createElement('h4');
-	participants_header.textContent = i18n(props.title);
-	participants_header.appendChild(participants_badge);
+	var header = document.createElement('h4');
+	header.textContent = i18n(props.title);
+	header.appendChild(badge);
 	if (!isFinished)
 	{
-		var participants_button = document.createElement('button');
-		participants_button.id = props.button;
-		participants_button.setAttribute('type', 'button');
-		participants_button.classList.add('btn', 'btn-outline-info', 'float-right');
-		participants_button.textContent = i18n(props.buttonMsg);
-		if (registrations.indexOf(connected_user_id) !== -1)
-		{
-			participants_button.style.display = 'none';
-		}
-		participants_header.appendChild(participants_button);
-		participants_button.addEventListener('click', function()
+		var button = document.createElement('button');
+		button.id = props.button;
+		button.setAttribute('type', 'button');
+		button.classList.add('btn', 'btn-outline-info', 'float-right');
+		button.textContent = i18n(props.buttonMsg);
+		button.addEventListener('click', function()
 		{
 			registerToEvent(event_id, props.interest, container, props.button);
 		});
+
+		var buttonDelete = document.createElement('button');
+		var button_id = props.button+'_delete';
+		buttonDelete.id = button_id;
+		buttonDelete.setAttribute('type', 'button');
+		buttonDelete.classList.add('btn', 'btn-outline-secondary', 'float-right');
+		buttonDelete.textContent = i18n(props.buttonDelMsg);
+		buttonDelete.style.display = 'none';
+		buttonDelete.addEventListener('click', function()
+		{
+			unregisterFromEvent(event_id, button_id);
+		});
+
+		if (registrations.indexOf(connected_user_id) !== -1)
+		{
+			button.style.display = 'none';
+			buttonDelete.style.display = '';
+		}
+		if (hideButtons)
+		{
+			// Connected user is present in other section
+			button.style.display = 'none';
+			buttonDelete.style.display = 'none';
+		}
+		header.appendChild(button);
+		header.appendChild(buttonDelete);
 	}
-	container.appendChild(participants_header);
+	container.appendChild(header);
 
 	for (var i = 0; i < registrations.length; ++i)
 	{
@@ -255,25 +285,71 @@ function registerToEvent (event_id: number, interest: number, container: HTMLEle
 	});
 }
 
+function unregisterFromEvent (event_id: number, button_id: string)
+{
+	var url = "/api/event/"+event_id.toString()+'/registration';
+	requestJson("DELETE", url, null, function (data: any)
+	{
+		manageButtons(button_id, connected_user_id.toString());
+	},
+	function (type: string, ex: XMLHttpRequest)
+	{
+		console.error(type, ex);
+	});
+}
+
 function manageButtons (button_id: string, user_id: string)
 {
-	var button_clicked = id(button_id);
-	button_clicked.style.display = 'none';
-
-	var other_id = button_id === 'interested_button' ? 'participants_button' : 'interested_button';
-	var other_button = id(other_id);
-	other_button.style.display = 'block';
-
-	var badge = button_clicked.closest('h4').querySelector('.badge') as HTMLSpanElement;
-	badge.textContent = (parseInt(badge.textContent, 10) + 1).toString();
-
-	// Remove user and decrement counter if it was present in the other section
-	var box = other_button.closest('h4').parentNode;
-	var registration = box.querySelector(`a[href='/user:${user_id}']`);
-	if (registration)
+	var button = id(button_id);
+	if (button_id.endsWith('_delete'))
 	{
-		box.removeChild(registration);
-		badge = box.querySelector('.badge') as HTMLSpanElement;
-		badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
+		// Remove user and decrement counter
+		var box = button.closest('h4').parentNode;
+		var user = box.querySelector(`a[href='/user:${user_id}']`);
+		if (user)
+		{
+			box.removeChild(user);
+			badge = box.querySelector('.badge') as HTMLSpanElement;
+			badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
+		}
+
+		// Show registration buttons
+		id('participants_button').style.display = '';
+		id('interested_button').style.display = '';
+
+		// Hide delete button
+		button.style.display = 'none';
+	}
+	else
+	{
+		// Hide clicked button
+		button.style.display = 'none';
+
+		// Show delete button
+		var button_delete = id(button_id+'_delete');
+		button_delete.style.display = '';
+
+		// Increase counter
+		var badge = button.closest('h4').querySelector('.badge') as HTMLSpanElement;
+		badge.textContent = (parseInt(badge.textContent, 10) + 1).toString();
+
+		// Hide interested section buttons when becoming participant
+		if (button_id == 'participants_button')
+		{
+			var other_button = id('interested_button');
+			other_button.style.display = 'none';
+			id('interested_button_delete').style.display = 'none';
+
+			// Remove user in other section if
+			// already in interested but click "i'm in"
+			var box = other_button.closest('h4').parentNode;
+			var user = box.querySelector(`a[href='/user:${user_id}']`);
+			if (user)
+			{
+				box.removeChild(user);
+				badge = box.querySelector('.badge') as HTMLSpanElement;
+				badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
+			}
+		}
 	}
 }
