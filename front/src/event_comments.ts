@@ -213,7 +213,7 @@ function createRegistrations(registrations: number[], users: UsersDictionary, is
 		button.textContent = i18n(props.buttonMsg);
 		button.addEventListener('click', function()
 		{
-			registerToEvent(event_id, props.interest, container, props.button);
+			registerToEvent(event_id, props.interest, props.button, container);
 		});
 
 		var buttonDelete = document.createElement('button');
@@ -225,7 +225,7 @@ function createRegistrations(registrations: number[], users: UsersDictionary, is
 		buttonDelete.style.display = 'none';
 		buttonDelete.addEventListener('click', function()
 		{
-			unregisterFromEvent(event_id, button_id);
+			unregisterFromEvent(event_id, button_id, container);
 		});
 
 		if (registrations.indexOf(connected_user_id) !== -1)
@@ -270,14 +270,12 @@ function addRegistration (user_id: string, user: User, container: HTMLElement)
 	container.appendChild(a);
 }
 
-function registerToEvent (event_id: number, interest: number, container: HTMLElement, button_id: string)
+function registerToEvent (event_id: number, interest: number, button_id: string, container: HTMLElement)
 {
 	var url = "/api/event/"+event_id.toString()+'/registration?interest='+interest;
 	requestJson("PUT", url, null, function (data: any)
 	{
-		var user_id = data.user_id.toString();
-		addRegistration(user_id, connected_user, container);
-		manageButtons(button_id, user_id);
+		updateRegistration(button_id, container);
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
@@ -285,12 +283,12 @@ function registerToEvent (event_id: number, interest: number, container: HTMLEle
 	});
 }
 
-function unregisterFromEvent (event_id: number, button_id: string)
+function unregisterFromEvent (event_id: number, button_id: string, container: HTMLElement)
 {
 	var url = "/api/event/"+event_id.toString()+'/registration';
 	requestJson("DELETE", url, null, function (data: any)
 	{
-		manageButtons(button_id, connected_user_id.toString());
+		updateRegistration(button_id, container);
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
@@ -298,13 +296,13 @@ function unregisterFromEvent (event_id: number, button_id: string)
 	});
 }
 
-function manageButtons (button_id: string, user_id: string)
+function updateRegistration (button_id: string, box: HTMLElement)
 {
+	var user_id = connected_user_id.toString();
 	var button = id(button_id);
 	if (button_id.endsWith('_delete'))
 	{
 		// Remove user and decrement counter
-		var box = button.closest('h4').parentNode;
 		var user = box.querySelector(`a[href='/user:${user_id}']`);
 		if (user)
 		{
@@ -329,25 +327,31 @@ function manageButtons (button_id: string, user_id: string)
 		var button_delete = id(button_id+'_delete');
 		button_delete.style.display = '';
 
-		// Increase counter
-		var badge = button.closest('h4').querySelector('.badge') as HTMLSpanElement;
-		badge.textContent = (parseInt(badge.textContent, 10) + 1).toString();
+		// Prevent double-add if ajax is slow and user clicks several times
+		var user = box.querySelector(`a[href='/user:${user_id}']`);
+		if (!user)
+		{
+			addRegistration(user_id, connected_user, box);
+
+			// Increase counter
+			var badge = box.querySelector('.badge') as HTMLSpanElement;
+			badge.textContent = (parseInt(badge.textContent, 10) + 1).toString();
+		}
 
 		// Hide interested section buttons when becoming participant
-		if (button_id == 'participants_button')
+		if (button_id === 'participants_button')
 		{
-			var other_button = id('interested_button');
-			other_button.style.display = 'none';
+			id('interested_button').style.display = 'none';
 			id('interested_button_delete').style.display = 'none';
 
 			// Remove user in other section if
 			// already in interested but click "i'm in"
-			var box = other_button.closest('h4').parentNode;
-			var user = box.querySelector(`a[href='/user:${user_id}']`);
+			var otherBox = id('event_interested');
+			var user = otherBox.querySelector(`a[href='/user:${user_id}']`);
 			if (user)
 			{
-				box.removeChild(user);
-				badge = box.querySelector('.badge') as HTMLSpanElement;
+				otherBox.removeChild(user);
+				badge = otherBox.querySelector('.badge') as HTMLSpanElement;
 				badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
 			}
 		}
