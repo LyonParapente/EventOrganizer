@@ -3,6 +3,9 @@ import requestJson from './request_json';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
+// TODO: when authenticated
+var connected_user: User = {firstname: "John", lastname: "DOE"};
+
 export default function loadComments (event: CurrentEvent): void
 {
 	var error_box = id("event_comments_error");
@@ -82,8 +85,8 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 		event_comments.appendChild(groupitem);
 	}
 
-	createParticipants(data.participants || [], data.users, event.isFinished, participants);
-	createInterested(data.interested || [], data.users, event.isFinished, interested);
+	createParticipants(data.participants || [], data.users, event.isFinished, participants, event.event_id);
+	createInterested(data.interested || [], data.users, event.isFinished, interested, event.event_id);
 }
 
 function getUserName (user: User)
@@ -159,7 +162,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 	return groupitem;
 }
 
-function createParticipants(participants: number[], users: UsersDictionary, isFinished: boolean, event_participants: HTMLElement): void
+function createParticipants(participants: number[], users: UsersDictionary, isFinished: boolean, event_participants: HTMLElement, event_id: number): void
 {
 	var participants_badge = document.createElement('span');
 	participants_badge.classList.add('badge', 'badge-success');
@@ -170,11 +173,17 @@ function createParticipants(participants: number[], users: UsersDictionary, isFi
 	participants_header.appendChild(participants_badge);
 	if (!isFinished)
 	{
+		var button_id = 'participants_button';
 		var participants_button = document.createElement('button');
+		participants_button.id = button_id;
 		participants_button.setAttribute('type', 'button');
 		participants_button.classList.add('btn', 'btn-outline-info', 'float-right');
 		participants_button.textContent = i18n("I'm in");
 		participants_header.appendChild(participants_button);
+		participants_button.addEventListener('click', function()
+		{
+			registerToEvent(event_id, 2, event_participants, button_id);
+		});
 	}
 	event_participants.appendChild(participants_header);
 
@@ -183,14 +192,7 @@ function createParticipants(participants: number[], users: UsersDictionary, isFi
 		var participant = participants[i].toString();
 		if (users.hasOwnProperty(participant))
 		{
-			var a = document.createElement('a');
-			a.href = "/user:"+participant;
-				var avatar = new Image();
-				avatar.src = "/static/avatars/"+participant+"-2.jpg";
-				avatar.alt = getUserName(users[participant]);
-				avatar.className = "mr-1 mb-1";
-			a.appendChild(avatar);
-			event_participants.appendChild(a);
+			addRegistration(participant, users[participant], event_participants);
 		}
 		else
 		{
@@ -199,7 +201,19 @@ function createParticipants(participants: number[], users: UsersDictionary, isFi
 	}
 }
 
-function createInterested(interested: number[], users: UsersDictionary, isFinished: boolean, event_interested: HTMLElement): void
+function addRegistration (user_id: string, user: User, container: HTMLElement)
+{
+	var a = document.createElement('a');
+	a.href = "/user:"+user_id;
+		var avatar = new Image();
+		avatar.src = "/static/avatars/"+user_id+"-2.jpg";
+		avatar.alt = getUserName(user);
+		avatar.className = "mr-1 mb-1";
+	a.appendChild(avatar);
+	container.appendChild(a);
+}
+
+function createInterested(interested: number[], users: UsersDictionary, isFinished: boolean, event_interested: HTMLElement, event_id: number): void
 {
 	var interested_badge = document.createElement('span');
 	interested_badge.classList.add('badge', 'badge-info');
@@ -210,11 +224,17 @@ function createInterested(interested: number[], users: UsersDictionary, isFinish
 	interested_header.appendChild(interested_badge);
 	if (!isFinished)
 	{
+		var button_id = 'interested_button';
 		var interested_button = document.createElement('button');
+		interested_button.id = button_id;
 		interested_button.setAttribute('type', 'button');
 		interested_button.classList.add('btn', 'btn-outline-info', 'float-right');
 		interested_button.textContent = i18n("I'm interested");
 		interested_header.appendChild(interested_button);
+		interested_button.addEventListener('click', function()
+		{
+			registerToEvent(event_id, 1, event_interested, button_id);
+		});
 	}
 	event_interested.appendChild(interested_header);
 
@@ -223,18 +243,49 @@ function createInterested(interested: number[], users: UsersDictionary, isFinish
 		var interested_user = interested[i].toString();
 		if (users.hasOwnProperty(interested_user))
 		{
-			var a = document.createElement('a');
-			a.href = "/user:"+interested_user;
-				var avatar = new Image();
-				avatar.src = "/static/avatars/"+interested_user+"-2.jpg";
-				avatar.alt = getUserName(users[interested_user]);
-				avatar.className = "mr-1 mb-1";
-			a.appendChild(avatar);
-			event_interested.appendChild(a);
+			addRegistration(interested_user, users[interested_user], event_interested);
 		}
 		else
 		{
 			console.warn("Missing interested user "+interested);
 		}
+	}
+}
+
+function registerToEvent (event_id: number, interest: number, container: HTMLElement, button_id: string)
+{
+	var url = "/api/event/"+event_id.toString()+'/registration?interest='+interest;
+	requestJson("PUT", url, null, function (data: any)
+	{
+		var user_id = data.user_id.toString();
+		addRegistration(user_id, connected_user, container);
+		manageButtons(button_id, user_id);
+	},
+	function (type: string, ex: XMLHttpRequest)
+	{
+		console.error(type, ex);
+	});
+}
+
+function manageButtons (button_id: string, user_id: string)
+{
+	var button_clicked = id(button_id);
+	button_clicked.style.display = 'none';
+
+	var other_id = button_id === 'interested_button' ? 'participants_button' : 'interested_button';
+	var other_button = id(other_id);
+	other_button.style.display = 'block';
+
+	var badge = button_clicked.closest('h4').querySelector('.badge') as HTMLSpanElement;
+	badge.textContent = (parseInt(badge.textContent, 10) + 1).toString();
+
+	// Remove user and decrement counter if it was present in the other section
+	var box = other_button.closest('h4').parentNode;
+	var registration = box.querySelector(`a[href='/user:${user_id}']`);
+	if (registration)
+	{
+		box.removeChild(registration);
+		badge = box.querySelector('.badge') as HTMLSpanElement;
+		badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
 	}
 }
