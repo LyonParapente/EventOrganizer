@@ -15,7 +15,7 @@ database.manager.init(settings.db_filepath)
 # Flask initialization
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 api = Api(app, version=settings.version)
 
 # ------------------------------
