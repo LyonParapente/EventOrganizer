@@ -69,8 +69,20 @@ class EventAPICreate(Resource):
     if props['end_date']:
       props['end_date'] = str(props['end_date'])
 
-    return Event(**filter_event_response(props)), 201, {'Location': request.path + '/' + str(props['id'])}
+    new_event = Event(**filter_event_response(props))
 
+    # The creator of an event is immediately registered as participant
+    try:
+      db.set_registration(
+        event_id=new_event['id'],
+        user_id=new_event['creator_id'],
+        interest=2
+      )
+    except Exception as e:
+      #not a big deal, let's continue
+      pass
+
+    return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
 class EventAPI(Resource):
   @swagger.doc({
