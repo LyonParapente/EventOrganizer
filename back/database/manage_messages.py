@@ -13,8 +13,9 @@ def insert_message(self, *,
   }
   columns = ','.join(tuple(new_message))
   questions = ','.join(['?' for x in new_message])
-  insert_message = """INSERT INTO messages(%s)
-                  VALUES(%s)"""%(columns,questions)
+  insert_message = """
+    INSERT INTO messages(%s)
+    VALUES(%s)""" % (columns,questions)
 
   db, cursor = self._connect()
   try:

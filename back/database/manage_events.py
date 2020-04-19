@@ -24,8 +24,9 @@ def insert_event(self, *,
   }
   columns = ','.join(tuple(new_event))
   questions = ','.join(['?' for x in new_event])
-  insert_event = """INSERT INTO events(%s)
-                  VALUES(%s)"""%(columns,questions)
+  insert_event = """
+    INSERT INTO events(%s)
+    VALUES(%s)""" % (columns,questions)
 
   db, cursor = self._connect()
   try:

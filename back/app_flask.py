@@ -25,6 +25,9 @@ from api.event import EventAPICreate, EventAPI
 api.add_resource(EventAPICreate, settings.api_path+'/event')
 api.add_resource(EventAPI,       settings.api_path+'/event/<int:event_id>')
 
+from api.registration import RegisterAPI
+api.add_resource(RegisterAPI,       settings.api_path+'/event/<int:event_id>/registration')
+
 from api.events import EventsAPI
 api.add_resource(EventsAPI,      settings.api_path+'/events')
 

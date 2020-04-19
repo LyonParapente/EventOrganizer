@@ -17,8 +17,9 @@ def insert_user(self, *,
   }
   columns = ','.join(tuple(new_user))
   questions = ','.join(['?' for x in new_user])
-  insert_user = """INSERT INTO users(%s)
-                  VALUES(%s)"""%(columns,questions)
+  insert_user = """
+    INSERT INTO users(%s)
+    VALUES(%s)""" % (columns,questions)
 
   db, cursor = self._connect()
   try:

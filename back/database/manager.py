@@ -56,6 +56,7 @@ class DBManage(object):
   from .manage_users import insert_user, get_user, update_user, delete_user
   from .manage_events import insert_event, get_event, update_event, delete_event, get_events_list
   from .manage_messages import insert_message, get_messages_list
+  from .manage_registration import set_registration, get_registration, delete_registration
 
 
 db = None

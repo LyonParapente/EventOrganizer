@@ -41,6 +41,11 @@ FOREIGN KEY (event_id) REFERENCES events(id),
 FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS "registration_user_idx" ON "events_registrations"(
+	"event_id",
+	"user_id"
+);
+
 CREATE TABLE IF NOT EXISTS "messages" (
 "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 "comment" TEXT NOT NULL,
