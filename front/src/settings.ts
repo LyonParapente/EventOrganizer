@@ -13,7 +13,8 @@ interface Settings
 		{
 			[key: string]: string
 		}
-	}
+	},
+	unsplash_tags: string[]
 };
 
 const settings: Settings =
@@ -55,6 +56,7 @@ const settings: Settings =
 			annulée: '#8A8A8A',
 			autre: '#FB6F46'
 		}
-	}
+	},
+	unsplash_tags: ['paragliding']
 };
 export default settings;
