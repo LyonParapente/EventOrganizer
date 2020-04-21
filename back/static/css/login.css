@@ -1,0 +1,49 @@
+html,
+body {
+height: 100%;
+}
+#unsplash{
+position: absolute;
+top: 0;
+left: 0;
+}
+.user_card {
+height: 450px;
+width: 400px;
+margin-top: auto;
+margin-bottom: auto;
+position: relative;
+display: flex;
+justify-content: center;
+flex-direction: column;
+padding: 10px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.form_container {
+margin-top: 25px;
+}
+.form_container form {
+width: 80%;
+}
+.input-group-text {
+border: 0;
+border-radius: 0.25rem 0 0 0.25rem;
+}
+.input_user:focus,
+.input_pass:focus {
+box-shadow: none;
+}
+
+/* ------------------------------ */
+/* Colors */
+
+.user_card {
+background: rgba(191, 222, 255, 0.5);
+}
+.login_btn, .input-group-text,
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+background-color: #306ed6;
+}
+.login_btn, .input-group-text {
+color: white;
+}

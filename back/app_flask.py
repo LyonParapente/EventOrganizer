@@ -86,6 +86,39 @@ def user(id):
     title='Utilisateur', lang='fr',
     user=user_item)
 
+@app.route('/login')
+def login():
+  """Login"""
+  fr = {
+    'lang': 'fr',
+    'title': 'Connexion',
+    'email': 'Adresse email',
+    'password': 'Mot de passe',
+    'remember':'Se souvenir de moi',
+    'login': 'Connexion',
+    'gotaccount': "Pas encore de compte ?",
+    'signup': "S'inscrire",
+    'forgot': 'Mot de passe oublié ?'
+  }
+  en = {
+    'lang': 'fr',
+    'title': 'Login',
+    'email': 'Email address',
+    'password': 'Password',
+    'remember':'Remember me',
+    'login': 'Login',
+    'gotaccount': "Don't have an account?",
+    'signup': "Sign up",
+    'forgot': 'Forgot your password?'
+  }
+  return render_template('login.html', **fr)
+
+@app.route('/register')
+def register():
+  """Register an account"""
+  return render_template('register.html',
+    title='Register')
+
 # ------------------------------
 
 if __name__ == '__main__':

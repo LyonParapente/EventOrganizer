@@ -1,0 +1,59 @@
+<!DOCTYPE html lang="{{lang}}">
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=600" />
+	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
+  <link rel="stylesheet" href="static/css/login.css" />
+</head>
+<body>
+<div class="container h-100">
+ <div class="d-flex justify-content-center h-100">
+  <div class="user_card">
+    <div class="d-flex justify-content-center">
+      <img alt="LyonParapente" src="static/logo_115.png" />
+    </div>
+    <div class="d-flex justify-content-center form_container">
+      <form>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" name="login" class="form-control input_user" placeholder="{{email}}" required autofocus />
+        </div>
+        <div class="input-group mb-2">
+          <div class="input-group-append">
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
+          </div>
+          <input type="password" name="password" class="form-control input_pass" placeholder="{{password}}" required />
+        </div>
+        <div class="form-group">
+          <div class="custom-control custom-checkbox text-center">
+            <input type="checkbox" class="custom-control-input" id="rememberMe">
+            <label class="custom-control-label" for="rememberMe">{{remember}}</label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+          <button type="button" name="button" class="btn btn-primary btn-lg btn-block login_btn">{{login}}</button>
+        </div>
+      </form>
+    </div>
+    <div class="mt-4">
+      <div class="text-center">
+        {{gotaccount}} <a href="#" class="ml-2"><button type="button" class="btn btn-info btn-sm">{{signup}}</button></a>
+      </div>
+      <div class="text-center">
+        <a class="text-dark" href="#">{{forgot}}</a>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+<!--script src="static/js/jquery.slim.min.js"></script>
+<script src="static/js/bootstrap.bundle.min.js"></script-->
+<script src="static/js/unsplash.min.js"></script>
+<script>unsplash(['paragliding']);</script>
+</body>
+</html>

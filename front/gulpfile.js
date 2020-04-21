@@ -95,12 +95,16 @@ gulp.task("copy css fontawesome", function ()
 		.pipe(gulp.dest(dist_css));
 });
 
-gulp.task("copy css bootstrap-colorpicker", function ()
+gulp.task("copy css bootstrap", function ()
 {
 	var files =
 	[
 		'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
-		'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css.map'
+		'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css.map',
+
+		// For /login or similar pages served by back
+		'node_modules/bootstrap/dist/css/bootstrap.min.css',
+		'node_modules/bootstrap/dist/css/bootstrap.min.css.map'
 	];
 	return gulp.src(files)
 		.pipe(gulp.dest(dist_css));
@@ -191,7 +195,7 @@ function bundle_css ()
 	return gulp.parallel(
 		gulp.series(
 			"copy css fontawesome",
-			"copy css bootstrap-colorpicker",
+			"copy css bootstrap",
 			"copy css themes",
 			"copy webfonts",
 			"fullcalendar css"
@@ -209,11 +213,30 @@ function bundle_js ()
 		"copy js",
 		compile_js,
 		"copy js html5tooltips",
-		"copy js leaflet"
+		"copy js leaflet",
+		"unsplash"
 	);
 }
 
 gulp.task('ts', compile_js);
+
+gulp.task('unsplash', function ()
+{
+	return browserify(
+	{
+		basedir: '.',
+		debug: true,
+		entries: ['src/unsplash.ts'],
+		cache: {},
+		packageCache: {}
+	})
+	.plugin(tsify)
+	.bundle()
+	.pipe(source('unsplash.min.js'))
+	.pipe(buffer())
+	.pipe(uglify())
+	.pipe(gulp.dest(dist_js));
+});
 
 gulp.task('serve', function ()
 {
