@@ -30,12 +30,16 @@ def insert_user(self, *,
     db.close()
   return new_user
 
-def get_user(self, user_id):
+def get_user(self, user_id=None, email=None):
   """Fetch a specific user from database"""
   db, cursor = self._connect()
-  get_user = """SELECT * FROM users WHERE id=?"""
   try:
-    cursor.execute(get_user, (user_id,))
+    if user_id is not None:
+      get_user = """SELECT * FROM users WHERE id=?"""
+      cursor.execute(get_user, (user_id,))
+    else:
+      get_user = """SELECT * FROM users WHERE email=?"""
+      cursor.execute(get_user, (email,))
     return cursor.fetchone()
   finally:
     db.close()

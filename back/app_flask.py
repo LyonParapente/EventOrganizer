@@ -1,6 +1,5 @@
 import os
 from flask import Flask, redirect, request, render_template, make_response, jsonify
-from flask_bcrypt import Bcrypt, check_password_hash
 from flask_restful_swagger_3 import Api, swagger
 from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
@@ -49,7 +48,6 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 app.config.from_pyfile('secrets.py')
 
 jwt = JWTManager(app)
-bcrypt = Bcrypt(app)
 
 # ------------------------------
 # API
@@ -162,6 +160,7 @@ def logout():
 @app.route('/register')
 def register():
   """Register an account"""
+  #print(bcrypt.generate_password_hash(form['password']).decode())
   return render_template('register.html',
     title='Register')
 

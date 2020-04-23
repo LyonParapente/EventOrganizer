@@ -1,8 +1,11 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, Schema, swagger
 from flask_jwt_extended import create_access_token, get_raw_jwt
+from flask_bcrypt import Bcrypt
 from models.auth import AccessToken
 from database.manager import db
+
+bcrypt = Bcrypt()
 
 class LoginAPI(Resource):
   @swagger.doc({
@@ -52,13 +55,14 @@ class LoginAPI(Resource):
 
   @staticmethod
   def authenticate(email, password):
-    #TODO: look for user in db
-    #user = User.objects.get(email=args.get('email'))
-    #authorized = user.check_password(args.get('password')) # check_password_hash
-    authorized = True
-    if authorized:
-      user_id = 4145
-      return create_access_token(identity=str(user_id))
+    user = db.get_user(email=email)
+    if user is None:
+      print('Email not found: %s' % email)
+    else:
+      if bcrypt.check_password_hash(user['password'], password):
+        return create_access_token(identity=user['id'])
+      else:
+        print('Password hash does not match')
     return None
 
 

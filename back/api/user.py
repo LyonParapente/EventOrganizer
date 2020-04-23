@@ -84,7 +84,7 @@ class UserAPI(Resource):
   })
   def get(self, user_id):
     """Get details of a user"""
-    props = db.get_user(user_id)
+    props = db.get_user(user_id=user_id)
     if type(props) is not dict:
       abort(404, 'User not found')
     return User(**filter_user_response(props))
