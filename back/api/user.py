@@ -1,5 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
+from flask_jwt_extended import jwt_required
 from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
@@ -47,8 +48,12 @@ class UserAPICreate(Resource):
 
 
 class UserAPI(Resource):
+  @jwt_required
   @swagger.doc({
     'tags': ['user'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'user_id',
@@ -69,6 +74,9 @@ class UserAPI(Resource):
            }
         }
       },
+      '401': {
+        'description': 'Not authenticated'
+      },
       '404': {
         'description': 'User not found'
       }
@@ -82,8 +90,12 @@ class UserAPI(Resource):
     return User(**filter_user_response(props))
 
 
+  @jwt_required
   @swagger.doc({
     'tags': ['user'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'user_id',
@@ -113,6 +125,9 @@ class UserAPI(Resource):
           }
         }
       },
+      '401': {
+        'description': 'Not authenticated'
+      },
       '404': {
         'description': 'User not found'
       }
@@ -123,6 +138,8 @@ class UserAPI(Resource):
     # Validate request body with schema model
     user = validate_user(request.json, update=True)
 
+    #TODO: only the user can update him/herself
+
     try:
       db.update_user(user_id, **user)
     except Exception as e:
@@ -132,8 +149,12 @@ class UserAPI(Resource):
     return self.get(user_id)
 
 
+  @jwt_required
   @swagger.doc({
     'tags': ['user'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'user_id',
@@ -149,6 +170,9 @@ class UserAPI(Resource):
       '200': {
         'description': 'Confirmation message'
       },
+      '401': {
+        'description': 'Not authenticated'
+      },
       '404': {
         'description': 'User not found'
       }
@@ -156,6 +180,7 @@ class UserAPI(Resource):
   })
   def delete(self, user_id):
     """Delete a user"""
+    #TODO: only the user can delete him/herself
     # TODO: Foreign keys (ex: messages): shall we delete or set CANCELLED status?
     rowcount = db.delete_user(user_id)
     if rowcount < 1:

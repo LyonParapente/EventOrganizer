@@ -1,12 +1,17 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
+from flask_jwt_extended import jwt_required
 from models.registration import Registration
 from database.manager import db
 import sqlite3
 
 class RegisterAPI(Resource):
+  @jwt_required
   @swagger.doc({
     'tags': ['event'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'event_id',
@@ -36,6 +41,9 @@ class RegisterAPI(Resource):
             'schema': Registration
           }
         }
+      },
+      '401': {
+        'description': 'Not authenticated'
       }
     }
   })
@@ -63,8 +71,12 @@ class RegisterAPI(Resource):
     return Registration(**props), 200
 
 
+  @jwt_required
   @swagger.doc({
     'tags': ['event'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'event_id',
@@ -79,6 +91,9 @@ class RegisterAPI(Resource):
     'responses': {
       '200': {
         'description': 'Confirmation message'
+      },
+      '401': {
+        'description': 'Not authenticated'
       },
       '404': {
         'description': 'Registration not found'

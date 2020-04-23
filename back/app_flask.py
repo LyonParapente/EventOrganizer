@@ -1,8 +1,12 @@
 import os
-from flask import Flask, redirect, request, render_template
-from flask_restful_swagger_3 import Api
+from flask import Flask, redirect, request, render_template, make_response, jsonify
+from flask_bcrypt import Bcrypt, check_password_hash
+from flask_restful_swagger_3 import Api, swagger
+from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity
+from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
+from trads import fr, en
 
 # ------------------------------
 # Database initialization
@@ -12,28 +16,61 @@ import database.manager
 database.manager.init(settings.db_filepath)
 
 # ------------------------------
+# Authent part 1: Swagger description
+
+components = {
+  'securitySchemes': {
+    'BearerAuth': {
+      'type': 'http',
+      'scheme': 'bearer',
+      'bearerFormat': 'JWT'
+    }
+  }
+}
+
+# Apply the security globally to all operations
+api_security = [
+  # We don't JWT on all API, but just on some
+  # See 'security' on @swagger.doc
+  #{'BearerAuth': []}
+]
+
+# ------------------------------
 # Flask initialization
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-api = Api(app, version=settings.version)
+api = Api(app, components=components, security=api_security)
+
+# ------------------------------
+# Authent part 2: JWT config
+
+app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
+app.config.from_pyfile('secrets.py')
+
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
 # ------------------------------
 # API
 
+from api.auth import LoginAPI, LogoutAPI
+api.add_resource(LoginAPI,         settings.api_path+'/auth/login')
+api.add_resource(LogoutAPI,        settings.api_path+'/auth/logout')
+
 from api.event import EventAPICreate, EventAPI
-api.add_resource(EventAPICreate, settings.api_path+'/event')
-api.add_resource(EventAPI,       settings.api_path+'/event/<int:event_id>')
+api.add_resource(EventAPICreate,   settings.api_path+'/event')
+api.add_resource(EventAPI,         settings.api_path+'/event/<int:event_id>')
 
 from api.registration import RegisterAPI
-api.add_resource(RegisterAPI,       settings.api_path+'/event/<int:event_id>/registration')
+api.add_resource(RegisterAPI,      settings.api_path+'/event/<int:event_id>/registration')
 
 from api.events import EventsAPI
-api.add_resource(EventsAPI,      settings.api_path+'/events')
+api.add_resource(EventsAPI,        settings.api_path+'/events')
 
 from api.user import UserAPICreate, UserAPI
-api.add_resource(UserAPICreate, settings.api_path+'/user')
-api.add_resource(UserAPI,       settings.api_path+'/user/<int:user_id>')
+api.add_resource(UserAPICreate,    settings.api_path+'/user')
+api.add_resource(UserAPI,          settings.api_path+'/user/<int:user_id>')
 
 from api.message import MessageAPICreate
 api.add_resource(MessageAPICreate, settings.api_path+'/message')
@@ -53,11 +90,18 @@ app.url_map.converters['regex'] = RegexConverter
 
 @app.route('/')
 @app.route('/planning')
-@app.route('/event:new')
-@app.route('/event:<int:id>')
 @app.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
 def index(id=None):
   """Calendar"""
+  return render_template('calendar.html',
+    title='Calendrier', lang='fr')
+
+
+@app.route('/event:new')
+@app.route('/event:<int:id>')
+@jwt_required
+def event(id=None):
+  """Event details"""
   return render_template('calendar.html',
     title='Calendrier', lang='fr')
 
@@ -79,6 +123,7 @@ def swag():
 api_user = UserAPI()
 
 @app.route('/user:<int:id>')
+@jwt_required
 def user(id):
   """User details"""
   user_item = api_user.get(id)
@@ -86,32 +131,33 @@ def user(id):
     title='Utilisateur', lang='fr',
     user=user_item)
 
-@app.route('/login')
+
+@app.route('/login', methods=['GET', 'POST'])
+@jwt_optional
 def login():
   """Login"""
-  fr = {
-    'lang': 'fr',
-    'title': 'Connexion',
-    'email': 'Adresse email',
-    'password': 'Mot de passe',
-    'remember':'Se souvenir de moi',
-    'login': 'Connexion',
-    'gotaccount': "Pas encore de compte ?",
-    'signup': "S'inscrire",
-    'forgot': 'Mot de passe oublié ?'
-  }
-  en = {
-    'lang': 'fr',
-    'title': 'Login',
-    'email': 'Email address',
-    'password': 'Password',
-    'remember':'Remember me',
-    'login': 'Login',
-    'gotaccount': "Don't have an account?",
-    'signup': "Sign up",
-    'forgot': 'Forgot your password?'
-  }
+  if request.method == 'POST':
+    form = request.form.to_dict()
+    token = LoginAPI.authenticate(form['login'], form['password'])
+    if token is not None:
+      response = make_response(redirect('/planning'))
+      set_access_cookies(response, token)
+      return response
+    else:
+      error = fr['login_error']
+      return render_template('login.html', **fr, error=error), 401
+  elif get_jwt_identity() is not None:
+    # Already connected
+    return redirect('/planning')
   return render_template('login.html', **fr)
+
+@app.route('/logout')
+def logout():
+  """Logout"""
+  LogoutAPI.disconnect(get_raw_jwt())
+  response = make_response(render_template('login.html', **fr))
+  unset_jwt_cookies(response)
+  return response
 
 @app.route('/register')
 def register():

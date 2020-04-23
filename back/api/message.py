@@ -1,11 +1,16 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
+from flask_jwt_extended import jwt_required
 from models.message import Message, MessageCreate
 from database.manager import db
 
 class MessageAPICreate(Resource):
+  @jwt_required
   @swagger.doc({
     'tags': ['message'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'requestBody': {
       'required': True,
       'content': {
@@ -22,6 +27,9 @@ class MessageAPICreate(Resource):
             'schema': Message
           }
         }
+      },
+      '401': {
+        'description': 'Not authenticated'
       }
     }
   })

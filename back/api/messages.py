@@ -1,11 +1,17 @@
+from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
+from flask_jwt_extended import jwt_required
 from models.message import Messages, MessagesComment, MessagesUser
 from models.user import silence_user_fields
 from database.manager import db
 
 class MessagesAPI(Resource):
+  @jwt_required
   @swagger.doc({
     'tags': ['messages'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'event_id',
@@ -25,6 +31,12 @@ class MessagesAPI(Resource):
             'schema': Messages
           }
         }
+      },
+      '401': {
+        'description': 'Not authenticated'
+      },
+      '404': {
+        'description': 'Event not found'
       }
     }
   })
@@ -32,6 +44,9 @@ class MessagesAPI(Resource):
     """Download the list of messages for an event"""
     query = _parser.parse_args(strict=True)
     messages, registrations, creator = db.get_messages_list(query["event_id"])
+
+    if creator is None:
+      abort(404, 'Event not found')
 
     comments = []
     users = {}

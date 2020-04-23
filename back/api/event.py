@@ -1,5 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
+from flask_jwt_extended import jwt_required
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
 
@@ -19,8 +20,12 @@ users = [
 
 
 class EventAPICreate(Resource):
+  @jwt_required
   @swagger.doc({
     'tags': ['event'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'requestBody': {
       'required': True,
       'content': {
@@ -37,6 +42,9 @@ class EventAPICreate(Resource):
             'schema': Event
           }
         }
+      },
+      '401': {
+        'description': 'Not authenticated'
       }
     }
   })
@@ -85,8 +93,12 @@ class EventAPICreate(Resource):
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
 class EventAPI(Resource):
+  @jwt_required
   @swagger.doc({
     'tags': ['event'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'event_id',
@@ -107,6 +119,9 @@ class EventAPI(Resource):
            }
         }
       },
+      '401': {
+        'description': 'Not authenticated'
+      },
       '404': {
         'description': 'Event not found'
       }
@@ -120,8 +135,12 @@ class EventAPI(Resource):
     return Event(**filter_event_response(props))
 
 
+  @jwt_required
   @swagger.doc({
     'tags': ['event'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'event_id',
@@ -151,6 +170,9 @@ class EventAPI(Resource):
           }
         }
       },
+      '401': {
+        'description': 'Not authenticated'
+      },
       '404': {
         'description': 'Event not found'
       }
@@ -166,6 +188,8 @@ class EventAPI(Resource):
     #if something:
     #  abort(400, 'Cannot modify a past event')
 
+    #TODO: only creator of an event can edit it
+
     try:
       db.update_event(event_id, **request.json)
     except Exception as e:
@@ -175,8 +199,12 @@ class EventAPI(Resource):
     return self.get(event_id)
 
 
+  @jwt_required
   @swagger.doc({
     'tags': ['event'],
+    'security': [
+      {'BearerAuth': []}
+    ],
     'parameters': [
       {
         'name': 'event_id',
@@ -192,6 +220,9 @@ class EventAPI(Resource):
       '200': {
         'description': 'Confirmation message',
       },
+      '401': {
+        'description': 'Not authenticated'
+      },
       '404': {
         'description': 'Event not found'
       }
@@ -199,6 +230,7 @@ class EventAPI(Resource):
   })
   def delete(self, event_id):
     """Delete an event"""
+    # TODO: only author of an event can delete it, and only if not yet finished
     # TODO: Foreign keys: shall we delete or set CANCELLED status?
     rowcount = db.delete_event(event_id)
     if rowcount < 1:
