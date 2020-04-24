@@ -49,6 +49,13 @@ app.config.from_pyfile('secrets.py')
 
 jwt = JWTManager(app)
 
+@jwt.expired_token_loader
+def expired_token_callback(expired_token):
+  response = make_response(redirect('/login'))
+  unset_jwt_cookies(response)
+  return response
+
+
 # ------------------------------
 # API
 
