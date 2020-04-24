@@ -55,11 +55,16 @@ def update_user(self, user_id, *,
   """Update a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
+  if password is None:
+    pw_hash = None
+  else:
+    pw_hash = bcrypt.generate_password_hash(password).decode()
+
   fields_to_update = {
     'firstname': firstname,
     'lastname': lastname,
     'email': email,
-    'password': password,
+    'password': pw_hash,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone
