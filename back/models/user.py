@@ -49,7 +49,7 @@ def filter_user_response(props):
       props[field] = None
 
   # Technical field
-  del props['status']
+  del props['role']
 
   streamlined_user = {k: v for k, v in props.items() if v is not None}
   return streamlined_user

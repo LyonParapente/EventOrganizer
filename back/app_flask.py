@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, request, render_template, make_response, jsonify
 from flask_restful_swagger_3 import Api, swagger
-from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity
+from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity, get_jwt_claims
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
@@ -51,10 +51,10 @@ jwt = JWTManager(app)
 
 @jwt.expired_token_loader
 def expired_token_callback(expired_token):
+  #TODO: if request starts with /api, respond a json
   response = make_response(redirect('/login'))
   unset_jwt_cookies(response)
   return response
-
 
 # ------------------------------
 # API
@@ -185,6 +185,15 @@ def register():
     return redirect('/planning')
   # GET
   return render_template('register.html', **fr)
+
+@app.route('/approve/user:<int:id>')
+@jwt_required
+def approve(id):
+  claims = get_jwt_claims()
+  if claims['role'] == 'admin':
+    nb = database.manager.db.update_user_role(id, "user")
+    return "OK" if nb == 1 else "ERROR"
+  return "NOPE", 401
 
 # ------------------------------
 

@@ -18,7 +18,7 @@ def insert_user(self, *,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone,
-    'status': 0, # to be approved
+    'role': 'new', # to be approved -> user
     'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   }
   columns = ','.join(tuple(new_user))
@@ -94,6 +94,17 @@ def delete_user(self, user_id):
   del_user = "DELETE FROM users WHERE id=?"
   try:
     cursor.execute(del_user, (user_id,))
+    db.commit()
+    return cursor.rowcount
+  finally:
+    db.close()
+
+def update_user_role(self, user_id, role):
+  """Update a user role in the database"""
+  update_role = "UPDATE users SET role=? WHERE id=?"
+  db, cursor = self._connect()
+  try:
+    cursor.execute(update_role, (role, user_id))
     db.commit()
     return cursor.rowcount
   finally:
