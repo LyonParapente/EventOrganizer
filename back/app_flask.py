@@ -46,6 +46,8 @@ api = Api(app, components=components, security=api_security)
 # Authent part 2: JWT config
 
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False #TODO: re-enable
+app.config['JWT_CSRF_CHECK_FORM'] = True
 app.config.from_pyfile('secrets.py')
 
 jwt = JWTManager(app)
