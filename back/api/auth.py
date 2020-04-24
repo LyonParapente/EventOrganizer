@@ -59,10 +59,13 @@ class LoginAPI(Resource):
     if user is None:
       print('Email not found: %s' % email)
     else:
-      if bcrypt.check_password_hash(user['password'], password):
-        return create_access_token(identity=user['id'])
+      if user['status'] == 1:
+        if bcrypt.check_password_hash(user['password'], password):
+          return create_access_token(identity=user['id'])
+        else:
+          print('Password hash does not match')
       else:
-        print('Password hash does not match')
+        print('%s is not approved to log-in' % email)
     return None
 
 

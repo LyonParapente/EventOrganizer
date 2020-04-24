@@ -18,6 +18,7 @@ def insert_user(self, *,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone,
+    'status': 0, # to be approved
     'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   }
   columns = ','.join(tuple(new_user))

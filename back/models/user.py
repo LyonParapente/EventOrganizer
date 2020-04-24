@@ -48,6 +48,9 @@ def filter_user_response(props):
     if User.properties[field].get('writeOnly') is True:
       props[field] = None
 
+  # Technical field
+  del props['status']
+
   streamlined_user = {k: v for k, v in props.items() if v is not None}
   return streamlined_user
 
