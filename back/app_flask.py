@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, request, render_template, make_response, jsonify
+from flask import Flask, redirect, request, render_template, make_response
 from flask_restful_swagger_3 import Api, swagger
 from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity, get_jwt_claims
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
@@ -51,7 +51,9 @@ jwt = JWTManager(app)
 
 @jwt.expired_token_loader
 def expired_token_callback(expired_token):
-  #TODO: if request starts with /api, respond a json
+  if request.path.startswith('/api'):
+    return {'message': 'Authentication failed: token expired'}, 401
+
   response = make_response(redirect('/login'))
   unset_jwt_cookies(response)
   return response
