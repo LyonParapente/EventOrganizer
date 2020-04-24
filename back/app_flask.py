@@ -175,7 +175,7 @@ def register():
     if code == 200:
       return render_template('register.html', **fr, message=fr['checkemail'])
     else:
-      if result == 'Email already registered':
+      if code == 409:
         result = fr['alreadyRegistered']
       else:
         result = fr['register_error']
