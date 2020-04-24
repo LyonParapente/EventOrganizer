@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, redirect, request, render_template, make_response
 from flask_restful_swagger_3 import Api, swagger
 from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity, get_jwt_claims
@@ -101,18 +102,24 @@ app.url_map.converters['regex'] = RegexConverter
 @jwt_optional
 def index(id=None):
   """Calendar"""
-  is_connected = get_jwt_identity() is not None
-  return render_template('calendar.html',
-    title=fr['calendar'], lang=fr['lang'], is_connected=is_connected)
-
+  return calendar()
 
 @app.route('/event:new')
 @app.route('/event:<int:id>')
 @jwt_required
 def event(id=None):
   """Event details"""
+  return calendar()
+
+def calendar():
+  user_id = get_jwt_identity()
+  is_connected = user_id is not None
+  infos = get_jwt_claims()
+  infos['id'] = user_id
+  del infos['role']
   return render_template('calendar.html',
-    title=fr['calendar'], lang=fr['lang'])
+    title=fr['calendar'], lang=fr['lang'], is_connected=is_connected, userinfos=json.dumps(infos))
+
 
 @app.route('/swagger')
 def swag():
@@ -195,7 +202,7 @@ def approve(id):
   if claims['role'] == 'admin':
     nb = database.manager.db.update_user_role(id, "user")
     return "OK" if nb == 1 else "ERROR"
-  return "NOPE", 401
+  return "NOPE", 403
 
 # ------------------------------
 

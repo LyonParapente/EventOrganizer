@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
@@ -143,7 +143,8 @@ class UserAPI(Resource):
     # Validate request body with schema model
     user = validate_user(request.json, update=True)
 
-    #TODO: only the user can update him/herself
+    if user_id != get_jwt_identity():
+      abort(403, "You cannot update someone else")
 
     try:
       db.update_user(user_id, **user)
@@ -185,9 +186,14 @@ class UserAPI(Resource):
   })
   def delete(self, user_id):
     """Delete a user"""
-    #TODO: only the user can delete him/herself
-    # TODO: Foreign keys (ex: messages): shall we delete or set CANCELLED status?
-    rowcount = db.delete_user(user_id)
-    if rowcount < 1:
-      abort(404, 'No user was deleted')
+    if user_id != get_jwt_identity():
+      abort(403, "You cannot delete someone else")
+
+    # We want to keep user messages (foreign keys)
+    #rowcount = db.delete_user(user_id)
+    #if rowcount < 1:
+    #  abort(404, 'No user was deleted')
+
+    db.update_user_role(user_id, "deleted")
+
     return {'message': 'User deleted'}, 200

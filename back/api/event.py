@@ -1,23 +1,8 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
-
-
-users = [
-  {
-    'id': 1,
-    'login': 'laurel',
-    'pseudo': 'The Clumsy'
-  },
-  {
-    'id': 2,
-    'login': 'hardy',
-    'pseudo': 'The Bully'
-  }
-]
-
 
 class EventAPICreate(Resource):
   @jwt_required
@@ -53,21 +38,9 @@ class EventAPICreate(Resource):
     # Validate request body with schema model
     event = validate_event(request.json, create=True)
 
-    creating_user = None
-    if request.authorization is not None:
-      creating_user = request.authorization.get("username")
-      for user in users:
-        if user['login'] == creating_user:
-          creating_user = user
-          break
-      # If the request is authenticated the user does exist
-    # Checking the type of creating_user covers both the case of anonymous request and authorized user not find
-    if type(creating_user) is not dict:
-      creating_user = {'id': 101}
-
     #TODO: forbid to create event in the past
 
-    event['creator_id'] = creating_user['id']
+    event['creator_id'] = get_jwt_identity()
     try:
       props = db.insert_event(**event)
     except Exception as e:
@@ -183,12 +156,14 @@ class EventAPI(Resource):
     # Validate request body with schema model
     event = validate_event(request.json, update=True)
 
+    db_event = self.get(event_id)
+
     #TODO: cannot modify an event if its in the past
-    #db_event = self.get(event_id)
     #if something:
     #  abort(400, 'Cannot modify a past event')
 
-    #TODO: only creator of an event can edit it
+    if db_event['creator_id'] != get_jwt_identity():
+      abort(403, "You cannot update someone else event")
 
     try:
       db.update_event(event_id, **request.json)
@@ -230,8 +205,13 @@ class EventAPI(Resource):
   })
   def delete(self, event_id):
     """Delete an event"""
-    # TODO: only author of an event can delete it, and only if not yet finished
-    # TODO: Foreign keys: shall we delete or set CANCELLED status?
+
+    db_event = self.get(event_id)
+    if db_event['creator_id'] != get_jwt_identity():
+      abort(403, "You cannot delete someone else event")
+
+    # TODO: cannot delete if finished
+    # TODO: Foreign keys (messages & registration) need cascade delete
     rowcount = db.delete_event(event_id)
     if rowcount < 1:
       abort(404, 'No event was deleted')

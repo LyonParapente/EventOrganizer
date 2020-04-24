@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.registration import Registration
 from database.manager import db
 import sqlite3
@@ -51,7 +51,7 @@ class RegisterAPI(Resource):
     """Save or update a registration"""
     query = _parser.parse_args(strict=True)
     query['event_id'] = event_id
-    query['user_id'] = 101 #TODO: use connected user
+    query['user_id'] = get_jwt_identity()
     try:
       if query['interest'] not in [1,2]:
         raise ValueError('Invalid value for interest')
@@ -102,7 +102,7 @@ class RegisterAPI(Resource):
   })
   def delete(self, event_id):
     """Delete a registration"""
-    user_id = 101 #TODO: use connected user
+    user_id = get_jwt_identity()
     rowcount = db.delete_registration(event_id, user_id)
     if rowcount < 1:
       abort(404, 'No registration deleted')

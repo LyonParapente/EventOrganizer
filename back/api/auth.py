@@ -61,7 +61,11 @@ class LoginAPI(Resource):
     else:
       if user['role'] == 'user' or user['role'] == 'admin':
         if bcrypt.check_password_hash(user['password'], password):
-          claims = {'role': user['role']}
+          claims = {
+            'role': user['role'],
+            'firstname': user['firstname'],
+            'lastname': user['lastname']
+          }
           return create_access_token(identity=user['id'], user_claims=claims)
         else:
           print('Password hash does not match')

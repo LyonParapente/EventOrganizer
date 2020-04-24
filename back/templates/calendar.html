@@ -280,6 +280,7 @@
 	</div>
 </div>
 
+{% if is_connected %}<script>connected_user={{userinfos|safe}}</script>{% endif %}
 <script src="static/js/bundle.min.js"></script>
 <script src="static/js/jquery.slim.min.js"></script>
 <script src="static/js/bootstrap.bundle.min.js"></script>

@@ -3,19 +3,16 @@ import requestJson from './request_json';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
-// TODO: when authenticated
-var connected_user_id: number = 101;
-var connected_user: User = {firstname: "John", lastname: "DOE"};
-
 export default function loadComments (event: CurrentEvent): void
 {
 	var error_box = id("event_comments_error");
 	error_box.style.display = 'none';
 
+	var connected_user = get_connected_user();
 	var attributes =
 	{
 		"alt": getUserName(connected_user),
-		"src": "/static/avatars/"+connected_user_id+"-1.jpg",
+		"src": "/static/avatars/"+connected_user.id+"-1.jpg",
 		"height": 110
 	};
 	var event_comment_avatar = id("event_comment_avatar");
@@ -98,7 +95,7 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 	var participants = data.participants || [];
 	var interested = data.interested || [];
 
-	var in_participants = participants.indexOf(connected_user_id) !== -1;
+	var in_participants = participants.indexOf(get_connected_user().id) !== -1;
 
 	createRegistrations(participants, data.users,
 		event.isFinished, participantsEl, event.event_id, false,
@@ -228,7 +225,7 @@ function createRegistrations(registrations: number[], users: UsersDictionary, is
 			unregisterFromEvent(event_id, button_id, container);
 		});
 
-		if (registrations.indexOf(connected_user_id) !== -1)
+		if (registrations.indexOf(get_connected_user().id) !== -1)
 		{
 			button.style.display = 'none';
 			buttonDelete.style.display = '';
@@ -298,7 +295,7 @@ function unregisterFromEvent (event_id: number, button_id: string, container: HT
 
 function updateRegistration (button_id: string, box: HTMLElement)
 {
-	var user_id = connected_user_id.toString();
+	var user_id = get_connected_user().id.toString();
 	var button = id(button_id);
 	if (button_id.endsWith('_delete'))
 	{
@@ -331,7 +328,7 @@ function updateRegistration (button_id: string, box: HTMLElement)
 		var user = box.querySelector(`a[href='/user:${user_id}']`);
 		if (!user)
 		{
-			addRegistration(user_id, connected_user, box);
+			addRegistration(user_id, get_connected_user(), box);
 
 			// Increase counter
 			var badge = box.querySelector('.badge') as HTMLSpanElement;
@@ -356,4 +353,9 @@ function updateRegistration (button_id: string, box: HTMLElement)
 			}
 		}
 	}
+}
+
+function get_connected_user ()
+{
+	return window['connected_user'];
 }

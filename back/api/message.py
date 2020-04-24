@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.message import Message, MessageCreate
 from database.manager import db
 
@@ -36,7 +36,7 @@ class MessageAPICreate(Resource):
   def post(self):
     """Create a message"""
     args = request.json
-    args['author_id'] = 101 #TODO: use connected user
+    args['author_id'] = get_jwt_identity()
 
     try:
       # Validate request body with schema model
