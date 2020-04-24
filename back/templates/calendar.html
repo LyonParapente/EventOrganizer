@@ -42,7 +42,7 @@
 		<option value="united">United</option>
 		<option value="yeti">Yeti</option>
 	</select>
-	<a href="/logout">Logout</a>
+	{% if is_connected %}<a href="/logout">Logout</a>{% endif %}
 </div>
 
 <div id="calendar">

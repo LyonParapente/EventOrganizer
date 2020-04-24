@@ -89,10 +89,12 @@ app.url_map.converters['regex'] = RegexConverter
 @app.route('/')
 @app.route('/planning')
 @app.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
+@jwt_optional
 def index(id=None):
   """Calendar"""
+  is_connected = get_jwt_identity() is not None
   return render_template('calendar.html',
-    title='Calendrier', lang='fr')
+    title='Calendrier', lang='fr', is_connected=is_connected)
 
 
 @app.route('/event:new')
