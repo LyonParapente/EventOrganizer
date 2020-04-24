@@ -14,7 +14,9 @@ fr = {
   'firstname': 'Prénom',
   'lastname': 'NOM',
   'gotohome': 'Retour accueil',
-  'checkemail': 'OK, vérifie ton courriel !'
+  'checkemail': 'OK, vérifie ton courriel !',
+  'alreadyRegistered': 'Adresse email déjà enregistrée',
+  'register_error': "L'inscription a échoué"
 }
 en = {
   'lang': 'fr',
@@ -32,5 +34,7 @@ en = {
   'firstname': 'First name',
   'lastname': 'LAST NAME',
   'gotohome': 'Return to home page',
-  'checkemail': 'OK, check your emails!'
+  'checkemail': 'OK, check your emails!',
+  'alreadyRegistered': 'Email already registered',
+  'register_error': 'Sign up failed'
 }

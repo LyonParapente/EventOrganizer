@@ -34,17 +34,22 @@ class UserAPICreate(Resource):
     """Create a user"""
     # Validate request body with schema model
     user = validate_user(request.json, create=True)
+    code, result = self.from_dict(user)
+    if code != 200:
+      abort(code, result)
+    return User(**filter_user_response(result)), 201, {'Location': request.path + '/' + str(result['id'])}
 
+  @staticmethod
+  def from_dict(user):
     try:
       props = db.insert_user(**user)
     except sqlite3.IntegrityError as err:
       if str(err) == "UNIQUE constraint failed: users.email":
-        abort(409, 'Email already registered')
-      abort(500, err.args[0])
+        return (409, 'Email already registered')
+      return (500, err.args[0])
     except Exception as e:
-      abort(500, e.args[0])
-
-    return User(**filter_user_response(props)), 201, {'Location': request.path + '/' + str(props['id'])}
+      return (500, e.args[0])
+    return 200,props
 
 
 class UserAPI(Resource):

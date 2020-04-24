@@ -171,9 +171,15 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
-    #print(bcrypt.generate_password_hash(form['password']).decode())
-    #UserAPICreate.post()
-    return render_template('register.html', **fr, message=fr['checkemail'])
+    code, result = UserAPICreate.from_dict(request.form)
+    if code == 200:
+      return render_template('register.html', **fr, message=fr['checkemail'])
+    else:
+      if result == 'Email already registered':
+        result = fr['alreadyRegistered']
+      else:
+        result = fr['register_error']
+      return render_template('register.html', **fr, error=result), code
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/planning')

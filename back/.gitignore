@@ -2,4 +2,5 @@ env/
 __pycache__/
 static/
 events.db
+events.db-journal
 secrets.py

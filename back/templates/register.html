@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>{{register}}</title>
   <meta name="viewport" content="width=600" />
-	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="static/css/bootstrap.min.css" />
   <link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
   <link rel="stylesheet" href="static/css/login.css" />
 </head>
@@ -34,16 +34,16 @@
           <div class="input-group-append">
             <span class="input-group-text"><i class="fas fa-at"></i></span>
           </div>
-          <input type="email" name="login" class="form-control input_user" placeholder="{{email}}" required />
+          <input type="email" name="email" class="form-control input_user" placeholder="{{email}}" required />
         </div>
-        <div class="input-group mb-2">
+        <div class="input-group mb-3">
           <div class="input-group-append">
             <span class="input-group-text"><i class="fas fa-key"></i></span>
           </div>
           <input type="password" name="password" class="form-control input_pass" placeholder="{{password}}" required />
         </div>
         <div class="text-center post_error">{{error}}</div>
-        <div class="text-center post_message mt-4">{{message}}</div>
+        <div class="text-center post_message">{{message}}</div>
         {% if not message %}
         <div class="d-flex justify-content-center mt-3">
           <button type="submit" class="btn btn-primary btn-lg btn-block login_btn">{{register}}</button>
