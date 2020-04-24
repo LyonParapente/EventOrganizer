@@ -31,12 +31,6 @@ class DBManage(object):
       with open('./database/patch1.sql', 'r') as sql_file:
         cursor.executescript(sql_file.read())
 
-    # Default user to test API
-    cursor.execute('SELECT * FROM users')
-    if cursor.fetchone() is None:
-      cursor.execute("INSERT INTO users(firstname,email,password) VALUES('admin','admin','')")
-      print("Default user id: %d" % cursor.lastrowid)
-
     # Save
     db.commit()
 
