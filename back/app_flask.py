@@ -101,7 +101,7 @@ def index(id=None):
   """Calendar"""
   is_connected = get_jwt_identity() is not None
   return render_template('calendar.html',
-    title='Calendrier', lang='fr', is_connected=is_connected)
+    title=fr['calendar'], lang=fr['lang'], is_connected=is_connected)
 
 
 @app.route('/event:new')
@@ -110,7 +110,7 @@ def index(id=None):
 def event(id=None):
   """Event details"""
   return render_template('calendar.html',
-    title='Calendrier', lang='fr')
+    title=fr['calendar'], lang=fr['lang'])
 
 @app.route('/swagger')
 def swag():
@@ -135,7 +135,7 @@ def user(id):
   """User details"""
   user_item = api_user.get(id)
   return render_template('user.html',
-    title='Utilisateur', lang='fr',
+    title=fr['userTitle'], lang=fr['lang'],
     user=user_item)
 
 
@@ -151,11 +151,11 @@ def login():
       set_access_cookies(response, token)
       return response
     else:
-      error = fr['login_error']
-      return render_template('login.html', **fr, error=error), 401
+      return render_template('login.html', **fr, error=fr['login_error']), 401
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/planning')
+  # GET
   return render_template('login.html', **fr)
 
 @app.route('/logout')
@@ -166,12 +166,19 @@ def logout():
   unset_jwt_cookies(response)
   return response
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
+@jwt_optional
 def register():
   """Register an account"""
-  #print(bcrypt.generate_password_hash(form['password']).decode())
-  return render_template('register.html',
-    title='Register')
+  if request.method == 'POST':
+    #print(bcrypt.generate_password_hash(form['password']).decode())
+    #UserAPICreate.post()
+    return render_template('register.html', **fr, message=fr['checkemail'])
+  elif get_jwt_identity() is not None:
+    # Already connected
+    return redirect('/planning')
+  # GET
+  return render_template('register.html', **fr)
 
 # ------------------------------
 

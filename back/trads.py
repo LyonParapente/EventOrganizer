@@ -1,6 +1,7 @@
 fr = {
   'lang': 'fr',
-  'title': 'Connexion',
+  'calendar': 'Calendrier',
+  'userTitle': 'Utilisateur',
   'email': 'Adresse email',
   'password': 'Mot de passe',
   'remember':'Se souvenir de moi',
@@ -8,11 +9,17 @@ fr = {
   'gotaccount': "Pas encore de compte ?",
   'signup': "S'inscrire",
   'forgot': 'Mot de passe oublié ?',
-  'login_error': 'La connexion a échoué'
+  'login_error': 'La connexion a échoué',
+  'register': "Inscription",
+  'firstname': 'Prénom',
+  'lastname': 'NOM',
+  'gotohome': 'Retour accueil',
+  'checkemail': 'OK, vérifie ton courriel !'
 }
 en = {
   'lang': 'fr',
-  'title': 'Login',
+  'calendar': 'Calendar',
+  'userTitle': 'User',
   'email': 'Email address',
   'password': 'Password',
   'remember':'Remember me',
@@ -20,5 +27,10 @@ en = {
   'gotaccount': "Don't have an account?",
   'signup': "Sign up",
   'forgot': 'Forgot your password?',
-  'login_error': 'Login attempt failed'
+  'login_error': 'Login attempt failed',
+  'register': 'Register',
+  'firstname': 'First name',
+  'lastname': 'LAST NAME',
+  'gotohome': 'Return to home page',
+  'checkemail': 'OK, check your emails!'
 }
