@@ -4,12 +4,6 @@ font-size: 14px;
 font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 }
 
-#theme {
-position: absolute;
-top: 0;
-right: 0;
-}
-
 #calendar {
 width: 100%;
 max-width: 900px; /* viewport 600 */
@@ -123,8 +117,19 @@ text-align: center;
 text-align: right;
 }
 
-#unsplash, #changeBg {
+#unsplash, #changeBg, #menu {
 position: absolute;
 top: 0;
 left: 0;
+}
+#changeBg, #menu {
+margin: 10px;
+}
+#changeBg {
+top: auto;
+bottom: 0;
+}
+#menu {
+left: auto;
+right: 0;
 }

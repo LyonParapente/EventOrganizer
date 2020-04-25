@@ -127,13 +127,15 @@ def event(id=None):
 def calendar():
   user_id = get_jwt_identity()
   is_connected = user_id is not None
+  theme = settings.default_theme
   infos = {}
   if is_connected:
     infos = get_jwt_claims()
+    theme = infos['theme']
     infos['id'] = user_id
     del infos['role']
-  return render_template('calendar.html',
-    title=fr['calendar'], lang=fr['lang'], is_connected=is_connected, userinfos=json.dumps(infos))
+  return render_template('calendar.html', **fr,
+    is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
 
 
 @app.route('/swagger')
@@ -213,11 +215,34 @@ def register():
 @app.route('/approve/user:<int:id>')
 @jwt_required
 def approve(id):
+  """Approve a user"""
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
     nb = database.manager.db.update_user_role(id, "user")
     return "OK" if nb == 1 else "ERROR"
   return "NOPE", 403
+
+@app.route('/settings', methods=['GET', 'POST'])
+@jwt_required
+def user_settings():
+  """User settings"""
+  id = get_jwt_identity()
+  message = error = ''
+  if request.method == 'POST':
+    props = request.form.to_dict()
+    # ensure checkbox are boolean and not 'on'
+    props['share_email'] = False if props.get('share_email') is None else True
+    props['share_phone'] = False if props.get('share_phone') is None else True
+    code, result = UserAPI.put_from_dict(id, props)
+    if code == 200:
+      message = fr['saved']
+    else:
+      error = fr['saved_error']
+
+  #user_item = api_user.get(id) # can't get theme
+  user_item = database.manager.db.get_user(user_id=id)
+  return render_template('user_settings.html', **fr,
+    user=user_item, themes=settings.themes, message=message, error=error)
 
 # ------------------------------
 

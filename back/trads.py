@@ -16,7 +16,18 @@ fr = {
   'gotohome': 'Retour accueil',
   'checkemail': 'OK, vérifie ton courriel !',
   'alreadyRegistered': 'Adresse email déjà enregistrée',
-  'register_error': "L'inscription a échoué"
+  'register_error': "L'inscription a échoué",
+  'userSettings': 'Préférences',
+  'phone': 'Téléphone',
+  'share_email': "Partager l'<b>adresse email</b> avec les autres membres ?",
+  'share_phone': 'Partager le <b>téléphone</b> avec les autres membres ?',
+  'Identity': 'Identité',
+  'changePassword': 'Modifier le mot de passe',
+  'save': 'Enregistrer',
+  'visibility': 'Partage',
+  'themeLabel': 'Theme',
+  'saved': 'Préférences sauvegardées !',
+  'saved_error': "Erreur à l'enregistrement :-("
 }
 en = {
   'lang': 'fr',
@@ -36,5 +47,16 @@ en = {
   'gotohome': 'Return to home page',
   'checkemail': 'OK, check your emails!',
   'alreadyRegistered': 'Email already registered',
-  'register_error': 'Sign up failed'
+  'register_error': 'Sign up failed',
+  'userSettings': 'Settings',
+  'phone': 'Phone',
+  'share_email': 'Share email with other members?',
+  'share_phone': 'Share phone with other members?',
+  'Identity': 'Identity',
+  'changePassword': 'Modify your password',
+  'save': 'Save',
+  'visibility': 'Sharing',
+  'themeLabel': 'Theme',
+  'saved': 'Settings saved!',
+  'saved_error': "Error while saving :-("
 }

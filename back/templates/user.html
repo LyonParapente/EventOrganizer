@@ -9,12 +9,15 @@
 
 {{user['firstname']}} {{user['lastname']}}<br/>
 {% if user.get('email') %}
-{{user.get('email')}}<br/>
+<a href="mailto:{{user.get('email')}}">{{user.get('email')}}</a><br/>
 {% endif %}
 {% if user.get('phone') %}
-{{user.get('phone')}}<br/>
+<a href="tel:{{user.get('phone')}}">{{user.get('phone')}}</a><br/>
 {% endif %}
 
+<div class="mt-2">
+	<a href="/" class="text-dark">{{gotohome}}</a>
+</div>
 
 </body>
 </html>

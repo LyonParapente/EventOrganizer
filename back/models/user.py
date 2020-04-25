@@ -18,6 +18,7 @@ class User(Schema):
     'share_phone': {'type': 'boolean', 'writeOnly': True,
       'example': False, 'default': False,
       'description': 'Does the user allow his/her phone to be public?'},
+    'theme': {'type': 'string', 'default': 'flatly', 'writeOnly': True},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
   }
   # required on response:

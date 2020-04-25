@@ -2,9 +2,10 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>{{title}}</title>
+	<title>{{calendar}}</title>
 	<meta name="viewport" content="width=600" />
 	<link rel="stylesheet" href="static/css/fullcalendar.min.css" />
+	<link rel="stylesheet" href="static/css/theme/{{theme}}.bootstrap.min.css" />
 	<link rel="stylesheet" href="static/css/calendar.min.css" />
 	<link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
 	<link rel="stylesheet" href="static/css/bootstrap-colorpicker.min.css" />
@@ -18,31 +19,9 @@
 
 <a href="javascript:;" id="changeBg">Change Background</a>
 
-<div id="theme">Theme:
-	<select id="themeSelector">
-		<option value="cerulean">Cerulean</option>
-		<option value="cosmo">Cosmo</option>
-		<option value="cyborg">Cyborg</option>
-		<option value="darkly">Darkly</option>
-		<option value="flatly">Flatly</option>
-		<option value="journal">Journal</option>
-		<option value="litera">Litera</option>
-		<option value="lumen">Lumen</option>
-		<option value="lux">Lux</option>
-		<!--<option value="materia">Materia</option>-->
-		<option value="minty">Minty</option>
-		<option value="pulse">Pulse</option>
-		<option value="sandstone">Sandstone</option>
-		<option value="simplex">Simplex</option>
-		<option value="sketchy">Sketchy</option>
-		<option value="slate">Slate</option>
-		<option value="solar">Solar</option>
-		<option value="spacelab" selected="selected">Spacelab</option>
-		<option value="superhero">Superhero</option>
-		<option value="united">United</option>
-		<option value="yeti">Yeti</option>
-	</select>
-	{% if is_connected %}<a href="/logout">Logout</a>{% endif %}
+<div id="menu">
+	<a href="/settings">{{userSettings}}</a>
+	{% if is_connected %}| <a href="/logout">Logout</a>{% endif %}
 </div>
 
 <div id="calendar">
@@ -280,7 +259,7 @@
 	</div>
 </div>
 
-{% if is_connected %}<script>connected_user={{userinfos|safe}}</script>{% endif %}
+{% if is_connected %}<script>connected_user={{userinfos|safe}};</script>{% endif %}
 <script src="static/js/bundle.min.js"></script>
 <script src="static/js/jquery.slim.min.js"></script>
 <script src="static/js/bootstrap.bundle.min.js"></script>

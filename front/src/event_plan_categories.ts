@@ -1,5 +1,4 @@
 import settings from './settings';
-import GetTheme from './theme';
 import { i18n } from './trads';
 
 export function init_categories (): void
@@ -48,9 +47,11 @@ export function init_categories (): void
 	});
 }
 
+var current_theme = GetTheme();
+
 function getColorConf (): object
 {
-	var theme = GetTheme();
+	var theme = current_theme;
 	var colorConf;
 	if (settings.categories.hasOwnProperty(theme))
 	{
@@ -66,4 +67,12 @@ function getColorConf (): object
 export function getColor (category: string): string
 {
 	return getColorConf()[category];
+}
+
+function GetTheme (): string
+{
+	var styles = Array.apply(null, document.head.querySelectorAll('link'));
+	var themeCSS = styles.map(x => x.href).filter(x => x.includes('/css/theme/'))[0];
+	var theme = themeCSS.split('/').pop().split('.').shift();
+	return theme;
 }

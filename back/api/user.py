@@ -40,9 +40,9 @@ class UserAPICreate(Resource):
     return User(**filter_user_response(result)), 201, {'Location': request.path + '/' + str(result['id'])}
 
   @staticmethod
-  def from_dict(user):
+  def from_dict(dict):
     try:
-      props = db.insert_user(**user)
+      props = db.insert_user(**dict)
     except sqlite3.IntegrityError as err:
       if str(err) == "UNIQUE constraint failed: users.email":
         return (409, 'Email already registered')
@@ -142,17 +142,21 @@ class UserAPI(Resource):
     """Update a user"""
     # Validate request body with schema model
     user = validate_user(request.json, update=True)
-
-    if user_id != get_jwt_identity():
-      abort(403, "You cannot update someone else")
-
-    try:
-      db.update_user(user_id, **user)
-    except Exception as e:
-      abort(500, e.args[0])
-
+    code, result = self.put_from_dict(user_id, user)
+    if code != 200:
+      abort(code, result)
     # Retrieve updated user with all public properties
     return self.get(user_id)
+
+  @staticmethod
+  def put_from_dict(user_id, dict):
+    if user_id != get_jwt_identity():
+      return (403, "You cannot update someone else")
+    try:
+      updated_props = db.update_user(user_id, **dict)
+    except Exception as e:
+      return (500, e.args[0])
+    return 200,updated_props
 
 
   @jwt_required

@@ -1,0 +1,96 @@
+<!DOCTYPE html lang="{{lang}}">
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>{{userSettings}}</title>
+	<meta name="viewport" content="width=600" />
+	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="static/css/theme/{{user['theme']}}.bootstrap.min.css" />
+	<link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
+<style type="text/css">
+.big-checkbox {width: 30px; height: 30px;}
+.form-check-label {
+line-height: 40px;
+margin-left: 15px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<form method="POST">
+
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label">{{Identity}}</label>
+		<div class="col-sm-10">
+			<div class="form-row">
+				<div class="col">
+					<input type="text" name="firstname" class="form-control input_user" placeholder="{{firstname}}" value="{{user['firstname']}}" required autofocus />
+				</div>
+				<div class="col">
+					<input type="text" name="lastname" class="form-control input_user" placeholder="{{lastname}}" value="{{user['lastname']}}" required />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label for="email" class="col-sm-2 col-form-label">{{email}}</label>
+		<div class="col-sm-10">
+			<input type="email" name="email" id="email" class="form-control input_user" placeholder="{{email}}" value="{{user['email']}}" required />
+		</div>
+	</div>
+	<div class="form-group row">
+		<label for="phone" class="col-sm-2 col-form-label">{{phone}}</label>
+		<div class="col-5 col-md-2">
+			<input type="text" name="phone" class="form-control input_user" placeholder="{{phone}}" value="{{user['phone']}}" />
+		</div>
+	</div>
+	<div class="form-group row align-items-center">
+		<label class="col-sm-2 col-form-label">{{password}}</label>
+		<div class="col-sm-10">
+			<a href="/password" class="text-dark">{{changePassword}}</a>
+		</div>
+	</div>
+
+	<div class="form-group row align-items-center">
+		<label class="col-sm-2 col-form-label">{{visibility}}</label>
+		<div class="col-sm-10">
+			<div class="form-check">
+				<input type="checkbox" name="share_email" id="share_email" class="form-check-input big-checkbox" {% if user['share_email'] %}checked{% endif %} />
+				<label class="form-check-label" for="share_email">{{share_email|safe}}</label>
+			</div>
+			<div class="form-check">
+				<input type="checkbox" name="share_phone" id="share_phone" class="form-check-input big-checkbox" {% if user['share_phone'] %}checked{% endif %} />
+				<label class="form-check-label" for="share_phone">{{share_phone|safe}}</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group row align-items-center">
+		<label class="col-sm-2 col-form-label">{{themeLabel}}</label>
+		<div class="col-4 col-md-2">
+			<select name="theme" class="custom-select">
+				{%for key in themes%}
+				<option value="{{key}}"{% if user['theme']==key %} selected{% endif %}>{{themes[key]}}</option>{%endfor%}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group row">
+		<div class="text-danger">{{error}}</div>
+		<div class="text-success">{{message}}</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<button type="submit" class="btn btn-primary">{{save}}</button>
+		</div>
+	</div>
+</form>
+
+<div class="mt-2">
+	<a href="/" class="text-dark">{{gotohome}}</a>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,10 +1,11 @@
 import datetime
+import settings
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
 
 def insert_user(self, *,
-    firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False):
+    firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False, theme=settings.default_theme):
   """Insert a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
@@ -18,6 +19,7 @@ def insert_user(self, *,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone,
+    'theme': theme,
     'role': 'new', # to be approved -> user
     'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   }
@@ -51,7 +53,7 @@ def get_user(self, user_id=None, email=None):
     db.close()
 
 def update_user(self, user_id, *,
-    firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None):
+    firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None, theme=None):
   """Update a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
@@ -67,7 +69,8 @@ def update_user(self, user_id, *,
     'password': pw_hash,
     'share_email': share_email,
     'phone': phone,
-    'share_phone': share_phone
+    'share_phone': share_phone,
+    'theme': theme
   }
 
   # Delete keys whose value is None

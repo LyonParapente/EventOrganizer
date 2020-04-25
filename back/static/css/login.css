@@ -33,12 +33,6 @@ border-radius: 0.25rem 0 0 0.25rem;
 .input_pass:focus {
 box-shadow: none;
 }
-.post_error{
-color: #E42518;
-}
-.post_message{
-color: rgb(39, 170, 12);
-}
 
 /* ------------------------------ */
 /* Colors */

@@ -64,7 +64,8 @@ class LoginAPI(Resource):
           claims = {
             'role': user['role'],
             'firstname': user['firstname'],
-            'lastname': user['lastname']
+            'lastname': user['lastname'],
+            'theme': user['theme']
           }
           return create_access_token(identity=user['id'], user_claims=claims)
         else:

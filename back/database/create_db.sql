@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 "password" TEXT NOT NULL,
 "phone" TEXT,
 "share_phone" BOOLEAN DEFAULT 0,
+"theme" TEXT,
 "role" TEXT,
 "creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
