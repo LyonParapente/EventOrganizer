@@ -116,9 +116,11 @@ def event(id=None):
 def calendar():
   user_id = get_jwt_identity()
   is_connected = user_id is not None
-  infos = get_jwt_claims()
-  infos['id'] = user_id
-  del infos['role']
+  infos = {}
+  if is_connected:
+    infos = get_jwt_claims()
+    infos['id'] = user_id
+    del infos['role']
   return render_template('calendar.html',
     title=fr['calendar'], lang=fr['lang'], is_connected=is_connected, userinfos=json.dumps(infos))
 
