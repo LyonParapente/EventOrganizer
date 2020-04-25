@@ -52,14 +52,25 @@ app.config.from_pyfile('secrets.py')
 
 jwt = JWTManager(app)
 
-@jwt.expired_token_loader
-def expired_token_callback(expired_token):
+def should_be_connected(message):
+  if not request:
+    return
   if request.path.startswith('/api'):
-    return {'message': 'Authentication failed: token expired'}, 401
+    return {'message': 'Authentication failed: '+message}, 401
 
   response = make_response(redirect('/login'))
   unset_jwt_cookies(response)
   return response
+
+@jwt.expired_token_loader
+def expired_token_callback(expired_token):
+  return should_be_connected('token expired')
+
+@jwt.invalid_token_loader(callback=should_be_connected)
+
+@jwt.unauthorized_loader
+def no_token_callback(err):
+  return should_be_connected('missing token')
 
 # ------------------------------
 # API
