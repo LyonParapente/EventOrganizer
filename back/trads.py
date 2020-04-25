@@ -25,7 +25,7 @@ fr = {
   'changePassword': 'Modifier le mot de passe',
   'save': 'Enregistrer',
   'visibility': 'Partage',
-  'themeLabel': 'Theme',
+  'themeLabel': 'Thème',
   'saved': 'Préférences sauvegardées !',
   'saved_error': "Erreur à l'enregistrement :-("
 }
