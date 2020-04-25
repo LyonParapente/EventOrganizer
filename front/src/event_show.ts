@@ -37,6 +37,12 @@ export function init_showEvent (): void
 
 export function showEvent (calEvent: EventApi): void
 {
+	if (!window['connected_user'])
+	{
+		window.location.replace('/login');
+		return;
+	}
+
 	id('event_id').textContent = calEvent.id;
 
 	var start = calEvent.start,
