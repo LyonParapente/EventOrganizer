@@ -7,6 +7,7 @@ from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jw
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
 from trads import fr, en
+import datetime
 
 # ------------------------------
 # Database initialization
@@ -246,14 +247,21 @@ def user_settings():
   id = get_jwt_identity()
   message = error = ''
   if request.method == 'POST':
-    props = request.form.to_dict()
+    form = request.form.to_dict()
     # ensure checkbox are boolean and not 'on'
-    props['share_email'] = False if props.get('share_email') is None else True
-    props['share_phone'] = False if props.get('share_phone') is None else True
-    del props['csrf_token']
-    code, result = UserAPI.put_from_dict(id, props)
+    form['share_email'] = False if form.get('share_email') is None else True
+    form['share_phone'] = False if form.get('share_phone') is None else True
+    del form['csrf_token']
+    code, result = UserAPI.put_from_dict(id, form)
     if code == 200:
       message = fr['saved']
+      # regenerate new token so that new infos are stored in claims
+      claims = get_jwt_claims()
+      claims['id'] = id
+      claims['firstname'] = form['firstname']
+      claims['lastname'] = form['lastname']
+      claims['theme'] = form['theme']
+      return regenerate_claims(claims, '/settings')
     else:
       error = fr['saved_error']
 
@@ -263,6 +271,15 @@ def user_settings():
   return render_template('user_settings.html', **fr,
     user=user_item, themes=settings.themes, csrf_token=csrf_token,
     message=message, error=error)
+
+def regenerate_claims(claims, dest):
+  now = datetime.datetime.utcnow()
+  # this destroys remember me...
+  expires = settings.web_JWT_ACCESS_TOKEN_EXPIRES
+  token = LoginAPI.get_token(claims, expires)
+  response = make_response(redirect(dest))
+  set_access_cookies(response, token)
+  return response
 
 # ------------------------------
 

@@ -48,7 +48,7 @@ class LoginAPI(Resource):
   def post(self):
     """Login"""
     infos = request.args.to_dict()
-    access_token = self.authenticate(
+    access_token = LoginAPI.authenticate(
       infos['login'],
       infos['password'],
       settings.api_JWT_ACCESS_TOKEN_EXPIRES
@@ -66,19 +66,23 @@ class LoginAPI(Resource):
     else:
       if user['role'] == 'user' or user['role'] == 'admin':
         if bcrypt.check_password_hash(user['password'], password):
-          claims = {
-            'role': user['role'],
-            'firstname': user['firstname'],
-            'lastname': user['lastname'],
-            'theme': user['theme']
-          }
-          return create_access_token(identity=user['id'],
-            user_claims=claims, expires_delta=expires_delta)
+          return LoginAPI.get_token(user, expires_delta)
         else:
           print('Password hash does not match')
       else:
         print('%s is not approved to log-in' % email)
     return None
+
+  @staticmethod
+  def get_token(user, expires_delta):
+    claims = {
+      'role': user['role'],
+      'firstname': user['firstname'],
+      'lastname': user['lastname'],
+      'theme': user['theme']
+    }
+    return create_access_token(identity=user['id'],
+    user_claims=claims, expires_delta=expires_delta)
 
 
 class LogoutAPI(Resource):
