@@ -3,6 +3,7 @@ from flask_restful_swagger_3 import Resource, swagger
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
+import datetime
 
 class EventAPICreate(Resource):
   @jwt_required
@@ -30,6 +31,9 @@ class EventAPICreate(Resource):
       },
       '401': {
         'description': 'Not authenticated'
+      },
+      '403': {
+        'description': 'Creation forbidden'
       }
     }
   })
@@ -38,17 +42,17 @@ class EventAPICreate(Resource):
     # Validate request body with schema model
     event = validate_event(request.json, create=True)
 
-    #TODO: forbid to create event in the past
+    today = datetime.date.today()
+    end_date = event['end_date'] if event.get('end_date') else event['start_date']
+    event_end = datetime.date.fromisoformat(end_date)
+    if event_end < today:
+      abort(403, 'Cannot create an event in the past')
 
     event['creator_id'] = get_jwt_identity()
     try:
       props = db.insert_event(**event)
     except Exception as e:
       abort(500, e.args[0])
-
-    props['start_date'] = str(props['start_date'])
-    if props['end_date']:
-      props['end_date'] = str(props['end_date'])
 
     new_event = Event(**filter_event_response(props))
 
@@ -146,6 +150,9 @@ class EventAPI(Resource):
       '401': {
         'description': 'Not authenticated'
       },
+      '403': {
+        'description': 'Update forbidden'
+      },
       '404': {
         'description': 'Event not found'
       }
@@ -158,9 +165,11 @@ class EventAPI(Resource):
 
     db_event = self.get(event_id)
 
-    #TODO: cannot modify an event if its in the past
-    #if something:
-    #  abort(400, 'Cannot modify a past event')
+    today = datetime.date.today()
+    end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
+    event_end = datetime.date.fromisoformat(end_date)
+    if event_end < today:
+      abort(403, 'Cannot modify a past event')
 
     if db_event['creator_id'] != get_jwt_identity():
       abort(403, "You cannot update someone else event")
@@ -210,8 +219,13 @@ class EventAPI(Resource):
     if db_event['creator_id'] != get_jwt_identity():
       abort(403, "You cannot delete someone else event")
 
-    # TODO: cannot delete if finished
-    # TODO: Foreign keys (messages & registration) need cascade delete
+    today = datetime.date.today()
+    end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
+    event_end = datetime.date.fromisoformat(end_date)
+    if event_end < today:
+      abort(403, 'Cannot delete a past event')
+
+    # TODO: Foreign keys (messages & registrations) need cascade delete
     rowcount = db.delete_event(event_id)
     if rowcount < 1:
       abort(404, 'No event was deleted')
