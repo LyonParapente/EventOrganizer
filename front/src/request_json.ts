@@ -1,3 +1,11 @@
+var csrf;
+var csrf_cookies = document.cookie.split(';')
+  .map(x => x.split('='))
+  .filter(x => x[0] === 'csrf_access_token');
+if (csrf_cookies.length)
+{
+  csrf = csrf_cookies[0][1];
+}
 
 export default function requestJson (method: string, url: string, params: object, successCallback, failureCallback) {
   method = method.toUpperCase();
@@ -11,7 +19,11 @@ export default function requestJson (method: string, url: string, params: object
   var xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   if (method !== 'GET') {
-      xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    if (csrf)
+    {
+      xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+    }
   }
   xhr.onload = function () {
     if (xhr.status >= 200 && xhr.status < 400) {

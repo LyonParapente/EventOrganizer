@@ -51,7 +51,7 @@ app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
 
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
-app.config['JWT_CSRF_IN_COOKIES'] = False
+app.config['JWT_CSRF_IN_COOKIES'] = True
 
 app.config.from_pyfile('secrets.py')
 
