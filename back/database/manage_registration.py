@@ -9,7 +9,7 @@ def set_registration(self, *,
     'event_id': event_id,
     'user_id': user_id,
     'interest': interest,
-    'lastupdate_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    'lastupdate_datetime': datetime.datetime.utcnow().isoformat()
   }
 
   # We have to get the existing id if any, so that REPLACE works

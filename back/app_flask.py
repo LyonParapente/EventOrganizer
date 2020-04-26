@@ -273,8 +273,7 @@ def user_settings():
     message=message, error=error)
 
 def regenerate_claims(claims, dest):
-  now = datetime.datetime.utcnow()
-  # this destroys remember me...
+  # Note: this destroys remember me...
   expires = settings.web_JWT_ACCESS_TOKEN_EXPIRES
   token = LoginAPI.get_token(claims, expires)
   response = make_response(redirect(dest))

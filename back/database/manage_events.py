@@ -20,7 +20,7 @@ def insert_event(self, *,
     'category': category,
     'color': color,
     'creator_id': creator_id,
-    'creation_datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    'creation_datetime': datetime.datetime.utcnow().isoformat()
   }
   columns = ','.join(tuple(new_event))
   questions = ','.join(['?' for x in new_event])
