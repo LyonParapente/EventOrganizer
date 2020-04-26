@@ -114,7 +114,7 @@ export function showEvent (calEvent: EventApi): void
 
 	var creator_id = calEvent.extendedProps.creator_id;
 	var author_img = new Image();
-	author_img.src = "/static/avatars/"+creator_id+"-1.jpg";
+	author_img.src = "/avatars/"+creator_id+"-130";
 	var event_author_img = id("event_author_img");
 	event_author_img.setAttribute("href", "/user:"+creator_id);
 	event_author_img.innerHTML = '';

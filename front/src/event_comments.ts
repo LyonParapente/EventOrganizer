@@ -12,7 +12,7 @@ export default function loadComments (event: CurrentEvent): void
 	var attributes =
 	{
 		"alt": getUserName(connected_user),
-		"src": "/static/avatars/"+connected_user.id+"-1.jpg",
+		"src": "/avatars/"+connected_user.id+"-130",
 		"height": 110
 	};
 	var event_comment_avatar = id("event_comment_avatar");
@@ -168,7 +168,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var a = document.createElement('a');
 			a.href = "/user:"+userid;
 				var avatar = new Image();
-				avatar.src = "/static/avatars/"+userid+"-2.jpg";
+				avatar.src = "/avatars/"+userid+"-40";
 				avatar.alt = getUserName(user);
 			a.appendChild(avatar);
 		d.appendChild(a);
@@ -262,7 +262,7 @@ function addRegistration (user_id: string, user: User, container: HTMLElement)
 	var a = document.createElement('a');
 	a.href = "/user:"+user_id;
 		var avatar = new Image();
-		avatar.src = "/static/avatars/"+user_id+"-2.jpg";
+		avatar.src = "/avatars/"+user_id+"-40";
 		avatar.alt = getUserName(user);
 		avatar.className = "mr-1 mb-1";
 	a.appendChild(avatar);

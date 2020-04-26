@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, redirect, request, render_template, make_response
+from flask import Flask, redirect, request, render_template, make_response, send_file
 from flask_restful_swagger_3 import Api, swagger
 from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity, get_jwt_claims
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
@@ -307,6 +307,14 @@ def change_password():
   return render_template('user_password.html', **fr,
     csrf_token=csrf_token, theme=claims['theme'],
     message=message, error=error)
+
+@app.route('/avatars/<string:name>')
+@jwt_required
+def avatar(name):
+  """Get avatar"""
+  suffix = name.split('-')[-1]
+  return send_file('avatars/default-%s.png'%suffix)
+
 
 # ------------------------------
 
