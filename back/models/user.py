@@ -19,7 +19,7 @@ class User(Schema):
       'example': False, 'default': False,
       'description': 'Does the user allow his/her phone to be public?'},
     'theme': {'type': 'string', 'default': 'flatly', 'writeOnly': True},
-    'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
+    'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.461593Z'}
   }
   # required on response:
   required = ['id', 'firstname', 'lastname', 'creation_datetime']

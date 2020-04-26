@@ -21,7 +21,7 @@ def insert_user(self, *,
     'share_phone': share_phone,
     'theme': theme,
     'role': 'new', # to be approved -> user
-    'creation_datetime': datetime.datetime.utcnow().isoformat()
+    'creation_datetime': datetime.datetime.utcnow().isoformat()+'Z'
   }
   columns = ','.join(tuple(new_user))
   questions = ','.join(['?' for x in new_user])

@@ -8,7 +8,7 @@ class Message(Schema):
     'author_id': {'type': 'integer', 'readOnly': True, 'example': 101},
     'event_id': {'type': 'integer', 'readOnly': False, 'example': 12345},
     'creation_datetime': {'type': 'string', 'format': 'date-time',
-      'readOnly': True, 'example': '2020-04-13 16:30:04'}
+      'readOnly': True, 'example': '2020-04-13T16:30:04.403284Z'}
   }
   required = ['id', 'comment', 'author_id', 'event_id', 'creation_datetime']
 
@@ -20,7 +20,7 @@ class MessageCreate(Message):
 class MessagesComment(Schema):
   type = 'object'
   properties = {
-    'date': {'type': 'string', 'format': 'date-time', 'example': '2020-04-13 16:30:04'},
+    'date': {'type': 'string', 'format': 'date-time', 'example': '2020-04-13T16:30:04.461593Z'},
     'user': {'type': 'integer', 'example': 101},
     'comment': {'type': 'string', 'example': 'This is my message'}
   }

@@ -16,7 +16,7 @@ class Event(Schema):
     'category': {'type': 'string', 'example': 'conference'},
     'color': {'type': 'string', 'example': '#662C67'},
     'creator_id': {'type': 'integer', 'readOnly': True, 'example': 101},
-    'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13 16:30:04'}
+    'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.403284Z'}
   }
   # required on response:
   required = ['id', 'title', 'start_date', 'creator_id', 'creation_datetime']

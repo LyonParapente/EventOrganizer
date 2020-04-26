@@ -9,7 +9,7 @@ def insert_message(self, *,
     'comment': comment,
     'author_id': author_id,
     'event_id': event_id,
-    'creation_datetime': datetime.datetime.utcnow().isoformat()
+    'creation_datetime': datetime.datetime.utcnow().isoformat()+'Z'
   }
   columns = ','.join(tuple(new_message))
   questions = ','.join(['?' for x in new_message])
