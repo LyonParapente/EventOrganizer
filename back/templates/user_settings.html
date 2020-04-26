@@ -19,6 +19,7 @@ margin-left: 15px;
 
 <div class="container">
 <form method="POST">
+	<input name="csrf_token" type="hidden" value="{{ csrf_token }}">
 
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label">{{Identity}}</label>

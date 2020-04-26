@@ -48,8 +48,10 @@ api = Api(app, components=components, security=api_security)
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
 
-app.config['JWT_COOKIE_CSRF_PROTECT'] = False #TODO: re-enable
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
+app.config['JWT_CSRF_IN_COOKIES'] = False
+
 app.config.from_pyfile('secrets.py')
 
 jwt = JWTManager(app)
@@ -72,6 +74,7 @@ def expired_token_callback(expired_token):
 
 @jwt.unauthorized_loader
 def no_token_callback(err):
+  print(err)
   return should_be_connected('missing token')
 
 # ------------------------------
@@ -247,6 +250,7 @@ def user_settings():
     # ensure checkbox are boolean and not 'on'
     props['share_email'] = False if props.get('share_email') is None else True
     props['share_phone'] = False if props.get('share_phone') is None else True
+    del props['csrf_token']
     code, result = UserAPI.put_from_dict(id, props)
     if code == 200:
       message = fr['saved']
@@ -255,8 +259,10 @@ def user_settings():
 
   #user_item = api_user.get(id) # can't get theme
   user_item = database.manager.db.get_user(user_id=id)
+  csrf_token = get_raw_jwt().get("csrf")
   return render_template('user_settings.html', **fr,
-    user=user_item, themes=settings.themes, message=message, error=error)
+    user=user_item, themes=settings.themes, csrf_token=csrf_token,
+    message=message, error=error)
 
 # ------------------------------
 
