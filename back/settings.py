@@ -24,3 +24,7 @@ themes = {
   "united": "United",
   "yeti": "Yeti"
 }
+import datetime
+api_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(minutes=15)
+web_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(hours=2)
+web_remember_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=30)

@@ -46,6 +46,13 @@ api = Api(app, components=components, security=api_security)
 # Authent part 2: JWT config
 
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
+app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
+
+# for remember me feature, we have to set expires to
+# something other than 'session'
+# this sets 1 year in the future, but jwt expiration prevails
+app.config['JWT_SESSION_COOKIE'] = False
+
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False #TODO: re-enable
 app.config['JWT_CSRF_CHECK_FORM'] = True
 app.config.from_pyfile('secrets.py')
@@ -171,7 +178,14 @@ def login():
   """Login"""
   if request.method == 'POST':
     form = request.form.to_dict()
-    token = LoginAPI.authenticate(form['login'], form['password'])
+    expires = settings.web_JWT_ACCESS_TOKEN_EXPIRES
+    if form.get('rememberMe') is not None:
+      expires = settings.web_remember_JWT_ACCESS_TOKEN_EXPIRES
+    token = LoginAPI.authenticate(
+      form['login'],
+      form['password'],
+      expires
+    )
     if token is not None:
       response = make_response(redirect('/planning'))
       set_access_cookies(response, token)

@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, get_raw_jwt
 from flask_bcrypt import Bcrypt
 from models.auth import AccessToken
 from database.manager import db
+import settings
 
 bcrypt = Bcrypt()
 
@@ -47,14 +48,18 @@ class LoginAPI(Resource):
   def post(self):
     """Login"""
     infos = request.args.to_dict()
-    access_token = self.authenticate(infos['login'], infos['password'])
+    access_token = self.authenticate(
+      infos['login'],
+      infos['password'],
+      settings.api_JWT_ACCESS_TOKEN_EXPIRES
+    )
     if access_token is None:
       # do not use abort() for website
       return {'message': 'Authentication failed'}, 401
     return AccessToken(**{'access_token': access_token}), 200
 
   @staticmethod
-  def authenticate(email, password):
+  def authenticate(email, password, expires_delta):
     user = db.get_user(email=email)
     if user is None:
       print('Email not found: %s' % email)
@@ -67,7 +72,8 @@ class LoginAPI(Resource):
             'lastname': user['lastname'],
             'theme': user['theme']
           }
-          return create_access_token(identity=user['id'], user_claims=claims)
+          return create_access_token(identity=user['id'],
+            user_claims=claims, expires_delta=expires_delta)
         else:
           print('Password hash does not match')
       else:
