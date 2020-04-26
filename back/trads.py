@@ -27,7 +27,13 @@ fr = {
   'visibility': 'Partage',
   'themeLabel': 'Thème',
   'saved': 'Préférences sauvegardées !',
-  'saved_error': "Erreur à l'enregistrement :-("
+  'saved_error': "Erreur à l'enregistrement :-(",
+  'oldPassword': 'Ancien mot de passe',
+  'newPassword': 'Nouveau mot de passe',
+  'newPassword2': 'Nouveau mot de passe (encore)',
+  'pwdMismatch': "Le nouveau mot de passe n'est pas le même dans les 2 champs",
+  'pwdChanged': 'Mot de passe changé',
+  'pwdChanged_error': 'Erreur lors du changement de mot de passe'
 }
 en = {
   'lang': 'fr',
@@ -58,5 +64,11 @@ en = {
   'visibility': 'Sharing',
   'themeLabel': 'Theme',
   'saved': 'Settings saved!',
-  'saved_error': "Error while saving :-("
+  'saved_error': "Error while saving :-(",
+  'oldPassword': 'Old password',
+  'newPassword': 'New password',
+  'newPassword2': 'New password (again)',
+  'pwdMismatch': 'New password is different in the 2 fields',
+  'pwdChanged': 'Password changed',
+  'pwdChanged_error': 'Error while changing password'
 }

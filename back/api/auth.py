@@ -84,6 +84,17 @@ class LoginAPI(Resource):
     return create_access_token(identity=user['id'],
     user_claims=claims, expires_delta=expires_delta)
 
+  @staticmethod
+  def change_password(user_id, old_password, new_password):
+    user = db.get_user(user_id=user_id)
+    if user is None:
+      return "User not found",404
+    if bcrypt.check_password_hash(user['password'], old_password):
+      db.update_user(user_id, password=new_password)
+      return "Password changed",200
+    else:
+      return "Invalid old password",401
+
 
 class LogoutAPI(Resource):
   @swagger.doc({

@@ -281,6 +281,34 @@ def regenerate_claims(claims, dest):
   set_access_cookies(response, token)
   return response
 
+@app.route('/password', methods=['GET', 'POST'])
+@jwt_required
+def change_password():
+  """Change password"""
+  id = get_jwt_identity()
+  claims = get_jwt_claims()
+  message = error = ''
+  if request.method == 'POST':
+    form = request.form.to_dict()
+    if form['newPassword'] != form['newPassword2']:
+      error = fr['pwdMismatch']
+    else:
+      msg, code = LoginAPI.change_password(
+        id,
+        form['oldPassword'],
+        form['newPassword']
+      )
+      if code == 200:
+        message = fr['pwdChanged']
+      else:
+        print(msg)
+        error = fr['pwdChanged_error']
+
+  csrf_token = get_raw_jwt().get("csrf")
+  return render_template('user_password.html', **fr,
+    csrf_token=csrf_token, theme=claims['theme'],
+    message=message, error=error)
+
 # ------------------------------
 
 if __name__ == '__main__':
