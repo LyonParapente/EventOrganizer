@@ -215,7 +215,7 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
-    code, result = UserAPICreate.from_dict(request.form)
+    code, result = UserAPICreate.from_dict(request.form.to_dict())
     if code == 200:
       return render_template('register.html', **fr, message=fr['checkemail'])
     else:
