@@ -5,6 +5,13 @@ from models.event import Event, validate_event, filter_event_response
 from database.manager import db
 import datetime
 
+def get_date_from_str(str):
+  if hasattr(datetime.date, 'fromisoformat'):
+    return datetime.date.fromisoformat(str)
+
+  parts = map(lambda x: int(x), str.split('-'))
+  return datetime.date(*parts)
+
 class EventAPICreate(Resource):
   @jwt_required
   @swagger.doc({
@@ -44,7 +51,7 @@ class EventAPICreate(Resource):
 
     today = datetime.date.today()
     end_date = event['end_date'] if event.get('end_date') else event['start_date']
-    event_end = datetime.date.fromisoformat(end_date)
+    event_end = get_date_from_str(end_date)
     if event_end < today:
       abort(403, 'Cannot create an event in the past')
 
@@ -167,7 +174,7 @@ class EventAPI(Resource):
 
     today = datetime.date.today()
     end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
-    event_end = datetime.date.fromisoformat(end_date)
+    event_end = get_date_from_str(end_date)
     if event_end < today:
       abort(403, 'Cannot modify a past event')
 
@@ -221,7 +228,7 @@ class EventAPI(Resource):
 
     today = datetime.date.today()
     end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
-    event_end = datetime.date.fromisoformat(end_date)
+    event_end = get_date_from_str(end_date)
     if event_end < today:
       abort(403, 'Cannot delete a past event')
 
