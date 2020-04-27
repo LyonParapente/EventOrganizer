@@ -17,6 +17,7 @@
     </div>
     <div class="d-flex justify-content-center form_container">
       <form method="POST">
+        {% if not message %}
         <div class="input-group mb-3">
           <div class="input-group-append">
             <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -42,6 +43,7 @@
           </div>
           <input type="password" name="password" class="form-control input_pass" placeholder="{{password}}" minlength="6" required />
         </div>
+        {% endif %}
         <div class="text-center text-danger">{{error}}</div>
         <div class="text-center text-success">{{message}}</div>
         {% if not message %}
