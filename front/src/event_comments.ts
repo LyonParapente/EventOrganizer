@@ -170,6 +170,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 				var avatar = new Image();
 				avatar.src = "/avatars/"+userid+"-40";
 				avatar.alt = getUserName(user);
+				avatar.title = getUserName(user);
 			a.appendChild(avatar);
 		d.appendChild(a);
 		groupitem.appendChild(d);
@@ -264,6 +265,7 @@ function addRegistration (user_id: string, user: User, container: HTMLElement)
 		var avatar = new Image();
 		avatar.src = "/avatars/"+user_id+"-40";
 		avatar.alt = getUserName(user);
+		avatar.title = getUserName(user);
 		avatar.className = "mr-1 mb-1";
 	a.appendChild(avatar);
 	container.appendChild(a);
