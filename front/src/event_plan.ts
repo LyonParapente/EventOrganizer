@@ -49,7 +49,7 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 {
 	if (!window['connected_user'])
 	{
-		window.location.replace('/login');
+		window.location.assign('/login');
 		return;
 	}
 
