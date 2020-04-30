@@ -18,9 +18,24 @@ margin-left: 15px;
 <body>
 
 <div class="container">
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 	<input name="csrf_token" type="hidden" value="{{ csrf_token }}">
 
+	<div class="form-group row">
+		<label for="avatar" class="col-sm-2 col-form-label">{{Avatar}}</label>
+		<div class="col-sm-10">
+			<div class="form-row">
+				<div class="col-auto">
+					<img src="/avatars/{{user_id}}-130?r={{random}}" alt="{{Avatar}}" class="border" />
+				</div>
+				<div class="col-sm-4 align-self-end">
+					<input type="file" name="avatar" id="avatar" class="form-control input_user" onchange="this.closest('form').submit()" />
+					<input name="remove_avatar" id="remove_avatar" type="hidden" />
+					<a href="javascript:remove_avatar();">{{Remove_avatar}}</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label">{{Identity}}</label>
 		<div class="col-sm-10">
@@ -93,5 +108,13 @@ margin-left: 15px;
 </div>
 </div>
 
+<script>
+function remove_avatar ()
+{
+	var ctrl = document.getElementById('remove_avatar');
+	ctrl.value = "1";
+	ctrl.closest('form').submit();
+}
+</script>
 </body>
 </html>

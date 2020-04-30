@@ -6,8 +6,12 @@ from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_i
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
+from werkzeug.utils import secure_filename
+from image import generate_miniature
 from trads import fr, en
 import datetime
+import random
+import string
 
 # ------------------------------
 # Database initialization
@@ -77,6 +81,12 @@ def expired_token_callback(expired_token):
 def no_token_callback(err):
   print(err)
   return should_be_connected('missing token')
+
+# ------------------------------
+# File uploads (avatar)
+
+app.config['UPLOAD_FOLDER'] = settings.uploads_folder # created automatically
+app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7Mo
 
 # ------------------------------
 # API
@@ -240,6 +250,10 @@ def approve(id):
     return "OK" if nb == 1 else "ERROR"
   return "NOPE", 403
 
+def allowed_file(filename):
+  return '.' in filename and \
+    filename.rsplit('.', 1)[1].lower() in settings.uploads_allowed_extensions
+
 @app.route('/settings', methods=['GET', 'POST'])
 @jwt_required
 def user_settings():
@@ -248,19 +262,40 @@ def user_settings():
   message = error = ''
   if request.method == 'POST':
     form = request.form.to_dict()
-    # ensure checkbox are boolean and not 'on'
+
+    # Avatar
+    file = request.files['avatar']
+    if file and file.filename != '':
+      if allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        img_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(img_path)
+        generate_miniatures(img_path, id)
+        os.remove(img_path)
+    if form['remove_avatar'] == '1':
+      remove_miniatures(id)
+
+    # Ensure checkbox are boolean and not 'on'
     form['share_email'] = False if form.get('share_email') is None else True
     form['share_phone'] = False if form.get('share_phone') is None else True
+
+    # Remove extra fields that would break UserAPI.put_from_dict()
     del form['csrf_token']
+    del form['remove_avatar']
+
     code, result = UserAPI.put_from_dict(id, form)
     if code == 200:
       message = fr['saved']
-      # regenerate new token so that new infos are stored in claims
+
+      # Regenerate new token so that new infos are stored in claims
       claims = get_jwt_claims()
       claims['id'] = id
       claims['firstname'] = form['firstname']
       claims['lastname'] = form['lastname']
       claims['theme'] = form['theme']
+
+      # message is lost... but we have to redirect for csrf_token variable
       return regenerate_claims(claims, '/settings')
     else:
       error = fr['saved_error']
@@ -270,7 +305,7 @@ def user_settings():
   csrf_token = get_raw_jwt().get("csrf")
   return render_template('user_settings.html', **fr,
     user=user_item, themes=settings.themes, csrf_token=csrf_token,
-    message=message, error=error)
+    message=message, error=error, user_id=id, random=randomString())
 
 def regenerate_claims(claims, dest):
   # Note: this destroys remember me...
@@ -312,9 +347,41 @@ def change_password():
 @jwt_required
 def avatar(name):
   """Get avatar"""
-  suffix = name.split('-')[-1]
-  return send_file('avatars/default-%s.png'%suffix)
+  parts = name.split('-')
+  user_id = secure_filename(parts[0])
+  suffix = secure_filename(parts[-1])
+  path = settings.avatars_folder+'/'+user_id+'-%s.jpg'%suffix
+  if not os.path.exists(path):
+    path = settings.avatars_folder+'/default-%s.png'%suffix
+  return send_file(path)
 
+
+def generate_miniatures(path, user_id):
+  user_id = str(user_id)
+  # 130
+  dest_path = settings.avatars_folder+'/'+user_id+'-130.jpg'
+  generate_miniature(path, dest_path, format='jpg', width=130, height=130, enlarge=True)
+
+  # 40
+  dest_path = settings.avatars_folder+'/'+user_id+'-40.jpg'
+  generate_miniature(path, dest_path, format='jpg', width=40, height=40, enlarge=True)
+
+def remove_miniatures(user_id):
+  user_id = str(user_id)
+  dest_path = settings.avatars_folder+'/'+user_id+'-130.jpg'
+  try:
+    os.remove(dest_path)
+  except:
+    pass
+  dest_path = settings.avatars_folder+'/'+user_id+'-40.jpg'
+  try:
+    os.remove(dest_path)
+  except:
+    pass
+
+def randomString(stringLength=8):
+  letters = string.ascii_lowercase
+  return ''.join(random.choice(letters) for i in range(stringLength))
 
 # ------------------------------
 

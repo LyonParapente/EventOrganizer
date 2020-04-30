@@ -4,3 +4,5 @@ static/
 events.db
 events.db-journal
 secrets.py
+avatars/
+uploads/

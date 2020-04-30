@@ -24,7 +24,12 @@ themes = {
   "united": "United",
   "yeti": "Yeti"
 }
+#---
 import datetime
 api_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(minutes=15)
 web_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(hours=1)
 web_remember_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=30)
+#---
+uploads_folder = 'uploads'
+avatars_folder = 'avatars'
+uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
