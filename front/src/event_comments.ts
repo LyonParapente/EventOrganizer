@@ -176,7 +176,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 		groupitem.appendChild(d);
 
 		var col = document.createElement('div');
-		col.className = 'col';
+		col.className = 'pl-2';
 			var comment_infos = document.createElement('span');
 			comment_infos.className = 'border-bottom border-light';
 				a = document.createElement('a');
