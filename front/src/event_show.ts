@@ -84,7 +84,11 @@ export function showEvent (calEvent: EventApi): void
 
 	// Title & description
 	id("event_title").textContent = calEvent.title;
-	id("event_description").innerHTML = calEvent.extendedProps.description || i18n('No description');
+	var event_description = id("event_description");
+	event_description.innerHTML = '';
+	var desc = calEvent.extendedProps.description || i18n('No description');
+	event_description.appendChild(document.createTextNode(desc));
+	event_description.innerHTML = event_description.innerHTML.replace(/\n/g,'<br/>');
 
 	// Will be set by loadComments, cleanup any previously open
 	id("event_author").textContent = '';
