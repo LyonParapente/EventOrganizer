@@ -1,8 +1,9 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
+from emails import send_new_event
 import datetime
 
 def get_date_from_str(str):
@@ -55,7 +56,8 @@ class EventAPICreate(Resource):
     if event_end < today:
       abort(403, 'Cannot create an event in the past')
 
-    event['creator_id'] = get_jwt_identity()
+    creator_id = get_jwt_identity()
+    event['creator_id'] = creator_id
     try:
       props = db.insert_event(**event)
     except Exception as e:
@@ -73,6 +75,11 @@ class EventAPICreate(Resource):
     except Exception as e:
       #not a big deal, let's continue
       pass
+
+    # Email
+    claims = get_jwt_claims()
+    creator_name = claims['firstname'] + ' ' + claims['lastname']
+    send_new_event(new_event, creator_name)
 
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 

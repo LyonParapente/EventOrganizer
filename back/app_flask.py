@@ -7,18 +7,20 @@ from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jw
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
-from image import generate_miniature
-from trads import fr, en
-import datetime
 import random
 import string
 
 # ------------------------------
-# Database initialization
+# Our helpers
 
 import settings
+from trads import fr, en
+
 import database.manager
 database.manager.init(settings.db_filepath)
+
+from image import generate_miniature
+from emails import send_register,send_approved
 
 # ------------------------------
 # Authent part 1: Swagger description
@@ -227,6 +229,8 @@ def register():
   if request.method == 'POST':
     code, result = UserAPICreate.from_dict(request.form.to_dict())
     if code == 200:
+      f = request.form
+      send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
       return render_template('register.html', **fr, message=fr['checkemail'])
     else:
       if code == 409:
@@ -246,8 +250,12 @@ def approve(id):
   """Approve a user"""
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
-    nb = database.manager.db.update_user_role(id, "user")
-    return "OK" if nb == 1 else "ERROR"
+    nb = database.manager.db.update_user_role(id, "user", previous_role="new")
+    if nb == 1:
+      user = database.manager.db.get_user(user_id=id)
+      send_approved(user['email'], user['firstname']+' '+user['lastname'])
+      return "OK"
+    return "ALREADY APPROVED"
   return "NOPE", 403
 
 def allowed_file(filename):

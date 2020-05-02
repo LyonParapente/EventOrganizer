@@ -78,7 +78,7 @@ class MessagesAPI(Resource):
         'phone': message.get('phone', ''),
         'email': message.get('email', '')
       })
-      # Add user to list (or overwrite)
+      # Add user to dict (or overwrite)
       users[str(message['author_id'])] = user
 
       comments.append(MessagesComment(**{
@@ -87,7 +87,7 @@ class MessagesAPI(Resource):
         'comment': message['comment']
       }))
 
-    # Add creator to list
+    # Add creator to dict (or overwrite)
     silence_user_fields(creator)
     user = MessagesUser(**{
       'firstname': creator['firstname'],

@@ -47,7 +47,7 @@ class DBManage(object):
     cursor.execute("PRAGMA foreign_keys = ON")
     return db, cursor
 
-  from .manage_users import insert_user, get_user, update_user, delete_user, update_user_role
+  from .manage_users import insert_user, get_user, update_user, delete_user, update_user_role, list_users
   from .manage_events import insert_event, get_event, update_event, delete_event, get_events_list
   from .manage_messages import insert_message, get_messages_list
   from .manage_registration import set_registration, get_registration, delete_registration

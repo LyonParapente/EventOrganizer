@@ -52,6 +52,22 @@ def get_user(self, user_id=None, email=None):
   finally:
     db.close()
 
+def list_users(self, only_admins=False):
+  """Fetch all approved users from database"""
+  db, cursor = self._connect()
+  try:
+    list_users = """
+      SELECT id,firstname,lastname,email
+      FROM users
+      WHERE role IS NOT NULL and role!='new'
+    """
+    if only_admins:
+      list_users += " AND role='admin'"
+    cursor.execute(list_users)
+    return cursor.fetchall()
+  finally:
+    db.close()
+
 def update_user(self, user_id, *,
     firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None, theme=None):
   """Update a user in the database
@@ -107,12 +123,16 @@ def delete_user(self, user_id):
   finally:
     db.close()
 
-def update_user_role(self, user_id, role):
+def update_user_role(self, user_id, role, previous_role=None):
   """Update a user role in the database"""
   update_role = "UPDATE users SET role=? WHERE id=?"
+  values = (role, user_id)
+  if previous_role:
+    update_role += " AND role=?"
+    values = (role, user_id, previous_role)
   db, cursor = self._connect()
   try:
-    cursor.execute(update_role, (role, user_id))
+    cursor.execute(update_role, values)
     db.commit()
     return cursor.rowcount
   finally:
