@@ -202,7 +202,7 @@ export function showEvent (calEvent: EventApi): void
 		.one('shown.bs.modal', function ()
 		{
 			// Step 1 - Compute textarea height according to width
-			var w = event_location.offsetWidth;
+			var w = event_location.offsetWidth + 1;
 			event_location2.style.width = w+'px';
 
 			event_location.style.display = 'none';
