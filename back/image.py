@@ -151,7 +151,7 @@ def post_process(image, sharpen=None):
 
 
 def generate_miniature(path, dest_path, width=None, height=None, quality=90,
-  enlarge=False, sharpen=None, format=None, mode='pad', background='white'):
+  enlarge=False, sharpen=None, format=None, mode='crop', background='white'):
 
   image = Image.open(path)
   image = resize(image,

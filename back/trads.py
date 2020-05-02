@@ -34,7 +34,7 @@ fr = {
   'pwdMismatch': "Le nouveau mot de passe n'est pas le même dans les 2 champs",
   'pwdChanged': 'Mot de passe changé',
   'pwdChanged_error': 'Erreur lors du changement de mot de passe',
-  'Avatar': 'Avatar',
+  'Avatar': 'Photo',
   'Remove_avatar': "Supprimer l'image"
 }
 en = {
@@ -73,6 +73,6 @@ en = {
   'pwdMismatch': 'New password is different in the 2 fields',
   'pwdChanged': 'Password changed',
   'pwdChanged_error': 'Error while changing password',
-  'Avatar': 'Avatar',
-  'Remove_avatar': 'Remove avatar'
+  'Avatar': 'Picture',
+  'Remove_avatar': 'Remove picture'
 }

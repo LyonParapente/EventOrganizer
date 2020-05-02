@@ -358,7 +358,7 @@ def avatar(name):
   parts = name.split('-')
   user_id = secure_filename(parts[0])
   suffix = secure_filename(parts[-1])
-  path = settings.avatars_folder+'/'+user_id+'-%s.jpg'%suffix
+  path = settings.avatars_folder+'/'+user_id+'-%s.png'%suffix
   if not os.path.exists(path):
     path = settings.avatars_folder+'/default-%s.png'%suffix
   return send_file(path)
@@ -367,21 +367,21 @@ def avatar(name):
 def generate_miniatures(path, user_id):
   user_id = str(user_id)
   # 130
-  dest_path = settings.avatars_folder+'/'+user_id+'-130.jpg'
-  generate_miniature(path, dest_path, format='jpg', width=130, height=130, enlarge=True)
+  dest_path = settings.avatars_folder+'/'+user_id+'-130.png'
+  generate_miniature(path, dest_path, format='png', width=130, height=130, enlarge=True)
 
   # 40
-  dest_path = settings.avatars_folder+'/'+user_id+'-40.jpg'
-  generate_miniature(path, dest_path, format='jpg', width=40, height=40, enlarge=True)
+  dest_path = settings.avatars_folder+'/'+user_id+'-40.png'
+  generate_miniature(path, dest_path, format='png', width=40, height=40, enlarge=True)
 
 def remove_miniatures(user_id):
   user_id = str(user_id)
-  dest_path = settings.avatars_folder+'/'+user_id+'-130.jpg'
+  dest_path = settings.avatars_folder+'/'+user_id+'-130.png'
   try:
     os.remove(dest_path)
   except:
     pass
-  dest_path = settings.avatars_folder+'/'+user_id+'-40.jpg'
+  dest_path = settings.avatars_folder+'/'+user_id+'-40.png'
   try:
     os.remove(dest_path)
   except:
