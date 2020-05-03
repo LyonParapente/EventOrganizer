@@ -1,6 +1,4 @@
 body {
-text-align: center;
-font-size: 14px;
 font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 }
 
@@ -49,12 +47,6 @@ animation: fa-spin2 1s infinite linear;
 .fc-day, .fc-list-item, .fc-content-skeleton tbody td {
 cursor: pointer;
 }
-
-/* looks weird
-.fc .fc-row .fc-bg td:hover,
-.fc .fc-row .fc-content-skeleton td:not(.fc-event-container):hover {
-background-color: #bce8f1;
-}*/
 
 .fc-title {
 white-space: normal;
