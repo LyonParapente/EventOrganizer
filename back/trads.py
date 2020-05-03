@@ -1,7 +1,8 @@
 fr = {
   'lang': 'fr',
   'calendar': 'Calendrier',
-  'userTitle': 'Utilisateur',
+  'userTitle': 'Membre',
+  'usersTitle': 'Les membres',
   'email': 'Adresse email',
   'password': 'Mot de passe',
   'remember':'Se souvenir de moi',
@@ -40,7 +41,8 @@ fr = {
 en = {
   'lang': 'fr',
   'calendar': 'Calendar',
-  'userTitle': 'User',
+  'userTitle': 'Member',
+  'usersTitle': 'Members',
   'email': 'Email address',
   'password': 'Password',
   'remember':'Remember me',

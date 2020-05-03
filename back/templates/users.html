@@ -1,0 +1,33 @@
+<!DOCTYPE html lang="{{lang}}">
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>{{usersTitle}}</title>
+	<meta name="viewport" content="width=600" />
+	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
+<style type="text/css">
+.member{
+width: 130px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="d-flex">
+{% for user in users %}
+<span class="card member">
+	<a href="/user:{{user['id']}}"><img src="/avatars/{{user['id']}}-130" alt="{{user['firstname']}} {{user['lastname']}}" class="card-img-top" /></a>
+	<div class="card-body">{{user['firstname']}} {{user['lastname']}}</div>
+</span>
+{% endfor %}
+</div>
+
+<div class="mt-2">
+	<a href="/" class="text-dark">{{gotohome}}</a>
+</div>
+
+</div>
+</body>
+</html>

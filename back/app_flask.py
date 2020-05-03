@@ -179,9 +179,17 @@ def user(id):
   """User details"""
   user_item = api_user.get(id)
   return render_template('user.html',
-    title=fr['userTitle'], lang=fr['lang'],
+    title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
     user=user_item)
 
+@app.route('/users')
+@jwt_required
+def users():
+  """Users list"""
+  users = database.manager.db.list_users()
+  return render_template('users.html',
+    title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
+    users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
 @jwt_optional
