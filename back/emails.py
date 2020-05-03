@@ -190,8 +190,73 @@ def send_new_message(author_name, author_id, event_id, comment):
   ]
   send_emails(messages)
 
+def send_new_registration(event_id, user_id, user_name, interest):
+  event_users = get_users_to_contact(event_id, user_id)
+  if len(event_users) == 0:
+    return None
+
+  # Fetch event title
+  event = db.get_event(event_id)
+  title = event['title']
+
+  verb = "participe" if interest==2 else "s'intéresse"
+
+  recipients = compute_recipients(event_users)
+  messages = [
+    {
+      "To": [
+        {
+          "Email": from_email,
+          "Name": from_name
+        }
+      ],
+      "Bcc": recipients,
+      "Subject": "{user_name} {verb} à la sortie {title}".format(user_name=user_name, verb=verb, title=title),
+      "HTMLPart": """
+<a href="{site}/user:{user_id}">{user_name}</a> {verb} à la sortie <a href="{site}/event:{event_id}">{title}</a>
+<br/><br/><br/>
+<a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
+""".format(user_name=user_name, user_id=str(user_id), verb=verb,
+      event_id=str(event_id), title=title, site=domain)
+    }
+  ]
+  send_emails(messages)
+
+def send_del_registration(event_id, user_id, user_name, interest):
+  event_users = get_users_to_contact(event_id, user_id)
+  if len(event_users) == 0:
+    return None
+
+  # Fetch event title
+  event = db.get_event(event_id)
+  title = event['title']
+
+  verb = "sa participation" if interest==2 else "son intérêt"
+
+  recipients = compute_recipients(event_users)
+  messages = [
+    {
+      "To": [
+        {
+          "Email": from_email,
+          "Name": from_name
+        }
+      ],
+      "Bcc": recipients,
+      "Subject": "{user_name} annule {verb} à la sortie {title}".format(user_name=user_name, verb=verb, title=title),
+      "HTMLPart": """
+<a href="{site}/user:{user_id}">{user_name}</a> annule {verb} à la sortie <a href="{site}/event:{event_id}">{title}</a>
+<br/><br/><br/>
+<a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
+""".format(user_name=user_name, user_id=str(user_id), verb=verb,
+      event_id=str(event_id), title=title, site=domain)
+    }
+  ]
+  send_emails(messages)
+
+
+
 
 #TODO:
-# - registration added/removed (only to event creator?)
 # - lost password
 # - tomorrow events
