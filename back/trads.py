@@ -15,7 +15,7 @@ fr = {
   'register': "Inscription",
   'firstname': 'Prénom',
   'lastname': 'NOM',
-  'gotohome': 'Retour accueil',
+  'gotohome': 'Retour calendrier',
   'checkemail': 'OK, vérifie ton courriel !',
   'alreadyRegistered': 'Adresse email déjà enregistrée',
   'register_error': "L'inscription a échoué",
@@ -38,7 +38,7 @@ fr = {
   'pwdChanged_error': 'Erreur lors du changement de mot de passe',
   'Avatar': 'Photo',
   'Remove_avatar': "Supprimer l'image",
-  'Home': 'Accueil',
+  'Home': 'Calendrier',
   'Blog': 'Le blog'
 }
 en = {
@@ -58,7 +58,7 @@ en = {
   'register': 'Register',
   'firstname': 'First name',
   'lastname': 'LAST NAME',
-  'gotohome': 'Return to home page',
+  'gotohome': 'Return to calendar',
   'checkemail': 'OK, check your emails!',
   'alreadyRegistered': 'Email already registered',
   'register_error': 'Sign up failed',
@@ -81,6 +81,6 @@ en = {
   'pwdChanged_error': 'Error while changing password',
   'Avatar': 'Picture',
   'Remove_avatar': 'Remove picture',
-  'Home': 'Home',
+  'Home': 'Calendar',
   'Blog': 'Blog'
 }
