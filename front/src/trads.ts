@@ -6,7 +6,7 @@ const trads =
 	{
 		"Cannot create event in the past": "Impossible de rajouter un évènement dans le passé",
 		"Plan an event": "Planifier une sortie",
-		"Event": "Sortie",
+		"Title": "Titre",
 		"Activity location": "Lieu de l'activité",
 		"Meeting location": "Point de RDV",
 		"Date": "Date",
