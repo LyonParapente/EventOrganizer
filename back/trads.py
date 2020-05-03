@@ -2,7 +2,7 @@ fr = {
   'lang': 'fr',
   'calendar': 'Calendrier',
   'userTitle': 'Membre',
-  'usersTitle': 'Les membres',
+  'usersTitle': 'Les&nbsp;membres',
   'email': 'Adresse email',
   'password': 'Mot de passe',
   'remember':'Se souvenir de moi',
