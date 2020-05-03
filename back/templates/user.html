@@ -15,7 +15,7 @@ left: 0;
 z-index: -1;
 }
 .container{
-max-width: 400px;
+max-width: 500px;
 }
 .card-body{
 background-color: rgba(0,0,0,0.2);
@@ -26,15 +26,32 @@ background-color: rgba(0,0,0,0.2);
 {{header|safe}}
 <div class="container mt-2">
 
-<div class="card-body">
-	<img src="/avatars/{{user['id']}}-130" alt="{{Avatar}}" />
-	{{user['firstname']}} {{user['lastname']}}<br/>
-	{% if user.get('email') %}
-	<a href="mailto:{{user.get('email')}}">{{user.get('email')}}</a><br/>
-	{% endif %}
-	{% if user.get('phone') %}
-	<a href="tel:{{user.get('phone')}}">{{user.get('phone')}}</a><br/>
-	{% endif %}
+<div class="row">
+	<div class="col-auto px-0">
+		<div class="text-center mt-1"><img src="/avatars/{{user['id']}}-130" alt="{{Avatar}}" /></div>
+	</div>
+	<div class="col-auto pr-0 flex-column form-inline align-items-start">
+		<div class="input-group mt-auto pt-1">
+			<span class="form-control">{{user['firstname']}} {{user['lastname']}}</span>
+		</div>
+		{% if user.get('phone') %}
+		<div class="input-group mt-auto pt-1">
+			<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div>
+			</div>
+			<span class="form-control"><a href="tel:{{user.get('phone')}}">{{user.get('phone')}}</a></span>
+		</div>
+		{% endif %}
+		{% if user.get('email') %}
+		<div class="input-group mt-auto pt-1">
+			<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div>
+			</div>
+			<span class="form-control"><a href="mailto:{{user.get('email')}}">{{user.get('email')}}</a></span>
+		</div>
+		{% endif %}
+		<div class="mt-auto"></div>
+	</div>
 </div>
 
 <div class="mt-2">
