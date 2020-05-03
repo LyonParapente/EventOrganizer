@@ -1,6 +1,6 @@
 api_path = '/api'
 db_filepath = './events.db'
-default_theme = 'flatly'
+default_theme = 'united'
 themes = {
   "cerulean": "Cerulean",
   "cosmo": "Cosmo",

@@ -17,12 +17,20 @@
 </head>
 <body class="text-left">
 
-<a href="javascript:;" id="changeBg">Change Background</a>
-
-<div id="menu">
-	<a href="/settings">{{userSettings}}</a>
-	{% if is_connected %}| <a href="/logout">Logout</a>{% endif %}
+<header>
+<div class="row m-0 pt-2">
+	<div class="col">
+		<a href="/users">{{usersTitle}}</a>
+	</div>
+	<div class="col text-center">
+		<img src="static/logo_115.png" alt="Logo" />
+	</div>
+	<div class="col text-right">
+		<a href="/settings">{{userSettings}}</a>
+		| {% if is_connected %}<a href="/logout">{{logout}}</a>{% else %}<a href="/login">{{login}}</a>{% endif %}
+	</div>
 </div>
+</header>
 
 <div id="calendar">
 	<div id="loading" style="display:none">
@@ -258,6 +266,10 @@
 		</div>
 	</div>
 </div>
+
+
+
+<a href="javascript:;" id="changeBg">Change Background</a>
 
 {% if is_connected %}<script>connected_user={{userinfos|safe}};</script>{% endif %}
 <script src="static/js/bundle.min.js"></script>

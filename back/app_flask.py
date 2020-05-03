@@ -178,18 +178,20 @@ api_user = UserAPI()
 def user(id):
   """User details"""
   user_item = api_user.get(id)
+  claims = get_jwt_claims()
   return render_template('user.html',
     title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
-    user=user_item)
+    user=user_item, theme=claims['theme'])
 
 @app.route('/users')
 @jwt_required
 def users():
   """Users list"""
   users = database.manager.db.list_users()
+  claims = get_jwt_claims()
   return render_template('users.html',
     title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
-    users=users)
+    users=users, theme=claims['theme'])
 
 @app.route('/login', methods=['GET', 'POST'])
 @jwt_optional
@@ -220,13 +222,15 @@ def login():
     # Already connected
     return redirect('/planning')
   # GET
-  return render_template('login.html', **fr)
+  return render_template('login.html', **fr,
+    default_theme=settings.default_theme)
 
 @app.route('/logout')
 def logout():
   """Logout"""
   LogoutAPI.disconnect(get_raw_jwt())
-  response = make_response(render_template('login.html', **fr))
+  response = make_response(render_template('login.html', **fr,
+    default_theme=settings.default_theme))
   unset_jwt_cookies(response)
   return response
 
@@ -250,7 +254,8 @@ def register():
     # Already connected
     return redirect('/planning')
   # GET
-  return render_template('register.html', **fr)
+  return render_template('register.html', **fr,
+    default_theme=settings.default_theme)
 
 @app.route('/approve/user:<int:id>')
 @jwt_required
@@ -365,10 +370,10 @@ def avatar(name):
   """Get avatar"""
   parts = name.split('-')
   user_id = secure_filename(parts[0])
-  suffix = secure_filename(parts[-1])
-  path = settings.avatars_folder+'/'+user_id+'-%s.png'%suffix
+  size = secure_filename(parts[-1])
+  path = settings.avatars_folder+'/'+user_id+'-%s.png'%size
   if not os.path.exists(path):
-    path = settings.avatars_folder+'/default-%s.png'%suffix
+    path = settings.avatars_folder+'/default-%s.png'%size
   return send_file(path)
 
 

@@ -181,6 +181,8 @@ document.addEventListener('DOMContentLoaded', function ()
 	(<any>window).calendar = calendar;
 	calendar.render();
 
+	setBackgroundColor(calendarEl);
+
 	i18n_inPlace(["#eventProperties .trad", "#createEvent .trad"]);
 
 	// Once and for all
@@ -297,4 +299,16 @@ function onCreateEvent (event: object)
 {
 	eventDataTransform(event);
 	calendar.addEvent(event);
+}
+
+function setBackgroundColor (calendarEl)
+{
+	var container = calendarEl.querySelector(".fc-view-container");
+	container.classList.add('bg-secondary');
+
+	// alpha according to theme
+	var color = getComputedStyle(container)['backgroundColor'];
+	var color_alpha = "rgba("+color.substring(4,color.length-1)+", 0.3)";
+	container.style.backgroundColor = color_alpha;
+	container.classList.remove('bg-secondary');
 }

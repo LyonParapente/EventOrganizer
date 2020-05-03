@@ -7,12 +7,8 @@ font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 #calendar {
 width: 100%;
 max-width: 900px; /* viewport 600 */
-margin: 40px auto 0 auto;
+margin: 0 auto 0 auto;
 position: relative;
-}
-
-.fc-scroller {
-height: auto !important;
 }
 
 #loading {
@@ -117,19 +113,13 @@ text-align: center;
 text-align: right;
 }
 
-#unsplash, #changeBg, #menu {
+#unsplash, #changeBg {
 position: absolute;
 top: 0;
 left: 0;
 }
-#changeBg, #menu {
-margin: 10px;
-}
 #changeBg {
+margin: 10px;
 top: auto;
 bottom: 0;
-}
-#menu {
-left: auto;
-right: 0;
 }
