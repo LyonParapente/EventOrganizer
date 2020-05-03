@@ -7,23 +7,42 @@
 	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="static/css/theme/{{theme}}.bootstrap.min.css" />
 	<link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
+<style type="text/css">
+#unsplash{
+position: absolute;
+top: 0;
+left: 0;
+z-index: -1;
+}
+.container{
+max-width: 400px;
+}
+.card-body{
+background-color: rgba(0,0,0,0.2);
+}
+</style>
 </head>
 <body>
-<div class="container">
+{{header|safe}}
+<div class="container mt-2">
 
-<img src="/avatars/{{user['id']}}-130" alt="{{Avatar}}" />
-{{user['firstname']}} {{user['lastname']}}<br/>
-{% if user.get('email') %}
-<a href="mailto:{{user.get('email')}}">{{user.get('email')}}</a><br/>
-{% endif %}
-{% if user.get('phone') %}
-<a href="tel:{{user.get('phone')}}">{{user.get('phone')}}</a><br/>
-{% endif %}
+<div class="card-body">
+	<img src="/avatars/{{user['id']}}-130" alt="{{Avatar}}" />
+	{{user['firstname']}} {{user['lastname']}}<br/>
+	{% if user.get('email') %}
+	<a href="mailto:{{user.get('email')}}">{{user.get('email')}}</a><br/>
+	{% endif %}
+	{% if user.get('phone') %}
+	<a href="tel:{{user.get('phone')}}">{{user.get('phone')}}</a><br/>
+	{% endif %}
+</div>
 
 <div class="mt-2">
 	<a href="/">{{gotohome}}</a>
 </div>
 
 </div>
+<script src="static/js/unsplash.min.js"></script>
+<script>unsplash(['paragliding']);</script>
 </body>
 </html>

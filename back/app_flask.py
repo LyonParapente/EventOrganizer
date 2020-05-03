@@ -152,7 +152,8 @@ def calendar():
     theme = infos['theme']
     infos['id'] = user_id
     del infos['role']
-  return render_template('calendar.html', **fr,
+  header = render_template('header.html', **fr, is_connected=is_connected)
+  return render_template('calendar.html', **fr, header=header,
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
 
 
@@ -179,9 +180,10 @@ def user(id):
   """User details"""
   user_item = api_user.get(id)
   claims = get_jwt_claims()
+  header = render_template('header.html', **fr, is_connected=True)
   return render_template('user.html',
     title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
-    user=user_item, theme=claims['theme'])
+    user=user_item, theme=claims['theme'], header=header)
 
 @app.route('/users')
 @jwt_required
@@ -189,9 +191,10 @@ def users():
   """Users list"""
   users = database.manager.db.list_users()
   claims = get_jwt_claims()
+  header = render_template('header.html', **fr, is_connected=True)
   return render_template('users.html',
     title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
-    users=users, theme=claims['theme'])
+    users=users, theme=claims['theme'], header=header)
 
 @app.route('/login', methods=['GET', 'POST'])
 @jwt_optional
@@ -321,10 +324,13 @@ def user_settings():
     else:
       error = fr['saved_error']
 
+  header = render_template('header.html', **fr,
+    is_connected=id is not None)
+
   #user_item = api_user.get(id) # can't get theme
   user_item = database.manager.db.get_user(user_id=id)
   csrf_token = get_raw_jwt().get("csrf")
-  return render_template('user_settings.html', **fr,
+  return render_template('user_settings.html', **fr, header=header,
     user=user_item, themes=settings.themes, csrf_token=csrf_token,
     message=message, error=error, user_id=id, random=randomString())
 
@@ -359,8 +365,11 @@ def change_password():
         print(msg)
         error = fr['pwdChanged_error']
 
+  header = render_template('header.html', **fr,
+    is_connected=id is not None)
+
   csrf_token = get_raw_jwt().get("csrf")
-  return render_template('user_password.html', **fr,
+  return render_template('user_password.html', **fr, header=header,
     csrf_token=csrf_token, theme=claims['theme'],
     message=message, error=error)
 

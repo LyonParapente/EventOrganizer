@@ -38,7 +38,8 @@ fr = {
   'pwdChanged_error': 'Erreur lors du changement de mot de passe',
   'Avatar': 'Photo',
   'Remove_avatar': "Supprimer l'image",
-  'Home': 'Accueil'
+  'Home': 'Accueil',
+  'Blog': 'Le blog'
 }
 en = {
   'lang': 'fr',
@@ -80,5 +81,6 @@ en = {
   'pwdChanged_error': 'Error while changing password',
   'Avatar': 'Picture',
   'Remove_avatar': 'Remove picture',
-  'Home': 'Home'
+  'Home': 'Home',
+  'Blog': 'Blog'
 }
