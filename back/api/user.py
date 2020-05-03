@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
@@ -190,14 +190,21 @@ class UserAPI(Resource):
   })
   def delete(self, user_id):
     """Delete a user"""
-    if user_id != get_jwt_identity():
+
+    user = db.get_user(user_id=user_id)
+
+    claims = get_jwt_claims()
+    if claims['role'] == 'admin' and user['role']=='new':
+      rowcount = db.delete_user(user_id)
+      if rowcount < 1:
+        abort(404, 'No user was deleted')
+      else:
+        return {'message': 'User really deleted'}, 200
+
+    if user_id != get_jwt_identity() and claims['role'] != 'admin':
       abort(403, "You cannot delete someone else")
 
     # We want to keep user messages (foreign keys)
-    #rowcount = db.delete_user(user_id)
-    #if rowcount < 1:
-    #  abort(404, 'No user was deleted')
-
     db.update_user_role(user_id, "deleted")
 
     return {'message': 'User deleted'}, 200

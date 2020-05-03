@@ -23,11 +23,15 @@ z-index: -1;
 {{header|safe}}
 <div class="container mt-2">
 
-<div class="d-flex">
+<div class="d-flex text-center">
 {% for user in users %}
 <span class="card member">
+	{% if user['role']=='new' %}<a href="/approve/user:{{user['id']}}">APPROVE</a> <a href="/delete/user:{{user['id']}}">DELETE</a>{% endif %}
 	<a href="/user:{{user['id']}}"><img src="/avatars/{{user['id']}}-130" alt="{{user['firstname']}} {{user['lastname']}}" class="card-img-top" /></a>
-	<div class="card-body">{{user['firstname']}} {{user['lastname']}}</div>
+	<div class="card-body">
+		{{user['firstname']}} {{user['lastname']}}
+		{% if iam_admin and user['role']=='admin' %}<span class="text-danger">admin</span>{% endif %}
+	</div>
 </span>
 {% endfor %}
 </div>

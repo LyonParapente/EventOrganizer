@@ -52,17 +52,20 @@ def get_user(self, user_id=None, email=None):
   finally:
     db.close()
 
-def list_users(self, only_admins=False):
+def list_users(self, include_new=False, only_admins=False):
   """Fetch all approved users from database"""
   db, cursor = self._connect()
   try:
     list_users = """
-      SELECT id,firstname,lastname,email
+      SELECT id,firstname,lastname,email,role
       FROM users
-      WHERE role IS NOT NULL and role!='new'
+      WHERE role IS NOT NULL AND role!='deleted'
     """
+    if not include_new:
+      list_users += " AND role!='new'"
     if only_admins:
       list_users += " AND role='admin'"
+
     cursor.execute(list_users)
     return cursor.fetchall()
   finally:

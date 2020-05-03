@@ -189,12 +189,13 @@ def user(id):
 @jwt_required
 def users():
   """Users list"""
-  users = database.manager.db.list_users()
   claims = get_jwt_claims()
+  iam_admin = claims['role'] == 'admin'
+  users = database.manager.db.list_users(include_new=iam_admin)
   header = render_template('header.html', **fr, is_connected=True)
   return render_template('users.html',
     title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
-    users=users, theme=claims['theme'], header=header)
+    users=users, theme=claims['theme'], header=header, iam_admin=iam_admin)
 
 @app.route('/login', methods=['GET', 'POST'])
 @jwt_optional
@@ -262,7 +263,7 @@ def register():
 
 @app.route('/approve/user:<int:id>')
 @jwt_required
-def approve(id):
+def approve_user(id):
   """Approve a user"""
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
@@ -273,6 +274,15 @@ def approve(id):
       return "OK"
     return "ALREADY APPROVED"
   return "NOPE", 403
+
+@app.route('/delete/user:<int:id>')
+@jwt_required
+def delete_user(id):
+  """Remove a newly registered user"""
+  claims = get_jwt_claims()
+  if claims['role'] == 'admin':
+    user_item = api_user.delete(id)
+  return make_response(redirect('/users'))
 
 def allowed_file(filename):
   return '.' in filename and \
