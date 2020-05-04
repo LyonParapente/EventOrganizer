@@ -192,6 +192,14 @@ def users():
   claims = get_jwt_claims()
   iam_admin = claims['role'] == 'admin'
   users = database.manager.db.list_users(include_new=iam_admin)
+  if iam_admin:
+    # Add a border to list admins and new users
+    for user in users:
+      if user['role']=='admin':
+        user['border'] = 'border-danger'
+      elif user['role']=='new':
+        user['border'] = 'border-info'
+
   header = render_template('header.html', **fr, is_connected=True)
   return render_template('users.html',
     title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
