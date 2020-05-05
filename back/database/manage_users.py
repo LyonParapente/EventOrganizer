@@ -1,6 +1,6 @@
 import datetime
 import settings
-from randomString import randomString
+from helper import randomString
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()

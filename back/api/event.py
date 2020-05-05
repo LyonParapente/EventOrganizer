@@ -4,14 +4,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
 from emails import send_new_event
+from helper import get_date_from_str
 import datetime
-
-def get_date_from_str(str):
-  if hasattr(datetime.date, 'fromisoformat'):
-    return datetime.date.fromisoformat(str)
-
-  parts = map(lambda x: int(x), str.split('-'))
-  return datetime.date(*parts)
 
 class EventAPICreate(Resource):
   @jwt_required
@@ -50,9 +44,9 @@ class EventAPICreate(Resource):
     # Validate request body with schema model
     event = validate_event(request.json, create=True)
 
-    today = datetime.date.today()
     end_date = event['end_date'] if event.get('end_date') else event['start_date']
     event_end = get_date_from_str(end_date)
+    today = datetime.date.today()
     if event_end < today:
       abort(403, 'Cannot create an event in the past')
 

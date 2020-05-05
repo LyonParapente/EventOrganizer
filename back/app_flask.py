@@ -14,13 +14,13 @@ import urllib.parse
 
 import settings
 from trads import fr, en
-from randomString import randomString
+from helper import randomString
 
 import database.manager
 database.manager.init(settings.db_filepath)
 
 from image import generate_miniature
-from emails import send_register, send_approved, send_lost_password
+from emails import send_register, send_approved, send_lost_password, send_tomorrow_events
 
 # ------------------------------
 # Authent part 1: Swagger description
@@ -460,6 +460,14 @@ def remove_miniatures(user_id):
     os.remove(dest_path)
   except:
     pass
+
+@app.route('/tomorrow_events')
+def tomorrow_events():
+  token = request.args.get('token')
+  if token == app.config['daily_check']:
+    send_tomorrow_events()
+    return "OK", 200
+  return "UNAUTHORIZED", 401
 
 # ------------------------------
 

@@ -1,9 +1,11 @@
 from mailjet_rest import Client # https://www.mailjet.com/
 from database.manager import db
 from trads import fr, en
+from helper import nice_date, get_date_from_str
 import os
 import secrets
 import base64
+import datetime
 
 from_email = "calendrier@lyonparapente.fr"
 from_name = "LyonParapente"
@@ -126,6 +128,9 @@ def compute_recipients(users):
 def send_new_event(event, creator_name):
   all_users = db.list_users()
   recipients = compute_recipients(all_users)
+
+  start_date = nice_date(get_date_from_str(event['start_date']), 'fr')
+
   messages = [
     {
       "To": [
@@ -135,7 +140,7 @@ def send_new_event(event, creator_name):
         }
       ],
       "Bcc": recipients,
-      "Subject": "{creator_name} vient d'ajouter la sortie {title} ({start_date})".format(creator_name=creator_name, title=event['title'], start_date=event['start_date']),
+      "Subject": "{creator_name} vient d'ajouter la sortie {title} ({start_date})".format(creator_name=creator_name, title=event['title'], start_date=start_date),
       "HTMLPart": """
 <a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} :<br/><br/>
 {description}
@@ -143,8 +148,8 @@ def send_new_event(event, creator_name):
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
 """.format(creator_name=creator_name, creator_id=str(event['creator_id']),
       event_id=str(event['id']), title=event['title'],
-      description=event.get('description','').replace('\n', '<br/>'),
-      start_date=event['start_date'], site=domain)
+      description=str(event.get('description','')).replace('\n', '<br/>'),
+      start_date=start_date, site=domain)
     }
   ]
   send_emails(messages)
@@ -276,7 +281,54 @@ def send_del_registration(event_id, user_id, user_name, interest):
   send_emails(messages)
 
 
+def send_tomorrow_events():
+  tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+  tomorrow_str = tomorrow.strftime("%Y-%m-%d")
+  tomorrow_nice = nice_date(tomorrow, 'fr')
 
+  events = db.get_events_list(tomorrow_str, tomorrow_str)
+  nb = len(events)
+  if nb == 0:
+    print("No event tomorrow")
+    return
+  elif nb == 1:
+    titre = "La sortie prévue pour demain"
+    desc = "la sortie prévue"
+  else:
+    titre = "Les sorties prévues pour demain"
+    desc = "les sorties prévues"
 
-#TODO:
-# - tomorrow events
+  events_html = ''
+  for event in events:
+    creator_id = event['creator_id']
+    user = db.get_user(user_id=creator_id)
+    creator_name = user['firstname'] + ' ' + user['lastname']
+    events_html += """
+<div style="margin:10px;">
+<a href="{site}/user:{creator_id}">{creator_name}</a> a planifié la sortie <b><a href="{site}/event:{event_id}">{title}</a></b><br/>
+{description}
+</div>
+""".format(site=domain, creator_id=creator_id, creator_name=creator_name,
+      event_id=event['id'], title=event['title'],
+      description=str(event.get('description','')).replace('\n', '<br/>'))
+
+  all_users = db.list_users()
+  recipients = compute_recipients(all_users)
+
+  messages = [
+    {
+      "To": [
+        {
+          "Email": from_email,
+          "Name": from_name
+        }
+      ],
+      "Bcc": recipients,
+      "Subject": titre,
+      "HTMLPart": """
+Voici {desc} pour le {tomorrow_nice} :<br/>
+{events_html}
+""".format(desc=desc, tomorrow_nice=tomorrow_nice, events_html=events_html)
+    }
+  ]
+  send_emails(messages)
