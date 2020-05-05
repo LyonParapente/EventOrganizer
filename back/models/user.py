@@ -57,7 +57,8 @@ def filter_user_response(props):
   return streamlined_user
 
 def silence_user_fields(user):
-  del user['password_lost']
+  if hasattr(user, 'password_lost'):
+    del user['password_lost']
   if user['share_email'] == 0:
     del user['email']
   if user['share_phone'] == 0:
