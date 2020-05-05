@@ -464,7 +464,7 @@ def remove_miniatures(user_id):
 @app.route('/tomorrow_events')
 def tomorrow_events():
   token = request.args.get('token')
-  if token == app.config['daily_check']:
+  if token == app.config['DAILY_CHECK']:
     send_tomorrow_events()
     return "OK", 200
   return "UNAUTHORIZED", 401
