@@ -36,10 +36,12 @@
             <label class="custom-control-label" for="rememberMe">{{remember}}</label>
           </div>
         </div>
-        <div class="text-center post_error">{{error}}</div>
+        <div class="text-center text-danger">{{error}}</div>
+        <div class="text-center text-success">{{message}}</div>
         <div class="d-flex justify-content-center mt-3">
           <button type="submit" class="btn btn-primary btn-lg btn-block login_btn">{{login}}</button>
         </div>
+        <input name="lost_password" id="lost_password" type="hidden" />
       </form>
     </div>
     <div class="m-2">
@@ -47,7 +49,7 @@
         {{gotaccount}} <a href="/register" class="ml-2 btn btn-info btn-sm" role="button">{{signup}}</a>
       </div>
       <div class="text-center">
-        <a href="#">{{forgot}}</a>
+        <a href="javascript:lost_password();">{{forgot}}</a>
       </div>
     </div>
   </div>
@@ -58,6 +60,13 @@
 <script src="static/js/unsplash.min.js"></script>
 <script>
 unsplash(['paragliding']);
+
+function lost_password ()
+{
+	var ctrl = document.getElementById('lost_password');
+	ctrl.value = "1";
+	ctrl.closest('form').submit();
+}
 
 // alpha according to theme
 var user_card = document.querySelector('.user_card');

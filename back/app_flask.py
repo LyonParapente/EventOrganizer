@@ -7,20 +7,20 @@ from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jw
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
-import random
-import string
+import urllib.parse
 
 # ------------------------------
 # Our helpers
 
 import settings
 from trads import fr, en
+from randomString import randomString
 
 import database.manager
 database.manager.init(settings.db_filepath)
 
 from image import generate_miniature
-from emails import send_register,send_approved
+from emails import send_register, send_approved, send_lost_password
 
 # ------------------------------
 # Authent part 1: Swagger description
@@ -211,6 +211,23 @@ def login():
   """Login"""
   if request.method == 'POST':
     form = request.form.to_dict()
+
+    # Lost password management
+    if form['lost_password'] == '1':
+      if form.get('login') is None:
+        return render_template('login.html', **fr,
+          default_theme=settings.default_theme, error=fr['type_email'])
+      else:
+        res = LoginAPI.lost_password(form['login'])
+        if res:
+          params = {'token': res['token'], 'uid': res['uid']}
+          temp_access = '/password?'+urllib.parse.urlencode(params)
+          send_lost_password(form['login'], res['name'], temp_access)
+        # Whatever the result (user found or not), show the same message
+        # to avoid leaking data about registered users
+        return render_template('login.html', **fr,
+          default_theme=settings.default_theme, message=fr['checkemail'])
+
     expires = settings.web_JWT_ACCESS_TOKEN_EXPIRES
     app.config['JWT_SESSION_COOKIE'] = True
     if form.get('rememberMe') is not None:
@@ -229,7 +246,8 @@ def login():
       set_access_cookies(response, token)
       return response
     else:
-      return render_template('login.html', **fr, error=fr['login_error']), 401
+      return render_template('login.html', **fr, error=fr['login_error'],
+        default_theme=settings.default_theme), 401
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/planning')
@@ -361,34 +379,50 @@ def regenerate_claims(claims, dest):
   return response
 
 @app.route('/password', methods=['GET', 'POST'])
-@jwt_required
+@jwt_optional
 def change_password():
   """Change password"""
+
   id = get_jwt_identity()
-  claims = get_jwt_claims()
+  if id is not None:
+    claims = get_jwt_claims()
+    theme = claims['theme']
+    is_connected = True
+  else:
+    id = request.args.get('uid')
+    token = request.args.get('token')
+    theme = settings.default_theme
+    is_connected = False
+
   message = error = ''
   if request.method == 'POST':
     form = request.form.to_dict()
     if form['newPassword'] != form['newPassword2']:
       error = fr['pwdMismatch']
     else:
-      msg, code = LoginAPI.change_password(
-        id,
-        form['oldPassword'],
-        form['newPassword']
-      )
+      if is_connected:
+        msg, code = LoginAPI.change_password(
+          id,
+          form['oldPassword'],
+          form['newPassword']
+        )
+      else:
+        msg, code = LoginAPI.reset_password(
+          id,
+          token,
+          form['newPassword']
+        )
       if code == 200:
         message = fr['pwdChanged']
       else:
         print(msg)
         error = fr['pwdChanged_error']
 
-  header = render_template('header.html', **fr,
-    is_connected=id is not None)
+  header = render_template('header.html', **fr, is_connected=is_connected)
 
   csrf_token = get_raw_jwt().get("csrf")
   return render_template('user_password.html', **fr, header=header,
-    csrf_token=csrf_token, theme=claims['theme'],
+    csrf_token=csrf_token, theme=theme,
     message=message, error=error)
 
 @app.route('/avatars/<string:name>')
@@ -426,10 +460,6 @@ def remove_miniatures(user_id):
     os.remove(dest_path)
   except:
     pass
-
-def randomString(stringLength=8):
-  letters = string.ascii_lowercase
-  return ''.join(random.choice(letters) for i in range(stringLength))
 
 # ------------------------------
 

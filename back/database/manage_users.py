@@ -1,5 +1,6 @@
 import datetime
 import settings
+from randomString import randomString
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
@@ -114,6 +115,21 @@ def update_user(self, user_id, *,
     finally:
       db.close()
   return fields_to_update
+
+def set_password_lost(self, user_id, empty=False):
+  db, cursor = self._connect()
+  if empty:
+    token = ''
+  else:
+    randStr = randomString(stringLength=12)
+    token = bcrypt.generate_password_hash(randStr).decode()
+  update_user = "UPDATE users SET password_lost=? WHERE id=?"
+  try:
+    cursor.execute(update_user, (token, user_id))
+    db.commit()
+    return token if cursor.rowcount==1 else None
+  finally:
+    db.close()
 
 def delete_user(self, user_id):
   """Delete a specific user from database"""

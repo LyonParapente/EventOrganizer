@@ -39,7 +39,8 @@ fr = {
   'Avatar': 'Photo',
   'Remove_avatar': "Supprimer l'image",
   'Home': 'Calendrier',
-  'Blog': 'Le blog'
+  'Blog': 'Le blog',
+  'type_email': "Rempli d'abord ton email"
 }
 en = {
   'lang': 'fr',
@@ -82,5 +83,6 @@ en = {
   'Avatar': 'Picture',
   'Remove_avatar': 'Remove picture',
   'Home': 'Calendar',
-  'Blog': 'Blog'
+  'Blog': 'Blog',
+  'type_email': 'Type your email first'
 }

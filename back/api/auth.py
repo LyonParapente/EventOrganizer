@@ -91,9 +91,37 @@ class LoginAPI(Resource):
       return "User not found",404
     if bcrypt.check_password_hash(user['password'], old_password):
       db.update_user(user_id, password=new_password)
+      db.set_password_lost(user_id, empty=True)
       return "Password changed",200
     else:
       return "Invalid old password",401
+  
+  @staticmethod
+  def lost_password(user_email):
+    user = db.get_user(email=user_email)
+    if user:
+      user_id = user['id']
+      token = db.set_password_lost(user_id)
+      if token is not None:
+        res = {
+          'token': token,
+          'uid': user_id,
+          'name': user['firstname']+' '+user['lastname']
+        }
+        return res
+    return None
+
+  @staticmethod
+  def reset_password(user_id, token, new_password):
+    user = db.get_user(user_id=user_id)
+    if user is None:
+      return "User not found",404
+    if user['password_lost'] == token:
+      db.update_user(user_id, password=new_password)
+      db.set_password_lost(user_id, empty=True)
+      return "Password changed",200
+    else:
+      return "Invalid token",401
 
 
 class LogoutAPI(Resource):

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 "email" TEXT NOT NULL UNIQUE,
 "share_email" BOOLEAN DEFAULT 0,
 "password" TEXT NOT NULL,
+"password_lost" TEXT,
 "phone" TEXT,
 "share_phone" BOOLEAN DEFAULT 0,
 "theme" TEXT,

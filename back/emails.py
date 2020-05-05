@@ -92,6 +92,27 @@ N'oublie pas de mettre ta photo et définir tes préférences de partage email e
   ]
   send_emails(messages)
 
+def send_lost_password(email, name, temp_access):
+  messages = [
+    {
+      "To": [
+        {
+          "Email": email,
+          "Name": name
+        }
+      ],
+      "Subject": "Mot de passe oublié",
+      "HTMLPart": """
+Pour redéfinir ton mot de passe, clic sur le lien suivant :<br/>
+<br/>
+<a href="{site}{temp_access}">Redéfinir mon mot de passe</a>
+<br/><br/>
+Si tu n'es pas à l'origine de cette demande, il suffit de ne rien faire :-)
+""".format(site=domain,temp_access=temp_access)
+    }
+  ]
+  send_emails(messages)
+
 def compute_recipients(users):
   recipients = []
   for user in users:
@@ -258,5 +279,4 @@ def send_del_registration(event_id, user_id, user_name, interest):
 
 
 #TODO:
-# - lost password
 # - tomorrow events
