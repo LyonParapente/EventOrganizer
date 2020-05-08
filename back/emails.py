@@ -1,6 +1,6 @@
 from mailjet_rest import Client # https://www.mailjet.com/
 from database.manager import db
-from trads import fr, en
+from trads import lang
 from helper import nice_date, get_date_from_str
 import os
 import secrets
@@ -129,7 +129,7 @@ def send_new_event(event, creator_name):
   all_users = db.list_users()
   recipients = compute_recipients(all_users)
 
-  start_date = nice_date(get_date_from_str(event['start_date']), 'fr')
+  start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
 
   messages = [
     {
@@ -284,7 +284,7 @@ def send_del_registration(event_id, user_id, user_name, interest):
 def send_tomorrow_events():
   tomorrow = datetime.date.today() + datetime.timedelta(days=1)
   tomorrow_str = tomorrow.strftime("%Y-%m-%d")
-  tomorrow_nice = nice_date(tomorrow, 'fr')
+  tomorrow_nice = nice_date(tomorrow, settings.lang)
 
   events = db.get_events_list(tomorrow_str, tomorrow_str)
   nb = len(events)

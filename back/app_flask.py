@@ -13,7 +13,7 @@ import urllib.parse
 # Our helpers
 
 import settings
-from trads import fr, en
+from trads import lang
 from helper import randomString
 
 import database.manager
@@ -152,8 +152,8 @@ def calendar():
     theme = infos['theme']
     infos['id'] = user_id
     del infos['role']
-  header = render_template('header.html', **fr, is_connected=is_connected)
-  return render_template('calendar.html', **fr, header=header,
+  header = render_template('header.html', **lang, is_connected=is_connected)
+  return render_template('calendar.html', **lang, header=header,
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
 
 
@@ -180,9 +180,9 @@ def user(id):
   """User details"""
   user_item = api_user.get(id)
   claims = get_jwt_claims()
-  header = render_template('header.html', **fr, is_connected=True)
+  header = render_template('header.html', **lang, is_connected=True)
   return render_template('user.html',
-    title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
+    title=lang['userTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
     user=user_item, theme=claims['theme'], header=header)
 
 @app.route('/users')
@@ -200,9 +200,9 @@ def users():
       elif user['role']=='new':
         user['border'] = 'border-info'
 
-  header = render_template('header.html', **fr, is_connected=True)
+  header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
-    title=fr['userTitle'], lang=fr['lang'], gotohome=fr['gotohome'],
+    title=lang['userTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
     users=users, theme=claims['theme'], header=header, iam_admin=iam_admin)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -215,8 +215,8 @@ def login():
     # Lost password management
     if form['lost_password'] == '1':
       if form.get('login') is None:
-        return render_template('login.html', **fr,
-          default_theme=settings.default_theme, error=fr['type_email'])
+        return render_template('login.html', **lang,
+          default_theme=settings.default_theme, error=lang['type_email'])
       else:
         res = LoginAPI.lost_password(form['login'])
         if res:
@@ -225,8 +225,8 @@ def login():
           send_lost_password(form['login'], res['name'], temp_access)
         # Whatever the result (user found or not), show the same message
         # to avoid leaking data about registered users
-        return render_template('login.html', **fr,
-          default_theme=settings.default_theme, message=fr['checkemail'])
+        return render_template('login.html', **lang,
+          default_theme=settings.default_theme, message=lang['checkemail'])
 
     expires = settings.web_JWT_ACCESS_TOKEN_EXPIRES
     app.config['JWT_SESSION_COOKIE'] = True
@@ -246,20 +246,20 @@ def login():
       set_access_cookies(response, token)
       return response
     else:
-      return render_template('login.html', **fr, error=fr['login_error'],
+      return render_template('login.html', **lang, error=lang['login_error'],
         default_theme=settings.default_theme), 401
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/planning')
   # GET
-  return render_template('login.html', **fr,
+  return render_template('login.html', **lang,
     default_theme=settings.default_theme)
 
 @app.route('/logout')
 def logout():
   """Logout"""
   LogoutAPI.disconnect(get_raw_jwt())
-  response = make_response(render_template('login.html', **fr,
+  response = make_response(render_template('login.html', **lang,
     default_theme=settings.default_theme))
   unset_jwt_cookies(response)
   return response
@@ -273,18 +273,18 @@ def register():
     if code == 200:
       f = request.form
       send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
-      return render_template('register.html', **fr, message=fr['checkemail'])
+      return render_template('register.html', **lang, message=lang['checkemail'])
     else:
       if code == 409:
-        result = fr['alreadyRegistered']
+        result = lang['alreadyRegistered']
       else:
-        result = fr['register_error']
-      return render_template('register.html', **fr, error=result), code
+        result = lang['register_error']
+      return render_template('register.html', **lang, error=result), code
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/planning')
   # GET
-  return render_template('register.html', **fr,
+  return render_template('register.html', **lang,
     default_theme=settings.default_theme)
 
 @app.route('/approve/user:<int:id>')
@@ -346,7 +346,7 @@ def user_settings():
 
     code, result = UserAPI.put_from_dict(id, form)
     if code == 200:
-      message = fr['saved']
+      message = lang['saved']
 
       # Regenerate new token so that new infos are stored in claims
       claims = get_jwt_claims()
@@ -358,9 +358,9 @@ def user_settings():
       # message is lost... but we have to redirect for csrf_token variable
       return regenerate_claims(claims, '/settings')
     else:
-      error = fr['saved_error']
+      error = lang['saved_error']
 
-  header = render_template('header.html', **fr,
+  header = render_template('header.html', **lang,
     is_connected=id is not None)
 
   #user_item = api_user.get(id) # can't get theme
@@ -368,10 +368,10 @@ def user_settings():
 
   themes = settings.themes.copy()
   if user_item['theme'] != settings.default_theme:
-    themes[settings.default_theme] += ' ('+fr['default']+')'
+    themes[settings.default_theme] += ' ('+lang['default']+')'
 
   csrf_token = get_raw_jwt().get("csrf")
-  return render_template('user_settings.html', **fr, header=header,
+  return render_template('user_settings.html', **lang, header=header,
     user=user_item, themes=themes, csrf_token=csrf_token,
     message=message, error=error, user_id=id, random=randomString())
 
@@ -403,7 +403,7 @@ def change_password():
   if request.method == 'POST':
     form = request.form.to_dict()
     if form['newPassword'] != form['newPassword2']:
-      error = fr['pwdMismatch']
+      error = lang['pwdMismatch']
     else:
       if is_connected:
         msg, code = LoginAPI.change_password(
@@ -418,15 +418,15 @@ def change_password():
           form['newPassword']
         )
       if code == 200:
-        message = fr['pwdChanged']
+        message = lang['pwdChanged']
       else:
         print(msg)
-        error = fr['pwdChanged_error']
+        error = lang['pwdChanged_error']
 
-  header = render_template('header.html', **fr, is_connected=is_connected)
+  header = render_template('header.html', **lang, is_connected=is_connected)
 
   csrf_token = get_raw_jwt().get("csrf")
-  return render_template('user_password.html', **fr, header=header,
+  return render_template('user_password.html', **lang, header=header,
     csrf_token=csrf_token, theme=theme,
     message=message, error=error)
 

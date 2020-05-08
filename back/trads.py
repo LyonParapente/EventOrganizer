@@ -1,4 +1,6 @@
-fr = {
+import settings
+trads = {
+ 'fr': {
   'lang': 'fr',
   'calendar': 'Calendrier',
   'userTitle': 'Membre',
@@ -42,9 +44,9 @@ fr = {
   'Blog': 'Le blog',
   'type_email': "Rempli d'abord ton email",
   'default': 'par défaut'
-}
-en = {
-  'lang': 'fr',
+ },
+ 'en': {
+  'lang': 'en',
   'calendar': 'Calendar',
   'userTitle': 'Member',
   'usersTitle': 'Members',
@@ -87,4 +89,10 @@ en = {
   'Blog': 'Blog',
   'type_email': 'Type your email first',
   'default': 'default'
+ }
 }
+
+lang = trads[settings.lang]
+
+def i18n(key):
+  return trads[settings.lang][key]

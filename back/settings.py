@@ -1,5 +1,6 @@
 api_path = '/api'
 db_filepath = './events.db'
+lang = 'fr'
 default_theme = 'united'
 themes = {
   "cerulean": "Cerulean",
