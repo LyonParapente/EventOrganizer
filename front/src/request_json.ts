@@ -1,5 +1,5 @@
 var csrf;
-var csrf_cookies = document.cookie.split(';')
+var csrf_cookies = document.cookie.split('; ')
   .map(x => x.split('='))
   .filter(x => x[0] === 'csrf_access_token');
 if (csrf_cookies.length)
