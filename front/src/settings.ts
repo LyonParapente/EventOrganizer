@@ -14,7 +14,8 @@ interface Settings
 			[key: string]: string
 		}
 	},
-	unsplash_tags: string[]
+	unsplash_tags: string[],
+	IGN_key: string
 };
 
 const settings: Settings =
@@ -57,6 +58,7 @@ const settings: Settings =
 			autre: '#FB6F46'
 		}
 	},
-	unsplash_tags: ['paragliding']
+	unsplash_tags: ['paragliding'],
+	IGN_key: ''
 };
 export default settings;

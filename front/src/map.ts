@@ -37,6 +37,54 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			attribution: '&copy; <a href="https://www.openstreetmap.org>/copyright">OpenStreetMap</a> | <a href="http://viewfinderpanoramas.org">SRTM</a> | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
 		});
 
+		var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+		{
+			subdomains: ['mt0','mt1','mt2','mt3'],
+			attribution: "Google, Images"
+		});
+
+		var tileLayers =
+		{
+			"OpenStreetMap": openstreetmap,
+			"Google Satellite": googleSat,
+			"OpenTopoMap": opentopomap
+		};
+
+		if (settings.IGN_key)
+		{
+			// https://geoservices.ign.fr/documentation/utilisation_web/wmts-leaflet.html
+			// https://geoservices.ign.fr/documentation/donnees-ressources-wmts.html
+			var ignKey = window.location.hostname === 'localhost' ? 'choisirgeoportail' : settings.IGN_key;
+			var ignLayers = [
+				"ORTHOIMAGERY.ORTHOPHOTOS",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
+				"GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOPO"
+			];
+			for (var i = 0; i < ignLayers.length; ++i)
+			{
+				var ignLayer = ignLayers[i];
+				var ignTileLayer =	L.tileLayer(
+					"https://wxs.ign.fr/"+ignKey+"/geoportail/wmts?" +
+					"&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
+					"&STYLE=normal" +
+					"&TILEMATRIXSET=PM" +
+					"&FORMAT=image/jpeg" +
+					"&LAYER="+ignLayer +
+					"&TILEMATRIX={z}" +
+					"&TILEROW={y}" +
+					"&TILECOL={x}",
+				{
+					attribution : "IGN-F/Geoportail",
+					tileSize : 256
+				});
+				tileLayers[ignLayer] = ignTileLayer;
+			}
+		}
+
 		map = L.map(elem_id,
 		{
 			center: defaultPoint,
@@ -46,11 +94,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		});
 		map.zoomControl.setPosition('topright');
 		L.control.scale().addTo(map);
-		L.control.layers(
-			{
-				"OpenStreetMap": openstreetmap,
-				"OpenTopoMap": opentopomap
-			})
+		L.control.layers(tileLayers)
 			.setPosition('bottomright')
 			.addTo(map);
 
@@ -104,9 +148,9 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 				else
 				{
 					marker.removeFrom(map);
-					for (var i = dataResults.length - 1; i >= 0; i--)
+					for (var j = dataResults.length - 1; j >= 0; j--)
 					{
-						var searchMarker = L.marker(dataResults[i].latlng);
+						var searchMarker = L.marker(dataResults[j].latlng);
 						results.addLayer(searchMarker);
 						searchMarker.on('click', function ()
 						{
