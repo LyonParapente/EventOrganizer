@@ -143,6 +143,12 @@ function SubmitEvent (onCreate)
 	var category = id("sortie_category") as HTMLButtonElement;
 	var color = id("sortie_color") as HTMLInputElement;
 
+	var category_str = category.textContent;
+	if (category_str === i18n('None') || color.value)
+	{
+		category_str = '';
+	}
+
 	var body =
 	{
 		title: title.value,
@@ -153,8 +159,8 @@ function SubmitEvent (onCreate)
 		location: lieu.value,
 		gps: rdv_gps.value,
 		gps_location: rdv.value,
-		category: category.value,
-		color:color.value
+		category: category_str,
+		color: color.value
 	};
 	Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
 	requestJson("POST", "/api/event", body,
