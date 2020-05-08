@@ -2,6 +2,9 @@ from mailjet_rest import Client # https://www.mailjet.com/
 from database.manager import db
 from trads import lang
 from helper import nice_date, get_date_from_str
+from flask import request
+import settings
+#---
 import os
 import secrets
 import base64
@@ -23,8 +26,16 @@ footer = """<br/><br/><br/>
 Pour toute question: <a href="mailto:lyonparapente@gmail.com">lyonparapente@gmail.com</a>
 """.format(site=domain)
 
+
+def check_domain():
+  if request.environ["SERVER_NAME"] == "0.0.0.0":
+    global domain
+    domain = "http://localhost"
+
+
 def send_emails(messages):
   """Send one or more emails through mailjet api"""
+
   for i in range(len(messages)):
     messages[i]['From'] = {
       "Email": from_email,
@@ -45,6 +56,8 @@ def send_emails(messages):
 
 
 def send_register(email, name, user_id):
+  """Emails when someones register an account"""
+  check_domain()
   admins = compute_recipients(db.list_users(only_admins=True))
   messages = [
     {
@@ -73,6 +86,8 @@ Merci de bien vouloir attendre l'approbation par un administrateur.
   send_emails(messages)
 
 def send_approved(email, name):
+  """Email when account has been approved by an admin"""
+  check_domain()
   messages = [
     {
       "To": [
@@ -95,6 +110,8 @@ N'oublie pas de mettre ta photo et définir tes préférences de partage email e
   send_emails(messages)
 
 def send_lost_password(email, name, temp_access):
+  """Email to regenerate a lost password"""
+  check_domain()
   messages = [
     {
       "To": [
@@ -126,6 +143,8 @@ def compute_recipients(users):
   return recipients
 
 def send_new_event(event, creator_name):
+  """Emails when a new event is declared"""
+  check_domain()
   all_users = db.list_users()
   recipients = compute_recipients(all_users)
 
@@ -185,6 +204,8 @@ def get_users_to_contact(event_id, ignore_id):
   return users.values()
 
 def send_new_message(author_name, author_id, event_id, comment):
+  """Emails when a new comment is made"""
+  check_domain()
   event_users = get_users_to_contact(event_id, author_id)
   if len(event_users) == 0:
     return None
@@ -217,6 +238,8 @@ def send_new_message(author_name, author_id, event_id, comment):
   send_emails(messages)
 
 def send_new_registration(event_id, user_id, user_name, interest):
+  """Emails when somebody register to an event"""
+  check_domain()
   event_users = get_users_to_contact(event_id, user_id)
   if len(event_users) == 0:
     return None
@@ -249,6 +272,8 @@ def send_new_registration(event_id, user_id, user_name, interest):
   send_emails(messages)
 
 def send_del_registration(event_id, user_id, user_name, interest):
+  """Emails when somebody delete his/her registration from an event"""
+  check_domain()
   event_users = get_users_to_contact(event_id, user_id)
   if len(event_users) == 0:
     return None
@@ -282,6 +307,9 @@ def send_del_registration(event_id, user_id, user_name, interest):
 
 
 def send_tomorrow_events():
+  """Emails about tomorrow events. Should be called by a scheduling system"""
+  check_domain()
+
   tomorrow = datetime.date.today() + datetime.timedelta(days=1)
   tomorrow_str = tomorrow.strftime("%Y-%m-%d")
   tomorrow_nice = nice_date(tomorrow, settings.lang)
