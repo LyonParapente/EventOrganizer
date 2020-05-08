@@ -31,7 +31,9 @@ Pour toute question: <a href="mailto:lyonparapente@gmail.com">lyonparapente@gmai
 def check_domain():
   if request.environ["SERVER_NAME"] == "0.0.0.0":
     global domain
-    domain = "http://localhost"
+    domain = "{}://{}".format(
+      request.environ['wsgi.url_scheme'],
+      request.environ['HTTP_HOST'])
 
 
 def send_emails(messages):
