@@ -9,6 +9,7 @@ import os
 import secrets
 import base64
 import datetime
+import html
 
 from_email = "calendrier@lyonparapente.fr"
 from_name = "LyonParapente"
@@ -80,7 +81,8 @@ Merci de bien vouloir attendre l'approbation par un administrateur.
 <b><a href="mailto:{email}">{name}</a></b> ({email}) vient de s'enregistrer !<br/>
 <br/>
 <a href="{site}/approve/user:{user_id}">Clic ici pour l'approuver en temps que membre LyonParapente</a>
-""".format(name=name, email=email, user_id=user_id, site=domain)
+""".format(name=html.escape(name), email=html.escape(email),
+    user_id=html.escape(user_id), site=domain)
     }
   ]
   send_emails(messages)
@@ -127,7 +129,7 @@ Pour redéfinir ton mot de passe, clic sur le lien suivant :<br/>
 <a href="{site}{temp_access}">Redéfinir mon mot de passe</a>
 <br/><br/>
 Si tu n'es pas à l'origine de cette demande, il suffit de ne rien faire :-)
-""".format(site=domain,temp_access=temp_access)
+""".format(site=domain, temp_access=html.escape(temp_access))
     }
   ]
   send_emails(messages)
@@ -165,10 +167,10 @@ def send_new_event(event, creator_name):
 {description}
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(creator_name=creator_name, creator_id=str(event['creator_id']),
-      event_id=str(event['id']), title=event['title'],
-      description=str(event.get('description','')).replace('\n', '<br/>'),
-      start_date=start_date, site=domain)
+""".format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
+      event_id=str(event['id']), title=html.escape(event['title'].strip()),
+      description=html.escape(event.get('description','')).replace('\n', '<br/>'),
+      start_date=html.escape(start_date), site=domain)
     }
   ]
   send_emails(messages)
@@ -212,7 +214,7 @@ def send_new_message(author_name, author_id, event_id, comment):
 
   # Fetch event title
   event = db.get_event(event_id)
-  title = event['title']
+  title = event['title'].strip()
 
   recipients = compute_recipients(event_users)
   messages = [
@@ -230,9 +232,9 @@ def send_new_message(author_name, author_id, event_id, comment):
 {comment}
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(author_name=author_name, author_id=str(author_id),
-      event_id=str(event_id), title=title, site=domain,
-      comment=comment.replace('\n', '<br/>'))
+""".format(author_name=html.escape(author_name), author_id=str(author_id),
+      event_id=str(event_id), title=html.escape(title), site=domain,
+      comment=html.escape(comment).replace('\n', '<br/>'))
     }
   ]
   send_emails(messages)
@@ -246,7 +248,7 @@ def send_new_registration(event_id, user_id, user_name, interest):
 
   # Fetch event title
   event = db.get_event(event_id)
-  title = event['title']
+  title = event['title'].strip()
 
   verb = "participe" if interest==2 else "s'intéresse"
 
@@ -265,8 +267,8 @@ def send_new_registration(event_id, user_id, user_name, interest):
 <a href="{site}/user:{user_id}">{user_name}</a> {verb} à la sortie <a href="{site}/event:{event_id}">{title}</a>
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(user_name=user_name, user_id=str(user_id), verb=verb,
-      event_id=str(event_id), title=title, site=domain)
+""".format(user_name=html.escape(user_name), user_id=str(user_id), verb=verb,
+      event_id=str(event_id), title=html.escape(title), site=domain)
     }
   ]
   send_emails(messages)
@@ -280,7 +282,7 @@ def send_del_registration(event_id, user_id, user_name, interest):
 
   # Fetch event title
   event = db.get_event(event_id)
-  title = event['title']
+  title = event['title'].strip()
 
   verb = "sa participation" if interest==2 else "son intérêt"
 
@@ -299,8 +301,8 @@ def send_del_registration(event_id, user_id, user_name, interest):
 <a href="{site}/user:{user_id}">{user_name}</a> annule {verb} à la sortie <a href="{site}/event:{event_id}">{title}</a>
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(user_name=user_name, user_id=str(user_id), verb=verb,
-      event_id=str(event_id), title=title, site=domain)
+""".format(user_name=html.escape(user_name), user_id=str(user_id), verb=verb,
+      event_id=str(event_id), title=html.escape(title), site=domain)
     }
   ]
   send_emails(messages)
@@ -336,9 +338,9 @@ def send_tomorrow_events():
 <a href="{site}/user:{creator_id}">{creator_name}</a> a planifié la sortie <b><a href="{site}/event:{event_id}">{title}</a></b><br/>
 {description}
 </div>
-""".format(site=domain, creator_id=creator_id, creator_name=creator_name,
-      event_id=event['id'], title=event['title'],
-      description=str(event.get('description','')).replace('\n', '<br/>'))
+""".format(site=domain, creator_id=creator_id, creator_name=html.escape(creator_name),
+      event_id=event['id'], title=html.escape(event['title'].strip()),
+      description=html.escape(event.get('description','')).replace('\n', '<br/>'))
 
   all_users = db.list_users()
   recipients = compute_recipients(all_users)
@@ -356,7 +358,7 @@ def send_tomorrow_events():
       "HTMLPart": """
 Voici {desc} pour le {tomorrow_nice} :<br/>
 {events_html}
-""".format(desc=desc, tomorrow_nice=tomorrow_nice, events_html=events_html)
+""".format(desc=html.escape(desc), tomorrow_nice=html.escape(tomorrow_nice), events_html=events_html)
     }
   ]
   send_emails(messages)
