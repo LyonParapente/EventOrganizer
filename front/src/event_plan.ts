@@ -64,7 +64,7 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	var sortie_title = id("sortie_title") as HTMLInputElement;
 	var sortie_RDV = id("sortie_RDV") as HTMLInputElement;
 	var category = id("sortie_category") as HTMLButtonElement;
-	category.innerHTML = 'None';
+	category.innerHTML = i18n('None');
 
 	i18n_inPlace(
 	[
@@ -77,7 +77,6 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 		sortie_date_end.labels[0],
 		(id("sortie_heure") as HTMLInputElement).labels[0],
 		(id("sortie_description") as HTMLTextAreaElement).labels[0],
-		category,
 		category.labels[0],
 		"#sortie_save"
 	]);
