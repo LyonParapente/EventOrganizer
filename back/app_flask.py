@@ -365,9 +365,14 @@ def user_settings():
 
   #user_item = api_user.get(id) # can't get theme
   user_item = database.manager.db.get_user(user_id=id)
+
+  themes = settings.themes.copy()
+  if user_item['theme'] != settings.default_theme:
+    themes[settings.default_theme] += ' ('+fr['default']+')'
+
   csrf_token = get_raw_jwt().get("csrf")
   return render_template('user_settings.html', **fr, header=header,
-    user=user_item, themes=settings.themes, csrf_token=csrf_token,
+    user=user_item, themes=themes, csrf_token=csrf_token,
     message=message, error=error, user_id=id, random=randomString())
 
 def regenerate_claims(claims, dest):

@@ -40,7 +40,8 @@ fr = {
   'Remove_avatar': "Supprimer l'image",
   'Home': 'Calendrier',
   'Blog': 'Le blog',
-  'type_email': "Rempli d'abord ton email"
+  'type_email': "Rempli d'abord ton email",
+  'default': 'par défaut'
 }
 en = {
   'lang': 'fr',
@@ -84,5 +85,6 @@ en = {
   'Remove_avatar': 'Remove picture',
   'Home': 'Calendar',
   'Blog': 'Blog',
-  'type_email': 'Type your email first'
+  'type_email': 'Type your email first',
+  'default': 'default'
 }
