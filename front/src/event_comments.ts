@@ -33,6 +33,8 @@ export default function loadComments (event: CurrentEvent): void
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
+		CheckAuthentication(ex);
+
 		event_comments.innerHTML = ''; // Remove spinner
 		console.error(type, ex.responseText);
 		error_box.style.display = '';
@@ -41,6 +43,14 @@ export default function loadComments (event: CurrentEvent): void
 		clone.removeAttribute("id");
 		participants.appendChild(clone);
 	});
+}
+
+function CheckAuthentication (ex)
+{
+	if (ex.status == 401)
+	{
+		window.location.assign('/login');
+	}
 }
 
 interface Comment
@@ -280,6 +290,7 @@ function registerToEvent (event_id: number, interest: number, button_id: string,
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
+		CheckAuthentication(ex);
 		console.error(type, ex);
 	});
 }
@@ -293,6 +304,7 @@ function unregisterFromEvent (event_id: number, button_id: string, container: HT
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
+		CheckAuthentication(ex);
 		console.error(type, ex);
 	});
 }

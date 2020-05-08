@@ -171,6 +171,10 @@ function SubmitEvent (onCreate)
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
+		if (ex.status == 401)
+		{
+			window.location.assign('/login');
+		}
 		console.error(type, ex.responseText)
 		event_post_error.innerHTML = i18n('Unable to save, please retry');
 		event_post_error.style.display = '';
