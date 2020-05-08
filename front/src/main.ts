@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function ()
 				var target = info.el;
 				tooltip.set(
 				{
-					contentText: desc,
+					contentText: desc.replace(/\n/g, '<br/>'),
 					stickTo: "bottom",
 					target: target,
 					maxWidth: 500
@@ -279,7 +279,7 @@ function eventDataTransform (event)
 	{
 		event.color = getColor(event.category);
 	}
-	event.description = (event.description || '').replace(/\n/g, '<br/>');
+	event.description = event.description || '';
 
 	// re-map start & end to expected properties
 	event.start = event.start_date;
