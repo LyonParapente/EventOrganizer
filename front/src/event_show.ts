@@ -159,6 +159,11 @@ export function showEvent (calEvent: EventApi): void
 	event_location2.textContent = event_location_text;
 	id("event_location_box").style.display = location ? '' : 'none';
 
+	author_img.addEventListener('load', function ()
+	{
+		ComputeLocationDimensions(event_location, event_location2);
+	});
+
 	// ----------------------
 	// Rendez-vous time & location
 
@@ -201,20 +206,6 @@ export function showEvent (calEvent: EventApi): void
 	jQuery("#eventProperties")
 		.one('shown.bs.modal', function ()
 		{
-			// Step 1 - Compute textarea height according to width
-			var w = event_location.offsetWidth + 1;
-			event_location2.style.width = w+'px';
-
-			event_location.style.display = 'none';
-			event_location2.style.display = '';
-
-			// Step 2 - Adjust textarea height
-			var el2 = event_location2;
-			var height = el2.scrollHeight + (el2.offsetHeight - el2.clientHeight);
-			event_location2.style.height = height+'px';
-
-			// -----
-
 			initMap('event_map', false, eP.gps, location);
 
 			// Avoid keyboard popping on mobile
@@ -234,6 +225,20 @@ export function showEvent (calEvent: EventApi): void
 
 	ClipboardCopyLocation(id('event_rdv_location_title'), event_rdv_location);
 	ClipboardCopyLocation(event_rdv_location, event_rdv_location);
+}
+
+function ComputeLocationDimensions (el, el2)
+{
+	// Step 1 - Compute textarea height according to width
+	var w = el.offsetWidth + 1;
+	el2.style.width = w+'px';
+
+	el.style.display = 'none';
+	el2.style.display = '';
+
+	// Step 2 - Adjust textarea height
+	var height = el2.scrollHeight + (el2.offsetHeight - el2.clientHeight);
+	el2.style.height = height+'px';
 }
 
 function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement|HTMLTextAreaElement)
