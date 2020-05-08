@@ -297,7 +297,7 @@ function SubmitComment ()
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
-		if (ex.status == 401)
+		if (ex.status === 401)
 		{
 			window.location.assign('/login');
 		}

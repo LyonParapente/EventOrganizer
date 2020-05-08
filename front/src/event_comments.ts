@@ -47,7 +47,7 @@ export default function loadComments (event: CurrentEvent): void
 
 function CheckAuthentication (ex)
 {
-	if (ex.status == 401)
+	if (ex.status === 401)
 	{
 		window.location.assign('/login');
 	}
