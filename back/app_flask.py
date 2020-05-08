@@ -442,29 +442,22 @@ def avatar(name):
     path = settings.avatars_folder+'/default-%s.png'%size
   return send_file(path)
 
+miniatures_sizes = [130, 60, 40]
 
 def generate_miniatures(path, user_id):
   user_id = str(user_id)
-  # 130
-  dest_path = settings.avatars_folder+'/'+user_id+'-130.png'
-  generate_miniature(path, dest_path, format='png', width=130, height=130, enlarge=True)
-
-  # 40
-  dest_path = settings.avatars_folder+'/'+user_id+'-40.png'
-  generate_miniature(path, dest_path, format='png', width=40, height=40, enlarge=True)
+  for size in miniatures_sizes:
+    dest_path = settings.avatars_folder+'/'+user_id+'-'+str(size)+'.png'
+    generate_miniature(path, dest_path, format='png', width=size, height=size, enlarge=True)
 
 def remove_miniatures(user_id):
   user_id = str(user_id)
-  dest_path = settings.avatars_folder+'/'+user_id+'-130.png'
-  try:
-    os.remove(dest_path)
-  except:
-    pass
-  dest_path = settings.avatars_folder+'/'+user_id+'-40.png'
-  try:
-    os.remove(dest_path)
-  except:
-    pass
+  for size in miniatures_sizes:
+    dest_path = settings.avatars_folder+'/'+user_id+'-'+str(size)+'.png'
+    try:
+      os.remove(dest_path)
+    except:
+      pass
 
 @app.route('/tomorrow_events')
 def tomorrow_events():

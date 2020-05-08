@@ -178,7 +178,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 			var a = document.createElement('a');
 			a.href = "/user:"+userid;
 				var avatar = new Image();
-				avatar.src = "/avatars/"+userid+"-40";
+				avatar.src = "/avatars/"+userid+"-60";
 				avatar.alt = getUserName(user);
 				avatar.title = getUserName(user);
 			a.appendChild(avatar);
