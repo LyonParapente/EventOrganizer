@@ -162,6 +162,14 @@ function SubmitEvent (onCreate)
 		category: category_str,
 		color: color.value
 	};
+
+	/* Keep NULL values in db for default rendez-vous location
+	if (!body.gps && !body.gps_location)
+	{
+		body.gps = settings.default_map_center.join(', ');
+		body.gps_location = settings.default_location;
+	}*/
+
 	Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
 	requestJson("POST", "/api/event", body,
 	function (data: any)

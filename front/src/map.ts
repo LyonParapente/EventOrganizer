@@ -20,10 +20,6 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		map = mapList[elem_id].map;
 		marker = mapList[elem_id].marker;
 
-		if (!gps)
-		{
-			marker.remove();
-		}
 		resetMap(map, defaultPoint, marker);
 	}
 	else
@@ -105,10 +101,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		});
 
 		marker = L.marker(defaultPoint, {draggable: edit})
-		if (gps || edit)
-		{
-			marker.addTo(map);
-		}
+		marker.addTo(map);
 		mapList[elem_id] = {map, marker};
 
 		marker.on('click', function ()

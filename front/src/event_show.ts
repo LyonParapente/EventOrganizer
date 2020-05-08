@@ -184,11 +184,6 @@ export function showEvent (calEvent: EventApi): void
 			rdv_location_text = eP.gps.join(', ');
 		}
 	}
-	else
-	{
-		// Retro-compatibility with old events that don't have .gps or .gps_location
-		rdv_location_text = location || "";
-	}
 	var event_rdv_location = id("event_rdv_location") as HTMLInputElement;
 	event_rdv_location.value = rdv_location_text;
 	event_rdv_location.setAttribute("placeholder", settings.default_location);
@@ -206,7 +201,7 @@ export function showEvent (calEvent: EventApi): void
 	jQuery("#eventProperties")
 		.one('shown.bs.modal', function ()
 		{
-			initMap('event_map', false, eP.gps, location);
+			initMap('event_map', false, eP.gps, eP.gps_location);
 
 			// Avoid keyboard popping on mobile
 			// id("event_comment").focus();
