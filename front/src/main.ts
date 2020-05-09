@@ -283,7 +283,7 @@ function updateUrlWithCurrentMonth ()
 // Adapt server response to fullcalendar expected fields
 function eventDataTransform (event)
 {
-	if (event.hasOwnProperty('category'))
+	if (event.category)
 	{
 		event.color = getColor(event.category);
 	}
