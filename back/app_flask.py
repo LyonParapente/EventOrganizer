@@ -48,6 +48,8 @@ api_security = [
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 api = Api(app, components=components, security=api_security)
+
+app.config.from_pyfile('secrets.py')
 emails.init(app)
 
 # ------------------------------
@@ -59,8 +61,6 @@ app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
 app.config['JWT_CSRF_IN_COOKIES'] = True
-
-app.config.from_pyfile('secrets.py')
 
 jwt = JWTManager(app)
 
