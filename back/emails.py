@@ -13,7 +13,7 @@ import datetime
 import html
 
 from_email = "calendrier@lyonparapente.fr"
-from_name = "LyonParapente"
+from_name = "Calendrier Lyon Parapente"
 domain = "https://lyonparapente.azurewebsites.net"
 
 header = """
