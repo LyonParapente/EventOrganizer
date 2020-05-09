@@ -47,6 +47,7 @@ Set-AzResource -PropertyObject $http2 `
   -Force
 
 #------------------------------
+# WebJob: install-pip-requirements
 
 Write-Host "Create a webjob to install/upgrade pip requirements"
 # Based on https://github.com/projectkudu/kudu/wiki/Deploying-a-WebJob-using-PowerShell-ARM-Cmdlets
@@ -94,12 +95,56 @@ $Header = @{
 
 Write-Host "Create the webjob: $webjobname"
 $apiUrl = "https://$AppName.scm.azurewebsites.net/api/triggeredwebjobs/$webjobname"
-$result = Invoke-RestMethod -Uri $apiUrl -Headers $Header -Method Put -InFile $tempPath -ContentType 'application/text'
+$result = Invoke-RestMethod -Uri $apiUrl -Headers $Header -Method PUT -InFile $tempPath -ContentType 'application/text'
 
 Write-Host "Run the webjob: $webjobname"
-$resp = Invoke-WebRequest -Uri "$apiUrl/run" -Headers $Header -Method Post -ContentType "multipart/form-data"
+$resp = Invoke-WebRequest -Uri "$apiUrl/run" -Headers $Header -Method POST -ContentType "multipart/form-data"
 
 # Clean up
 Remove-Item -Path $tempPath
+
+
+#--------------------------------------------------
+# WebJob: tomorrow-events 
+
+$minLength = 15 ## characters
+$maxLength = 40 ## characters
+$length = Get-Random -Minimum $minLength -Maximum $maxLength
+$nonAlphaChars = 5
+$token = [System.Web.Security.Membership]::GeneratePassword($length, $nonAlphaChars)
+$token = $token -replace "[&#?=]","" # avoid problematic caracters in url
+
+$webjobname = "tomorrow-events"
+$tempPath = "${env:TEMP}\$webjobname.ps1"
+$script = @"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Invoke-WebRequest -Uri `"https://$AppName.azurewebsites.net/tomorrow_events?token=$token`"
+"@
+Set-Content -Path $tempPath $script
+Write-Host "$tempPath created"
+
+$Header = @{
+'Content-Disposition'="attachment; filename=$webjobname.ps1"
+'Authorization'=$accessToken
+}
+
+Write-Host "Create the webjob: $webjobname"
+$apiUrl = "https://$AppName.scm.azurewebsites.net/api/triggeredwebjobs/$webjobname"
+Invoke-RestMethod -Uri $apiUrl -Headers $Header -Method PUT -InFile $tempPath -ContentType 'application/text'
+Remove-Item -Path $tempPath
+
+$schedule = @{
+  # Every 30s
+  #"schedule" = "*/30 * * * * *"
+  
+  # At 15H UTC every day:
+  "schedule" = "0 0 15 * * *"
+} | ConvertTo-Json
+Invoke-RestMethod -Uri "$apiUrl/settings" -Headers $Header -Method PUT -ContentType 'application/json' -Body $schedule
+
+Write-Host "Add the following line to your secrets.py"
+Write-Host "DAILY_CHECK = '$token'"
+
+#--------------------------------------------------
 
 Write-Host "The End"
