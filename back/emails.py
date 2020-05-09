@@ -176,19 +176,7 @@ def send_new_event(event, creator_name):
       start_date=html.escape(start_date), site=domain)
     }
   ]
-  #send_emails(messages)
-
-  msg = Message("{creator_name} vient d'ajouter la sortie {title} ({start_date})".format(creator_name=creator_name, title=event['title'], start_date=start_date), bcc=["user1@domain.tld", "user2@domain.tld"])
-  msg.html = """
-<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} :<br/><br/>
-{description}
-<br/><br/><br/>
-<a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
-      event_id=str(event['id']), title=html.escape(event['title'].strip()),
-      description=html.escape(event.get('description','')).replace('\n', '<br/>'),
-      start_date=html.escape(start_date), site=domain)
-  mail.send(msg)
+  send_emails(messages)
 
 
 def get_users_to_contact(event_id, ignore_id):
@@ -380,7 +368,7 @@ Voici {desc} pour le {tomorrow_nice} :<br/>
 
 
 def demo_smtp_provider():
-  msg = Message("Hello", recipients=["user@domain.tld"])
+  msg = Message("Hello", bcc=["user@domain.tld"])
   msg.html = "<b>testing</b>"
   mail.send(msg)
 
