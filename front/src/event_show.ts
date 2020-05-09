@@ -6,13 +6,17 @@ import requestJson from './request_json';
 import settings from './settings';
 import { router } from './routing';
 import { EventApi } from '@fullcalendar/core';
+import { planAnEvent } from './event_plan';
+import { Calendar } from '@fullcalendar/core';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
-var current_event: CurrentEvent;
+var current_event: CurrentEvent = null;
+var calendar: Calendar = null;
 
-export function init_showEvent (): void
+export function init_showEvent (cal: Calendar): void
 {
+	calendar = cal;
 	var form: HTMLFormElement = document.querySelector("#eventProperties form.needs-validation");
 
 	// Submit a comment
@@ -90,13 +94,6 @@ export function showEvent (calEvent: EventApi): void
 	event_description.appendChild(document.createTextNode(desc));
 	event_description.innerHTML = event_description.innerHTML.replace(/\n/g,'<br/>');
 
-	// Will be set by loadComments, cleanup any previously open
-	id("event_author").textContent = '';
-	id('event_author_phone_box').style.display = 'none'
-	id('event_author_email_box').style.display = 'none'
-	id("event_author_phone").innerHTML = '';
-	id("event_author_email").innerHTML = '';
-
 	// ----------------------
 	// Category
 
@@ -114,6 +111,27 @@ export function showEvent (calEvent: EventApi): void
 	}
 
 	// ----------------------
+	// Management
+
+	var del_event = id('del_event');
+	var edit_event = id('edit_event');
+	if (window['connected_user'].id === current_event.creator_id &&
+		!current_event.isFinished)
+	{
+		del_event.style.display = '';
+		edit_event.style.display = '';
+		del_event.addEventListener('click', DeleteEvent);
+		edit_event.addEventListener('click', EditEvent);
+	}
+	else
+	{
+		del_event.style.display = 'none';
+		edit_event.style.display = 'none';
+		del_event.removeEventListener('click', DeleteEvent);
+		edit_event.removeEventListener('click', EditEvent);
+	}
+
+	// ----------------------
 	// Author
 
 	var creator_id = calEvent.extendedProps.creator_id;
@@ -123,6 +141,13 @@ export function showEvent (calEvent: EventApi): void
 	event_author_img.setAttribute("href", "/user:"+creator_id);
 	event_author_img.innerHTML = '';
 	event_author_img.appendChild(author_img);
+
+	// Will be set by loadComments, cleanup any previously open
+	id("event_author").textContent = '';
+	id('event_author_phone_box').style.display = 'none'
+	id('event_author_email_box').style.display = 'none'
+	id("event_author_phone").innerHTML = '';
+	id("event_author_email").innerHTML = '';
 
 	// ----------------------
 	// Dates
@@ -208,6 +233,7 @@ export function showEvent (calEvent: EventApi): void
 		})
 		.one('hide.bs.modal', function ()
 		{
+			current_event = null;
 			router.navigate("planning", i18n("Planning"));
 		})
 		.modal('show');
@@ -300,4 +326,37 @@ function SubmitComment ()
 		comment_post_error.innerHTML = i18n('Unable to save, please retry');
 		comment_post_error.style.display = '';
 	});
+}
+
+function DeleteEvent ()
+{
+	if (confirm(i18n('Confirm')))
+	{
+		var url = "/api/event/"+current_event.event_id.toString();
+		requestJson("DELETE", url, null, function (data: any)
+		{
+			var event = calendar.getEventById(current_event.event_id.toString());
+			event.remove();
+			current_event = null;
+
+			jQuery("#eventProperties").modal("hide");
+		},
+		function (type: string, ex: XMLHttpRequest)
+		{
+			try
+			{
+				alert(JSON.parse(ex.responseText).message);
+			}
+			finally
+			{
+				console.error(type, ex);
+			}
+		});
+	}
+}
+
+function EditEvent ()
+{
+	/*jQuery("#eventProperties").modal("hide");
+	planAnEvent(new Date(), new Date());*/
 }

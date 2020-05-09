@@ -207,4 +207,6 @@ class UserAPI(Resource):
     # We want to keep user messages (foreign keys)
     db.update_user_role(user_id, "deleted")
 
+    # Note: a real delete would delete all user's messages and registration and events by CASCADE
+
     return {'message': 'User deleted'}, 200

@@ -233,7 +233,7 @@ class EventAPI(Resource):
     if event_end < today:
       abort(403, 'Cannot delete a past event')
 
-    # TODO: Foreign keys (messages & registrations) need cascade delete
+    # messages & registrations are also delete by cascade
     rowcount = db.delete_event(event_id)
     if rowcount < 1:
       abort(404, 'No event was deleted')

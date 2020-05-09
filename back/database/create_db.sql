@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "events" (
 "color" TEXT,
 "creator_id" INTEGER NOT NULL,
 "creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (creator_id) REFERENCES users(id)
+FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS "start_date_idx" ON "events" (
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS "events_registrations" (
 "user_id" INTEGER NOT NULL,
 "interest" INTEGER DEFAULT 2,
 "lastupdate_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (event_id) REFERENCES events(id),
-FOREIGN KEY (user_id) REFERENCES users(id)
+FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS "registration_user_idx" ON "events_registrations"(
@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS "messages" (
 "author_id" INTEGER NOT NULL,
 "event_id" INTEGER NOT NULL,
 "creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (author_id) REFERENCES users(id)
-FOREIGN KEY (event_id) REFERENCES events(id)
+FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE,
+FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
 
 /*
@@ -64,5 +64,5 @@ CREATE TABLE IF NOT EXISTS sqlite_sequence(name,seq);
 INSERT INTO sqlite_sequence VALUES(events, 10000);
 INSERT INTO sqlite_sequence VALUES(users, 100);
 INSERT INTO sqlite_sequence VALUES(events_registration, 0);
-INSERT INTO sqlite_sequence VALUES(comments, 0);
+INSERT INTO sqlite_sequence VALUES(messages, 0);
 */

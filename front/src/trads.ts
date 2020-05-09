@@ -50,7 +50,10 @@ const trads =
 		"EventTitle": "Event #{0}",
 		"Unable to save, please retry": "Impossible de sauvegarder, veuillez réessayer",
 		"Phone": "Téléphone",
-		"Email": "Email"
+		"Email": "Email",
+		"Edit": "Modifier",
+		"Delete": "Supprimer",
+		"Confirm": "Es-tu vraiment sûr(e) ?"
 	}
 };
 

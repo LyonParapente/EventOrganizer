@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function ()
 	// Once and for all
 	init_routing();
 	init_createEvent(onCreateEvent);
-	init_showEvent();
+	init_showEvent(calendar);
 
 	swipedetector(document, function (swipedir: string)
 	{
