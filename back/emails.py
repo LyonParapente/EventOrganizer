@@ -1,4 +1,5 @@
 from mailjet_rest import Client # https://www.mailjet.com/
+from flask_mail import Mail, Message
 from database.manager import db
 from trads import lang
 from helper import nice_date, get_date_from_str
@@ -364,3 +365,22 @@ Voici {desc} pour le {tomorrow_nice} :<br/>
     }
   ]
   send_emails(messages)
+
+
+def demo_smtp_provider():
+  msg = Message("Hello", recipients=["user@domain.tld"])
+  msg.html = "<b>testing</b>"
+  mail.send(msg)
+
+def init(app):
+  global mail
+  app.config['MAIL_SERVER'] = 'SSL0.OVH.NET'
+  app.config['MAIL_PORT'] = 465
+  app.config['MAIL_USE_TLS'] = False
+  app.config['MAIL_USE_SSL'] = True
+  app.config['MAIL_DEBUG'] = app.debug
+  app.config['MAIL_USERNAME'] = from_email
+  #app.config['MAIL_PASSWORD'] = '' # set in secrets.py
+  app.config['MAIL_DEFAULT_SENDER'] = from_name+" <"+from_email+">"
+  mail = Mail(app)
+

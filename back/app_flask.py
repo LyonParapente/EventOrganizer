@@ -20,7 +20,7 @@ import database.manager
 database.manager.init(settings.db_filepath)
 
 from image import generate_miniature
-from emails import send_register, send_approved, send_lost_password, send_tomorrow_events
+import emails
 
 # ------------------------------
 # Authent part 1: Swagger description
@@ -48,6 +48,7 @@ api_security = [
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 api = Api(app, components=components, security=api_security)
+emails.init(app)
 
 # ------------------------------
 # Authent part 2: JWT config
@@ -222,7 +223,7 @@ def login():
         if res:
           params = {'token': res['token'], 'uid': res['uid']}
           temp_access = '/password?'+urllib.parse.urlencode(params)
-          send_lost_password(form['login'], res['name'], temp_access)
+          emails.send_lost_password(form['login'], res['name'], temp_access)
         # Whatever the result (user found or not), show the same message
         # to avoid leaking data about registered users
         return render_template('login.html', **lang,
@@ -272,7 +273,7 @@ def register():
     code, result = UserAPICreate.from_dict(request.form.to_dict())
     if code == 200:
       f = request.form
-      send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
+      emails.send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
       return render_template('register.html', **lang, message=lang['checkemail'])
     else:
       if code == 409:
@@ -296,7 +297,7 @@ def approve_user(id):
     nb = database.manager.db.update_user_role(id, "user", previous_role="new")
     if nb == 1:
       user = database.manager.db.get_user(user_id=id)
-      send_approved(user['email'], user['firstname']+' '+user['lastname'])
+      emails.send_approved(user['email'], user['firstname']+' '+user['lastname'])
       return "OK"
     return "ALREADY APPROVED"
   return "NOPE", 403
@@ -463,7 +464,7 @@ def remove_miniatures(user_id):
 def tomorrow_events():
   token = request.args.get('token')
   if token == app.config['DAILY_CHECK']:
-    send_tomorrow_events()
+    emails.send_tomorrow_events()
     return "OK", 200
   return "UNAUTHORIZED", 401
 
