@@ -148,7 +148,7 @@
 					<span class="badge" id="event_category"></span>
 				</div>
 				<h4 class="modal-title container text-center" id="event_title"></h4>
-				<button id="del_event" type="button" class="btn btn-danger mr-2 trad">Delete</button><button id="edit_event" type="button" class="btn btn-primary mr-2 trad">Edit</button>
+				<button id="del_event" type="button" class="btn btn-outline-danger mr-2 trad">Delete</button><button id="edit_event" type="button" class="btn btn-primary mr-2 trad">Edit</button>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -261,14 +261,14 @@
 				<h5 class="text-muted mt-3 trad">Comments:</h5>
 				<div id="event_comments" class="list-group text-break"></div>
 				<div id="event_comments_error" class="alert alert-danger trad" role="alert">Unable to load comments</div>
-				<form class="needs-validation form-inline mt-3" novalidate>
+				<form class="needs-validation form-inline mt-3 mb-0" novalidate>
 					<div class="input-group col pl-0">
 						<img id="event_comment_avatar" />
 						<textarea class="form-control" id="event_comment" required rows="4" placeholder="Add a comment..."></textarea>
 						<div class="invalid-feedback trad">Please provide a comment</div>
 						<div id="comment_post_error"></div>
 					</div>
-					<button type="submit" class="btn btn-outline-primary mb-2 trad">Send</button>
+					<button type="submit" class="btn btn-outline-primary trad" style="height: 110px;">Send</button>
 				</form>
 			</div>
 		</div>
