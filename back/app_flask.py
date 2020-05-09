@@ -138,6 +138,7 @@ def index(id=None):
 
 @app.route('/event:new')
 @app.route('/event:<int:id>')
+@app.route('/event:<int:id>:edit')
 @jwt_required
 def event(id=None):
   """Event details"""

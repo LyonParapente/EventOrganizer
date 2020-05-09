@@ -1,6 +1,17 @@
 import settings from './settings';
 import { i18n } from './trads';
 
+export function create_category_badge (category: string, extraCSS?: string): HTMLElement
+{
+	var a = document.createElement('a');
+	a.className = "badge " + (extraCSS||'');
+	a.style.backgroundColor = getColor(category);
+	a.style.color = 'white';
+	a.href = "javascript:;";
+	a.appendChild(document.createTextNode(category));
+	return a;
+}
+
 export function init_categories (): void
 {
 	var category_dd = document.getElementById("sortie_categories");
@@ -10,13 +21,8 @@ export function init_categories (): void
 	{
 		if (colorConf.hasOwnProperty(category))
 		{
-			var a = document.createElement('a');
-			a.className = "badge " + badges_spacing;
-			a.style.backgroundColor = getColor(category);
-			a.style.color = 'white';
-			a.href = "javascript:;";
-			a.appendChild(document.createTextNode(category));
-			category_dd.appendChild(a);
+			var badge = create_category_badge(category, badges_spacing);
+			category_dd.appendChild(badge);
 		}
 	}
 
@@ -44,6 +50,7 @@ export function init_categories (): void
 		{
 			sortie_category.textContent = i18n("None");
 		}
+		(document.getElementById('sortie_color') as HTMLInputElement).value = '';
 	});
 }
 

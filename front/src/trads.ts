@@ -53,7 +53,8 @@ const trads =
 		"Email": "Email",
 		"Edit": "Modifier",
 		"Delete": "Supprimer",
-		"Confirm": "Es-tu vraiment sûr(e) ?"
+		"Confirm": "Es-tu vraiment sûr(e) ?",
+		"Edit an event": "Modifier un évènement"
 	}
 };
 

@@ -227,15 +227,23 @@ function init_routing ()
 			var d = new Date();
 			planAnEvent(d, d);
 		})
-		.add(/event:([0-9]+)$/, function (num: string)
+		.add(/event:([0-9]+)(:edit)?$/, function (num: string, edit: string)
 		{
 			console.log('Fetching event:'+num);
 			requestJson('GET', '/api/event/'+num, null, function (data: object)
 			{
-				console.log('Showing event:'+num);
 				onCreateEvent(data);
 				var event = calendar.getEventById(num);
-				showEvent(event);
+				if (edit)
+				{
+					console.log('Editing event:'+num);
+					planAnEvent(event.start, event.end||event.start, event);
+				}
+				else
+				{
+					console.log('Showing event:'+num);
+					showEvent(event);
+				}
 				calendar.gotoDate(event.start);
 			}, function(){}); // tslint:disable-line
 		})
@@ -287,7 +295,7 @@ function eventDataTransform (event)
 	delete event.start_date;
 	delete event.end_date;
 
-	if (typeof event.gps === 'string')
+	if (typeof event.gps === 'string' && event.gps)
 	{
 		event.gps = event.gps.split(', ');
 	}
@@ -295,8 +303,14 @@ function eventDataTransform (event)
 	return event;
 }
 
-function onCreateEvent (event: object)
+function onCreateEvent (event: any)
 {
+	var orig = calendar.getEventById(event.id);
+	if (orig)
+	{
+		// Typically happens when we update an event
+		orig.remove();
+	}
 	eventDataTransform(event);
 	calendar.addEvent(event);
 }

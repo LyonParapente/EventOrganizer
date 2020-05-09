@@ -1,15 +1,18 @@
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
 import { initMap } from './map';
-import { init_categories } from './event_plan_categories';
+import { init_categories, create_category_badge } from './event_plan_categories';
 import { init_colorPicker } from './event_plan_colorPicker';
 import { router } from './routing';
 import requestJson from './request_json';
+import { EventApi } from '@fullcalendar/core';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
+
+var edited_event_id: string = null;
 
 export function init_createEvent (onCreate): void
 {
@@ -45,7 +48,7 @@ export function init_createEvent (onCreate): void
 	init_colorPicker();
 }
 
-export function planAnEvent (start_date: Date, end_date: Date): void
+export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: EventApi): void
 {
 	if (!window['connected_user'])
 	{
@@ -61,23 +64,26 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 		return;
 	}
 
+	var modal_title = id('createEventTitle');
 	var sortie_title = id("sortie_title") as HTMLInputElement;
+	var sortie_lieu = id("sortie_lieu") as HTMLInputElement;
 	var sortie_RDV = id("sortie_RDV") as HTMLInputElement;
-	var category = id("sortie_category") as HTMLButtonElement;
-	category.innerHTML = i18n('None');
+	var sortie_heure = id("sortie_heure") as HTMLInputElement;
+	var sortie_desc = id("sortie_description") as HTMLTextAreaElement;
+	var sortie_category = id("sortie_category") as HTMLButtonElement;
+	var sortie_color = id('sortie_color') as HTMLInputElement;
 
 	i18n_inPlace(
 	[
-		"#createEventTitle",
 		sortie_title.labels[0],
-		(id("sortie_lieu") as HTMLInputElement).labels[0],
+		sortie_lieu.labels[0],
 		sortie_RDV.labels[0],
 		"#createEventBody .date",
 		sortie_date_start.labels[0],
 		sortie_date_end.labels[0],
-		(id("sortie_heure") as HTMLInputElement).labels[0],
-		(id("sortie_description") as HTMLTextAreaElement).labels[0],
-		category.labels[0],
+		sortie_heure.labels[0],
+		sortie_desc.labels[0],
+		sortie_category.labels[0],
 		"#sortie_save"
 	]);
 
@@ -90,23 +96,72 @@ export function planAnEvent (start_date: Date, end_date: Date): void
 	// ----------------------
 	// Set up fields
 
-	var titles = settings.default_random_event_title;
-	var title = titles[getRandomInt(0, titles.length)];
-	sortie_title.value = title;
-
 	sortie_RDV.setAttribute("placeholder", settings.default_location);
-	sortie_RDV.value = '';
 
 	sortie_date_start.value = toDateString(start_date);
 	sortie_date_end.value = toDateString(end_date);
 	sortie_date_end.setAttribute("min", sortie_date_start.value);
 
-	router.navigate("event:new", i18n("Plan an event"));
+	if (editedEvent)
+	{
+		edited_event_id = editedEvent.id;
+		modal_title.textContent = i18n('Edit an event');
+		sortie_title.value = editedEvent.title;
+		var eP = editedEvent.extendedProps;
+		sortie_lieu.value = eP.location;
+		sortie_RDV.value = eP.gps_location || '';
+		sortie_heure.value = eP.time || '';
+		sortie_desc.value = eP.description || '';
+		sortie_category.innerHTML = i18n('None');
+		if (eP.category || editedEvent.backgroundColor)
+		{
+			sortie_category.innerHTML = '';
+			if (eP.category)
+			{
+				var badge = create_category_badge(eP.category);
+				sortie_category.appendChild(badge);
+			}
+			else
+			{
+				var div = document.createElement('div');
+				div.setAttribute("style", "display: inline-block; background-color: "+editedEvent.backgroundColor+"; color: white;");
+				div.textContent = editedEvent.backgroundColor;
+				sortie_category.appendChild(div);
+				sortie_color.value = editedEvent.backgroundColor;
+			}
+		}
+
+		router.navigate("event:"+editedEvent.id+":edit", i18n("Edit an event"));
+	}
+	else
+	{
+		edited_event_id = null;
+		modal_title.textContent = i18n('Plan an event');
+
+		var titles = settings.default_random_event_title;
+		var title = titles[getRandomInt(0, titles.length)];
+
+		sortie_title.value = title;
+		sortie_lieu.value = '';
+		sortie_RDV.value = '';
+		sortie_heure.value = '';
+		sortie_desc.value = '';
+		sortie_category.innerHTML = i18n('None');
+
+		router.navigate("event:new", i18n("Plan an event"));
+	}
 
 	jQuery("#createEvent")
 		.one('shown.bs.modal', function ()
 		{
-			initMap('sortie_map', true);
+			if (editedEvent)
+			{
+				initMap('sortie_map', true, eP.gps, eP.gps_location);
+			}
+			else
+			{
+				initMap('sortie_map', true);
+			}
 			sortie_title.focus();
 		})
 		.one('hide.bs.modal', function ()
@@ -170,8 +225,20 @@ function SubmitEvent (onCreate)
 		body.gps_location = settings.default_location;
 	}*/
 
-	Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
-	requestJson("POST", "/api/event", body,
+	var method = "POST";
+	var url = "/api/event";
+
+	if (edited_event_id)
+	{
+		method = "PUT";
+		url = "/api/event/" + edited_event_id;
+	}
+	else
+	{
+		Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
+	}
+
+	requestJson(method, url, body,
 	function (data: any)
 	{
 		onCreate(data);
@@ -184,7 +251,7 @@ function SubmitEvent (onCreate)
 			window.location.assign('/login');
 		}
 		console.error(type, ex.responseText)
-		event_post_error.innerHTML = i18n('Unable to save, please retry');
+		event_post_error.textContent = i18n('Unable to save, please retry');
 		event_post_error.style.display = '';
 	});
 }

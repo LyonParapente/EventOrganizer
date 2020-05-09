@@ -5,9 +5,8 @@ import loadComments from './event_comments';
 import requestJson from './request_json';
 import settings from './settings';
 import { router } from './routing';
-import { EventApi } from '@fullcalendar/core';
 import { planAnEvent } from './event_plan';
-import { Calendar } from '@fullcalendar/core';
+import { Calendar, EventApi } from '@fullcalendar/core';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
@@ -328,7 +327,7 @@ function SubmitComment ()
 	});
 }
 
-function DeleteEvent ()
+function DeleteEvent (): void
 {
 	if (confirm(i18n('Confirm')))
 	{
@@ -355,8 +354,9 @@ function DeleteEvent ()
 	}
 }
 
-function EditEvent ()
+function EditEvent (): void
 {
-	/*jQuery("#eventProperties").modal("hide");
-	planAnEvent(new Date(), new Date());*/
+	var event = calendar.getEventById(current_event.event_id.toString());
+	jQuery("#eventProperties").modal("hide");
+	planAnEvent(event.start, event.end || event.start, event);
 }
