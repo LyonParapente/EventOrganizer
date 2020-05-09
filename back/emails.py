@@ -176,7 +176,19 @@ def send_new_event(event, creator_name):
       start_date=html.escape(start_date), site=domain)
     }
   ]
-  send_emails(messages)
+  #send_emails(messages)
+
+  msg = Message("{creator_name} vient d'ajouter la sortie {title} ({start_date})".format(creator_name=creator_name, title=event['title'], start_date=start_date), bcc=["user1@domain.tld", "user2@domain.tld"])
+  msg.html = """
+<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} :<br/><br/>
+{description}
+<br/><br/><br/>
+<a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
+""".format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
+      event_id=str(event['id']), title=html.escape(event['title'].strip()),
+      description=html.escape(event.get('description','')).replace('\n', '<br/>'),
+      start_date=html.escape(start_date), site=domain)
+  mail.send(msg)
 
 
 def get_users_to_contact(event_id, ignore_id):
@@ -373,7 +385,6 @@ def demo_smtp_provider():
   mail.send(msg)
 
 def init(app):
-  global mail
   app.config['MAIL_SERVER'] = 'SSL0.OVH.NET'
   app.config['MAIL_PORT'] = 465
   app.config['MAIL_USE_TLS'] = False
@@ -382,5 +393,6 @@ def init(app):
   app.config['MAIL_USERNAME'] = from_email
   #app.config['MAIL_PASSWORD'] = '' # set in secrets.py
   app.config['MAIL_DEFAULT_SENDER'] = from_name+" <"+from_email+">"
+  global mail
   mail = Mail(app)
 
