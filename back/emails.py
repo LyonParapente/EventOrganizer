@@ -13,7 +13,7 @@ import datetime
 import html
 
 from_email = "calendrier@lyonparapente.fr"
-from_name = "Calendrier Lyon Parapente"
+from_name = "Lyon Parapente"
 domain = "https://lyonparapente.azurewebsites.net"
 
 header = """
@@ -25,7 +25,7 @@ header = """
 
 footer = """<br/><br/><br/>
 <a href="https://lyonparapente.fr">Le blog</a> | <a href="{site}">Le calendrier</a><br/>
-Pour toute question: <a href="mailto:lyonparapente@gmail.com">lyonparapente@gmail.com</a>
+Pour toute question: <a href="mailto:contact@lyonparapente.fr">contact@lyonparapente.fr</a>
 """.format(site=domain)
 
 
