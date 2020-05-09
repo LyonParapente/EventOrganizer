@@ -63,14 +63,14 @@
 					<div class="form-group row">
 						<label for="sortie_title" class="col-sm-3 col-form-label">Title</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" id="sortie_title" required autofocus />
+							<input type="text" class="form-control" id="sortie_title" tabindex="1" required autofocus />
 							<div class="invalid-feedback trad">Please provide a title</div>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_lieu" class="col-sm-3 col-form-label">Activity location</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" id="sortie_lieu" required />
+							<input type="text" class="form-control" id="sortie_lieu" tabindex="2" required />
 							<div class="invalid-feedback trad">Please provide a location</div>
 						</div>
 					</div>
@@ -78,7 +78,7 @@
 						<label for="sortie_RDV" class="col-sm-3 col-form-label">Meeting location</label>
 						<div class="col-sm-9">
 							<div class="input-group">
-								<input type="text" class="form-control" id="sortie_RDV" />
+								<input type="text" class="form-control" id="sortie_RDV" tabindex="3" />
 								<input type="hidden" id="sortie_RDV_gps" />
 								<div class="input-group-append">
 									<div class="spinner-border text-secondary" role="status" id="spinner_RDV"></div>
@@ -92,31 +92,31 @@
 						<label class="col-sm-3 col-form-label date">Date</label>
 						<div class="col">
 							<label for="sortie_date_start">DateFrom</label>
-							<input type="date" class="form-control" id="sortie_date_start" required />
+							<input type="date" class="form-control" id="sortie_date_start" tabindex="4" required />
 							<div class="invalid-feedback trad">Invalid date</div>
 						</div>
 						<div class="col">
 							<label for="sortie_date_end">DateTo</label>
-							<input type="date" class="form-control" id="sortie_date_end" required />
+							<input type="date" class="form-control" id="sortie_date_end" tabindex="5" required />
 							<div class="invalid-feedback trad">Cannot end before start</div>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_heure" class="col-sm-3 col-form-label">Time</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" id="sortie_heure" />
+							<input type="text" class="form-control" id="sortie_heure" tabindex="6" />
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
 						<div class="col-sm-9">
-							<textarea class="form-control" id="sortie_description" rows="5"></textarea>
+							<textarea class="form-control" id="sortie_description" rows="5"  tabindex="7"></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_category" class="col-sm-3 col-form-label">Category</label>
 						<div class="col-sm-9 dropdown">
-							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
+							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" tabindex="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
 							<div class="dropdown-menu" aria-labelledby="sortie_category">
 								<a class="dropdown-item trad" href="javascript:;">None</a>
 								<div class="dropdown-divider"></div>
@@ -132,7 +132,7 @@
 						</div>
 					</div>
 					<div id="event_post_error"></div>
-					<button type="submit" class="btn btn-outline-primary btn-lg btn-block trad" id="sortie_save">Save</button>
+					<button type="submit" class="btn btn-outline-primary btn-lg btn-block trad" id="sortie_save" tabindex="9">Save</button>
 				</form>
 			</div>
 		</div>
@@ -143,7 +143,7 @@
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
-				<div>
+				<div class="d-flex flex-column">
 					<span id="event_id"></span>
 					<span class="badge" id="event_category"></span>
 				</div>
