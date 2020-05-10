@@ -215,6 +215,9 @@ class EventAPI(Resource):
       '401': {
         'description': 'Not authenticated'
       },
+      '403': {
+        'description': 'Deletion forbidden'
+      },
       '404': {
         'description': 'Event not found'
       }

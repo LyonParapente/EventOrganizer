@@ -133,6 +133,9 @@ class UserAPI(Resource):
       '401': {
         'description': 'Not authenticated'
       },
+      '403': {
+        'description': 'Update forbidden'
+      },
       '404': {
         'description': 'User not found'
       }
@@ -182,6 +185,9 @@ class UserAPI(Resource):
       },
       '401': {
         'description': 'Not authenticated'
+      },
+      '403': {
+        'description': 'Deletion forbidden'
       },
       '404': {
         'description': 'User not found'
