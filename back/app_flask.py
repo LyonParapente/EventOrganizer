@@ -341,6 +341,9 @@ def user_settings():
     # Ensure checkbox are boolean and not 'on'
     form['share_email'] = False if form.get('share_email') is None else True
     form['share_phone'] = False if form.get('share_phone') is None else True
+    form['notif_new_event'] = False if form.get('notif_new_event') is None else True
+    form['notif_event_change'] = False if form.get('notif_event_change') is None else True
+    form['notif_tomorrow_events'] = False if form.get('notif_tomorrow_events') is None else True
 
     # Remove extra fields that would break UserAPI.put_from_dict()
     del form['csrf_token']

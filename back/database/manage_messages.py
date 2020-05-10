@@ -33,7 +33,7 @@ def get_messages_list(self, event_id):
   get_messages = """SELECT
       m.comment,m.creation_datetime,m.author_id,
       u.phone,u.share_phone,u.email,u.share_email,
-      u.firstname, u.lastname
+      u.firstname,u.lastname,u.notif_event_change
     FROM messages AS m, users AS u
     WHERE m.author_id=u.id
     AND m.event_id=?
@@ -42,13 +42,13 @@ def get_messages_list(self, event_id):
   get_registrations = """SELECT
       r.user_id,r.interest,
       u.phone,u.share_phone,u.email,u.share_email,
-      u.firstname, u.lastname
+      u.firstname,u.lastname,u.notif_event_change
     FROM events_registrations r, users u
     WHERE r.user_id=u.id
     AND r.event_id=?
   """
   get_creator = """SELECT
-      u.id, u.firstname,u.lastname,
+      u.id,u.firstname,u.lastname,u.notif_event_change,
       u.phone,u.share_phone,u.email,u.share_email
     FROM users AS u, events AS e
     WHERE u.id=e.creator_id

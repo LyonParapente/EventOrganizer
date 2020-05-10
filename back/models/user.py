@@ -1,6 +1,9 @@
 from flask_restful_swagger_3 import Schema
 from flask import abort
 import settings
+from trads import trads
+
+en = trads['en']
 
 class User(Schema):
   type = 'object'
@@ -19,6 +22,15 @@ class User(Schema):
     'share_phone': {'type': 'boolean', 'writeOnly': True,
       'example': False, 'default': False,
       'description': 'Does the user allow his/her phone to be public?'},
+    'notif_new_event': {'type': 'boolean', 'writeOnly': True,
+      'example': True, 'default': True,
+      'description': en['notif_new_event']},
+    'notif_event_change': {'type': 'boolean', 'writeOnly': True,
+      'example': True, 'default': True,
+      'description': en['notif_event_change']},
+    'notif_tomorrow_events': {'type': 'boolean', 'writeOnly': True,
+      'example': True, 'default': True,
+      'description': en['notif_tomorrow_events']},
     'theme': {'type': 'string', 'default': settings.default_theme, 'writeOnly': True},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.461593Z'}
   }
@@ -59,6 +71,7 @@ def filter_user_response(props):
 def silence_user_fields(user):
   if hasattr(user, 'password_lost'):
     del user['password_lost']
+
   if user['share_email'] == 0:
     del user['email']
   if user['share_phone'] == 0:

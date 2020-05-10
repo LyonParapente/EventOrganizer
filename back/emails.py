@@ -150,7 +150,7 @@ def compute_recipients(users):
 def send_new_event(event, creator_name):
   """Emails when a new event is declared"""
   check_domain()
-  all_users = db.list_users()
+  all_users = db.list_users(notif_new_event=True)
   recipients = compute_recipients(all_users)
 
   start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
@@ -188,10 +188,11 @@ def get_users_to_contact(event_id, ignore_id):
     user = {
       'firstname': registration['firstname'],
       'lastname': registration['lastname'],
-      'email': registration['email']
+      'email': registration['email'],
+      'notif_event_change': registration['notif_event_change']
     }
     user_id = registration['user_id']
-    if user_id != ignore_id:
+    if user_id != ignore_id and user['notif_event_change']==1:
       users[str(user_id)] = user
 
   # Users who commented
@@ -199,12 +200,25 @@ def get_users_to_contact(event_id, ignore_id):
     user = {
       'firstname': message['firstname'],
       'lastname': message['lastname'],
-      'email': message['email']
+      'email': message['email'],
+      'notif_event_change': message['notif_event_change']
     }
     user_id = message['author_id']
-    if user_id != ignore_id:
+    if user_id != ignore_id and user['notif_event_change']==1:
       # Add user to dict (or overwrite)
       users[str(user_id)] = user
+
+  # Creator (in case he/she remove the registration but still want notification)
+  user = {
+    'firstname': creator['firstname'],
+    'lastname': creator['lastname'],
+    'email': creator['email'],
+    'notif_event_change': creator['notif_event_change']
+  }
+  user_id = creator['id']
+  if user_id != ignore_id and user['notif_event_change']==1:
+    # Add user to dict (or overwrite)
+    users[str(user_id)] = user
 
   return users.values()
 
@@ -345,7 +359,7 @@ def send_tomorrow_events():
       event_id=event['id'], title=html.escape(event['title'].strip()),
       description=html.escape(event.get('description','')).replace('\n', '<br/>'))
 
-  all_users = db.list_users()
+  all_users = db.list_users(notif_tomorrow_events=True)
   recipients = compute_recipients(all_users)
 
   messages = [

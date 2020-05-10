@@ -43,7 +43,12 @@ trads = {
   'Home': 'Calendrier',
   'Blog': 'Le blog',
   'type_email': "Rempli d'abord ton email",
-  'default': 'par défaut'
+  'default': 'par défaut',
+  'Notifications': 'Notifications',
+  'notif_new_event': 'Recevoir les emails de nouvelle sortie',
+  'notif_event_change': "Recevoir les notifications email sur une sortie ou j'ai interragi",
+  'notif_event_change_note': 'Note: Tu peux temporairement désactiver les notifications sur une sortie en cliquant sur la cloche',
+  'notif_tomorrow_events': 'Recevoir les emails des sorties prévues pour demain'
  },
  'en': {
   'lang': 'en',
@@ -88,7 +93,12 @@ trads = {
   'Home': 'Calendar',
   'Blog': 'Blog',
   'type_email': 'Type your email first',
-  'default': 'default'
+  'default': 'default',
+  'Notifications': 'Notifications',
+  'notif_new_event': 'Receive email when a new event is added',
+  'notif_event_change': "Receive email notifications on an event on which I interracted",
+  'notif_event_change_note': 'Note: You can temporarily deactivate notifications about an event by clicking on the bell',
+  'notif_tomorrow_events': 'Receive email for tomorrow events'
  }
 }
 

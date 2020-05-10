@@ -6,7 +6,8 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt()
 
 def insert_user(self, *,
-    firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False, theme=settings.default_theme):
+    firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False, theme=settings.default_theme,
+    notif_new_event=True, notif_event_change=True, notif_tomorrow_events=True):
   """Insert a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
@@ -21,7 +22,10 @@ def insert_user(self, *,
     'phone': phone,
     'share_phone': share_phone,
     'theme': theme,
-    'role': 'new', # to be approved -> user
+    'role': 'new', # to be approved -> user,
+    'notif_new_event': notif_new_event,
+    'notif_event_change': notif_event_change,
+    'notif_tomorrow_events': notif_tomorrow_events,
     'creation_datetime': datetime.datetime.utcnow().isoformat()+'Z'
   }
   columns = ','.join(tuple(new_user))
@@ -53,12 +57,14 @@ def get_user(self, user_id=None, email=None):
   finally:
     db.close()
 
-def list_users(self, include_new=False, only_admins=False):
+def list_users(self, include_new=False, only_admins=False,
+    notif_new_event=False, notif_event_change=False, notif_tomorrow_events=False):
   """Fetch all approved users from database"""
   db, cursor = self._connect()
   try:
     list_users = """
-      SELECT id,firstname,lastname,email,role
+      SELECT id,firstname,lastname,email,role,
+        notif_new_event,notif_event_change,notif_tomorrow_events
       FROM users
       WHERE role IS NOT NULL AND role!='deleted'
     """
@@ -66,6 +72,12 @@ def list_users(self, include_new=False, only_admins=False):
       list_users += " AND role!='new'"
     if only_admins:
       list_users += " AND role='admin'"
+    if notif_new_event:
+      list_users += " AND notif_new_event=1"
+    if notif_event_change:
+      list_users += " AND notif_event_change=1"
+    if notif_tomorrow_events:
+      list_users += " AND notif_tomorrow_events=1"
 
     cursor.execute(list_users)
     return cursor.fetchall()
@@ -73,7 +85,8 @@ def list_users(self, include_new=False, only_admins=False):
     db.close()
 
 def update_user(self, user_id, *,
-    firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None, theme=None):
+    firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None, theme=None,
+    notif_new_event=None, notif_event_change=None, notif_tomorrow_events=None):
   """Update a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
@@ -90,7 +103,10 @@ def update_user(self, user_id, *,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone,
-    'theme': theme
+    'theme': theme,
+    'notif_new_event': notif_new_event,
+    'notif_event_change': notif_event_change,
+    'notif_tomorrow_events': notif_tomorrow_events
   }
 
   # Delete keys whose value is None

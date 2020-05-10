@@ -10,6 +10,9 @@ CREATE TABLE IF NOT EXISTS "users" (
 "share_phone" BOOLEAN DEFAULT 0,
 "theme" TEXT,
 "role" TEXT,
+"notif_new_event" BOOLEAN DEFAULT 1,
+"notif_event_change" BOOLEAN DEFAULT 1,
+"notif_tomorrow_events" BOOLEAN DEFAULT 1,
 "creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
