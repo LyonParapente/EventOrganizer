@@ -108,7 +108,7 @@ Ton inscription vient d'être approuvée !<br/>
 Tu peux désormais te connecter: <a href="{site}/login">Connexion</a>
 <br/><br/>
 Tu peux ainsi consulter les sorties, et en ajouter.<br/>
-N'oublie pas de mettre ta photo et définir tes préférences de partage email et téléphone !
+N'oublie pas de mettre ta photo et définir <a href="{site}/settings">tes préférences</a> de partage email et téléphone !
 """.format(site=domain)
     }
   ]
