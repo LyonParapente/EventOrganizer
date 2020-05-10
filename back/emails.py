@@ -85,7 +85,7 @@ Merci de bien vouloir attendre l'approbation par un administrateur.
 <br/>
 <a href="{site}/approve/user:{user_id}">Clic ici pour l'approuver en temps que membre LyonParapente</a>
 """.format(name=html.escape(name), email=html.escape(email),
-    user_id=html.escape(user_id), site=domain)
+    user_id=str(user_id), site=domain)
     }
   ]
   send_emails(messages)
