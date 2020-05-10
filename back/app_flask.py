@@ -430,7 +430,7 @@ def change_password():
   csrf_token = get_raw_jwt().get("csrf")
   return render_template('user_password.html', **lang, header=header,
     csrf_token=csrf_token, theme=theme,
-    message=message, error=error)
+    message=message, error=error, is_connected=is_connected)
 
 @app.route('/avatars/<string:name>')
 @jwt_required
