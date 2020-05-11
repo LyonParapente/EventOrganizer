@@ -1,4 +1,4 @@
-from flask import request, abort
+from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from models.registration import Registration
@@ -112,6 +112,8 @@ class RegisterAPI(Resource):
     user_id = get_jwt_identity()
 
     previous = db.get_registration(event_id, user_id)
+    if previous is None:
+      abort(404, 'No registration found')
 
     rowcount = db.delete_registration(event_id, user_id)
     if rowcount < 1:
