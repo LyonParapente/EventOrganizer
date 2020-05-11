@@ -108,7 +108,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		modal_title.textContent = i18n('Edit an event');
 		sortie_title.value = editedEvent.title;
 		var eP = editedEvent.extendedProps;
-		sortie_lieu.value = eP.location;
+		sortie_lieu.value = eP.location || '';
 		sortie_RDV.value = eP.gps_location || '';
 		sortie_heure.value = eP.time || '';
 		sortie_desc.value = eP.description || '';
