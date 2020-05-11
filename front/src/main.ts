@@ -134,33 +134,6 @@ document.addEventListener('DOMContentLoaded', function ()
 			showEvent(clickInfos.event);
 		},
 		eventDataTransform: eventDataTransform,
-		eventRender: function (info)
-		{
-			var desc = info.event.extendedProps.description;
-			if (desc)
-			{
-				// @ts-ignore html5tooltips
-				var tooltip = new HTML5TooltipUIComponent();
-				var target = info.el;
-				tooltip.set(
-				{
-					contentText: desc.replace(/\n/g, '<br/>'),
-					stickTo: "bottom",
-					target: target,
-					maxWidth: 500
-				});
-
-				// on mobile, touchstart happens first
-				// destroy tooltip which cause visual glitch when the
-				// even properties modal appear
-				target.addEventListener('touchstart', () => tooltip.destroy());
-
-				target.addEventListener('mouseenter', () => tooltip.show());
-				target.addEventListener('mouseleave', () => tooltip.hide());
-
-				tooltip.mount();
-			}
-		},
 		loading: function (isLoading)
 		{
 			if (isLoading)
