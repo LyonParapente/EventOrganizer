@@ -50,10 +50,14 @@ export default function requestJson (method: string, url: string, params: object
 }
 
 function injectQueryStringParams (url: string, params: object) {
-  return url +
-    (url.indexOf('?') === -1 ? '?' : '&') +
-    encodeParams(params);
+  var parameters = encodeParams(params);
+  if (parameters)
+  {
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + parameters;
+  }
+  return url;
 }
+
 function encodeParams (params: object) {
   var parts = [];
   for (var key in params) {
