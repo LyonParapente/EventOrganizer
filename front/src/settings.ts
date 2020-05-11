@@ -59,6 +59,6 @@ const settings: Settings =
 		}
 	},
 	unsplash_tags: ['paragliding'],
-	IGN_key: ''
+	IGN_key: 'o9q1uza84786tsx16keg17n0'
 };
 export default settings;
