@@ -51,33 +51,37 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			// https://geoservices.ign.fr/documentation/utilisation_web/wmts-leaflet.html
 			// https://geoservices.ign.fr/documentation/donnees-ressources-wmts.html
 			var ignKey = window.location.hostname === 'localhost' ? 'choisirgeoportail' : settings.IGN_key;
-			var ignLayers = [
-				"ORTHOIMAGERY.ORTHOPHOTOS",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
-				"GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOPO"
-			];
-			for (var i = 0; i < ignLayers.length; ++i)
+			var ignLayers = {
+				"ORTHOIMAGERY.ORTHOPHOTOS": "ORTHOIMAGERY.ORTHOPHOTOS",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS": "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
+				"GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN": "GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR",
+				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOPO": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOPO",
+				"ELEVATION.SLOPES": "ELEVATION.SLOPES"
+			};
+			for (var niceName in ignLayers)
 			{
-				var ignLayer = ignLayers[i];
-				var ignTileLayer =	L.tileLayer(
-					"https://wxs.ign.fr/"+ignKey+"/geoportail/wmts?" +
-					"&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
-					"&STYLE=normal" +
-					"&TILEMATRIXSET=PM" +
-					"&FORMAT=image/jpeg" +
-					"&LAYER="+ignLayer +
-					"&TILEMATRIX={z}" +
-					"&TILEROW={y}" +
-					"&TILECOL={x}",
+				if (ignLayers.hasOwnProperty(niceName))
 				{
-					attribution : "IGN-F/Geoportail",
-					tileSize : 256
-				});
-				tileLayers[ignLayer] = ignTileLayer;
+					var ignLayer = ignLayers[niceName];
+					var ignTileLayer =	L.tileLayer(
+						"https://wxs.ign.fr/"+ignKey+"/geoportail/wmts?" +
+						"&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
+						"&STYLE=normal" +
+						"&TILEMATRIXSET=PM" +
+						"&FORMAT=image/jpeg" +
+						"&LAYER="+ignLayer +
+						"&TILEMATRIX={z}" +
+						"&TILEROW={y}" +
+						"&TILECOL={x}",
+					{
+						attribution : "IGN-F/Geoportail",
+						tileSize : 256
+					});
+					tileLayers[niceName] = ignTileLayer;
+				}
 			}
 		}
 
