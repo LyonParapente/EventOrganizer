@@ -36,11 +36,27 @@ export function init_showEvent (cal: Calendar): void
 		event.preventDefault();
 		event.stopPropagation();
 	});
+
+	id('event_bell').addEventListener('click', function ()
+	{
+		var is_blocking = this.classList.contains('fa-bell-slash');
+		var verb = is_blocking ? "DELETE" : "PUT";
+		requestJson(verb, "/api/event/"+current_event.event_id+"/notifications_blacklist", null,
+		function (data: any)
+		{
+			SetBell(verb === "PUT");
+		},
+		function (type: string, ex: XMLHttpRequest)
+		{
+			console.error(type, ex.responseText)
+		});
+	});
 }
 
 export function showEvent (calEvent: EventApi): void
 {
-	if (!window['connected_user'])
+	var connected_user = get_connected_user();
+	if (!connected_user)
 	{
 		window.location.assign('/login');
 		return;
@@ -114,7 +130,7 @@ export function showEvent (calEvent: EventApi): void
 
 	var del_event = id('del_event');
 	var edit_event = id('edit_event');
-	if (window['connected_user'].id === current_event.creator_id &&
+	if (connected_user.id === current_event.creator_id &&
 		!current_event.isFinished)
 	{
 		del_event.style.display = '';
@@ -147,6 +163,29 @@ export function showEvent (calEvent: EventApi): void
 	id('event_author_email_box').style.display = 'none'
 	id("event_author_phone").innerHTML = '';
 	id("event_author_email").innerHTML = '';
+
+	// ----------------------
+	// Bell
+
+	var event_bell = id('event_bell');
+	event_bell.style.display = 'none';
+	if (connected_user.notif_event_change === 0)
+	{
+		// Hide it completely since globally deactivated by user
+	}
+	else
+	{
+		requestJson("GET", "/api/event/"+calEvent.id+"/notifications_blacklist", null,
+		function (data: any)
+		{
+			event_bell.style.display = '';
+			SetBell(data.block);
+		},
+		function (type: string, ex: XMLHttpRequest)
+		{
+			console.error(type, ex.responseText)
+		});
+	}
 
 	// ----------------------
 	// Dates
@@ -359,4 +398,16 @@ function EditEvent (): void
 	var event = calendar.getEventById(current_event.event_id.toString());
 	jQuery("#eventProperties").modal("hide");
 	planAnEvent(event.start, event.end || event.start, event);
+}
+
+function get_connected_user ()
+{
+	return window['connected_user'];
+}
+
+function SetBell (block): void
+{
+	var event_bell = id('event_bell');
+	event_bell.className = block ? "far fa-bell-slash" : "fas fa-bell";
+	event_bell.setAttribute('title', i18n(block ? 'NotificationsBlocked' : 'NotificationsNotBlocked'));
 }

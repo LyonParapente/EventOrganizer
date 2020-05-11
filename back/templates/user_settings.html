@@ -112,7 +112,7 @@ background-color: rgba(255,255,255,0.4);
 			</div>
 			<div class="form-check">
 				<input type="checkbox" name="notif_event_change" id="notif_event_change" class="form-check-input big-checkbox" {% if user['notif_event_change'] %}checked{% endif %} />
-				<label class="form-check-label" for="notif_event_change">{{notif_event_change|safe}}</label><!--<br/>{{notif_event_change_note}} <i class="fas fa-bell" id="event_bell"></i>-->
+				<label class="form-check-label" for="notif_event_change">{{notif_event_change|safe}}</label><br/>{{notif_event_change_note}} <i class="fas fa-bell" id="event_bell"></i>
 			</div>
 			<div class="form-check">
 				<input type="checkbox" name="notif_tomorrow_events" id="notif_tomorrow_events" class="form-check-input big-checkbox" {% if user['notif_tomorrow_events'] %}checked{% endif %} />

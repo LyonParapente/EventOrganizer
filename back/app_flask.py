@@ -105,6 +105,9 @@ api.add_resource(EventAPI,         settings.api_path+'/event/<int:event_id>')
 from api.registration import RegisterAPI
 api.add_resource(RegisterAPI,      settings.api_path+'/event/<int:event_id>/registration')
 
+from api.notifications_blacklist import NotificationsBlacklistAPI
+api.add_resource(NotificationsBlacklistAPI, settings.api_path+'/event/<int:event_id>/notifications_blacklist')
+
 from api.events import EventsAPI
 api.add_resource(EventsAPI,        settings.api_path+'/events')
 
@@ -153,6 +156,7 @@ def calendar():
     infos = get_jwt_claims()
     theme = infos['theme']
     infos['id'] = user_id
+    del infos['theme']
     del infos['role']
   header = render_template('header.html', **lang, is_connected=is_connected)
   return render_template('calendar.html', **lang, header=header,
@@ -359,6 +363,7 @@ def user_settings():
       claims['firstname'] = form['firstname']
       claims['lastname'] = form['lastname']
       claims['theme'] = form['theme']
+      claims['notif_event_change'] = int(form['notif_event_change'])
 
       # message is lost... but we have to redirect for csrf_token variable
       return regenerate_claims(claims, '/settings')

@@ -79,7 +79,8 @@ class LoginAPI(Resource):
       'role': user['role'],
       'firstname': user['firstname'],
       'lastname': user['lastname'],
-      'theme': user['theme']
+      'theme': user['theme'],
+      'notif_event_change': user['notif_event_change']
     }
     return create_access_token(identity=user['id'],
     user_claims=claims, expires_delta=expires_delta)

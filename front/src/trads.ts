@@ -54,7 +54,9 @@ const trads =
 		"Edit": "Modifier",
 		"Delete": "Supprimer",
 		"Confirm": "Es-tu vraiment sûr(e) ?",
-		"Edit an event": "Modifier un évènement"
+		"Edit an event": "Modifier un évènement",
+		"NotificationsBlocked": "Notifications emails actuellement désactivées",
+		"NotificationsNotBlocked": "Notifications emails actuellement activées"
 	}
 };
 

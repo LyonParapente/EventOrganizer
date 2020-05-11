@@ -220,6 +220,13 @@ def get_users_to_contact(event_id, ignore_id):
     # Add user to dict (or overwrite)
     users[str(user_id)] = user
 
+  # Filter out users who don't want to be notified
+  blacklist_raw = db.list_notifications_blacklist(event_id)
+  blacklist = [r['user_id'] for r in blacklist_raw]
+  for id in list(users.keys()):
+    if int(id) in blacklist:
+      del users[id]
+
   return users.values()
 
 def send_new_message(author_name, author_id, event_id, comment):
