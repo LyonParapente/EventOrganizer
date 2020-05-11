@@ -266,6 +266,10 @@ def send_new_message(author_name, author_id, event_id, comment):
 def send_new_registration(event_id, user_id, user_name, interest):
   """Emails when somebody register to an event"""
   check_domain()
+
+  if interest!=2:
+    return
+
   event_users = get_users_to_contact(event_id, user_id)
   if len(event_users) == 0:
     return None
@@ -273,8 +277,6 @@ def send_new_registration(event_id, user_id, user_name, interest):
   # Fetch event title
   event = db.get_event(event_id)
   title = event['title'].strip()
-
-  verb = "participe" if interest==2 else "s'intéresse"
 
   recipients = compute_recipients(event_users)
   messages = [
@@ -286,12 +288,12 @@ def send_new_registration(event_id, user_id, user_name, interest):
         }
       ],
       "Bcc": recipients,
-      "Subject": "{user_name} {verb} à la sortie {title}".format(user_name=user_name, verb=verb, title=title),
+      "Subject": "{user_name} participe à la sortie {title}".format(user_name=user_name, title=title),
       "HTMLPart": """
-<a href="{site}/user:{user_id}">{user_name}</a> {verb} à la sortie <a href="{site}/event:{event_id}">{title}</a>
+<a href="{site}/user:{user_id}">{user_name}</a> participe à la sortie <a href="{site}/event:{event_id}">{title}</a>
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(user_name=html.escape(user_name), user_id=str(user_id), verb=verb,
+""".format(user_name=html.escape(user_name), user_id=str(user_id),
       event_id=str(event_id), title=html.escape(title), site=domain)
     }
   ]
@@ -300,6 +302,10 @@ def send_new_registration(event_id, user_id, user_name, interest):
 def send_del_registration(event_id, user_id, user_name, interest):
   """Emails when somebody delete his/her registration from an event"""
   check_domain()
+
+  if interest!=2:
+    return
+
   event_users = get_users_to_contact(event_id, user_id)
   if len(event_users) == 0:
     return None
@@ -307,8 +313,6 @@ def send_del_registration(event_id, user_id, user_name, interest):
   # Fetch event title
   event = db.get_event(event_id)
   title = event['title'].strip()
-
-  verb = "sa participation" if interest==2 else "son intérêt"
 
   recipients = compute_recipients(event_users)
   messages = [
@@ -320,12 +324,12 @@ def send_del_registration(event_id, user_id, user_name, interest):
         }
       ],
       "Bcc": recipients,
-      "Subject": "{user_name} annule {verb} à la sortie {title}".format(user_name=user_name, verb=verb, title=title),
+      "Subject": "{user_name} annule sa participation à la sortie {title}".format(user_name=user_name, title=title),
       "HTMLPart": """
-<a href="{site}/user:{user_id}">{user_name}</a> annule {verb} à la sortie <a href="{site}/event:{event_id}">{title}</a>
+<a href="{site}/user:{user_id}">{user_name}</a> annule sa participation à la sortie <a href="{site}/event:{event_id}">{title}</a>
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
-""".format(user_name=html.escape(user_name), user_id=str(user_id), verb=verb,
+""".format(user_name=html.escape(user_name), user_id=str(user_id),
       event_id=str(event_id), title=html.escape(title), site=domain)
     }
   ]
