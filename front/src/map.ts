@@ -42,7 +42,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		var tileLayers =
 		{
 			"OpenStreetMap": openstreetmap,
-			"Google Satellite": googleSat,
+			//"Google Satellite": googleSat,
 			"OpenTopoMap": opentopomap
 		};
 
@@ -52,10 +52,12 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			// https://geoservices.ign.fr/documentation/donnees-ressources-wmts.html
 			var ignKey = window.location.hostname === 'localhost' ? 'choisirgeoportail' : settings.IGN_key;
 			var ignLayers = {
-				"ORTHOIMAGERY.ORTHOPHOTOS": "ORTHOIMAGERY.ORTHOPHOTOS",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS": "GEOGRAPHICALGRIDSYSTEMS.MAPS",
-				"GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
-				"GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN": "GEOGRAPHICALGRIDSYSTEMS.SLOPES.MOUNTAIN",
+				"IGN Satellite": "ORTHOIMAGERY.ORTHOPHOTOS",
+				"IGN": "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+
+				// Work only with key and referrer
+				"IGN Scan": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
+				"IGN Touristic Scan": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR",
 			};
 			for (var niceName in ignLayers)
 			{
