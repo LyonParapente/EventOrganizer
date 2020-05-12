@@ -58,7 +58,7 @@ const settings: Settings =
 			autre: '#FB6F46'
 		}
 	},
-	unsplash_tags: ['paragliding'],
+	unsplash_tags: ['paraglider'],
 	IGN_key: ''// 'o9q1uza84786tsx16keg17n0'
 };
 export default settings;
