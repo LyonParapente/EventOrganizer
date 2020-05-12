@@ -81,8 +81,20 @@ resize: none;
 cursor: pointer;
 }
 
-#event_author_email{
+@media (max-width: 767.98px) {
+#event_author_email {
 font-size: small;
+}
+#event_author_phone {
+font-size: small;
+padding-left: 3px;
+padding-right: 3px;
+}
+#event_author_whatsapp span {
+font-size: small;
+padding-left: 2px;
+padding-right: 2px;
+}
 }
 
 #sortie_categories {
