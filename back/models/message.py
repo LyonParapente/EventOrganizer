@@ -33,6 +33,7 @@ class MessagesUser(Schema):
     'lastname': {'type': 'string', 'example': 'DOE'},
     'phone': {'type': 'string', 'example': '01.02.03.04.05',
       'description': 'present if share_phone is true'},
+    'has_whatsapp': {'type': 'boolean', 'example': True},
     'email': {'type': 'string', 'format': 'email',
       'example': 'john.doe@gmail.com', 'minLength': 5,
       'description': 'present if share_email is true'}

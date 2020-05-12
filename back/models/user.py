@@ -22,6 +22,7 @@ class User(Schema):
     'share_phone': {'type': 'boolean', 'writeOnly': True,
       'example': False, 'default': False,
       'description': 'Does the user allow his/her phone to be public?'},
+    'has_whatsapp': {'type': 'boolean', 'example': False, 'default': False},
     'notif_new_event': {'type': 'boolean', 'writeOnly': True,
       'example': True, 'default': True,
       'description': en['notif_new_event']},
@@ -55,6 +56,8 @@ def validate_user(json, create=False, update=False):
   return user
 
 def filter_user_response(props):
+  props['has_whatsapp'] = True if props['has_whatsapp']==1 else False
+
   silence_user_fields(props)
 
   # Always remove writeOnly fields for output
@@ -76,3 +79,4 @@ def silence_user_fields(user):
     del user['email']
   if user['share_phone'] == 0:
     del user['phone']
+    del user['has_whatsapp']

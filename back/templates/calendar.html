@@ -79,20 +79,28 @@
 					</div>
 					<div class="form-group row">
 						<label for="sortie_heure" class="col-sm-3 col-form-label">Time</label>
-						<div class="col-sm-9">
+						<div class="col-sm-2">
 							<input type="text" class="form-control" id="sortie_heure" tabindex="6" />
+						</div>
+						<div class="col form-row">
+							<div class="col-auto form-inline">
+								<label for="sortie_whatsapp"><i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i><span>invite link:</span></label>
+							</div>
+							<div class="col">
+								<input type="text" class="form-control" id="sortie_whatsapp" placeholder="https://chat.whatsapp.com/..." tabindex="7" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
 						<div class="col-sm-9">
-							<textarea class="form-control" id="sortie_description" rows="5"  tabindex="7"></textarea>
+							<textarea class="form-control" id="sortie_description" rows="5"  tabindex="8"></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_category" class="col-sm-3 col-form-label">Category</label>
 						<div class="col-sm-9 dropdown">
-							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" tabindex="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
+							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" tabindex="9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
 							<div class="dropdown-menu" aria-labelledby="sortie_category">
 								<a class="dropdown-item trad" href="javascript:;">None</a>
 								<div class="dropdown-divider"></div>
@@ -108,7 +116,7 @@
 						</div>
 					</div>
 					<div id="event_post_error"></div>
-					<button type="submit" class="btn btn-outline-primary btn-lg btn-block trad" id="sortie_save" tabindex="9">Save</button>
+					<button type="submit" class="btn btn-outline-primary btn-lg btn-block trad" id="sortie_save" tabindex="10">Save</button>
 				</form>
 			</div>
 		</div>
@@ -118,12 +126,16 @@
 <div class="modal" id="eventProperties" style="display:none" tabindex="-1" role="dialog" aria-labelledby="event_title" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header align-items-center">
 				<div class="d-flex flex-column">
 					<span id="event_id"></span>
 					<span class="badge" id="event_category"></span>
 				</div>
 				<i class="fas fa-bell" id="event_bell"></i>
+				<button type="button" class="btn btn-outline-success d-flex align-items-center ml-2 pl-0" id="event_whatsapp">
+					<i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i>
+					WhatsApp
+				</button>
 				<h4 class="modal-title container text-center" id="event_title"></h4>
 				<button id="del_event" type="button" class="btn btn-outline-danger mr-2 trad">Delete</button><button id="edit_event" type="button" class="btn btn-primary mr-2 trad">Edit</button>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -178,11 +190,19 @@
 										</div>
 										<span class="form-control" id="event_author"></span>
 									</div>
-									<div class="input-group mt-auto pt-1" id="event_author_phone_box">
-										<div class="input-group-prepend">
-											<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
+									<div class="form-inline">
+										<div class="input-group mt-auto pt-1" id="event_author_phone_box">
+											<div class="input-group-prepend">
+												<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
+											</div>
+											<span class="form-control" id="event_author_phone"></span>
 										</div>
-										<span class="form-control" id="event_author_phone"></span>
+										<div class="input-group mt-auto ml-1 pt-1" id="event_author_whatsapp">
+											<div class="input-group-prepend">
+												<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
+											</div>
+											<span class="form-control"><a href="https://api.whatsapp.com/send?phone=">WhatsApp</a></span>
+										</div>
 									</div>
 									<div class="input-group mt-auto pt-1" id="event_author_email_box">
 										<div class="input-group-prepend">

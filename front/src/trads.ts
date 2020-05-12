@@ -56,7 +56,8 @@ const trads =
 		"Confirm": "Es-tu vraiment sûr(e) ?",
 		"Edit an event": "Modifier un évènement",
 		"NotificationsBlocked": "Notifications emails actuellement désactivées",
-		"NotificationsNotBlocked": "Notifications emails actuellement activées"
+		"NotificationsNotBlocked": "Notifications emails actuellement activées",
+		"invite link:": "Lien WhatsApp:"
 	}
 };
 

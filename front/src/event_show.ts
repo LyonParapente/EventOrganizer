@@ -51,6 +51,11 @@ export function init_showEvent (cal: Calendar): void
 			console.error(type, ex.responseText)
 		});
 	});
+
+	id('event_whatsapp').addEventListener('click', function ()
+	{
+		window.open(current_event.whatsapp_link);
+	});
 }
 
 export function showEvent (calEvent: EventApi): void
@@ -80,7 +85,8 @@ export function showEvent (calEvent: EventApi): void
 	{
 		event_id: parseInt(calEvent.id, 10),
 		creator_id: calEvent.extendedProps.creator_id,
-		isFinished: end.getTime() < new Date().getTime()
+		isFinished: end.getTime() < new Date().getTime(),
+		whatsapp_link: calEvent.extendedProps.whatsapp_link
 	}
 	loadComments(current_event);
 
@@ -101,6 +107,7 @@ export function showEvent (calEvent: EventApi): void
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 	id('comment_post_error').style.display = 'none';
 
+	// ----------------------
 	// Title & description
 	id("event_title").textContent = calEvent.title;
 	var event_description = id("event_description");
@@ -108,6 +115,21 @@ export function showEvent (calEvent: EventApi): void
 	var desc = calEvent.extendedProps.description || i18n('No description');
 	event_description.appendChild(document.createTextNode(desc));
 	event_description.innerHTML = event_description.innerHTML.replace(/\n/g,'<br/>');
+
+	// ----------------------
+	// WhatsApp
+
+	var event_whatsapp = id('event_whatsapp') as HTMLLinkElement;
+	if (current_event.whatsapp_link)
+	{
+		event_whatsapp.style.display = '';
+		event_whatsapp.classList.add('d-flex');
+	}
+	else
+	{
+		event_whatsapp.style.display = 'none';
+		event_whatsapp.classList.remove('d-flex'); // so that display: none; works
+	}
 
 	// ----------------------
 	// Category
@@ -159,8 +181,9 @@ export function showEvent (calEvent: EventApi): void
 
 	// Will be set by loadComments, cleanup any previously open
 	id("event_author").textContent = '';
-	id('event_author_phone_box').style.display = 'none'
-	id('event_author_email_box').style.display = 'none'
+	id('event_author_phone_box').style.display = 'none';
+	id('event_author_whatsapp').style.display = 'none';
+	id('event_author_email_box').style.display = 'none';
 	id("event_author_phone").innerHTML = '';
 	id("event_author_email").innerHTML = '';
 

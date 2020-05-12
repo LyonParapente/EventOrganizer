@@ -2,6 +2,8 @@ import random
 import string
 import locale
 import datetime
+import re
+import settings
 
 def randomString(stringLength=8):
   letters = string.ascii_lowercase
@@ -13,10 +15,24 @@ def nice_date(date, lang):
   locale.setlocale(locale.LC_ALL, 'C') # reset
   return result
 
-
 def get_date_from_str(str):
   if hasattr(datetime.date, 'fromisoformat'):
     return datetime.date.fromisoformat(str)
 
   parts = map(lambda x: int(x), str.split('-'))
   return datetime.date(*parts)
+
+def raw_phone(phone):
+  return re.sub('[^\d+]', '', phone)
+
+def nice_phone(phone):
+  p = raw_phone(phone)
+  if len(p) == 10:
+    return p[0]+p[1]+'.'+p[2]+p[3]+'.'+p[4]+p[5]+'.'+p[6]+p[7]+'.'+p[8]+p[9]
+  return phone
+
+def whatsapp_phone(phone):
+  p = raw_phone(phone)
+  if len(p) == 10 and p[0] == '0':
+    return settings.international_prefix + p[1:]
+  return p

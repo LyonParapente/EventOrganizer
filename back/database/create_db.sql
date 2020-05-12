@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 "password_lost" TEXT,
 "phone" TEXT,
 "share_phone" BOOLEAN DEFAULT 0,
+"has_whatsapp" BOOLEAN DEFAULT 0,
 "theme" TEXT,
 "role" TEXT,
 "notif_new_event" BOOLEAN DEFAULT 1,
@@ -28,6 +29,7 @@ CREATE TABLE IF NOT EXISTS "events" (
 "gps_location" TEXT,
 "category" TEXT,
 "color" TEXT,
+"whatsapp_link" TEXT,
 "creator_id" INTEGER NOT NULL,
 "creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE

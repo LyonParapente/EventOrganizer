@@ -48,7 +48,8 @@ trads = {
   'notif_new_event': 'Recevoir les emails de nouvelle sortie',
   'notif_event_change': "Recevoir les notifications email sur une sortie ou j'ai interragi",
   'notif_event_change_note': 'Note: Tu peux temporairement désactiver les notifications sur une sortie en cliquant sur la cloche',
-  'notif_tomorrow_events': 'Recevoir les emails des sorties prévues pour demain'
+  'notif_tomorrow_events': 'Recevoir les emails des sorties prévues pour demain',
+  'has_whatsapp': "J'ai WhatsApp"
  },
  'en': {
   'lang': 'en',
@@ -98,7 +99,8 @@ trads = {
   'notif_new_event': 'Receive email when a new event is added',
   'notif_event_change': "Receive email notifications on an event on which I interracted",
   'notif_event_change_note': 'Note: You can temporarily deactivate notifications about an event by clicking on the bell',
-  'notif_tomorrow_events': 'Receive email for tomorrow events'
+  'notif_tomorrow_events': 'Receive email for tomorrow events',
+  'has_whatsapp': 'I have WhatsApp'
  }
 }
 

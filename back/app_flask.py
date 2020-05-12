@@ -7,6 +7,7 @@ from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jw
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
+from helper import raw_phone, nice_phone, whatsapp_phone
 import urllib.parse
 
 # ------------------------------
@@ -186,6 +187,12 @@ def user(id):
   """User details"""
   user_item = api_user.get(id)
   claims = get_jwt_claims()
+
+  phone = user_item.get('phone', '')
+  user_item['raw_phone'] = raw_phone(phone)
+  user_item['phone_nice'] = nice_phone(phone)
+  user_item['phone_whatsapp'] = whatsapp_phone(phone)
+
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('user.html',
     title=lang['userTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
@@ -345,6 +352,7 @@ def user_settings():
     # Ensure checkbox are boolean and not 'on'
     form['share_email'] = False if form.get('share_email') is None else True
     form['share_phone'] = False if form.get('share_phone') is None else True
+    form['has_whatsapp'] = False if form.get('has_whatsapp') is None else True
     form['notif_new_event'] = False if form.get('notif_new_event') is None else True
     form['notif_event_change'] = False if form.get('notif_event_change') is None else True
     form['notif_tomorrow_events'] = False if form.get('notif_tomorrow_events') is None else True

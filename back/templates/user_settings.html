@@ -55,7 +55,7 @@ background-color: rgba(255,255,255,0.4);
 		<div class="col-sm-10">
 			<div class="form-row">
 				<div class="col">
-					<input type="text" name="firstname" class="form-control input_user" placeholder="{{firstname}}" value="{{user['firstname']}}" required autofocus />
+					<input type="text" name="firstname" class="form-control input_user" placeholder="{{firstname}}" value="{{user['firstname']}}" required />
 				</div>
 				<div class="col">
 					<input type="text" name="lastname" class="form-control input_user" placeholder="{{lastname}}" value="{{user['lastname']}}" required />
@@ -71,8 +71,13 @@ background-color: rgba(255,255,255,0.4);
 	</div>
 	<div class="form-group row">
 		<label for="phone" class="col-sm-2 col-form-label">{{phone}}</label>
-		<div class="col-5 col-md-2">
-			<input type="text" name="phone" class="form-control input_user" placeholder="{{phone}}" value="{{user['phone']}}" />
+		<div class="form-inline">
+			<div class="col">
+				<input type="text" name="phone" id="phone" class="form-control input_user" placeholder="{{phone}}" value="{{user['phone']}}" />
+			</div>
+			<div class="col form-check">
+					<input type="checkbox" name="has_whatsapp" id="has_whatsapp" class="form-check-input big-checkbox" {% if user['has_whatsapp'] %}checked{% endif %} /><label for="has_whatsapp">{{has_whatsapp}}</label>
+			</div>
 		</div>
 	</div>
 	<div class="form-group row align-items-center">
@@ -150,6 +155,20 @@ function remove_avatar ()
 	ctrl.value = "1";
 	ctrl.closest('form').submit();
 }
+
+document.getElementById('has_whatsapp').addEventListener('change', function ()
+{
+	var phone = document.getElementById('phone');
+	if (this.checked && phone.value == '')
+	{
+		phone.classList.add('is-invalid');
+		this.checked = false;
+	}
+	else
+	{
+		phone.classList.remove('is-invalid');
+	}
+});
 </script>
 </body>
 </html>

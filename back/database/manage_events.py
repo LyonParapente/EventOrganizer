@@ -2,7 +2,8 @@ import datetime
 
 def insert_event(self, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
-    location=None, gps=None, gps_location=None, category=None, color=None, creator_id=None):
+    location=None, gps=None, gps_location=None, category=None, color=None,
+    whatsapp_link=None, creator_id=None):
   """Insert an event in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
@@ -19,6 +20,7 @@ def insert_event(self, *,
     'gps_location': gps_location,
     'category': category,
     'color': color,
+    'whatsapp_link': whatsapp_link,
     'creator_id': creator_id,
     'creation_datetime': datetime.datetime.utcnow().isoformat()+'Z'
   }
@@ -49,7 +51,8 @@ def get_event(self, event_id):
 
 def update_event(self, event_id, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
-    location=None, gps=None, gps_location=None, category=None, color=None):
+    location=None, gps=None, gps_location=None, category=None, color=None,
+    whatsapp_link=None):
   """Update an event in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
@@ -64,7 +67,8 @@ def update_event(self, event_id, *,
     'gps': gps,
     'gps_location': gps_location,
     'category': category,
-    'color': color
+    'color': color,
+    'whatsapp_link': whatsapp_link,
   }
   # Delete keys whose value is None
   fields_to_update = {k: v for k, v in fields_to_update.items() if v is not None}
@@ -120,7 +124,9 @@ def get_events_list(self, start, end):
     parameters.append(str(start))
 
   get_events = """SELECT
-      e.id,e.title,e.start_date,e.end_date,e.time,e.description,e.location,e.gps,e.gps_location,e.category,e.color,e.creator_id,e.creation_datetime,
+      e.id,e.title,e.start_date,e.end_date,e.time,e.description,
+      e.location,e.gps,e.gps_location,e.category,e.color,
+      e.creator_id,e.creation_datetime,e.whatsapp_link,
       CASE 
         WHEN e.end_date IS NULL THEN e.start_date
         ELSE e.end_date

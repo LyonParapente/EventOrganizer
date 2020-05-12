@@ -15,7 +15,8 @@ interface Settings
 		}
 	},
 	unsplash_tags: string[],
-	IGN_key: string
+	IGN_key: string,
+	international_prefix: string
 };
 
 const settings: Settings =
@@ -59,6 +60,7 @@ const settings: Settings =
 		}
 	},
 	unsplash_tags: ['paraglider'],
-	IGN_key: ''// 'o9q1uza84786tsx16keg17n0'
+	IGN_key: '', // 'o9q1uza84786tsx16keg17n0'
+	international_prefix: '+33'
 };
 export default settings;

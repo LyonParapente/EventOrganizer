@@ -1,5 +1,6 @@
 import { i18n, toRelativeTimeString } from './trads';
 import requestJson from './request_json';
+import settings from './settings';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
@@ -65,6 +66,7 @@ interface User
 	firstname: string;
 	lastname: string;
 	phone?: string;
+	has_whatsapp?: boolean;
 	email?: string;
 }
 
@@ -129,17 +131,33 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 	});
 }
 
-function getUserName (user: User)
+function getUserName (user: User): string
 {
 	return user.firstname + ' ' + user.lastname;
 }
 
-function nicePhone (phone: string)
+function rawPhone (phone: string): string
 {
-	if (phone.length === 10)
+	return phone.replace(/[^\d+]/g, '');
+}
+
+function nicePhone (phone: string): string
+{
+	var raw_phone = rawPhone(phone);
+	if (raw_phone.length === 10)
 	{
-		var p = phone.split('');
+		var p = raw_phone.split('');
 		return p[0]+p[1]+'.'+p[2]+p[3]+'.'+p[4]+p[5]+'.'+p[6]+p[7]+'.'+p[8]+p[9];
+	}
+	return phone;
+}
+
+function whatsappPhone (phone: string): string
+{
+	var raw_phone = rawPhone(phone);
+	if (raw_phone.length === 10 && raw_phone.charAt(0) === '0')
+	{
+		return settings.international_prefix + raw_phone;
 	}
 	return phone;
 }
@@ -151,11 +169,19 @@ function fillCreator (creator: User)
 	if (creator.phone)
 	{
 		let a = document.createElement('a');
-		a.href = "tel:"+creator.phone;
+		a.href = "tel:"+rawPhone(creator.phone);
 		a.innerHTML = nicePhone(creator.phone);
 		id("event_author_phone").innerHTML = ''
 		id("event_author_phone").appendChild(a);
-		id('event_author_phone_box').style.display = ''
+		id('event_author_phone_box').style.display = '';
+
+		if (creator.has_whatsapp)
+		{
+			var event_author_whatsapp = id("event_author_whatsapp");
+			var author_whatsapp = event_author_whatsapp.querySelector('a');
+			author_whatsapp.href = "https://api.whatsapp.com/send?phone=" + whatsappPhone(creator.phone);
+			event_author_whatsapp.style.display = '';
+		}
 	}
 	if (creator.email)
 	{
@@ -164,7 +190,7 @@ function fillCreator (creator: User)
 		a.innerHTML = creator.email;
 		id("event_author_email").innerHTML = ''
 		id("event_author_email").appendChild(a);
-		id('event_author_email_box').style.display = ''
+		id('event_author_email_box').style.display = '';
 	}
 }
 

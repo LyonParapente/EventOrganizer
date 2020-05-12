@@ -5,6 +5,17 @@ from models.message import Messages, MessagesComment, MessagesUser
 from models.user import silence_user_fields
 from database.manager import db
 
+def creat_basic_user_infos(props):
+  user_infos = {
+    'firstname': props['firstname'],
+    'lastname': props['lastname'],
+    'phone': props.get('phone', ''),
+    'email': props.get('email', ''),
+  }
+  if bool(props.get('has_whatsapp', 0)) == True:
+    user_infos['has_whatsapp'] = True
+  return user_infos
+
 class MessagesAPI(Resource):
   @jwt_required
   @swagger.doc({
@@ -55,12 +66,7 @@ class MessagesAPI(Resource):
 
     for registration in registrations:
       silence_user_fields(registration)
-      user = MessagesUser(**{
-        'firstname': registration['firstname'],
-        'lastname': registration['lastname'],
-        'phone': registration.get('phone', ''),
-        'email': registration.get('email', '')
-      })
+      user = MessagesUser(**creat_basic_user_infos(registration))
       # Add user to list
       user_id = registration['user_id']
       users[str(user_id)] = user
@@ -72,12 +78,7 @@ class MessagesAPI(Resource):
 
     for message in messages:
       silence_user_fields(message)
-      user = MessagesUser(**{
-        'firstname': message['firstname'],
-        'lastname': message['lastname'],
-        'phone': message.get('phone', ''),
-        'email': message.get('email', '')
-      })
+      user = MessagesUser(**creat_basic_user_infos(message))
       # Add user to dict (or overwrite)
       users[str(message['author_id'])] = user
 
@@ -89,12 +90,7 @@ class MessagesAPI(Resource):
 
     # Add creator to dict (or overwrite)
     silence_user_fields(creator)
-    user = MessagesUser(**{
-      'firstname': creator['firstname'],
-      'lastname': creator['lastname'],
-      'phone': creator.get('phone', ''),
-      'email': creator.get('email', '')
-    })
+    user = MessagesUser(**creat_basic_user_infos(creator))
     users[str(creator['id'])] = user
 
     # Remove empty phone or email

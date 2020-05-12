@@ -34,3 +34,4 @@ web_remember_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=30)
 uploads_folder = 'uploads'
 avatars_folder = 'avatars'
 uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+international_prefix = '+33'

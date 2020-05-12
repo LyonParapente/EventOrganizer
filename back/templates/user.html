@@ -23,6 +23,9 @@ max-width: 500px;
 .card-body{
 background-color: rgba(0,0,0,0.2);
 }
+.fa-whatsapp{
+color: green;
+}
 </style>
 </head>
 <body>
@@ -38,11 +41,21 @@ background-color: rgba(0,0,0,0.2);
 			<span class="form-control">{{user['firstname']}} {{user['lastname']}}</span>
 		</div>
 		{% if user.get('phone') %}
-		<div class="input-group mt-auto pt-1">
-			<div class="input-group-prepend">
-				<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div>
+		<div class="form-inline">
+			<div class="input-group mt-auto pt-1">
+				<div class="input-group-prepend">
+					<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div>
+				</div>
+				<span class="form-control"><a href="tel:{{user['raw_phone']}}">{{user['phone_nice']}}</a></span>
 			</div>
-			<span class="form-control"><a href="tel:{{user.get('phone')}}">{{user.get('phone')}}</a></span>
+			{% if user.get('has_whatsapp') %}
+			<div class="input-group mt-auto ml-1 pt-1">
+				<div class="input-group-prepend">
+					<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
+				</div>
+				<span class="form-control"><a href="https://api.whatsapp.com/send?phone={{user['phone_whatsapp']}}">WhatsApp</a></span>
+			</div>
+			{% endif %}
 		</div>
 		{% endif %}
 		{% if user.get('email') %}

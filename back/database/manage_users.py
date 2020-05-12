@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt()
 
 def insert_user(self, *,
-    firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False, theme=settings.default_theme,
+    firstname=None, lastname=None, email=None, password=None, share_email=False, phone=None, share_phone=False, has_whatsapp=False, theme=settings.default_theme,
     notif_new_event=True, notif_event_change=True, notif_tomorrow_events=True):
   """Insert a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
@@ -21,6 +21,7 @@ def insert_user(self, *,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone,
+    'has_whatsapp': has_whatsapp,
     'theme': theme,
     'role': 'new', # to be approved -> user,
     'notif_new_event': notif_new_event,
@@ -85,7 +86,7 @@ def list_users(self, include_new=False, only_admins=False,
     db.close()
 
 def update_user(self, user_id, *,
-    firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None, theme=None,
+    firstname=None, lastname=None, email=None, password=None, share_email=None, phone=None, share_phone=None, has_whatsapp=None, theme=None,
     notif_new_event=None, notif_event_change=None, notif_tomorrow_events=None):
   """Update a user in the database
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
@@ -103,6 +104,7 @@ def update_user(self, user_id, *,
     'share_email': share_email,
     'phone': phone,
     'share_phone': share_phone,
+    'has_whatsapp': has_whatsapp,
     'theme': theme,
     'notif_new_event': notif_new_event,
     'notif_event_change': notif_event_change,

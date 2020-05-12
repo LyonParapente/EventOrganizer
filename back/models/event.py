@@ -15,6 +15,7 @@ class Event(Schema):
     'gps_location': {'type': 'string', 'example': 'La Halle Mode & Chaussures | Bron'},
     'category': {'type': 'string', 'example': 'conference'},
     'color': {'type': 'string', 'example': '#662C67'},
+    'whatsapp_link': {'type': 'string', 'example': 'https://chat.whatsapp.com/D8CuyAfZilxKbCgdIK8ZX5'},
     'creator_id': {'type': 'integer', 'readOnly': True, 'example': 101},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.403284Z'}
   }
@@ -34,6 +35,8 @@ def validate_event(json, create=False, update=False):
       user = EventCreate(**json)
     elif update == True:
       user = EventUpdate(**json)
+    if json.get('whatsapp_link', '') != '' and not json['whatsapp_link'].startswith('https://chat.whatsapp.com/'):
+      raise ValueError('Invalid WhatsApp link')
   except ValueError as e:
     abort(400, e.args[0])
   return user

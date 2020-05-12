@@ -69,6 +69,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 	var sortie_lieu = id("sortie_lieu") as HTMLInputElement;
 	var sortie_RDV = id("sortie_RDV") as HTMLInputElement;
 	var sortie_heure = id("sortie_heure") as HTMLInputElement;
+	var sortie_whatsapp = id('sortie_whatsapp') as HTMLInputElement;
 	var sortie_desc = id("sortie_description") as HTMLTextAreaElement;
 	var sortie_category = id("sortie_category") as HTMLButtonElement;
 	var sortie_color = id('sortie_color') as HTMLInputElement;
@@ -82,6 +83,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		sortie_date_start.labels[0],
 		sortie_date_end.labels[0],
 		sortie_heure.labels[0],
+		sortie_whatsapp.labels[0].querySelector('span'),
 		sortie_desc.labels[0],
 		sortie_category.labels[0],
 		"#sortie_save"
@@ -92,6 +94,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 	id('event_post_error').style.display = 'none';
+	sortie_whatsapp.classList.remove('is-invalid');
 
 	// ----------------------
 	// Set up fields
@@ -111,6 +114,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		sortie_lieu.value = eP.location || '';
 		sortie_RDV.value = eP.gps_location || '';
 		sortie_heure.value = eP.time || '';
+		sortie_whatsapp.value = eP.whatsapp_link || '';
 		sortie_desc.value = eP.description || '';
 		sortie_category.innerHTML = i18n('None');
 		if (eP.category || editedEvent.backgroundColor)
@@ -145,6 +149,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		sortie_lieu.value = '';
 		sortie_RDV.value = '';
 		sortie_heure.value = '';
+		sortie_whatsapp.value = '';
 		sortie_desc.value = '';
 		sortie_category.innerHTML = i18n('None');
 
@@ -194,6 +199,7 @@ function SubmitEvent (onCreate)
 	var date_start = id("sortie_date_start") as HTMLInputElement;
 	var date_end = id("sortie_date_end") as HTMLInputElement;
 	var heure = id("sortie_heure") as HTMLInputElement;
+	var whatsapp_link = id("sortie_whatsapp") as HTMLInputElement;
 	var description = id("sortie_description") as HTMLTextAreaElement;
 	var category = id("sortie_category") as HTMLButtonElement;
 	var color = id("sortie_color") as HTMLInputElement;
@@ -210,6 +216,7 @@ function SubmitEvent (onCreate)
 		start_date: date_start.value,
 		end_date: date_end.value,
 		time: heure.value,
+		whatsapp_link: whatsapp_link.value,
 		description: description.value,
 		location: lieu.value,
 		gps: rdv_gps.value,
@@ -250,8 +257,18 @@ function SubmitEvent (onCreate)
 		{
 			window.location.assign('/login');
 		}
-		console.error(type, ex.responseText)
-		event_post_error.textContent = i18n('Unable to save, please retry');
-		event_post_error.style.display = '';
+		else if (ex.status === 400)
+		{
+			if (JSON.parse(ex.responseText).message === "Invalid WhatsApp link")
+			{
+				whatsapp_link.classList.add('is-invalid');
+			}
+		}
+		else
+		{
+			console.error(type, ex.responseText)
+			event_post_error.textContent = i18n('Unable to save, please retry');
+			event_post_error.style.display = '';
+		}
 	});
 }
