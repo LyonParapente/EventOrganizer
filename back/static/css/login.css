@@ -1,6 +1,7 @@
 html,
 body {
 height: 100%;
+font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 }
 #unsplash{
 position: absolute;
