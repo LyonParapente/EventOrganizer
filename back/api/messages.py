@@ -9,8 +9,8 @@ def create_basic_user_infos(props):
   user_infos = {
     'firstname': props['firstname'],
     'lastname': props['lastname'],
-    'phone': props['phone'] or '',
-    'email': props['email'] or '',
+    'phone': props.get('phone', '') or '',
+    'email': props.get('email', '') or '',
   }
   if bool(props.get('has_whatsapp', 0)) == True and props['phone']:
     user_infos['has_whatsapp'] = True
