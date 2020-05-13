@@ -45,8 +45,10 @@
           <input type="password" name="password" class="form-control input_pass" placeholder="{{password}}" minlength="6" required />
         </div>
         {% endif %}
-        <div class="text-center text-danger">{{error}}</div>
-        <div class="text-center text-success">{{message}}</div>
+        <div class="text-center">
+          {% if error %}<div class="alert-danger">{{error}}</div>{% endif %}
+          {% if message %}<div class="alert-success">{{message}}</div>{% endif %}
+        </div>
         {% if not message %}
         <div class="d-flex justify-content-center mt-3">
           <button type="submit" class="btn btn-primary btn-lg btn-block login_btn">{{register}}</button>
