@@ -76,7 +76,7 @@ background-color: rgba(255,255,255,0.4);
 		<label for="phone" class="col-sm-2 col-form-label">{{phone}}</label>
 		<div class="form-inline">
 			<div class="col">
-				<input type="text" name="phone" id="phone" class="form-control input_user" placeholder="{{phone}}" value="{{user['phone']}}" />
+				<input type="text" name="phone" id="phone" class="form-control input_user" placeholder="{{phone}}" value="{{user['phone'] or ''}}" />
 			</div>
 			<div class="col form-check">
 					<input type="checkbox" name="has_whatsapp" id="has_whatsapp" class="form-check-input big-checkbox" {% if user['has_whatsapp'] %}checked{% endif %} /><label for="has_whatsapp">{{has_whatsapp}}</label>
@@ -138,11 +138,11 @@ background-color: rgba(255,255,255,0.4);
 		<div class="col-5">
 			<div class="form-group">
 				<label for="mywing">{{MyWing}}</label>
-				<input type="text" name="wing" id="mywing" class="form-control input_user" placeholder="ex: Advance Alpha 5 (violet/orange)" value="{{user['wing']}}" />
+				<input type="text" name="wing" id="mywing" class="form-control input_user" placeholder="ex: Advance Alpha 5 (violet/orange)" value="{{user['wing'] or ''}}" />
 			</div>
 			<div class="form-group">
 				<label for="mypresentation">{{MyPresentation}}</label>
-				<textarea name="presentation" id="mypresentation" class="form-control" rows="4">{{user['presentation']}}</textarea>
+				<textarea name="presentation" id="mypresentation" class="form-control" rows="4">{{user['presentation'] or ''}}</textarea>
 			</div>
 		</div>
 	</div>
