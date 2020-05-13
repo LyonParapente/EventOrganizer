@@ -9,6 +9,7 @@ from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
 from helper import raw_phone, nice_phone, whatsapp_phone
 import urllib.parse
+import html
 
 # ------------------------------
 # Our helpers
@@ -193,10 +194,13 @@ def user(id):
   user_item['phone_nice'] = nice_phone(phone)
   user_item['phone_whatsapp'] = whatsapp_phone(phone)
 
+  presentation = html.escape(user_item.get('presentation', '')).replace('\n', '<br/>')
+
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('user.html',
     title=lang['userTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
-    user=user_item, theme=claims['theme'], header=header)
+    user=user_item, theme=claims['theme'], header=header,
+    TheWing=lang['TheWing'], presentation=presentation)
 
 @app.route('/users')
 @jwt_required
@@ -377,6 +381,7 @@ def user_settings():
       # message is lost... but we have to redirect for csrf_token variable
       return regenerate_claims(claims, '/settings')
     else:
+      #print(result)
       error = lang['saved_error']
 
   header = render_template('header.html', **lang,

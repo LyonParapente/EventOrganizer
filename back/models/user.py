@@ -33,6 +33,8 @@ class User(Schema):
       'example': True, 'default': True,
       'description': en['notif_tomorrow_events']},
     'theme': {'type': 'string', 'default': settings.default_theme, 'writeOnly': True},
+    'wing': {'type': 'string', 'example': 'Advance Alpha 5 (violet/orange)'},
+    'presentation': {'type': 'string', 'example': 'I like to cross'},
     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.461593Z'}
   }
   # required on response:

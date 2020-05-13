@@ -49,7 +49,11 @@ trads = {
   'notif_event_change': "Recevoir les notifications email sur une sortie ou j'ai interragi",
   'notif_event_change_note': 'Note: Tu peux temporairement désactiver les notifications sur une sortie en cliquant sur la cloche',
   'notif_tomorrow_events': 'Recevoir les emails des sorties prévues pour demain',
-  'has_whatsapp': "J'ai WhatsApp"
+  'has_whatsapp': "J'ai WhatsApp",
+  'Me': 'Mon profil',
+  'MyWing': 'Mon aile :',
+  'TheWing': 'Son aile',
+  'MyPresentation': 'Ma présentation : (type de pratique, expérience, qui suis-je, ...)'
  },
  'en': {
   'lang': 'en',
@@ -100,7 +104,11 @@ trads = {
   'notif_event_change': "Receive email notifications on an event on which I interracted",
   'notif_event_change_note': 'Note: You can temporarily deactivate notifications about an event by clicking on the bell',
   'notif_tomorrow_events': 'Receive email for tomorrow events',
-  'has_whatsapp': 'I have WhatsApp'
+  'has_whatsapp': 'I have WhatsApp',
+  'Me': 'Me',
+  'MyWing': 'My wing:',
+  'TheWing': 'His/her wing:',
+  'MyPresentation': 'My presentation: (paragliding practice, experience, who am i, ...)'
  }
 }
 

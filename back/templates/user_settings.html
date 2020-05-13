@@ -134,6 +134,20 @@ background-color: rgba(255,255,255,0.4);
 	</div>
 
 	<div class="form-group row">
+		<label class="col-sm-2 col-form-label">{{Me}}</label>
+		<div class="col-5">
+			<div class="form-group">
+				<label for="mywing">{{MyWing}}</label>
+				<input type="text" name="wing" id="mywing" class="form-control input_user" placeholder="ex: Advance Alpha 5 (violet/orange)" value="{{user['wing']}}" />
+			</div>
+			<div class="form-group">
+				<label for="mypresentation">{{MyPresentation}}</label>
+				<textarea name="presentation" id="mypresentation" class="form-control" rows="4">{{user['presentation']}}</textarea>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group row">
 		<div class="col">
 			{% if error %}<div class="alert alert-danger">{{error}}</div>{% endif %}
 			{% if message %}<div class="alert alert-success">{{message}}</div>{% endif %}

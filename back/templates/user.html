@@ -33,9 +33,11 @@ color: green;
 <div class="container mt-2">
 
 <div class="row">
+
 	<div class="col-auto px-0">
 		<div class="text-center mt-1"><img src="/avatars/{{user['id']}}-130" alt="{{Avatar}}" /></div>
 	</div>
+
 	<div class="col-auto pr-0 flex-column form-inline align-items-start">
 		<div class="input-group mt-auto pt-1">
 			<span class="form-control">{{user['firstname']}} {{user['lastname']}}</span>
@@ -67,6 +69,25 @@ color: green;
 		</div>
 		{% endif %}
 		<div class="mt-auto"></div>
+	</div>
+</div>
+
+<div class="row mt-1">
+	<div class="input-group mt-auto pt-1">
+		<div class="input-group-prepend">
+			<div class="input-group-text">{{TheWing}}</div>
+		</div>
+		<span class="form-control">{{user['wing']}}</span>
+	</div>
+</div>
+
+<div class="row mt-2">
+	<div class="col p-0">
+		<div class="card">
+			<div class="card-body">
+				{{presentation|safe}}
+			</div>
+		</div>
 	</div>
 </div>
 

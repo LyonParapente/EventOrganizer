@@ -10,6 +10,9 @@ ALTER TABLE "users" ADD COLUMN "notif_tomorrow_events" BOOLEAN DEFAULT 1;
 ALTER TABLE "users" ADD COLUMN "has_whatsapp" BOOLEAN DEFAULT 0;
 ALTER TABLE "events" ADD COLUMN "whatsapp_link" TEXT;
 
+ALTER TABLE "users" ADD COLUMN "wing" TEXT;
+ALTER TABLE "users" ADD COLUMN "presentation" TEXT;
+
 -- Not possible in sqlite:
 -- ALTER TABLE "users" DROP COLUMN "licence";
 -- https://www.hwaci.com/sw/sqlite/lang_altertable.html
