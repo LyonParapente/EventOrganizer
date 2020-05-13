@@ -292,7 +292,8 @@ def register():
         result = lang['alreadyRegistered']
       else:
         result = lang['register_error']
-      return render_template('register.html', **lang, error=result), code
+      return render_template('register.html', **lang,
+        default_theme=settings.default_theme, error=result), code
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/planning')
