@@ -137,7 +137,7 @@ def update_user(self, user_id, *,
 def set_password_lost(self, user_id, empty=False):
   db, cursor = self._connect()
   if empty:
-    token = ''
+    token = None
   else:
     randStr = randomString(stringLength=12)
     token = bcrypt.generate_password_hash(randStr).decode()
