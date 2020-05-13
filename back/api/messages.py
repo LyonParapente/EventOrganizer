@@ -5,14 +5,14 @@ from models.message import Messages, MessagesComment, MessagesUser
 from models.user import silence_user_fields
 from database.manager import db
 
-def creat_basic_user_infos(props):
+def create_basic_user_infos(props):
   user_infos = {
     'firstname': props['firstname'],
     'lastname': props['lastname'],
-    'phone': props.get('phone', ''),
-    'email': props.get('email', ''),
+    'phone': props['phone'] or '',
+    'email': props['email'] or '',
   }
-  if bool(props.get('has_whatsapp', 0)) == True:
+  if bool(props.get('has_whatsapp', 0)) == True and props['phone']:
     user_infos['has_whatsapp'] = True
   return user_infos
 
@@ -66,7 +66,7 @@ class MessagesAPI(Resource):
 
     for registration in registrations:
       silence_user_fields(registration)
-      user = MessagesUser(**creat_basic_user_infos(registration))
+      user = MessagesUser(**create_basic_user_infos(registration))
       # Add user to list
       user_id = registration['user_id']
       users[str(user_id)] = user
@@ -78,7 +78,7 @@ class MessagesAPI(Resource):
 
     for message in messages:
       silence_user_fields(message)
-      user = MessagesUser(**creat_basic_user_infos(message))
+      user = MessagesUser(**create_basic_user_infos(message))
       # Add user to dict (or overwrite)
       users[str(message['author_id'])] = user
 
@@ -90,7 +90,7 @@ class MessagesAPI(Resource):
 
     # Add creator to dict (or overwrite)
     silence_user_fields(creator)
-    user = MessagesUser(**creat_basic_user_infos(creator))
+    user = MessagesUser(**create_basic_user_infos(creator))
     users[str(creator['id'])] = user
 
     # Remove empty phone or email
