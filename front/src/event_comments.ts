@@ -157,7 +157,7 @@ function whatsappPhone (phone: string): string
 	var raw_phone = rawPhone(phone);
 	if (raw_phone.length === 10 && raw_phone.charAt(0) === '0')
 	{
-		return settings.international_prefix + raw_phone;
+		return settings.international_prefix + raw_phone.substr(1);
 	}
 	return phone;
 }

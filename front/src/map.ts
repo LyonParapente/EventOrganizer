@@ -42,7 +42,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		var tileLayers =
 		{
 			"OpenStreetMap": openstreetmap,
-			//"Google Satellite": googleSat,
+			// "Google Satellite": googleSat,
 			"OpenTopoMap": opentopomap
 		};
 

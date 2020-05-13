@@ -109,6 +109,7 @@ export function showEvent (calEvent: EventApi): void
 
 	// ----------------------
 	// Title & description
+
 	id("event_title").textContent = calEvent.title;
 	var event_description = id("event_description");
 	event_description.innerHTML = '';
