@@ -531,12 +531,20 @@ for filename in os.listdir('uploads/backgrounds'):
 @app.route('/background/<int:width>x<int:height>')
 def background(width, height):
   """Get proper size background"""
+  rand = random.randint(1, len(available_backgrounds))
+  background = available_backgrounds[rand]
+  return get_image_resized(background, width, height)
+
+@app.route('/background/rescue/<int:width>x<int:height>')
+def rescue_background(width, height):
+  background = 'static/img/rescue.jpg'
+  return get_image_resized(background, width, height)
+
+def get_image_resized(background, width, height):
   # Simple protection
   if width > 5000 or height > 5000:
     return "TOO BIG"
 
-  rand = random.randint(1, len(available_backgrounds))
-  background = available_backgrounds[rand]
   filename = os.path.basename(background)
   filename_without_extension, extension = os.path.splitext(filename)
 
