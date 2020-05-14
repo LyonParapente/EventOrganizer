@@ -13,8 +13,10 @@ import datetime
 import html
 import sys
 from threading import Thread
+import copy
 
 flask_app = None
+max_recipients_per_mail = 50
 
 from_email = "calendrier@lyonparapente.fr"
 from_name = "Lyon Parapente"
@@ -40,6 +42,9 @@ def check_domain():
       request.environ['wsgi.url_scheme'],
       request.environ['HTTP_HOST'])
 
+def chunks(l, n):
+  n = max(1, n)
+  return [l[i:i+n] for i in range(0, len(l), n)]
 
 def send_emails(messages):
   """Send one or more emails"""
@@ -57,8 +62,16 @@ def send_emails_mailjet(messages):
     }
     message['HTMLPart'] = header + message['HTMLPart'] + footer
 
+    if message.get('Bcc'):
+      bcc = chunks(message['Bcc'], max_recipients_per_mail)
+      message["Bcc"] = bcc[0]
+      for remaining in bcc[1:]:
+        extra = copy.deepcopy(message)
+        extra["Bcc"] = remaining
+        messages.append(extra)
+
   data = {
-  'Messages': messages
+    'Messages': messages
   }
   #print(data)
   auth = (secrets.mailjet_api_key, secrets.mailjet_api_secret)
@@ -82,13 +95,20 @@ def send_emails_smtp_async(app, messages):
       message['HTMLPart'] = header + message['HTMLPart'] + footer
       try:
         if message.get('Bcc'):
-          recipients = compute_recipients_inline(message['Bcc'])
-          msg = Message(message['Subject'], bcc=recipients)
+          dests = compute_recipients_inline(message['Bcc'])
         else:
-          recipients = compute_recipients_inline(message['To'])
-          msg = Message(message['Subject'], recipients=recipients)
-        msg.html = message['HTMLPart']
-        mail.send(msg)
+          dests = compute_recipients_inline(message['To'])
+
+        for chunk in chunks(dests, max_recipients_per_mail):
+          bcc = None
+          recipients = None
+          if message.get('Bcc'):
+            bcc = chunk
+          else:
+            recipients = chunk
+          msg = Message(message['Subject'], recipients=recipients, bcc=bcc)
+          msg.html = message['HTMLPart']
+          mail.send(msg)
       except:
         with open("smtp_errors.txt", "a") as myfile:
           myfile.write(str(sys.exc_info()[0]))
