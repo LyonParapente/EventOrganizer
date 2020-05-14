@@ -7,9 +7,11 @@ from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jw
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import HTTPException
 from helper import raw_phone, nice_phone, whatsapp_phone
 import urllib.parse
 import html
+import sys, traceback
 
 # ------------------------------
 # Our helpers
@@ -53,6 +55,30 @@ api = Api(app, components=components, security=api_security)
 
 app.config.from_pyfile('secrets.py')
 emails.init(app)
+
+# ------------------------------
+# Generic error handlers
+
+@app.errorhandler(404)
+def page_not_found(e):
+  return error_page(str(e)), 404
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+  # pass through HTTP exceptions
+  if isinstance(e, HTTPException):
+    return e
+  exc_type, exc_value, exc_traceback = sys.exc_info()
+  infos = "<br/>".join(traceback.format_exception(exc_type, exc_value,
+                                          exc_traceback))
+  # Send detailled infos to dev.
+  emails.send_application_exception(infos)
+  return error_page(str(e)), 500
+
+def error_page(infos):
+  header = render_template('header.html', **lang, is_connected=True)
+  return render_template('error.html', rescue_title=lang['rescue_title'],
+    infos=infos, theme=settings.default_theme, header=header)
 
 # ------------------------------
 # Authent part 2: JWT config

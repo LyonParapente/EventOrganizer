@@ -119,6 +119,25 @@ def send_emails_smtp_async(app, messages):
 def send_emails_smtp(messages):
   Thread(target=send_emails_smtp_async, args=(flask_app, messages)).start()
 
+def send_application_exception(exception_infos):
+  with open("exceptions.txt", "a") as myfile:
+      myfile.write(exception_infos)
+      myfile.write('\n')
+
+  message = [
+    {
+      "To": [
+        {
+          "Email": "lyonparapente@gmail.com",
+          "Name": "Lyon Parapente Dev"
+        }
+      ],
+      "Subject": "Application exception",
+      "HTMLPart": exception_infos
+    }
+  ]
+  send_emails(message)
+
 #--------------------------------------------------
 
 def send_register(email, name, user_id):

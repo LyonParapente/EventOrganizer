@@ -6,3 +6,6 @@ events.db-journal
 secrets.py
 avatars/
 uploads/
+exceptions.txt
+smtp_errors.txt
+mailjet_errors.txt

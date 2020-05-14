@@ -53,7 +53,8 @@ trads = {
   'Me': 'Mon profil',
   'MyWing': 'Mon aile :',
   'TheWing': 'Son aile',
-  'MyPresentation': 'Ma présentation : (type de pratique, expérience, qui suis-je, ...)'
+  'MyPresentation': 'Ma présentation : (type de pratique, expérience, qui suis-je, ...)',
+  'rescue_title': 'Un incident est survenu'
  },
  'en': {
   'lang': 'en',
@@ -108,7 +109,8 @@ trads = {
   'Me': 'Me',
   'MyWing': 'My wing:',
   'TheWing': 'His/her wing:',
-  'MyPresentation': 'My presentation: (paragliding practice, experience, who am i, ...)'
+  'MyPresentation': 'My presentation: (paragliding practice, experience, who am i, ...)',
+  'rescue_title': 'Something wrong happened'
  }
 }
 
