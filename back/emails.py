@@ -11,6 +11,7 @@ import secrets
 import base64
 import datetime
 import html
+import sys
 
 from_email = "calendrier@lyonparapente.fr"
 from_name = "Lyon Parapente"
@@ -38,18 +39,23 @@ def check_domain():
 
 
 def send_emails(messages):
-  """Send one or more emails through mailjet api"""
+  """Send one or more emails"""
+  send_emails_mailjet(messages)
+  #send_emails_smtp(messages)
 
-  for i in range(len(messages)):
-    messages[i]['From'] = {
+def send_emails_mailjet(messages):
+  """Send one or more emails through mailjet api"""
+  for message in messages:
+    message['From'] = {
       "Email": from_email,
       "Name": from_name
     }
-    messages[i]['HTMLPart'] = header + messages[i]['HTMLPart'] + footer
+    message['HTMLPart'] = header + message['HTMLPart'] + footer
 
   data = {
   'Messages': messages
   }
+  #print(data)
   auth = (secrets.mailjet_api_key, secrets.mailjet_api_secret)
   mailjet = Client(auth=auth, version='v3.1')
   result = mailjet.send.create(data=data)
@@ -58,6 +64,29 @@ def send_emails(messages):
       myfile.write(str(result.json()))
       myfile.write('\n')
 
+def compute_recipients_inline(contacts):
+  recipients = []
+  for contact in contacts:
+    recipients.append(contact['Name']+' <'+contact['Email']+'>')
+  return recipients
+
+def send_emails_smtp(messages):
+  for message in messages:
+    try:
+      if message.get('Bcc'):
+        recipients = compute_recipients_inline(message['Bcc'])
+        msg = Message(message['Subject'], bcc=recipients)
+      else:
+        recipients = compute_recipients_inline(message['To'])
+        msg = Message(message['Subject'], recipients=recipients)
+      msg.html = message['HTMLPart']
+      mail.send(msg)
+    except:
+      with open("smtp_errors.txt", "a") as myfile:
+        myfile.write(str(sys.exc_info()[0]))
+        myfile.write('\n')
+
+#--------------------------------------------------
 
 def send_register(email, name, user_id):
   """Emails when someones register an account"""
@@ -391,11 +420,6 @@ Voici {desc} pour le {tomorrow_nice} :<br/>
   ]
   send_emails(messages)
 
-
-def demo_smtp_provider():
-  msg = Message("Hello", bcc=["user@domain.tld"])
-  msg.html = "<b>testing</b>"
-  mail.send(msg)
 
 def init(app):
   app.config['MAIL_SERVER'] = 'SSL0.OVH.NET'
