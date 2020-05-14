@@ -71,9 +71,13 @@ def handle_exception(e):
   exc_type, exc_value, exc_traceback = sys.exc_info()
   infos = "<br/>".join(traceback.format_exception(exc_type, exc_value,
                                           exc_traceback))
-  # Send detailled infos to dev.
-  emails.send_application_exception(infos)
-  return error_page(str(e)), 500
+  if not app.debug:
+    # Send detailled infos to dev.
+    emails.send_application_exception(infos)
+    error = str(e)
+  else:
+    error = infos
+  return error_page(error), 500
 
 def error_page(infos):
   header = render_template('header.html', **lang, is_connected=True)
@@ -195,7 +199,7 @@ def calendar():
 def swag():
   """Redirect to Swagger UI"""
   hostname = request.environ["SERVER_NAME"]
-  if hostname == "0.0.0.0":
+  if app.debug:
     hostname = 'localhost'
   port = request.environ["SERVER_PORT"]
   protocol = request.environ["wsgi.url_scheme"]

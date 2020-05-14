@@ -36,7 +36,7 @@ Pour toute question: <a href="mailto:contact@lyonparapente.fr">contact@lyonparap
 
 
 def check_domain():
-  if request.environ["SERVER_NAME"] == "0.0.0.0":
+  if flask_app.debug:
     global domain
     domain = "{}://{}".format(
       request.environ['wsgi.url_scheme'],
