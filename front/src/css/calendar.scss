@@ -127,15 +127,11 @@ text-align: center;
 text-align: right;
 }
 
-#unsplash, #changeBg {
-position: absolute;
-top: 0;
-left: 0;
-}
 #changeBg {
-margin: 10px;
-top: auto;
+position: absolute;
 bottom: 0;
+left: 0;
+margin: 10px;
 }
 
 .fa-whatsapp {

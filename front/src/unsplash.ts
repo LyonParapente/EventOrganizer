@@ -1,5 +1,3 @@
-var background_img = null;
-
 export default function unsplash (tags)
 {
   var tags = tags.join(',');
@@ -8,14 +6,6 @@ export default function unsplash (tags)
   var resolution = vw + "x" + vh;
   var url = `https://source.unsplash.com/featured/${resolution}?${tags}`;
 
-  if (background_img)
-  {
-    window.URL.revokeObjectURL(background_img.src);
-    document.body.removeChild(background_img);
-  }
-  background_img = new Image();
-  background_img.id = 'unsplash';
-  background_img.src = url;
-  document.body.insertBefore(background_img, document.body.firstChild);
+  document.body.style.backgroundImage = "url('"+url+"')"
 }
 (<any>window).unsplash = unsplash;
