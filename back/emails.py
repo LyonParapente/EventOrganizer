@@ -73,32 +73,28 @@ def compute_recipients_inline(contacts):
     recipients.append(contact['Name']+' <'+contact['Email']+'>')
   return recipients
 
-def send_async_email_smtp(app, msg):
+def send_emails_smtp(messages):
+  Thread(target=send_emails_smtp_async, args=(flask_app, messages)).start()
+
+def send_emails_smtp_async(app, messages):
   start = datetime.datetime.now()
   with app.app_context():
-    try:
-      mail.send(msg)
-    except:
-      with open("smtp_errors.txt", "a") as myfile:
-        myfile.write(str(sys.exc_info()[0]))
-        myfile.write('\n')
+    for message in messages:
+      try:
+        if message.get('Bcc'):
+          recipients = compute_recipients_inline(message['Bcc'])
+          msg = Message(message['Subject'], bcc=recipients)
+        else:
+          recipients = compute_recipients_inline(message['To'])
+          msg = Message(message['Subject'], recipients=recipients)
+        msg.html = message['HTMLPart']
+        mail.send(msg)
+      except:
+        with open("smtp_errors.txt", "a") as myfile:
+          myfile.write(str(sys.exc_info()[0]))
+          myfile.write('\n')
   end = datetime.datetime.now()
-  print("send_email_async took:" + str(end - start))
-
-def send_emails_smtp(messages):
-  start = datetime.datetime.now()
-  for message in messages:
-    if message.get('Bcc'):
-      recipients = compute_recipients_inline(message['Bcc'])
-      msg = Message(message['Subject'], bcc=recipients)
-    else:
-      recipients = compute_recipients_inline(message['To'])
-      msg = Message(message['Subject'], recipients=recipients)
-    msg.html = message['HTMLPart']
-    #mail.send(msg) #Blocking ~4s, use async:
-    Thread(target=send_async_email_smtp, args=(flask_app, msg)).start()
-  end = datetime.datetime.now()
-  print("send_emails_smtp took: " + str(end - start))
+  #print("send_emails_smtp_async took: " + str(end - start))
 
 #--------------------------------------------------
 
