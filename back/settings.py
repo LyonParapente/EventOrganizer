@@ -33,6 +33,7 @@ web_remember_JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=30)
 #---
 uploads_folder = 'uploads'
 avatars_folder = 'avatars'
+backgrounds_folder = 'backgrounds'
 uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
 international_prefix = '+33'
 use_mailjet = False

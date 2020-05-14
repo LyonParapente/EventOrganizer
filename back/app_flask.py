@@ -12,6 +12,7 @@ from helper import raw_phone, nice_phone, whatsapp_phone
 import urllib.parse
 import html
 import sys, traceback
+import random
 
 # ------------------------------
 # Our helpers
@@ -23,7 +24,7 @@ from helper import randomString
 import database.manager
 database.manager.init(settings.db_filepath)
 
-from image import generate_miniature
+from image import resize_image
 import emails
 
 # ------------------------------
@@ -368,6 +369,7 @@ def user_settings():
   """User settings"""
   id = get_jwt_identity()
   message = error = ''
+
   if request.method == 'POST':
     form = request.form.to_dict()
 
@@ -502,7 +504,7 @@ def generate_miniatures(path, user_id):
   user_id = str(user_id)
   for size in miniatures_sizes:
     dest_path = settings.avatars_folder+'/'+user_id+'-'+str(size)+'.png'
-    generate_miniature(path, dest_path, format='png', width=size, height=size, enlarge=True)
+    resize_image(path, dest_path, format='png', width=size, height=size, enlarge=True)
 
 def remove_miniatures(user_id):
   user_id = str(user_id)
@@ -512,6 +514,40 @@ def remove_miniatures(user_id):
       os.remove(dest_path)
     except:
       pass
+
+# Ensure folders we are writting into exists
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(settings.avatars_folder, exist_ok=True)
+os.makedirs(settings.backgrounds_folder, exist_ok=True)
+
+# List known backgrounds
+available_backgrounds = []
+for filename in os.listdir('uploads/backgrounds'):
+  filenameL = filename.lower()
+  if filenameL.endswith(".jpg") or filenameL.endswith(".jpeg"):
+    filepath = 'uploads/backgrounds/' + filename
+    available_backgrounds.append(filepath)
+
+@app.route('/background/<int:width>x<int:height>')
+def background(width, height):
+  """Get proper size background"""
+  # Simple protection
+  if width > 5000 or height > 5000:
+    return "TOO BIG"
+
+  rand = random.randint(1, len(available_backgrounds))
+  background = available_backgrounds[rand]
+  filename = os.path.basename(background)
+  filename_without_extension, extension = os.path.splitext(filename)
+
+  target = filename_without_extension+'-'+str(width)+'x'+str(height)+extension
+  dest_path = settings.backgrounds_folder+'/'+target
+
+  if not os.path.exists(dest_path):
+    resize_image(background, dest_path, format='jpg', quality=75,
+      width=width, height=height, enlarge=True, mode='crop')
+
+  return send_file(dest_path)
 
 @app.route('/tomorrow_events')
 def tomorrow_events():

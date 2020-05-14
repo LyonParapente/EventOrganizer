@@ -5,6 +5,7 @@ events.db
 events.db-journal
 secrets.py
 avatars/
+backgrounds/
 uploads/
 exceptions.txt
 smtp_errors.txt
