@@ -179,10 +179,6 @@ document.addEventListener('DOMContentLoaded', function ()
 	{
 		unsplash(settings.unsplash_tags);
 	}
-	id('changeBg').addEventListener('click', function ()
-	{
-		unsplash(settings.unsplash_tags);
-	});
 });
 
 function init_routing ()
