@@ -79,6 +79,7 @@ def send_emails_smtp_async(app, messages):
   start = datetime.datetime.now()
   with app.app_context():
     for message in messages:
+      message['HTMLPart'] = header + message['HTMLPart'] + footer
       try:
         if message.get('Bcc'):
           recipients = compute_recipients_inline(message['Bcc'])
