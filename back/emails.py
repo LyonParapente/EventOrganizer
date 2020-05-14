@@ -12,6 +12,9 @@ import base64
 import datetime
 import html
 import sys
+from threading import Thread
+
+flask_app = None
 
 from_email = "calendrier@lyonparapente.fr"
 from_name = "Lyon Parapente"
@@ -40,8 +43,8 @@ def check_domain():
 
 def send_emails(messages):
   """Send one or more emails"""
-  send_emails_mailjet(messages)
-  #send_emails_smtp(messages)
+  #send_emails_mailjet(messages)
+  send_emails_smtp(messages)
 
 def send_emails_mailjet(messages):
   """Send one or more emails through mailjet api"""
@@ -70,21 +73,32 @@ def compute_recipients_inline(contacts):
     recipients.append(contact['Name']+' <'+contact['Email']+'>')
   return recipients
 
-def send_emails_smtp(messages):
-  for message in messages:
+def send_async_email_smtp(app, msg):
+  start = datetime.datetime.now()
+  with app.app_context():
     try:
-      if message.get('Bcc'):
-        recipients = compute_recipients_inline(message['Bcc'])
-        msg = Message(message['Subject'], bcc=recipients)
-      else:
-        recipients = compute_recipients_inline(message['To'])
-        msg = Message(message['Subject'], recipients=recipients)
-      msg.html = message['HTMLPart']
       mail.send(msg)
     except:
       with open("smtp_errors.txt", "a") as myfile:
         myfile.write(str(sys.exc_info()[0]))
         myfile.write('\n')
+  end = datetime.datetime.now()
+  print("send_email_async took:" + str(end - start))
+
+def send_emails_smtp(messages):
+  start = datetime.datetime.now()
+  for message in messages:
+    if message.get('Bcc'):
+      recipients = compute_recipients_inline(message['Bcc'])
+      msg = Message(message['Subject'], bcc=recipients)
+    else:
+      recipients = compute_recipients_inline(message['To'])
+      msg = Message(message['Subject'], recipients=recipients)
+    msg.html = message['HTMLPart']
+    #mail.send(msg) #Blocking ~4s, use async:
+    Thread(target=send_async_email_smtp, args=(flask_app, msg)).start()
+  end = datetime.datetime.now()
+  print("send_emails_smtp took: " + str(end - start))
 
 #--------------------------------------------------
 
@@ -432,4 +446,6 @@ def init(app):
   app.config['MAIL_DEFAULT_SENDER'] = from_name+" <"+from_email+">"
   global mail
   mail = Mail(app)
+  global flask_app
+  flask_app = app
 
