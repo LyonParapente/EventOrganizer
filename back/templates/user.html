@@ -42,7 +42,7 @@ color: green;
 		<div class="input-group mt-auto pt-1">
 			<span class="form-control">{{user['firstname']}} {{user['lastname']}}</span>
 		</div>
-		{% if user.get('phone') %}
+		{% if user['phone'] %}
 		<div class="form-inline">
 			<div class="input-group mt-auto pt-1">
 				<div class="input-group-prepend">
@@ -50,7 +50,7 @@ color: green;
 				</div>
 				<span class="form-control"><a href="tel:{{user['raw_phone']}}">{{user['phone_nice']}}</a></span>
 			</div>
-			{% if user.get('has_whatsapp') %}
+			{% if user['has_whatsapp'] %}
 			<div class="input-group mt-auto ml-1 pt-1">
 				<div class="input-group-prepend">
 					<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
@@ -60,18 +60,19 @@ color: green;
 			{% endif %}
 		</div>
 		{% endif %}
-		{% if user.get('email') %}
+		{% if user['email'] %}
 		<div class="input-group mt-auto pt-1">
 			<div class="input-group-prepend">
 				<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div>
 			</div>
-			<span class="form-control"><a href="mailto:{{user.get('email')}}">{{user.get('email')}}</a></span>
+			<span class="form-control"><a href="mailto:{{user['email']}}">{{user['email']}}</a></span>
 		</div>
 		{% endif %}
 		<div class="mt-auto"></div>
 	</div>
 </div>
 
+{% if user['wing'] %}
 <div class="row mt-1">
 	<div class="input-group mt-auto pt-1">
 		<div class="input-group-prepend">
@@ -80,7 +81,9 @@ color: green;
 		<span class="form-control">{{user['wing']}}</span>
 	</div>
 </div>
+{% endif %}
 
+{% if presentation %}
 <div class="row mt-2">
 	<div class="col p-0">
 		<div class="card">
@@ -90,6 +93,7 @@ color: green;
 		</div>
 	</div>
 </div>
+{% endif %}
 
 <div class="mt-2">
 	<a href="/">{{gotohome}}</a>
