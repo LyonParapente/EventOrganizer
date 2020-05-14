@@ -35,3 +35,4 @@ uploads_folder = 'uploads'
 avatars_folder = 'avatars'
 uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
 international_prefix = '+33'
+use_mailjet = False

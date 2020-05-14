@@ -43,8 +43,10 @@ def check_domain():
 
 def send_emails(messages):
   """Send one or more emails"""
-  #send_emails_mailjet(messages)
-  send_emails_smtp(messages)
+  if settings.use_mailjet:
+    send_emails_mailjet(messages)
+  else:
+    send_emails_smtp(messages)
 
 def send_emails_mailjet(messages):
   """Send one or more emails through mailjet api"""
@@ -73,9 +75,6 @@ def compute_recipients_inline(contacts):
     recipients.append(contact['Name']+' <'+contact['Email']+'>')
   return recipients
 
-def send_emails_smtp(messages):
-  Thread(target=send_emails_smtp_async, args=(flask_app, messages)).start()
-
 def send_emails_smtp_async(app, messages):
   start = datetime.datetime.now()
   with app.app_context():
@@ -95,6 +94,9 @@ def send_emails_smtp_async(app, messages):
           myfile.write('\n')
   end = datetime.datetime.now()
   #print("send_emails_smtp_async took: " + str(end - start))
+
+def send_emails_smtp(messages):
+  Thread(target=send_emails_smtp_async, args=(flask_app, messages)).start()
 
 #--------------------------------------------------
 
