@@ -46,7 +46,7 @@ trads = {
   'default': 'par défaut',
   'Notifications': 'Notifications',
   'notif_new_event': 'Recevoir les emails de nouvelle sortie',
-  'notif_event_change': "Recevoir les notifications email sur une sortie ou j'ai interragi",
+  'notif_event_change': "Recevoir les notifications email sur une sortie ou j'ai interagi",
   'notif_event_change_note': 'Note: Tu peux temporairement désactiver les notifications sur une sortie en cliquant sur la cloche',
   'notif_tomorrow_events': 'Recevoir les emails des sorties prévues pour demain',
   'has_whatsapp': "J'ai WhatsApp",

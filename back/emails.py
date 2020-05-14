@@ -117,7 +117,8 @@ def send_register(email, name, user_id):
       "Subject": "Inscription LyonParapente",
       "HTMLPart": """
 Ton inscription a bien été enregistrée !<br/>
-Merci de bien vouloir attendre l'approbation par un administrateur.
+Merci de bien vouloir attendre l'approbation par un administrateur.<br/>
+Tu reçevras un email quand ca sera effectué.
 """
     },
     {
