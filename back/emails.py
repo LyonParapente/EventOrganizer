@@ -254,7 +254,7 @@ def send_new_event(event, creator_name):
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
 """.format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
       event_id=str(event['id']), title=html.escape(event['title'].strip()),
-      description=html.escape(event.get('description','')).replace('\n', '<br/>'),
+      description=html.escape(event.get('description', '') or '').replace('\n', '<br/>'),
       start_date=html.escape(start_date), site=domain)
     }
   ]
@@ -450,7 +450,7 @@ def send_tomorrow_events():
 </div>
 """.format(site=domain, creator_id=creator_id, creator_name=html.escape(creator_name),
       event_id=event['id'], title=html.escape(event['title'].strip()),
-      description=html.escape(event.get('description','')).replace('\n', '<br/>'))
+      description=html.escape(event.get('description', '') or '').replace('\n', '<br/>'))
 
   all_users = db.list_users(notif_tomorrow_events=True)
   recipients = compute_recipients(all_users)
