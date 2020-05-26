@@ -72,6 +72,14 @@ def handle_exception(e):
   exc_type, exc_value, exc_traceback = sys.exc_info()
   infos = "<br/>".join(traceback.format_exception(exc_type, exc_value,
                                           exc_traceback))
+  try:
+    id = get_jwt_identity()
+    if id is not None:
+      claims = get_jwt_claims()
+      infos = "user_id: {}<br/>claims: {}<br/><br/>{}".format(id, json.dumps(claims), infos)
+  except:
+    pass
+
   if not app.debug:
     # Send detailled infos to dev.
     emails.send_application_exception(infos)
