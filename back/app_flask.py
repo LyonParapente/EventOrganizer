@@ -531,7 +531,7 @@ for filename in os.listdir('uploads/backgrounds'):
 @app.route('/background/<int:width>x<int:height>')
 def background(width, height):
   """Get proper size background"""
-  rand = random.randint(1, len(available_backgrounds))
+  rand = random.randint(0, len(available_backgrounds) - 1)
   background = available_backgrounds[rand]
   return get_image_resized(background, width, height)
 
