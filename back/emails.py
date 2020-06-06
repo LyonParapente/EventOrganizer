@@ -20,7 +20,7 @@ max_recipients_per_mail = 50
 
 from_email = "calendrier@lyonparapente.fr"
 from_name = "Lyon Parapente"
-domain = "https://lyonparapente.azurewebsites.net"
+domain = "https://calendrier.lyonparapente.fr"
 
 header = """
 <div align="center">
