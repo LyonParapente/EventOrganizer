@@ -171,7 +171,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		})
 		.one('hide.bs.modal', function ()
 		{
-			router.navigate("planning", i18n("Planning"));
+			router.navigate("", i18n("Planning"));
 		})
 		.modal('show');
 }

@@ -258,7 +258,7 @@ gulp.task('serve', function ()
 		// Routing
 		middleware: function (req, res, next)
 		{
-			if (req.url === '/planning' ||
+			if (req.url === '/' ||
 				req.url === '/event:new' ||
 				req.url.match(/event:[0-9]+$/) ||
 				req.url.match(/[0-9]{4}-[0-9]{2}$/))

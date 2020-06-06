@@ -189,12 +189,6 @@ document.addEventListener('DOMContentLoaded', function ()
 function init_routing ()
 {
 	router
-		.add("planning", function ()
-		{
-			console.log('Show the planning');
-			jQuery("#eventProperties").modal('hide');
-			jQuery("#createEvent").modal('hide');
-		})
 		.add("event:new", function ()
 		{
 			console.log('Create a new event');
@@ -225,11 +219,17 @@ function init_routing ()
 		{
 			console.log('Showing month '+month+' of year '+year);
 			calendar.gotoDate(new Date(+year, +month-1, 1));
+		})
+		.add("", function ()
+		{
+			console.log('Show the planning');
+			jQuery("#eventProperties").modal('hide');
+			jQuery("#createEvent").modal('hide');
 		});
 
 	if (location.pathname === router.root)
 	{
-		router.replace('planning', i18n('Planning'));
+		router.replace('', i18n('Planning'));
 	}
 	else if (history.state)
 	{

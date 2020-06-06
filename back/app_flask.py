@@ -173,7 +173,6 @@ class RegexConverter(BaseConverter):
 app.url_map.converters['regex'] = RegexConverter
 
 @app.route('/')
-@app.route('/planning')
 @app.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
 @jwt_optional
 def index(id=None):
@@ -298,7 +297,7 @@ def login():
       expires
     )
     if token is not None:
-      response = make_response(redirect('/planning'))
+      response = make_response(redirect('/'))
       set_access_cookies(response, token)
       return response
     else:
@@ -306,7 +305,7 @@ def login():
         default_theme=settings.default_theme), 401
   elif get_jwt_identity() is not None:
     # Already connected
-    return redirect('/planning')
+    return redirect('/')
   # GET
   return render_template('login.html', **lang,
     default_theme=settings.default_theme)
@@ -339,7 +338,7 @@ def register():
         default_theme=settings.default_theme, error=result), code
   elif get_jwt_identity() is not None:
     # Already connected
-    return redirect('/planning')
+    return redirect('/')
   # GET
   return render_template('register.html', **lang,
     default_theme=settings.default_theme)

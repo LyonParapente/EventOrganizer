@@ -296,7 +296,7 @@ export function showEvent (calEvent: EventApi): void
 		.one('hide.bs.modal', function ()
 		{
 			current_event = null;
-			router.navigate("planning", i18n("Planning"));
+			router.navigate("", i18n("Planning"));
 		})
 		.modal('show');
 
