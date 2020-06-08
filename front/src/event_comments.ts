@@ -170,7 +170,7 @@ function fillCreator (creator: User)
 	{
 		let a = document.createElement('a');
 		a.href = "tel:"+rawPhone(creator.phone);
-		a.innerHTML = nicePhone(creator.phone);
+		a.innerHTML = DOMPurify.sanitize(nicePhone(creator.phone));
 		id("event_author_phone").innerHTML = ''
 		id("event_author_phone").appendChild(a);
 		id('event_author_phone_box').style.display = '';
@@ -187,7 +187,7 @@ function fillCreator (creator: User)
 	{
 		let a = document.createElement('a');
 		a.href = "mailto:"+creator.email;
-		a.innerHTML = creator.email;
+		a.innerHTML = DOMPurify.sanitize(creator.email);
 		id("event_author_email").innerHTML = ''
 		id("event_author_email").appendChild(a);
 		id('event_author_email_box').style.display = '';
