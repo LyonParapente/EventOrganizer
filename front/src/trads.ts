@@ -26,7 +26,7 @@ const trads =
 		"Cannot end before start": "Egale ou après la date de début",
 		"By": "Par",
 		"Comments:": "Commentaires :",
-		"Add a comment...": "Ajouter un commentaire...",
+		"Add a comment... Markdown available!": "Ajouter un commentaire... Markdown disponible !",
 		"Please provide a comment": "Veuillez saisir un commentaire",
 		"Send": "Envoyer",
 		"The ": "Le ",
@@ -57,7 +57,8 @@ const trads =
 		"Edit an event": "Modifier un évènement",
 		"NotificationsBlocked": "Notifications emails actuellement désactivées",
 		"NotificationsNotBlocked": "Notifications emails actuellement activées",
-		"invite link:": "Lien WhatsApp:"
+		"invite link:": "Lien WhatsApp:",
+		"Type a description... Markdown available!": "Tape une description... Markdown disponible !"
 	}
 };
 

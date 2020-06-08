@@ -112,10 +112,8 @@ export function showEvent (calEvent: EventApi): void
 
 	id("event_title").textContent = calEvent.title;
 	var event_description = id("event_description");
-	event_description.innerHTML = '';
 	var desc = calEvent.extendedProps.description || i18n('No description');
-	event_description.appendChild(document.createTextNode(desc));
-	event_description.innerHTML = event_description.innerHTML.replace(/\n/g,'<br/>');
+	event_description.innerHTML = DOMPurify.sanitize(marked(desc));
 
 	// ----------------------
 	// WhatsApp

@@ -88,6 +88,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		sortie_category.labels[0],
 		"#sortie_save"
 	]);
+	i18n_inPlace(["#sortie_description"], "placeholder");
 
 	// Reset submission checks
 	var form = document.querySelector("#createEventBody form");

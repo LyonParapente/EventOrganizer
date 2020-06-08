@@ -32,7 +32,10 @@ gulp.task('copy js', function ()
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', // need Popper 1.x for sortie_category
 		'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
 		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
-		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js.map'
+		'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js.map',
+		'node_modules/dompurify/dist/purify.min.js',
+		'node_modules/dompurify/dist/purify.min.js.map',
+		'node_modules/marked/marked.min.js'
 	];
 	return gulp.src(files)
 		.pipe(gulp.dest(dist_js));
