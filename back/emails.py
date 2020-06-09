@@ -4,6 +4,7 @@ from database.manager import db
 from trads import lang
 from helper import nice_date, get_date_from_str
 from flask import request
+import markdown
 import settings
 #---
 import os
@@ -254,7 +255,7 @@ def send_new_event(event, creator_name):
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
 """.format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
       event_id=str(event['id']), title=html.escape(event['title'].strip()),
-      description=html.escape(event.get('description', '') or '').replace('\n', '<br/>'),
+      description=markdown.markdown(event.get('description', '') or ''),
       start_date=html.escape(start_date), site=domain)
     }
   ]
@@ -340,7 +341,7 @@ def send_new_message(author_name, author_id, event_id, comment):
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
 """.format(author_name=html.escape(author_name), author_id=str(author_id),
       event_id=str(event_id), title=html.escape(title), site=domain,
-      comment=html.escape(comment).replace('\n', '<br/>'))
+      comment=markdown.markdown(comment))
     }
   ]
   send_emails(messages)
@@ -450,7 +451,7 @@ def send_tomorrow_events():
 </div>
 """.format(site=domain, creator_id=creator_id, creator_name=html.escape(creator_name),
       event_id=event['id'], title=html.escape(event['title'].strip()),
-      description=html.escape(event.get('description', '') or '').replace('\n', '<br/>'))
+      description=markdown.markdown(event.get('description', '') or ''))
 
   all_users = db.list_users(notif_tomorrow_events=True)
   recipients = compute_recipients(all_users)
