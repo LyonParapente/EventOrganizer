@@ -10,7 +10,7 @@ export default function unsplash (tags=[], extraPath='')
 
 function unsplashL ()
 {
-  window.addEventListener('load', x => unsplash());
+  window.addEventListener('load', x => unsplash.apply(this, arguments));
 }
 
 (<any>window).unsplashL = unsplashL;
