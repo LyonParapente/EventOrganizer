@@ -257,7 +257,7 @@ def users():
 
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
-    title=lang['userTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
+    title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
     users=users, theme=claims['theme'], header=header, iam_admin=iam_admin)
 
 @app.route('/login', methods=['GET', 'POST'])
