@@ -503,6 +503,7 @@ def avatar(name):
   path = settings.avatars_folder+'/'+user_id+'-%s.png'%size
   if not os.path.exists(path):
     path = settings.avatars_folder+'/default-%s.png'%size
+    return redirect('../static/img/default-%s.png'%size)
   return send_file(path)
 
 miniatures_sizes = [130, 60, 40]
