@@ -50,7 +50,7 @@ const settings: Settings =
 			stage: 'green',
 			voyage: '#8D00FF',
 			conference: '#FF4848',
-			theorie: '#C0B701',
+			théorie: '#C0B701',
 			dune: '#FF9900',
 			ski: '#662C67',
 			escalade: '#FF99CC',
