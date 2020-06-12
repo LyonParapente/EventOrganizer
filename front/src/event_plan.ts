@@ -46,6 +46,40 @@ export function init_createEvent (onCreate): void
 
 	init_categories();
 	init_colorPicker();
+	init_WhatsApp_video();
+}
+
+function init_WhatsApp_video ()
+{
+	var whatsApp_video = id('WhatsApp_video');
+	var tooltip = null;
+	whatsApp_video.addEventListener('click', function ()
+	{
+		// Mount on demand to prevent fat gif download too soon
+		if (!tooltip)
+		{
+			// @ts-ignore html5tooltips
+			tooltip = new HTML5TooltipUIComponent();
+			tooltip.set(
+			{
+				animateFunction: "spin",
+				// need to set dimensions here, otherwise bad position because image not yet downloaded
+				contentText: '<img src="static/img/WhatsApp_video.gif" width="320" height="568" />',
+				stickTo: "top",
+				target: whatsApp_video
+			});
+			tooltip.mount();
+			tooltip.element.addEventListener('click', function ()
+			{
+				tooltip.hide();
+			});
+			id('sortie_whatsapp').addEventListener('focus', function ()
+			{
+				tooltip.hide();
+			});
+		}
+		tooltip.show();
+	});
 }
 
 export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: EventApi): void

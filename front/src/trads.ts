@@ -57,7 +57,7 @@ const trads =
 		"Edit an event": "Modifier un évènement",
 		"NotificationsBlocked": "Notifications emails actuellement désactivées",
 		"NotificationsNotBlocked": "Notifications emails actuellement activées",
-		"invite link:": "Lien WhatsApp:",
+		"invite link": "Lien WhatsApp",
 		"Type a description... Markdown available!": "Tape une description... Markdown disponible !"
 	}
 };
