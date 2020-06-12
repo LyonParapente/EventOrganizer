@@ -21,9 +21,9 @@ word-wrap: normal;
 </head>
 <body>
 {{header|safe}}
-<div class="container mt-2">
+<div class="container-xl mt-2">
 
-<div class="d-flex text-center">
+<div class="d-flex flex-wrap text-center">
 {% for user in users %}
 <span class="card member {{user['border']}}">
 	{% if iam_admin and user['role']=='new' %}<a href="/approve/user:{{user['id']}}">APPROVE</a> <a href="/delete/user:{{user['id']}}">DELETE</a>{% endif %}
