@@ -162,11 +162,11 @@ Tu reçevras un email quand ca sera effectué.
     },
     {
       "To": admins,
-      "Subject": "Nouvelle inscription LyonParapente",
+      "Subject": "Nouvelle inscription calendrier LyonParapente : %s" % name,
       "HTMLPart": """
 <b><a href="mailto:{email}">{name}</a></b> ({email}) vient de s'enregistrer !<br/>
 <br/>
-<a href="{site}/approve/user:{user_id}">Clic ici pour l'approuver en temps que membre LyonParapente</a>
+<a href="{site}/approve/user:{user_id}">Clic ici pour approuver {name} en temps que membre qui a accès au calendrier LyonParapente</a>
 """.format(name=html.escape(name), email=html.escape(email),
     user_id=str(user_id), site=domain)
     }
