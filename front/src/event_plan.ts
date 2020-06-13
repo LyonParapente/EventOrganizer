@@ -90,6 +90,12 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		return;
 	}
 
+	if (end_date !== start_date)
+	{
+		// Remove 1 day because end is exclusive in datastore
+		end_date = new Date(end_date.getTime() - 86400000);
+	}
+
 	var today = new Date();
 	var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 	if (start_date.getTime() < todayMidnight.getTime())
@@ -245,11 +251,18 @@ function SubmitEvent (onCreate)
 		category_str = '';
 	}
 
+	var end_date = new Date(date_end.value);
+	if (date_start.value !== date_end.value)
+	{
+		// Add 1 day because end is exclusive in datastore
+		end_date = new Date(end_date.getTime() + 86400000);
+	}
+
 	var body =
 	{
 		title: title.value,
 		start_date: date_start.value,
-		end_date: date_end.value,
+		end_date: toDateString(end_date),
 		time: heure.value,
 		whatsapp_link: whatsapp_link.value,
 		description: description.value,

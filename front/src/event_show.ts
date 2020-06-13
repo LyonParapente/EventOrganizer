@@ -73,7 +73,7 @@ export function showEvent (calEvent: EventApi): void
 		end = calEvent.end;
 	if (end)
 	{
-		// Remove 1 day because end is exclusive
+		// Remove 1 day because end is exclusive in datastore
 		end = new Date(end.getTime() - 86400000);
 	}
 	else

@@ -115,14 +115,14 @@ document.addEventListener('DOMContentLoaded', function ()
 		},
 		select: function (selectionInfo)
 		{
-			// Remove 1 day because end is exclusive
+			// Remove 1 day for comparison because end is exclusive in datastore
 			var end = selectionInfo.end.getTime() - 86400000;
 			var start = selectionInfo.start.getTime();
 			if (start !== end)
 			{
 				var endDate = new Date(end);
 				console.log('Selected ' + selectionInfo.startStr + ' to ' + toDateString(endDate));
-				planAnEvent(selectionInfo.start, endDate);
+				planAnEvent(selectionInfo.start, selectionInfo.end);
 			}
 			else
 			{
