@@ -97,7 +97,7 @@ def error_page(infos):
 # Authent part 2: JWT config
 
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
-app.config['JWT_COOKIE_SAMESITE'] = 'Strict'
+app.config['JWT_COOKIE_SAMESITE'] = 'Lax'
 
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
