@@ -349,12 +349,13 @@ def approve_user(id):
   """Approve a user"""
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
+    ret = '<br/><a href="../users">{}</a>'.format(lang['usersTitle'])
     nb = database.manager.db.update_user_role(id, "user", previous_role="new")
     if nb == 1:
       user = database.manager.db.get_user(user_id=id)
       emails.send_approved(user['email'], user['firstname']+' '+user['lastname'])
-      return "OK"
-    return "ALREADY APPROVED"
+      return "OK"+ret
+    return "ALREADY APPROVED"+ret
   return "NOPE", 403
 
 @app.route('/delete/user:<int:id>')
