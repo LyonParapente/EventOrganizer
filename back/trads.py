@@ -54,7 +54,9 @@ trads = {
   'MyWing': 'Mon aile :',
   'TheWing': 'Son aile',
   'MyPresentation': 'Ma présentation : (type de pratique, expérience, qui suis-je, ...)',
-  'rescue_title': 'Un incident est survenu'
+  'rescue_title': 'Un incident est survenu',
+  'APPROVE': 'APPROUVER',
+  'DELETE': 'SUPPRIMER'
  },
  'en': {
   'lang': 'en',
@@ -110,7 +112,9 @@ trads = {
   'MyWing': 'My wing:',
   'TheWing': 'His/her wing:',
   'MyPresentation': 'My presentation: (paragliding practice, experience, who am i, ...)',
-  'rescue_title': 'Something wrong happened'
+  'rescue_title': 'Something wrong happened',
+  'APPROVE': 'APPROVE',
+  'DELETE': 'DELETE'
  }
 }
 

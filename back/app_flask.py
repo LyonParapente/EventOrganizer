@@ -258,7 +258,8 @@ def users():
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
     title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
-    users=users, theme=claims['theme'], header=header, iam_admin=iam_admin)
+    users=users, theme=claims['theme'], header=header, iam_admin=iam_admin,
+    approve=lang['APPROVE'], delete=lang['DELETE'])
 
 @app.route('/login', methods=['GET', 'POST'])
 @jwt_optional
@@ -349,7 +350,7 @@ def approve_user(id):
   """Approve a user"""
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
-    ret = '<br/><a href="../users">{}</a>'.format(lang['usersTitle'])
+    ret = '<br/><a href="/users">{}</a>'.format(lang['usersTitle'])
     nb = database.manager.db.update_user_role(id, "user", previous_role="new")
     if nb == 1:
       user = database.manager.db.get_user(user_id=id)
@@ -365,7 +366,7 @@ def delete_user(id):
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
     user_item = api_user.delete(id)
-  return make_response(redirect('/users'))
+  return redirect('/users')
 
 def allowed_file(filename):
   return '.' in filename and \
