@@ -237,6 +237,7 @@ def send_new_event(event, creator_name):
   recipients = compute_recipients(all_users)
 
   start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
+  location = "à <b>{location}</b> ".format(location=event['location'])
 
   messages = [
     {
@@ -249,14 +250,14 @@ def send_new_event(event, creator_name):
       "Bcc": recipients,
       "Subject": "{creator_name} vient d'ajouter la sortie {title} ({start_date})".format(creator_name=creator_name, title=event['title'], start_date=start_date),
       "HTMLPart": """
-<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} :<br/><br/>
+<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} {location}:<br/><br/>
 {description}
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
 """.format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
       event_id=str(event['id']), title=html.escape(event['title'].strip()),
       description=markdown.markdown(event.get('description', '') or ''),
-      start_date=html.escape(start_date), site=domain)
+      start_date=html.escape(start_date), site=domain, location=location)
     }
   ]
   send_emails(messages)
