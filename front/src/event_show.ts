@@ -81,11 +81,14 @@ export function showEvent (calEvent: EventApi): void
 		end = start;
 	}
 
+	var endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+	var endMidnightPlus24H = new Date(endMidnight.getTime() + 86400000);
+
 	current_event =
 	{
 		event_id: parseInt(calEvent.id, 10),
 		creator_id: calEvent.extendedProps.creator_id,
-		isFinished: end.getTime() < new Date().getTime(),
+		isFinished: endMidnightPlus24H.getTime() < new Date().getTime(),
 		whatsapp_link: calEvent.extendedProps.whatsapp_link
 	}
 	loadComments(current_event);
