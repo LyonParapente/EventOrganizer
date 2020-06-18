@@ -104,24 +104,31 @@ def delete_event(self, event_id):
   finally:
     db.close()
 
-def get_events_list(self, start, end):
+def get_events_list(self, start, end, fetch_start_before=True):
   """Fetch a list of events (in a date range) from database"""
   db, cursor = self._connect()
 
   parameters = []
   where_start = where_end = ''
   if start is not None:
-    start_before_range = "(datetime(start_date) < datetime(?) AND datetime(end_date_bis) > datetime(?))"
-    where_start = " AND (datetime(start_date) >= datetime(?) OR "+start_before_range+")"
+    if fetch_start_before:
+      start_before_range = "OR (datetime(start_date) < datetime(?) AND datetime(end_date_bis) > datetime(?))"
+    else:
+      start_before_range = ""
+    where_start = " AND (datetime(start_date) >= datetime(?) "+start_before_range+")"
     parameters.append(str(start))
     parameters.append(str(start))
-    parameters.append(str(end))
+    parameters.append(str(start))
+
   if end is not None:
-    end_after_range = "(datetime(end_date_bis) > datetime(?) AND datetime(start_date) <= datetime(?))"
-    where_end = " AND (datetime(end_date_bis) <= datetime(?) OR "+end_after_range+")"
+    where_start += " AND datetime(start_date) <= datetime(?)"
+    parameters.append(str(end))
+
+    end_after_range = "OR (datetime(end_date_bis) > datetime(?) AND datetime(start_date) <= datetime(?))"
+    where_end = " AND (datetime(end_date_bis) <= datetime(?) "+end_after_range+")"
     parameters.append(str(end))
     parameters.append(str(end))
-    parameters.append(str(start))
+    parameters.append(str(end))
 
   get_events = """SELECT
       e.id,e.title,e.start_date,e.end_date,e.time,e.description,
