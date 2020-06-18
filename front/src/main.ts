@@ -257,6 +257,16 @@ function updateUrlWithCurrentMonth ()
 // Adapt server response to fullcalendar expected fields
 function eventDataTransform (event)
 {
+	var orig = calendar.getEventById(event.id);
+	if (orig)
+	{
+		// Typically happens when we update an event
+		// Or when we create an event then scroll through months
+		orig.remove();
+	}
+
+	// -----
+
 	if (event.category)
 	{
 		event.color = getColor(event.category);
@@ -264,10 +274,16 @@ function eventDataTransform (event)
 	event.description = event.description || '';
 
 	// re-map start & end to expected properties
-	event.start = event.start_date;
-	event.end = event.end_date;
-	delete event.start_date;
-	delete event.end_date;
+	if (event.start_date) // if useful for onCreateEvent scenario
+	{
+		event.start = event.start_date;
+		delete event.start_date;
+	}
+	if (event.end_date)
+	{
+		event.end = event.end_date;
+		delete event.end_date;
+	}
 
 	if (typeof event.gps === 'string' && event.gps)
 	{
@@ -279,12 +295,6 @@ function eventDataTransform (event)
 
 function onCreateEvent (event: any)
 {
-	var orig = calendar.getEventById(event.id);
-	if (orig)
-	{
-		// Typically happens when we update an event
-		orig.remove();
-	}
 	eventDataTransform(event);
 	calendar.addEvent(event);
 }
