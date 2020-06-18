@@ -237,7 +237,7 @@ def send_new_event(event, creator_name):
   recipients = compute_recipients(all_users)
 
   start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
-  location = "à <b>{location}</b> ".format(location=event['location'])
+  location = "à <b>{location}</b> ".format(location=event.get('location') or '')
 
   messages = [
     {
