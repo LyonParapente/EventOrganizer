@@ -446,7 +446,7 @@ def send_tomorrow_events():
     user = db.get_user(user_id=creator_id)
     creator_name = user['firstname'] + ' ' + user['lastname']
     events_html += """
-<div style="margin:10px;">
+<div style="margin:20px 10px; border-bottom: 2px solid gray;">
 <a href="{site}/user:{creator_id}">{creator_name}</a> a planifié la sortie <b><a href="{site}/event:{event_id}">{title}</a></b><br/>
 {description}
 </div>
