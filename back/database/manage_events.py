@@ -111,14 +111,16 @@ def get_events_list(self, start, end, fetch_start_before=True):
   parameters = []
   where_start = where_end = ''
   if start is not None:
+    where_start = " AND (datetime(start_date) >= datetime(?) "
+    parameters.append(str(start))
+
     if fetch_start_before:
       start_before_range = "OR (datetime(start_date) < datetime(?) AND datetime(end_date_bis) > datetime(?))"
-    else:
-      start_before_range = ""
-    where_start = " AND (datetime(start_date) >= datetime(?) "+start_before_range+")"
-    parameters.append(str(start))
-    parameters.append(str(start))
-    parameters.append(str(start))
+      where_start += start_before_range
+      parameters.append(str(start))
+      parameters.append(str(start))
+
+    where_start += ")"
 
   if end is not None:
     where_start += " AND datetime(start_date) <= datetime(?)"
