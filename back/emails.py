@@ -428,7 +428,7 @@ def send_tomorrow_events():
   tomorrow_str = tomorrow.strftime("%Y-%m-%d")
   tomorrow_nice = nice_date(tomorrow, settings.lang)
 
-  events = db.get_events_list(tomorrow_str, tomorrow_str, fetch_start_before=false)
+  events = db.get_events_list(tomorrow_str, tomorrow_str, fetch_start_before=False)
   nb = len(events)
   if nb == 0:
     print("No event tomorrow")
