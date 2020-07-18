@@ -52,6 +52,10 @@ cursor: pointer;
 white-space: normal;
 }
 
+.fc-event .fc-content {
+text-align: center;
+}
+
 #sortie_map, #event_map {
 min-height: 250px;
 }
