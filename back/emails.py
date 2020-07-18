@@ -242,7 +242,10 @@ def send_new_event(event, creator_name):
     end_date = nice_date(get_date_from_str(event['end_date']), settings.lang)
     date_infos += " - " + end_date
 
-  location = "à <b>{location}</b> ".format(location=event.get('location') or '')
+  loc = event.get('location')
+  location = ''
+  if loc:
+    location = " à <b>{location}</b>".format(location=loc)
 
   messages = [
     {
@@ -255,7 +258,7 @@ def send_new_event(event, creator_name):
       "Bcc": recipients,
       "Subject": "{creator_name} vient d'ajouter la sortie {title} ({date_infos})".format(creator_name=creator_name, title=event['title'], date_infos=date_infos),
       "HTMLPart": """
-<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} {location}:<br/><br/>
+<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date}{location} :<br/><br/>
 {description}
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
