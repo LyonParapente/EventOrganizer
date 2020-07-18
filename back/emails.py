@@ -237,6 +237,11 @@ def send_new_event(event, creator_name):
   recipients = compute_recipients(all_users)
 
   start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
+  date_infos = start_date
+  if event['end_date'] and event['start_date'] != event['end_date']:
+    end_date = nice_date(get_date_from_str(event['end_date']), settings.lang)
+    date_infos += " - " + end_date
+
   location = "à <b>{location}</b> ".format(location=event.get('location') or '')
 
   messages = [
@@ -248,7 +253,7 @@ def send_new_event(event, creator_name):
         }
       ],
       "Bcc": recipients,
-      "Subject": "{creator_name} vient d'ajouter la sortie {title} ({start_date})".format(creator_name=creator_name, title=event['title'], start_date=start_date),
+      "Subject": "{creator_name} vient d'ajouter la sortie {title} ({date_infos})".format(creator_name=creator_name, title=event['title'], date_infos=date_infos),
       "HTMLPart": """
 <a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date} {location}:<br/><br/>
 {description}
