@@ -23,7 +23,7 @@ word-wrap: normal;
 {{header|safe}}
 <div class="container-fluid mt-2">
 
-<div class="d-flex flex-wrap text-center">
+<div class="d-flex flex-wrap justify-content-center text-center">
 {% for user in users %}
 <span class="card member {{user['border']}}">
 	{% if iam_admin and user['role']=='new' %}<a href="/approve/user:{{user['id']}}">{{approve}}</a> <a href="/delete/user:{{user['id']}}">{{delete}}</a>{% endif %}
