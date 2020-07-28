@@ -90,7 +90,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		return;
 	}
 
-	if (end_date !== start_date)
+	if (end_date.getTime() !== start_date.getTime())
 	{
 		// Remove 1 day because end is exclusive in datastore
 		end_date = new Date(end_date.getTime() - 86400000);
