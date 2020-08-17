@@ -243,9 +243,9 @@ def send_new_event(event, creator_name):
     date_infos += " - " + end_date
 
   loc = event.get('location')
-  location = ''
+  location = ""
   if loc:
-    location = " à <b>{location}</b>".format(location=loc)
+    location = "à <b>{location}</b>".format(location=loc)
 
   messages = [
     {
@@ -258,7 +258,7 @@ def send_new_event(event, creator_name):
       "Bcc": recipients,
       "Subject": "{creator_name} vient d'ajouter la sortie {title} ({date_infos})".format(creator_name=creator_name, title=event['title'], date_infos=date_infos),
       "HTMLPart": """
-<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {start_date}{location} :<br/><br/>
+<a href="{site}/user:{creator_id}">{creator_name}</a> vient d'ajouter la sortie <b><a href="{site}/event:{event_id}">{title}</a></b> le {date_infos} {location} :<br/><br/>
 {description}
 <br/><br/><br/>
 <a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
