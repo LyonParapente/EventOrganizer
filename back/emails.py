@@ -239,8 +239,10 @@ def send_new_event(event, creator_name):
   start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
   date_infos = start_date
   if event['end_date'] and event['start_date'] != event['end_date']:
-    end_date = nice_date(get_date_from_str(event['end_date']), settings.lang)
-    date_infos += " - " + end_date
+    end_date_obj = get_date_from_str(event['end_date'])
+    end_date_obj -= datetime.timedelta(days=1)
+    end_date = nice_date(end_date_obj, settings.lang)
+    date_infos += " -> " + end_date
 
   loc = event.get('location')
   location = ""
