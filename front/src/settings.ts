@@ -44,6 +44,7 @@ const settings: Settings =
 		default:
 		{
 			"sortie vol": "#3A87AD",
+			cross: '#EB2DF5',
 			permanence: '#5FDCE2',
 			club: '#00C400',
 			weekend: '#FF9F89',
