@@ -265,7 +265,7 @@ def send_new_event(event, creator_name):
 """.format(creator_name=html.escape(creator_name), creator_id=str(event['creator_id']),
       event_id=str(event['id']), title=html.escape(event['title'].strip()),
       description=markdown.markdown(event.get('description', '') or ''),
-      start_date=html.escape(start_date), site=domain, location=location)
+      date_infos=html.escape(date_infos), site=domain, location=location)
     }
   ]
   send_emails(messages)

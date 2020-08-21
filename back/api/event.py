@@ -73,7 +73,12 @@ class EventAPICreate(Resource):
     # Email
     claims = get_jwt_claims()
     creator_name = claims['firstname'] + ' ' + claims['lastname']
-    send_new_event(new_event, creator_name)
+    try:
+      send_new_event(new_event, creator_name)
+    except Exception as e:
+      #skip email error in client side => event added in the calendar
+      #not a big deal, let's continue
+      pass
 
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
