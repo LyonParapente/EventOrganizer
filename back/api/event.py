@@ -178,14 +178,16 @@ class EventAPI(Resource):
 
     db_event = self.get(event_id)
 
+    claims = get_jwt_claims()
+    if claims['role'] != 'admin':
+      if db_event['creator_id'] != get_jwt_identity():
+        abort(403, "You cannot update someone else event")
+
     today = datetime.date.today()
     end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
     event_end = get_date_from_str(end_date)
     if event_end < today:
       abort(403, 'Cannot modify a past event')
-
-    if db_event['creator_id'] != get_jwt_identity():
-      abort(403, "You cannot update someone else event")
 
     try:
       db.update_event(event_id, **request.json)
@@ -232,8 +234,11 @@ class EventAPI(Resource):
     """Delete an event"""
 
     db_event = self.get(event_id)
-    if db_event['creator_id'] != get_jwt_identity():
-      abort(403, "You cannot delete someone else event")
+
+    claims = get_jwt_claims()
+    if claims['role'] != 'admin':
+      if db_event['creator_id'] != get_jwt_identity():
+        abort(403, "You cannot delete someone else event")
 
     today = datetime.date.today()
     end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']

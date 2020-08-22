@@ -48,7 +48,8 @@ const trads =
 		"Reset": "Reset", // Prédéfini?
 		"Planning": "Calendrier",
 		"EventTitle": "Event #{0}",
-		"Unable to save, please retry": "Impossible de sauvegarder, veuillez réessayer",
+		"Unable to save": "Impossible de sauvegarder",
+		"insufficient rights": "droits insuffisants",
 		"Phone": "Téléphone",
 		"Email": "Email",
 		"Edit": "Modifier",

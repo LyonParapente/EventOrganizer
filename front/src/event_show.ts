@@ -154,8 +154,9 @@ export function showEvent (calEvent: EventApi): void
 
 	var del_event = id('del_event');
 	var edit_event = id('edit_event');
-	if (connected_user.id === current_event.creator_id &&
-		!current_event.isFinished)
+	var canEdit = connected_user.id === current_event.creator_id ||
+		connected_user.role === 'admin';
+	if (!current_event.isFinished && canEdit)
 	{
 		del_event.style.display = '';
 		edit_event.style.display = '';
@@ -386,7 +387,7 @@ function SubmitComment ()
 			window.location.assign('/login');
 		}
 		console.error(type, ex.responseText)
-		comment_post_error.innerHTML = i18n('Unable to save, please retry');
+		comment_post_error.innerHTML = i18n('Unable to save');
 		comment_post_error.style.display = '';
 	});
 }

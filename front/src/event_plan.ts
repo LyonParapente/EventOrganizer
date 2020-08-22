@@ -315,8 +315,12 @@ function SubmitEvent (onCreate)
 		else
 		{
 			console.error(type, ex.responseText)
-			event_post_error.textContent = i18n('Unable to save, please retry');
+			event_post_error.textContent = i18n('Unable to save');
 			event_post_error.style.display = '';
+			if (ex.status === 403)
+			{
+				event_post_error.textContent += " : " + i18n('insufficient rights')
+			}
 		}
 	});
 }
