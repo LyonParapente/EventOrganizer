@@ -78,6 +78,7 @@ margin-top: 3px;
 
 #event_location2 {
 resize: none;
+overflow-x: hidden; /* hide extra line in firefox */
 }
 
 #event_rdv_location, #event_location2,
