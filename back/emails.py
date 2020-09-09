@@ -167,7 +167,7 @@ Tu reçevras un email quand ca sera effectué.
 <b><a href="mailto:{email}">{name}</a></b> ({email}) vient de s'enregistrer !<br/>
 <br/>
 <a href="{site}/users">Clic ici pour accèder au trombinoscope</a> et approuver ou refuser son inscription.<br /><br />
-<a href="https://intranet.ffvl.fr/structure/377/licences/">Liste des licenciés ffvl LyonParapente.</a>
+<a href="https://intranet.ffvl.fr/structure/377/licences/">Liste des licenciés FFVL LyonParapente.</a>
 """.format(name=html.escape(name), email=html.escape(email), site=domain)
     }
   ]
