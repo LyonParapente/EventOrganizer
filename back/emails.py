@@ -173,9 +173,13 @@ Tu reçevras un email quand ca sera effectué.
   ]
   send_emails(messages)
 
-def send_approved(email, name):
+def send_approved(email, name, role):
   """Email when account has been approved by an admin"""
   check_domain()
+  temporary_msg = ''
+  if role == 'temporary':
+    temporary_msg = 'Pour le moment, tu as un <b>compte temporaire valable '+str(settings.temporary_user_duration.days)+' jours</b><br/>'
+
   messages = [
     {
       "To": [
@@ -187,12 +191,13 @@ def send_approved(email, name):
       "Subject": "Inscription LyonParapente approuvée",
       "HTMLPart": """
 Ton inscription vient d'être approuvée !<br/>
+{temporary_msg}
 <br/>
 Tu peux désormais te connecter: <a href="{site}/login">Connexion</a>
 <br/><br/>
 Tu peux ainsi consulter les sorties, et en ajouter.<br/>
 N'oublie pas de mettre ta photo et définir <a href="{site}/settings">tes préférences</a> de partage email et téléphone !
-""".format(site=domain)
+""".format(site=domain, temporary_msg=temporary_msg)
     }
   ]
   send_emails(messages)

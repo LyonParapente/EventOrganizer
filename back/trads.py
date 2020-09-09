@@ -56,6 +56,7 @@ trads = {
   'MyPresentation': 'Ma présentation : (type de pratique, expérience, qui suis-je, ...)',
   'rescue_title': 'Un incident est survenu',
   'APPROVE': 'APPROUVER',
+  'TEMPORARY_USER': 'TEMPORAIRE',
   'DELETE': 'SUPPRIMER',
   'ChangeBackground': "Changer l'image"
  },
@@ -115,6 +116,7 @@ trads = {
   'MyPresentation': 'My presentation: (paragliding practice, experience, who am i, ...)',
   'rescue_title': 'Something wrong happened',
   'APPROVE': 'APPROVE',
+  'TEMPORARY_USER': 'TEMPORARY',
   'DELETE': 'DELETE',
   'ChangeBackground': 'Change Background'
  }

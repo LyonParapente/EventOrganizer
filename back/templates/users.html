@@ -26,11 +26,13 @@ word-wrap: normal;
 <div class="d-flex flex-wrap justify-content-center text-center">
 {% for user in users %}
 <span class="card member {{user['border']}}">
-	{% if iam_admin and user['role']=='new' %}<a href="/approve/user:{{user['id']}}">{{approve}}</a> <a href="/delete/user:{{user['id']}}">{{delete}}</a>{% endif %}
+	{% if iam_admin and user['role'] in ['new','temporary','expired'] %}<a href="/approve/user:{{user['id']}}/user">{{approve}}</a> {% if iam_admin and user['role']=='new' %}<a href="/approve/user:{{user['id']}}/temporary">{{temporary}}</a> <a href="/delete/user:{{user['id']}}">{{delete}}</a>{% endif %}{% endif %}
 	<a href="/user:{{user['id']}}"><img src="/avatars/{{user['id']}}-130" alt="{{user['firstname']}} {{user['lastname']}}" class="card-img-top" /></a>
 	<div class="card-body">
 		{{user['firstname']}} {{user['lastname']}}
 		{% if iam_admin and user['role']=='admin' %}<span class="text-danger">admin</span>{% endif %}
+		{% if user['role']=='temporary' %}<span class="text-warning">temporaire</span>{% endif %}
+		{% if iam_admin and user['role']=='expired' %}<span class="text-danger">expiré</span>{% endif %}
 	</div>
 </span>
 {% endfor %}

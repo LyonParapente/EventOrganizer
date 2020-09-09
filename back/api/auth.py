@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from models.auth import AccessToken
 from database.manager import db
 import settings
+import datetime
 
 bcrypt = Bcrypt()
 
@@ -64,7 +65,12 @@ class LoginAPI(Resource):
     if user is None:
       print('Email not found: %s' % email)
     else:
-      if user['role'] == 'user' or user['role'] == 'admin':
+      if user['role'] == 'temporary' and LoginAPI.check_temporary_user_expired(user):
+        print('%s temporary account has expired' % email)
+        db.update_user_role(user['id'], 'expired')
+        user['role'] = 'expired'
+
+      if user['role'] in ['user', 'temporary', 'admin']:
         if bcrypt.check_password_hash(user['password'], password):
           return LoginAPI.get_token(user, expires_delta)
         else:
@@ -72,6 +78,12 @@ class LoginAPI(Resource):
       else:
         print('%s is not approved to log-in' % email)
     return None
+
+  @staticmethod
+  def check_temporary_user_expired(user):
+    datetimeWithoutZ = user['creation_datetime'][:-1]
+    expiration_date = datetime.datetime.fromisoformat(datetimeWithoutZ) + settings.temporary_user_duration
+    return expiration_date < datetime.datetime.utcnow()
 
   @staticmethod
   def get_token(user, expires_delta):

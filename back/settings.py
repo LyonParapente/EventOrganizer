@@ -37,3 +37,4 @@ backgrounds_folder = 'backgrounds'
 uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
 international_prefix = '+33'
 use_mailjet = False
+temporary_user_duration = datetime.timedelta(days=60) # +web_remember_JWT_ACCESS_TOKEN_EXPIRES if user checked remember credentials

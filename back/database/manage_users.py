@@ -23,7 +23,7 @@ def insert_user(self, *,
     'share_phone': share_phone,
     'has_whatsapp': has_whatsapp,
     'theme': theme,
-    'role': 'new', # to be approved -> user,
+    'role': 'new', # to be approved -> user|temporary,
     'notif_new_event': notif_new_event,
     'notif_event_change': notif_event_change,
     'notif_tomorrow_events': notif_tomorrow_events,
@@ -60,7 +60,7 @@ def get_user(self, user_id=None, email=None):
   finally:
     db.close()
 
-def list_users(self, include_new=False, only_admins=False,
+def list_users(self, include_new_and_expired=False, only_admins=False,
     notif_new_event=False, notif_event_change=False, notif_tomorrow_events=False):
   """Fetch all approved users from database"""
   db, cursor = self._connect()
@@ -71,8 +71,8 @@ def list_users(self, include_new=False, only_admins=False,
       FROM users
       WHERE role IS NOT NULL AND role!='deleted'
     """
-    if not include_new:
-      list_users += " AND role!='new'"
+    if not include_new_and_expired:
+      list_users += " AND role!='new' AND role!='expired'"
     if only_admins:
       list_users += " AND role='admin'"
     if notif_new_event:

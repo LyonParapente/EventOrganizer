@@ -245,7 +245,7 @@ def users():
   """Users list"""
   claims = get_jwt_claims()
   iam_admin = claims['role'] == 'admin'
-  users = database.manager.db.list_users(include_new=iam_admin)
+  users = database.manager.db.list_users(include_new_and_expired=iam_admin)
   if iam_admin:
     # Add a border to list admins and new users
     for user in users:
@@ -258,7 +258,7 @@ def users():
   return render_template('users.html',
     title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
     users=users, theme=claims['theme'], header=header, iam_admin=iam_admin,
-    approve=lang['APPROVE'], delete=lang['DELETE'])
+    approve=lang['APPROVE'], temporary=lang['TEMPORARY_USER'], delete=lang['DELETE'])
 
 @app.route('/login', methods=['GET', 'POST'])
 @jwt_optional
@@ -343,17 +343,20 @@ def register():
   return render_template('register.html', **lang,
     default_theme=settings.default_theme)
 
-@app.route('/approve/user:<int:id>')
+@app.route('/approve/user:<int:id>', defaults={'role': 'user'})
+@app.route('/approve/user:<int:id>/<string:role>')
 @jwt_required
-def approve_user(id):
+def approve_user(id, role):
   """Approve a user"""
   claims = get_jwt_claims()
   if claims['role'] == 'admin':
     ret = '<br/><a href="/users">{}</a>'.format(lang['usersTitle'])
-    nb = database.manager.db.update_user_role(id, "user", previous_role="new")
+    desired_role = 'temporary' if role == 'temporary' else 'user'
+    user = database.manager.db.get_user(user_id=id)
+    previous_role = user['role']
+    nb = database.manager.db.update_user_role(id, desired_role, previous_role=previous_role)
     if nb == 1:
-      user = database.manager.db.get_user(user_id=id)
-      emails.send_approved(user['email'], user['firstname']+' '+user['lastname'])
+      emails.send_approved(user['email'], user['firstname']+' '+user['lastname'], desired_role)
       return "OK"+ret
     return "ALREADY APPROVED"+ret
   return "NOPE", 403
