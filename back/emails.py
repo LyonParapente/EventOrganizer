@@ -238,7 +238,7 @@ def compute_recipients(users):
 def send_new_event(event, creator_name):
   """Emails when a new event is declared"""
   check_domain()
-  all_users = db.list_users(notif_new_event=True)
+  all_users = db.list_users(notif_new_event=True, include_new_and_expired=True)
   recipients = compute_recipients(all_users)
 
   start_date = nice_date(get_date_from_str(event['start_date']), settings.lang)
