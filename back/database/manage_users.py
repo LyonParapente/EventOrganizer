@@ -66,7 +66,7 @@ def list_users(self, include_new_and_expired=False, only_admins=False,
   db, cursor = self._connect()
   try:
     list_users = """
-      SELECT id,firstname,lastname,email,role,
+      SELECT id,firstname,lastname,email,role,creation_datetime,
         notif_new_event,notif_event_change,notif_tomorrow_events
       FROM users
       WHERE role IS NOT NULL AND role!='deleted'

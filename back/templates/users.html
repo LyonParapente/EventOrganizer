@@ -31,7 +31,7 @@ word-wrap: normal;
 	<div class="card-body">
 		{{user['firstname']}} {{user['lastname']}}
 		{% if iam_admin and user['role']=='admin' %}<span class="text-danger">admin</span>{% endif %}
-		{% if user['role']=='temporary' %}<span class="text-warning">temporaire</span>{% endif %}
+		{% if user['role']=='temporary' %}<span class="text-warning">temporaire - {{user['expiration_date'].strftime("%d/%m/%Y")}}</span>{% endif %}
 		{% if iam_admin and user['role']=='expired' %}<span class="text-danger">expiré</span>{% endif %}
 	</div>
 </span>

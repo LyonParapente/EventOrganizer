@@ -80,10 +80,14 @@ class LoginAPI(Resource):
     return None
 
   @staticmethod
-  def check_temporary_user_expired(user):
+  def get_expiration_date(user):
     datetimeWithoutZ = user['creation_datetime'][:-1]
     expiration_date = datetime.datetime.fromisoformat(datetimeWithoutZ) + settings.temporary_user_duration
-    return expiration_date < datetime.datetime.utcnow()
+    return expiration_date
+
+  @staticmethod
+  def check_temporary_user_expired(user):
+    return get_expiration_date(user) < datetime.datetime.utcnow()
 
   @staticmethod
   def get_token(user, expires_delta):
