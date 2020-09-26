@@ -22,6 +22,11 @@ def get_date_from_str(str):
   parts = map(lambda x: int(x), str.split('-'))
   return datetime.date(*parts)
 
+def get_datetime_from_str(str):
+  if hasattr(datetime.datetime, 'fromisoformat'):
+    return datetime.datetime.fromisoformat(str)
+  return datetime.datetime.strptime(str, '%Y-%m-%dT%H:%M:%S.%f')
+
 def raw_phone(phone):
   return re.sub('[^\d+]', '', phone)
 

@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, get_raw_jwt
 from flask_bcrypt import Bcrypt
 from models.auth import AccessToken
 from database.manager import db
+from helper import get_datetime_from_str
 import settings
 import datetime
 
@@ -80,14 +81,15 @@ class LoginAPI(Resource):
     return None
 
   @staticmethod
-  def get_expiration_date(user):
+  def get_expiration_datetime(user):
     datetimeWithoutZ = user['creation_datetime'][:-1]
-    expiration_date = datetime.datetime.fromisoformat(datetimeWithoutZ) + settings.temporary_user_duration
-    return expiration_date
+    creation_datetime = get_datetime_from_str(datetimeWithoutZ)
+    expiration_datetime = creation_datetime + settings.temporary_user_duration
+    return expiration_datetime
 
   @staticmethod
   def check_temporary_user_expired(user):
-    return get_expiration_date(user) < datetime.datetime.utcnow()
+    return get_expiration_datetime(user) < datetime.datetime.utcnow()
 
   @staticmethod
   def get_token(user, expires_delta):

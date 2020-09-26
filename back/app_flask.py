@@ -13,7 +13,6 @@ import urllib.parse
 import html
 import sys, traceback
 import random
-import datetime
 
 # ------------------------------
 # Our helpers
@@ -257,7 +256,7 @@ def users():
 
   for user in users:
     if user['role']=='temporary':
-      user['expiration_date'] = LoginAPI.get_expiration_date(user)
+      user['expiration_date'] = LoginAPI.get_expiration_datetime(user)
 
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
