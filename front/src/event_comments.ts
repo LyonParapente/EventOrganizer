@@ -236,7 +236,7 @@ function createRegistrations(registrations: number[], users: UsersDictionary, is
 	badge.classList.add('badge', props.badge);
 	badge.textContent = registrations.length.toString();
 
-	var header = document.createElement('h4');
+	var header = document.createElement('h3');
 	header.textContent = i18n(props.title);
 	header.appendChild(badge);
 	if (!isFinished)
