@@ -73,7 +73,10 @@ if (!(Test-Path `$r))
 # Go into python installation
 PUSHD D:\home\python364x64
 
-# Run pip
+# Upgrade pip
+CMD /C python.exe -m pip install --upgrade pip
+
+# Run pip on requirements
 CMD /C python.exe -m pip install --upgrade -r `$r
 
 # Fix flask_restful_swagger_3 ; edit: no more required
