@@ -164,11 +164,11 @@ Tu reçevras un email quand ca sera effectué.
       "Bcc": admins,
       "Subject": "Nouvelle inscription calendrier LyonParapente : %s" % name,
       "HTMLPart": """
-<b><a href="mailto:{email}">{name}</a></b> ({email}) vient de s'enregistrer !<br/>
+<b><a href="{site}/user:{id}">{name}</a></b> ({email}) vient de s'enregistrer !<br/>
 <br/>
 <a href="{site}/users">Clic ici pour accèder au trombinoscope</a> et approuver ou refuser son inscription.<br /><br />
 <a href="https://intranet.ffvl.fr/structure/377/licences/">Liste des licenciés FFVL LyonParapente.</a>
-""".format(name=html.escape(name), email=html.escape(email), site=domain)
+""".format(name=html.escape(name), email=html.escape(email), site=domain, id=user_id)
     }
   ]
   send_emails(messages)
