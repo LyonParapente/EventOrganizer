@@ -57,7 +57,8 @@ const settings: Settings =
 			escalade: '#FF99CC',
 			jeux: '#8894F9',
 			annulée: '#8A8A8A',
-			autre: '#FB6F46'
+			autre: '#FB6F46',
+			"rando-vol": '#B9EB1A'
 		}
 	},
 	unsplash_tags: ['paraglider'],
