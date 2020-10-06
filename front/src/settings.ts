@@ -43,7 +43,8 @@ const settings: Settings =
 	{
 		default:
 		{
-			"sortie vol": "#3A87AD",
+			"sortie vol": '#3A87AD',
+			"rando-vol": '#B9EB1A',
 			cross: '#EB2DF5',
 			permanence: '#5FDCE2',
 			club: '#00C400',
@@ -57,8 +58,7 @@ const settings: Settings =
 			escalade: '#FF99CC',
 			jeux: '#8894F9',
 			annulée: '#8A8A8A',
-			autre: '#FB6F46',
-			"rando-vol": '#B9EB1A'
+			autre: '#FB6F46'
 		}
 	},
 	unsplash_tags: ['paraglider'],
