@@ -66,10 +66,7 @@ class LoginAPI(Resource):
     if user is None:
       print('Email not found: %s' % email)
     else:
-      if user['role'] == 'temporary' and LoginAPI.check_temporary_user_expired(user):
-        print('%s temporary account has expired' % email)
-        db.update_user_role(user['id'], 'expired')
-        user['role'] = 'expired'
+      LoginAPI.test_user_expiration(user)
 
       if user['role'] in ['user', 'temporary', 'admin']:
         if bcrypt.check_password_hash(user['password'], password):
@@ -88,8 +85,15 @@ class LoginAPI(Resource):
     return expiration_datetime
 
   @staticmethod
-  def check_temporary_user_expired(user):
-    return get_expiration_datetime(user) < datetime.datetime.utcnow()
+  def check_user_expired(user):
+    return LoginAPI.get_expiration_datetime(user) < datetime.datetime.utcnow()
+
+  @staticmethod
+  def test_user_expiration(user):
+    if user['role'] == 'temporary' and LoginAPI.check_user_expired(user):
+      print('%s temporary account has expired' % user['email'])
+      db.update_user_role(user['id'], 'expired')
+      user['role'] = 'expired'
 
   @staticmethod
   def get_token(user, expires_delta):

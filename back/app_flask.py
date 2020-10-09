@@ -255,6 +255,7 @@ def users():
         user['border'] = 'border-info'
 
   for user in users:
+    LoginAPI.test_user_expiration(user)
     if user['role']=='temporary':
       user['expiration_date'] = LoginAPI.get_expiration_datetime(user)
 
