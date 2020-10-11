@@ -30,7 +30,7 @@ header = """
 <br />
 """.format(site=domain)
 
-footer = """<br/><br/><br/>
+footer = """<br/><br/>
 <a href="https://lyonparapente.fr">Le blog</a> | <a href="{site}">Le calendrier</a><br/>
 Pour toute question: <a href="mailto:contact@lyonparapente.fr">contact@lyonparapente.fr</a>
 """.format(site=domain)
@@ -444,6 +444,7 @@ def send_tomorrow_events():
   tomorrow_nice = nice_date(tomorrow, settings.lang)
 
   events = db.get_events_list(tomorrow_str, tomorrow_str, fetch_start_before=False)
+
   nb = len(events)
   if nb == 0:
     print("No event tomorrow")
@@ -456,12 +457,14 @@ def send_tomorrow_events():
     desc = "les sorties prévues"
 
   events_html = ''
-  for event in events:
+  for i, event in enumerate(events):
     creator_id = event['creator_id']
     user = db.get_user(user_id=creator_id)
     creator_name = user['firstname'] + ' ' + user['lastname']
+    if i > 0:
+      events_html += "<hr />"
     events_html += """
-<div style="margin:20px 10px; border-bottom: 2px solid gray;">
+<div style="margin:20px 10px;">
 <a href="{site}/user:{creator_id}">{creator_name}</a> a planifié la sortie <b><a href="{site}/event:{event_id}">{title}</a></b><br/>
 {description}
 </div>
