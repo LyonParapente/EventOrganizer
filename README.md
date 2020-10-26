@@ -4,16 +4,18 @@ Organize events in your community!
 
 We're a paragliding club but this tool could definitely be used by other groups.
 
+![Screenshot](https://github.com/LyonParapente/EventOrganizer/raw/master/screenshot.png)
+
 Main goals:
+* Mobile friendly
 * Ability to organize events for one or more days
   * Each event has a name, description, date and meeting point
   * Comments can be exchange between members for this event
   * Nice to have: organize transport (how many vehicules available for how many persons...)
 * Intuitive & nice looking
-* Mobile friendly
 * List of members (restrict access)
 * Emails notifications
-* Stats (per month / year)
+* Promote communication (Phone, WhatsApp, ...)
 
 
 # Developer
@@ -25,9 +27,9 @@ Main goals:
 
 ## Front
 
-First time: `npm install`
+First time: `npm install --dev`
 
-I'm using [gulp.js](https://gulpjs.com/) to "compile" the front.
+We're using [gulp.js](https://gulpjs.com/) to "compile" the front.
 
 Just execute: `gulp`
 
