@@ -10,10 +10,11 @@ py -m venv env
 # activate it
 .\env\Scripts\activate
 # install requirements
+py -m pip install wheel
 py -m pip install -r .\requirements.txt
 ```
 
-# Local run
+# Local run (dev)
 
 `py .\app_flask.py "./event.db"`
 
@@ -29,6 +30,10 @@ You can also query:
 Insert an event in database:  
 `curl -i -H "Content-Type: application/json" -X POST -d "{\"title\": \"mon titre\", \"location\": \"mon endroit\", \"start_date\": \"2020-03-29\"}" http://localhost:5000/api/v1.0/events`
 
+
+# Linux hosting (prod)
+
+Flask+Gunicorn+Nginx+HTTPS: [VPS](VPS.md)
 
 
 # IIS hosting
@@ -50,7 +55,7 @@ Then this might help:
 
 
 
-# Azure hosting
+# Azure hosting (prod)
 
 ## Create WebApp
 

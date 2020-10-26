@@ -36,10 +36,7 @@ Just execute: `gulp`
 If you want a webserver with live reload: `gulp serve`  
 and your browser should open http://localhost:3000/calendar.html
 
-There is a default task (see `gulpfile.js`) which launch a small http server on port 3000.
-This does not use the go server implementation.
-
-Each time you save a source file, [browserSync](https://www.browsersync.io) reloads the page of all connected browsers, even your phone :). See `gulp.watch`.
+Each time you save a source file, [browserSync](https://www.browsersync.io) reloads the page of all connected browsers, even your phone :). See `gulp.watch` in gulpfile.js.
 
 
 ## Back
