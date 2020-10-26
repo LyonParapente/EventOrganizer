@@ -1,5 +1,7 @@
 This tutorial describes how to fully configure the application on a Debian system.
 
+(VPS stands for Virtual Private Server)
+
 ## Install required packages
 ```
 sudo apt-get update
@@ -53,7 +55,9 @@ sudo chown <user>:www-data -R ~/EventOrganizer/
 
 ## Create a systemd service
 (You can also use supervisor rather than systemd)
+
 `sudo nano /etc/systemd/system/eventorganizer.service`
+
 Fill this in, don't forget to replace `<user>`:
 ```
 [Unit]
@@ -71,7 +75,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
-Then enable and start the service:
+Then enable, start and check the service:
 ```
 sudo systemctl enable eventorganizer
 sudo systemctl start eventorganizer
@@ -82,6 +86,7 @@ sudo systemctl status eventorganizer
 
 ### HTTP listener
 `sudo nano /etc/nginx/sites-available/eventorganizer`
+
 Copy this content:
 ```
 server {
@@ -94,13 +99,15 @@ server {
     }
 }
 ```
-<your_domain> = calendrier.lyonparapente.fr  
+`<your_domain>` = calendrier.lyonparapente.fr in our case  
 Note: we have a DNS entry type CNAME to link this to the hosting server  
 
 Enable the configuration:  
 `sudo ln -s /etc/nginx/sites-available/eventorganizer /etc/nginx/sites-enabled`
+
 Test for syntax errors:  
 `sudo nginx -t`
+
 Restart nginx:  
 `sudo systemctl restart nginx`
 

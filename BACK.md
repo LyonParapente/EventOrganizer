@@ -33,7 +33,9 @@ Insert an event in database:
 
 # Linux hosting (prod)
 
-Flask+Gunicorn+Nginx+HTTPS: [VPS](VPS.md)
+This is the recommended way to go.  
+
+Follow the tutorial: [Flask + Gunicorn + Nginx + HTTPS](VPS.md)
 
 
 # IIS hosting

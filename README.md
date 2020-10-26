@@ -1,8 +1,8 @@
 # EventOrganizer
 
-Organize events in your community!
-
-We're a paragliding club but this tool could definitely be used by other groups.
+Organize events in your community!  
+We're a paragliding club but this tool could definitely be used by other groups.  
+Our instance is located at: https://calendrier.lyonparapente.fr
 
 ![Screenshot](https://github.com/LyonParapente/EventOrganizer/raw/master/screenshot.png)
 
@@ -41,7 +41,7 @@ Each time you save a source file, [browserSync](https://www.browsersync.io) relo
 
 ## Back
 
-See [Back](BACK.md)
+See [BACK](BACK.md) for how to configure both your local development environment your production environment.
 
 
 # Stack
