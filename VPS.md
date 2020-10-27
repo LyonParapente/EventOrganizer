@@ -118,12 +118,49 @@ sudo apt install python3-certbot-nginx
 sudo certbot --nginx -d <your_domain>
 ```
 
+Activate HTTP2 by editing:  
+`sudo nano /etc/nginx/sites-enabled/eventorganizer`  
+Add "http2" in the following line:  
+`listen 443 ssl http2; # managed by Certbot`
+
 ## Secure your server
 ```
 sudo apt-get install fail2ban
 nano /etc/ssh/sshd_config  # Set Port to something else than 22
 /etc/init.d/ssh restart
 ```
+### Hardening nginx
+`sudo nano /etc/nginx/sites-enabled/eventorganizer`
+Add this at the top of the file:
+```
+# don't send the nginx version number in error pages and Server header
+server_tokens off;
+
+# config to don't allow the browser to render the page inside an frame or iframe
+add_header X-Frame-Options SAMEORIGIN;
+```
+Comment the following line:  
+`include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot`  
+and add this in the section:
+```
+    # enables server-side protection from BEAST attacks
+    # http://blog.ivanristic.com/2013/09/is-beast-still-a-threat.html
+    ssl_prefer_server_ciphers on;
+    # disable SSLv3(enabled by default since nginx 0.8.19) since it's less secure then TLS http://en.wikipedia.org/wiki/Secure_Sockets_Layer#SSL_3.0
+    ssl_protocols TLSv1.2 TLSv1.3;
+    # ciphers chosen for forward secrecy and compatibility
+    # http://blog.ivanristic.com/2013/08/configuring-apache-nginx-and-openssl-for-forward-secrecy.html
+    ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-S$
+
+    # enable ocsp stapling (mechanism by which a site can convey certificate revocation information to visitors in a privacy-preserving, scalable manner)
+    # http://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
+    resolver 8.8.8.8 8.8.4.4;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+```
+Test: `sudo nginx -t`  
+Apply changes: `sudo systemctl restart nginx`  
+
 
 ## Useful
 A few helpful commands:
