@@ -36,5 +36,18 @@ avatars_folder = 'avatars'
 backgrounds_folder = 'backgrounds'
 uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
 international_prefix = '+33'
-use_mailjet = False
 temporary_user_duration = datetime.timedelta(days=60) # +web_remember_JWT_ACCESS_TOKEN_EXPIRES if user checked remember credentials
+domain = "https://calendrier.lyonparapente.fr"
+emails = {
+  "use_mailjet": False,
+  "server": "SSL0.OVH.NET",
+  "port": 465,
+  "username": "calendrier@lyonparapente.fr",  # password in secrets.py
+  "use_tls": False,
+  "use_ssl": True,
+  "from_email": "calendrier@lyonparapente.fr",
+  "from_name": "Lyon Parapente",
+  "domain": domain,
+  "max_recipients_per_mail": 50
+}
+

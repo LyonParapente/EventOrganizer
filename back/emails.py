@@ -17,11 +17,10 @@ from threading import Thread
 import copy
 
 flask_app = None
-max_recipients_per_mail = 50
 
-from_email = "calendrier@lyonparapente.fr"
-from_name = "Lyon Parapente"
-domain = "https://calendrier.lyonparapente.fr"
+from_email = settings.emails['from_email']
+from_name = settings.emails['from_name']
+domain = settings.emails['domain']
 
 header = """
 <div align="center">
@@ -49,7 +48,7 @@ def chunks(l, n):
 
 def send_emails(messages):
   """Send one or more emails"""
-  if settings.use_mailjet:
+  if settings.emails['use_mailjet']:
     send_emails_mailjet(messages)
   else:
     send_emails_smtp(messages)
@@ -64,7 +63,7 @@ def send_emails_mailjet(messages):
     message['HTMLPart'] = header + message['HTMLPart'] + footer
 
     if message.get('Bcc'):
-      bcc = chunks(message['Bcc'], max_recipients_per_mail)
+      bcc = chunks(message['Bcc'], settings.emails['max_recipients_per_mail'])
       message["Bcc"] = bcc[0]
       for remaining in bcc[1:]:
         extra = copy.deepcopy(message)
@@ -100,7 +99,7 @@ def send_emails_smtp_async(app, messages):
         else:
           dests = compute_recipients_inline(message['To'])
 
-        for chunk in chunks(dests, max_recipients_per_mail):
+        for chunk in chunks(dests, settings.emails['max_recipients_per_mail']):
           bcc = None
           recipients = None
           if message.get('Bcc'):
@@ -495,12 +494,12 @@ Voici {desc} pour le {tomorrow_nice} :<br/>
 
 
 def init(app):
-  app.config['MAIL_SERVER'] = 'SSL0.OVH.NET'
-  app.config['MAIL_PORT'] = 465
-  app.config['MAIL_USE_TLS'] = False
-  app.config['MAIL_USE_SSL'] = True
+  app.config['MAIL_SERVER'] = settings.emails['server']
+  app.config['MAIL_PORT'] = settings.emails['port']
+  app.config['MAIL_USE_TLS'] = settings.emails['use_tls']
+  app.config['MAIL_USE_SSL'] = settings.emails['use_ssl']
   app.config['MAIL_DEBUG'] = app.debug
-  app.config['MAIL_USERNAME'] = from_email
+  app.config['MAIL_USERNAME'] = settings.emails['username']
   #app.config['MAIL_PASSWORD'] = '' # set in secrets.py
   app.config['MAIL_DEFAULT_SENDER'] = from_name+" <"+from_email+">"
   global mail
