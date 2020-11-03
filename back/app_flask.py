@@ -98,6 +98,7 @@ def error_page(infos):
 
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 app.config['JWT_COOKIE_SAMESITE'] = 'Lax'
+app.config['JWT_COOKIE_SECURE'] = settings.domain.startswith("https") and not app.debug
 
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
@@ -316,6 +317,7 @@ def login():
     default_theme=settings.default_theme)
 
 @app.route('/logout')
+@jwt_optional
 def logout():
   """Logout"""
   LogoutAPI.disconnect(get_raw_jwt())
