@@ -1,3 +1,4 @@
+- eventorganizer.sock
 - events.db
 - exceptions.txt
 - secrets.py
@@ -7,4 +8,5 @@
 + avatars/default-60.png
 + avatars/default-40.png
 - backgrounds/
+- env/
 - uploads/
