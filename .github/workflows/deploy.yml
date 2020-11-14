@@ -3,8 +3,6 @@ name: Build and deploy app
 
 on:
   push:
-    branches:
-      - master
     tags:
       - '*'
 
@@ -41,7 +39,7 @@ jobs:
 
     - name: Zip artifact
       run: |
-        zip --junk-paths artifact ./back/*
+        zip -r --junk-paths artifact ./back/*
 
     - name: Create Release
       id: create_release
