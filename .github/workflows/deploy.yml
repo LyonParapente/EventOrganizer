@@ -39,7 +39,8 @@ jobs:
 
     - name: Zip artifact
       run: |
-        zip -r -D artifact ./back/*
+        cd back;
+        zip -r artifact *
 
     - name: Create Release
       id: create_release
