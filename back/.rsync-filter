@@ -3,6 +3,9 @@
 - exceptions.txt
 - secrets.py
 - smtp_errors.txt
+- .gitignore
+- .git/
+- .github/
 - avatars/
 + avatars/default-130.png
 + avatars/default-60.png
