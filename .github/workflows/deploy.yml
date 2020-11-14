@@ -4,10 +4,7 @@ name: Build and deploy app
 on:
   push:
     tags:
-      - '*'
-    tags-ignore:
-      - main
-      - master
+      - 'v*'
 
 jobs:
   build-and-deploy:
