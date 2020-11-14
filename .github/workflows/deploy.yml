@@ -5,12 +5,15 @@ on:
   push:
     tags:
       - '*'
+    tags-ignore:
+      - main
+      - master
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
 
     - name: Set up Node.js version
       uses: actions/setup-node@v1
@@ -32,8 +35,6 @@ jobs:
         ARGS: -avzrFF --delete
         SOURCE: back/
         TARGET: /var/www/EventOrganizer/
-
-    # Create a release
 
     - name: Zip artifact
       run: |
