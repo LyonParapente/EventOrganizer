@@ -37,16 +37,13 @@ jobs:
 
     # Create a release when there is a tag
 
-    - name: Check if Git tag exists
-      run: echo "head_tag=$(git tag --points-at HEAD)" >> $GITHUB_ENV
-
     - name: Zip artifact
-      if: ${{ ! -z "$head_tag" }}
+      if: startsWith($GITHUB_REF, 'refs/tags/')
       run: |
         zip --junk-paths artifact ./back/*
 
     - name: Create Release
-      if: ${{ ! -z "$head_tag" }}
+      if: startsWith($GITHUB_REF, 'refs/tags/')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -58,7 +55,7 @@ jobs:
         prerelease: false
 
     - name: Upload Release Asset
-      if: ${{ ! -z "$head_tag" }}
+      if: startsWith($GITHUB_REF, 'refs/tags/')
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
       env:
