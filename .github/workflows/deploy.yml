@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - '*'
 
 jobs:
   build-and-deploy:
@@ -30,20 +32,18 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
       with:
-        source: "./back"
+        source: "back/"
         strip_components: 1
         target: "/var/www/EventOrganizer"
 
 
-    # Create a release when there is a tag
+    # Create a release
 
     - name: Zip artifact
-      if: startsWith(github.ref, 'refs/tags/')
       run: |
         zip --junk-paths artifact ./back/*
 
     - name: Create Release
-      if: startsWith(github.ref, 'refs/tags/')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -55,7 +55,6 @@ jobs:
         prerelease: false
 
     - name: Upload Release Asset
-      if: startsWith(github.ref, 'refs/tags/')
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
       env:
