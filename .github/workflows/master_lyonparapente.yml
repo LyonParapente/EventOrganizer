@@ -18,20 +18,12 @@ jobs:
     - name: Set up Node.js version
       uses: actions/setup-node@v1
       with:
-        node-version: '12.13.0'
+        node-version: '14.15.0'
 
     - name: Compile front with Gulp
       uses: elstudio/actions-js-build/build@v2
       with:
         wdPath: './front'
-
-    # - name: 'Deploy to Azure Web App'
-    #   uses: azure/webapps-deploy@v1
-    #   with:
-    #     app-name: 'lyonparapente'
-    #     slot-name: 'production'
-    #     publish-profile: ${{ secrets.AzureAppService_PublishProfile_10f0423f08d04d53a7715b8bc4c23c57 }}
-    #     package: back
 
     - name: Copy contents via scp
       uses: appleboy/scp-action@master
@@ -41,5 +33,5 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
       with:
-        source: "./back"
+        source: "./back/*"
         target: "/var/www/EventOrganizer"
