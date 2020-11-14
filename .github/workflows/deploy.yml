@@ -22,17 +22,28 @@ jobs:
       with:
         wdPath: './front'
 
-    - name: Deploy on production via SCP
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
+    # - name: Deploy on production via SCP
+    #   uses: appleboy/scp-action@master
+    #   env:
+    #     HOST: ${{ secrets.HOST }}
+    #     USERNAME: ${{ secrets.USERNAME }}
+    #     PORT: ${{ secrets.PORT }}
+    #     KEY: ${{ secrets.SSHKEY }}
+    #   with:
+    #     source: "back/"
+    #     strip_components: 1
+    #     target: "/var/www/EventOrganizer"
+
+    - name: Deploy on production via RSYNC
+      uses: burnett01/rsync-deployments@4.1
       with:
-        source: "back/"
-        strip_components: 1
-        target: "/var/www/EventOrganizer"
+        switches: -avzrFF --delete
+        path: back/
+        remote_path: /var/www/EventOrganizer/
+        remote_host: ${{ secrets.HOST }}
+        remote_port: ${{ secrets.PORT }}
+        remote_user: ${{ secrets.USERNAME }}
+        remote_key: ${{ secrets.SSHKEY }}
 
 
     # Create a release

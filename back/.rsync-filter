@@ -1,0 +1,10 @@
+- events.db
+- exceptions.txt
+- secrets.py
+- smtp_errors.txt
+- avatars/
++ avatars/default-130.png
++ avatars/default-60.png
++ avatars/default-40.png
+- backgrounds/
+- uploads/
