@@ -34,17 +34,27 @@ jobs:
     #     strip_components: 1
     #     target: "/var/www/EventOrganizer"
 
-    - name: Deploy on production via RSYNC
-      uses: burnett01/rsync-deployments@4.1
-      with:
-        switches: -avzrFF --delete
-        path: back/
-        remote_path: /var/www/EventOrganizer/
-        remote_host: ${{ secrets.HOST }}
-        remote_port: ${{ secrets.PORT }}
-        remote_user: ${{ secrets.USERNAME }}
-        remote_key: ${{ secrets.SSHKEY }}
+    # - name: Deploy on production via RSYNC
+    #   uses: burnett01/rsync-deployments@4.1
+    #   with:
+    #     switches: -avzrFF --delete
+    #     path: back/
+    #     remote_path: /var/www/EventOrganizer/
+    #     remote_host: ${{ secrets.HOST }}
+    #     remote_port: ${{ secrets.PORT }}
+    #     remote_user: ${{ secrets.USERNAME }}
+    #     remote_key: ${{ secrets.SSHKEY }}
 
+    - name: Deploy on production via RSYNC
+        uses: trendyminds/github-actions-rsync@master
+        with:
+          RSYNC_OPTIONS: -avzrFF --delete
+          RSYNC_TARGET: /var/www/EventOrganizer/
+          RSYNC_SOURCE: back/
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
+          SSH_USERNAME:  ${{ secrets.USERNAME }}
+          SSH_HOSTNAME: ${{ secrets.HOST }}
 
     # Create a release
 
