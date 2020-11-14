@@ -37,7 +37,7 @@ jobs:
     - name: Deploy on production via RSYNC
       uses: burnett01/rsync-deployments@4.1
       with:
-        switches: -avzr --filter=": back/.rsync-filter" --delete
+        switches: "-avzr --filter=': back/.rsync-filter' --delete"
         path: back/
         remote_path: /var/www/EventOrganizer/
         remote_host: ${{ secrets.HOST }}
