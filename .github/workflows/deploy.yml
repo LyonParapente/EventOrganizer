@@ -39,7 +39,7 @@ jobs:
 
     - name: Zip artifact
       run: |
-        zip -r --junk-paths artifact ./back/*
+        zip -r artifact ./back/*
 
     - name: Create Release
       id: create_release
