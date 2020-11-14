@@ -6,7 +6,7 @@ This tutorial describes how to fully configure the application on a Debian syste
 ```
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt install git npm python3-pip python3-venv nginx
+sudo apt install git npm python3-pip python3-venv nginx rsync
 ```
 
 ## Install EventOrganizer from sources
