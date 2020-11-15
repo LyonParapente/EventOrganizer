@@ -29,7 +29,7 @@ jobs:
         USER: ${{ secrets.USERNAME }}
         HOST: ${{ secrets.HOST }}
         PORT: ${{ secrets.PORT }}
-        ARGS: -avzrFF --delete
+        ARGS: -avzrF --delete
         SOURCE: back/
         TARGET: /var/www/EventOrganizer/
 
