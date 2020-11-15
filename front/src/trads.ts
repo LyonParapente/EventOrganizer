@@ -29,6 +29,7 @@ const trads =
 		"Add a comment... Markdown available!": "Ajouter un commentaire... Markdown disponible !",
 		"Please provide a comment": "Veuillez saisir un commentaire",
 		"Send": "Envoyer",
+		"Preview": "Prévisualiser",
 		"The ": "Le ",
 		" at ": " à ",
 		"Yesterday ": "Hier ",

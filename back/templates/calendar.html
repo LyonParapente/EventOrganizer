@@ -96,6 +96,8 @@
 						<label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
 						<div class="col-sm-9">
 							<textarea class="form-control" id="sortie_description" rows="5" tabindex="8" placeholder="Type a description... Markdown available!"></textarea>
+							<button type="button" class="col btn btn-outline-secondary trad btn-sm" id="description_preview_btn">Preview</button>
+							<div id="description_preview" class="collapse"></div>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -266,8 +268,12 @@
 						<div class="invalid-feedback trad">Please provide a comment</div>
 						<div id="comment_post_error"></div>
 					</div>
-					<button type="submit" class="btn btn-outline-primary trad" style="height: 110px;">Send</button>
+					<div class="list-group">
+						<button type="submit" class="btn btn-outline-primary trad" style="height: 80px;">Send</button>
+						<button type="button" class="btn btn-outline-secondary trad btn-sm" id="event_preview_btn">Preview</button>
+					</div>
 				</form>
+				<div id="comment_preview" class="collapse"></div>
 			</div>
 		</div>
 	</div>

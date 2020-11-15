@@ -56,6 +56,14 @@ export function init_showEvent (cal: Calendar): void
 	{
 		window.open(current_event.whatsapp_link);
 	});
+
+	var event_comment = id('event_comment') as HTMLTextAreaElement;
+	event_comment.addEventListener('change', UpdateCommentPreview);
+	event_comment.addEventListener('keyup', UpdateCommentPreview);
+	id('event_preview_btn').addEventListener('click', function()
+	{
+		id('comment_preview').classList.toggle('collapse');
+	});
 }
 
 export function showEvent (calEvent: EventApi): void
@@ -377,6 +385,10 @@ function SubmitComment ()
 	{
 		textarea.value = '';
 
+		var comment_preview = id('comment_preview');
+		comment_preview.innerHTML = '';
+		comment_preview.classList.add('collapse');
+
 		// Reload all comments because there are new comments from others
 		loadComments(current_event);
 	},
@@ -436,4 +448,9 @@ function SetBell (block): void
 	var event_bell = id('event_bell');
 	event_bell.className = block ? "far fa-bell-slash" : "fas fa-bell";
 	event_bell.setAttribute('title', i18n(block ? 'NotificationsBlocked' : 'NotificationsNotBlocked'));
+}
+
+function UpdateCommentPreview ()
+{
+	id('comment_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
 }

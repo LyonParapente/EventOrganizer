@@ -47,6 +47,14 @@ export function init_createEvent (onCreate): void
 	init_categories();
 	init_colorPicker();
 	init_WhatsApp_video();
+
+	var sortie_description = id('sortie_description') as HTMLTextAreaElement;
+	sortie_description.addEventListener('change', UpdatePreview);
+	sortie_description.addEventListener('keyup', UpdatePreview);
+	id('description_preview_btn').addEventListener('click', function()
+	{
+		id('description_preview').classList.toggle('collapse');
+	});
 }
 
 function init_WhatsApp_video ()
@@ -196,6 +204,8 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 
 		router.navigate("event:new", i18n("Plan an event"));
 	}
+	UpdatePreview.call(sortie_desc);
+	id('description_preview').classList.add('collapse');
 
 	jQuery("#createEvent")
 		.one('shown.bs.modal', function ()
@@ -323,4 +333,9 @@ function SubmitEvent (onCreate)
 			}
 		}
 	});
+}
+
+function UpdatePreview ()
+{
+	id('description_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
 }

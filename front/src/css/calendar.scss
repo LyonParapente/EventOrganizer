@@ -132,6 +132,11 @@ text-align: center;
 text-align: right;
 }
 
+#comment_preview, #description_preview {
+padding: 20px;
+box-shadow: inset 5px 5px 10px rgba(0, 0, 0, .3), inset -5px -5px 10px rgba(0, 0, 0, .2);
+}
+
 #changeBg {
 position: absolute;
 bottom: 0;
