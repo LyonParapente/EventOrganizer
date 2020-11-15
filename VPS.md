@@ -6,10 +6,23 @@ This tutorial describes how to fully configure the application on a Debian syste
 ```
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt install git npm python3-pip python3-venv nginx rsync
+sudo apt install python3-pip python3-venv nginx rsync git npm
 ```
 * git & npm are only required if you want to compile the front on the server
 * rsync is for the Github deploy action
+
+## Create dedicated user
+
+Replace `<user>` with the name you want
+
+```
+# Create user
+sudo useradd -m -N -g www-data <user> -s /bin/bash
+
+# Create project directory
+sudo mkdir /var/www/EventOrganizer
+sudo chown <user>:www-data /var/www/EventOrganizer
+```
 
 ## Deploy code
 
@@ -25,14 +38,22 @@ Go to Github project > Settings > Secrets and add the following variables:
 * USERNAME: username
 * SSHKEY: private key, generated like so:
 ```
+sudo -u <user> -i
 ssh-keygen -t rsa -b 4096
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 cat ~/.ssh/id_rsa
 ```
 
+Then push a commit with a tag and the action will be executed.
+
 ## Manually compile from sources
+
 Do this only if you don't want to use Github action.
-`git clone https://github.com/LyonParapente/EventOrganizer`
+
+```
+sudo -u <user> -i
+git clone https://github.com/LyonParapente/EventOrganizer
+```
 
 Compile the front:
 ```
@@ -65,18 +86,11 @@ nano secrets.py  # make required changes
 #python3 app_flask.py
 #gunicorn --bind 0.0.0.0:8000 app_flask:app
 #Must be root port ports<1024
-#sudo gunicorn3 --bind 0.0.0.0:80 -w 4 app_flask:app -u <user> -g <group> --pythonpath ~/EventOrganizer/back/env/lib/python3.7/site-packages
+#sudo gunicorn3 --bind 0.0.0.0:80 -w 4 app_flask:app -u <user> -g <group> --pythonpath /var/www/EventOrganizer/back/env/lib/python3.7/site-packages
 ```
 
 We're now done with our virtual environment, so we can deactivate it:  
 `deactivate`
-
-## Create dedicated user
-Replace `<user>` with the name you want
-```
-sudo useradd -M -N -d ~/EventOrganizer/ <user> -s /bin/bash
-sudo chown <user>:www-data -R ~/EventOrganizer/
-```
 
 ## Create a systemd service
 (You can also use supervisor rather than systemd)
@@ -150,7 +164,7 @@ Add "http2" in the following line:
 
 ## Secure your server
 ```
-sudo apt-get install fail2ban
+sudo apt install fail2ban
 nano /etc/ssh/sshd_config  # Set Port to something else than 22
 /etc/init.d/ssh restart
 ```
@@ -190,7 +204,7 @@ Apply changes: `sudo systemctl restart nginx`
 ## Useful
 A few helpful commands:
 ```
-source ~/EventOrganizer/back/env/bin/activate
+source /var/www/EventOrganizer/back/env/bin/activate
 less /var/log/nginx/error.log
 less /var/log/nginx/access.log
 journalctl -u nginx
