@@ -7,9 +7,11 @@ class Message(Schema):
     'comment': {'type': 'string', 'example': 'This is my message', 'minLength': 1},
     'author_id': {'type': 'integer', 'readOnly': True, 'example': 101},
     'event_id': {'type': 'integer', 'readOnly': False, 'example': 12345},
+    'editLatest': {'type': 'boolean', 'writeOnly': True, 'example': False},
     'creation_datetime': {'type': 'string', 'format': 'date-time',
       'readOnly': True, 'example': '2020-04-13T16:30:04.403284Z'}
   }
+  # required on response:
   required = ['id', 'comment', 'author_id', 'event_id', 'creation_datetime']
 
 class MessageCreate(Message):

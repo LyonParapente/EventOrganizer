@@ -151,3 +151,10 @@ color: green;
 #WhatsApp_video {
 cursor: pointer;
 }
+
+#comment_send_btn {
+height: 80px;
+}
+#comment_send_btn.edit {
+height: 50px;
+}

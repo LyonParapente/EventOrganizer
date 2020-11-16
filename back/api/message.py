@@ -31,6 +31,9 @@ class MessageAPICreate(Resource):
       },
       '401': {
         'description': 'Not authenticated'
+      },
+      '403': {
+        'description': 'Update forbidden'
       }
     }
   })
@@ -46,14 +49,30 @@ class MessageAPICreate(Resource):
     except ValueError as e:
       abort(400, e.args[0])
 
-    try:
-      props = db.insert_message(**message)
-    except Exception as e:
-      abort(500, e.args[0])
+    props = None
+    editLatest = message['editLatest']
+    del message['editLatest']
+    if editLatest:
+      last_msg = db.get_last_message(message['event_id'])
+      if last_msg and last_msg['author_id'] == author_id:
+        nb = db.edit_message(last_msg['id'], message['comment'], last_msg['author_id'], last_msg['event_id'])
+        if nb == 1:
+          last_msg['comment'] = message['comment']
+          props = last_msg
+        else:
+          abort(500, 'Error updating comment')
+      else:
+        abort(403, 'Can only update the latest comment if it is yours')
+    else:
+      try:
+        props = db.insert_message(**message)
+      except Exception as e:
+        abort(500, e.args[0])
 
     # Email
-    claims = get_jwt_claims()
-    author_name = claims['firstname'] + ' ' + claims['lastname']
-    send_new_message(author_name, author_id, props['event_id'], props['comment'])
+    if not editLatest:
+      claims = get_jwt_claims()
+      author_name = claims['firstname'] + ' ' + claims['lastname']
+      send_new_message(author_name, author_id, props['event_id'], props['comment'])
 
     return Message(**props), 201, {'Location': request.path + '/' + str(props['id'])}

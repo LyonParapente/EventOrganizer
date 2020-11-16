@@ -30,6 +30,7 @@ const trads =
 		"Please provide a comment": "Veuillez saisir un commentaire",
 		"Send": "Envoyer",
 		"Preview": "Prévisualiser",
+		"Cancel": "Annuler",
 		"The ": "Le ",
 		" at ": " à ",
 		"Yesterday ": "Hier ",

@@ -26,6 +26,35 @@ def insert_message(self, *,
     db.close()
   return new_message
 
+def get_last_message(self, event_id):
+  """Fetch the latest message for an event from database"""
+  db, cursor = self._connect()
+  get_message = """SELECT *
+    FROM messages
+    WHERE event_id=?
+    ORDER BY datetime(creation_datetime) DESC
+  """
+  try:
+    cursor.execute(get_message, (event_id,))
+    message = cursor.fetchone()
+  finally:
+    db.close()
+  return message
+
+def edit_message(self, id, comment, author_id, event_id):
+  """Edit a message"""
+  db, cursor = self._connect()
+  update_message = """
+    UPDATE messages
+    SET comment=?
+    WHERE id=? AND event_id=? AND author_id=?
+  """
+  try:
+    cursor.execute(update_message, (comment, id, event_id, author_id))
+    db.commit()
+    return cursor.rowcount
+  finally:
+    db.close()
 
 def get_messages_list(self, event_id):
   """Fetch the list of messages for an event from database"""

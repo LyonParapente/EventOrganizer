@@ -1,6 +1,7 @@
 import { i18n, toRelativeTimeString } from './trads';
 import requestJson from './request_json';
 import settings from './settings';
+import { UpdateCommentPreview } from './event_show';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
@@ -89,6 +90,8 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 {
 	fillCreator(data.users[event.creator_id]);
 
+	var connected_user_id = get_connected_user().id;
+
 	for (var i = 0; i < data.comments.length; ++i)
 	{
 		var comment = data.comments[i],
@@ -100,14 +103,16 @@ function receiveEventInfos(data: any, event_comments: HTMLElement, event: Curren
 			console.warn("Missing user "+userid);
 		}
 
-		var groupitem = createCommentEntry(comment, userid, user);
+		var isLatest = i === data.comments.length - 1;
+		var canEdit = isLatest && userid === connected_user_id;
+		var groupitem = createCommentEntry(comment, userid, user, canEdit);
 		event_comments.appendChild(groupitem);
 	}
 
 	var participants = data.participants || [];
 	var interested = data.interested || [];
 
-	var in_participants = participants.indexOf(get_connected_user().id) !== -1;
+	var in_participants = participants.indexOf(connected_user_id) !== -1;
 
 	createRegistrations(participants, data.users,
 		event.isFinished, participantsEl, event.event_id, false,
@@ -194,7 +199,7 @@ function fillCreator (creator: User)
 	}
 }
 
-function createCommentEntry (comment: Comment, userid: number, user: User): HTMLElement
+function createCommentEntry (comment: Comment, userid: number, user: User, canEdit: boolean): HTMLElement
 {
 	var dateText = toRelativeTimeString(new Date(comment.date));
 
@@ -209,6 +214,19 @@ function createCommentEntry (comment: Comment, userid: number, user: User): HTML
 				avatar.title = getUserName(user);
 			a.appendChild(avatar);
 		d.appendChild(a);
+		if (canEdit)
+		{
+			d.className = "d-flex flex-column";
+			var editButton = document.createElement('button');
+			editButton.type = "button";
+			editButton.className = "btn btn-outline-secondary mt-auto p-1 btn-sm";
+			editButton.textContent = i18n("Edit");
+			editButton.addEventListener('click', function ()
+			{
+				edit_comment(comment.comment);
+			});
+			d.appendChild(editButton);
+		}
 		groupitem.appendChild(d);
 
 		var col = document.createElement('div');
@@ -399,4 +417,17 @@ function updateRegistration (button_id: string, box: HTMLElement)
 function get_connected_user ()
 {
 	return window['connected_user'];
+}
+
+function edit_comment (comment: string)
+{
+	var event_comment = id('event_comment') as HTMLTextAreaElement;
+	event_comment.value = DOMPurify.sanitize(comment);
+	UpdateCommentPreview.call(event_comment);
+
+	id('comment_cancel_btn').classList.remove('collapse');
+	var comment_send_btn = id('comment_send_btn');
+	comment_send_btn.textContent = i18n('Edit');
+	comment_send_btn.classList.add('edit');
+	comment_send_btn.setAttribute("data-action", "edit");
 }

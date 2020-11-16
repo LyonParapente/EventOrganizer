@@ -286,6 +286,16 @@ export function showEvent (calEvent: EventApi): void
 	id("event_rdv_location_box").style.display = '';
 
 	// ----------------------
+	// Comment
+
+	id('comment_cancel_btn').addEventListener('click', function ()
+	{
+		RemoveEditComment();
+		(id('event_comment') as HTMLTextAreaElement).value = '';
+		id('comment_preview').innerHTML = '';
+	});
+
+	// ----------------------
 
 	router.navigate("event:"+calEvent.id, i18n("EventTitle", calEvent.id));
 
@@ -374,10 +384,13 @@ function SubmitComment ()
 	var textarea = id('event_comment') as HTMLTextAreaElement;
 	var comment_post_error = id('comment_post_error');
 	comment_post_error.style.display = 'none';
+	var comment_send_btn = id('comment_send_btn');
+	var editLatest = comment_send_btn.getAttribute("data-action") === "edit";
 	var body =
 	{
 		event_id: current_event.event_id,
-		comment: textarea.value
+		comment: textarea.value,
+		editLatest: editLatest
 	};
 	requestJson("POST", "/api/message", body,
 	function ()
@@ -388,7 +401,12 @@ function SubmitComment ()
 		comment_preview.innerHTML = '';
 		comment_preview.classList.add('collapse');
 
-		// Reload all comments because there are new comments from others
+		if (editLatest)
+		{
+			RemoveEditComment();
+		}
+
+		// Reload all comments because there might be new comments from others
 		loadComments(current_event);
 	},
 	function (type: string, ex: XMLHttpRequest)
@@ -449,7 +467,16 @@ function SetBell (block): void
 	event_bell.setAttribute('title', i18n(block ? 'NotificationsBlocked' : 'NotificationsNotBlocked'));
 }
 
-function UpdateCommentPreview ()
+export function UpdateCommentPreview ()
 {
 	id('comment_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
+}
+
+function RemoveEditComment ()
+{
+	id('comment_cancel_btn').classList.add('collapse');
+	var comment_send_btn = id('comment_send_btn');
+	comment_send_btn.classList.remove('edit');
+	comment_send_btn.textContent = i18n('Send');
+	comment_send_btn.removeAttribute("data-action");
 }
