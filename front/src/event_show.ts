@@ -58,7 +58,6 @@ export function init_showEvent (cal: Calendar): void
 	});
 
 	var event_comment = id('event_comment') as HTMLTextAreaElement;
-	event_comment.addEventListener('change', UpdateCommentPreview);
 	event_comment.addEventListener('keyup', UpdateCommentPreview);
 	id('event_preview_btn').addEventListener('click', function()
 	{

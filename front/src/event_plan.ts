@@ -49,7 +49,6 @@ export function init_createEvent (onCreate): void
 	init_WhatsApp_video();
 
 	var sortie_description = id('sortie_description') as HTMLTextAreaElement;
-	sortie_description.addEventListener('change', UpdatePreview);
 	sortie_description.addEventListener('keyup', UpdatePreview);
 	id('description_preview_btn').addEventListener('click', function()
 	{
