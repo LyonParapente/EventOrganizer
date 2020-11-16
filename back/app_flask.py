@@ -584,6 +584,12 @@ def tomorrow_events():
     return "OK", 200
   return "UNAUTHORIZED", 401
 
+# @app.route('/test_email')
+# @jwt_required
+# def test_email():
+#   emails.test_email()
+#   return "OK", 200
+
 # ------------------------------
 
 if __name__ == '__main__':
