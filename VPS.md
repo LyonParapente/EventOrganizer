@@ -108,11 +108,17 @@ User=<user>
 Group=www-data
 WorkingDirectory=/var/www/EventOrganizer
 Environment="PATH=/var/www/EventOrganizer/env/bin"
-ExecStart=/var/www/EventOrganizer/env/bin/gunicorn --workers 4 --bind unix:eventorganizer.sock -m 007 app_flask:app
+Environment="PYTHONUNBUFFERED=TRUE"
+ExecStart=/var/www/EventOrganizer/env/bin/gunicorn --workers 4 --bind unix:eventorganizer.sock -m 007 app_flask:app --error-logfile /var/log/gunicorn/error.log --access-logfile /var/log/gunicorn/access.log --capture-output
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
+```
+Create the required folder:
+```
+sudo mkdir /var/log/gunicorn
+sudo chown eventorganizer:www-data /var/log/gunicorn
 ```
 Then enable, start and check the service:
 ```
