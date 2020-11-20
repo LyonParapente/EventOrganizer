@@ -86,7 +86,10 @@ nano settings.py  # make required changes
 ```
 Install locale if needed:
 ```
-sudo apt-get install language-pack-fr
+# sudo apt-get install language-pack-fr
+sudo locale-gen fr_FR
+sudo locale-gen fr_FR.UTF-8
+sudo update-locale
 ```
 
 ## Manual tests to run application
