@@ -51,7 +51,7 @@ def send_emails(messages):
   if settings.emails['use_mailjet']:
     send_emails_mailjet(messages)
   else:
-    send_emails_smtp(messages)
+    send_emails_smtp_async(messages)
 
 def send_emails_mailjet(messages):
   """Send one or more emails through mailjet api"""
@@ -88,7 +88,7 @@ def compute_recipients_inline(contacts):
     recipients.append(contact['Name']+' <'+contact['Email']+'>')
   return recipients
 
-def send_emails_smtp_sync(app, messages):
+def send_emails_smtp(app, messages):
   start = datetime.datetime.now()
   with app.app_context():
     for message in messages:
@@ -114,10 +114,10 @@ def send_emails_smtp_sync(app, messages):
           myfile.write(str(sys.exc_info()[0]))
           myfile.write('\n')
   end = datetime.datetime.now()
-  # print("send_emails_smtp_sync took: " + str(end - start))
+  # print("send_emails_smtp took: " + str(end - start))
 
-def send_emails_smtp(messages):
-  Thread(target=send_emails_smtp_sync, args=(flask_app, messages)).start()
+def send_emails_smtp_async(messages):
+  Thread(target=send_emails_smtp, args=(flask_app, messages)).start()
 
 def send_application_exception(exception_infos):
   with open("exceptions.txt", "a") as myfile:
@@ -510,7 +510,7 @@ Hello world!<br />
     }
   ]
   # send_emails(messages)
-  send_emails_smtp_sync(flask_app, messages)
+  send_emails_smtp(flask_app, messages)
 
 def init(app):
   app.config['MAIL_SERVER'] = settings.emails['server']
