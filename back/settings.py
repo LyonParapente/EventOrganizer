@@ -1,6 +1,7 @@
 api_path = '/api'
 db_filepath = './events.db'
-lang = 'fr'
+lang = 'fr'  # key from trads.ts
+lang_locale = 'fr_FR'  # Make sure locale is available! (ex: apt-get install language-pack-<id>)
 default_theme = 'united'
 themes = {
   "cerulean": "Cerulean",

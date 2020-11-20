@@ -80,6 +80,14 @@ pip install gunicorn
 cp secrets.sample.py secrets.py
 nano secrets.py  # make required changes
 ```
+Also make sure settings are ok:
+```
+nano settings.py  # make required changes
+```
+Install locale if needed:
+```
+sudo apt-get install language-pack-fr
+```
 
 ## Manual tests to run application
 ```
