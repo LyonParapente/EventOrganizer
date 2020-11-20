@@ -58,7 +58,7 @@ git clone https://github.com/LyonParapente/EventOrganizer
 Compile the front:
 ```
 cd EventOrganizer/front
-npm install --dev
+npm install --production=false
 gulp  # this compiles front
 ```
 This will compile the front and put what's needed inside /back/static/.
