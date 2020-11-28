@@ -131,6 +131,30 @@ Create the required folder:
 sudo mkdir /var/log/gunicorn
 sudo chown eventorganizer:www-data /var/log/gunicorn
 ```
+Declare the logrotate: `sudo nano /etc/logrotate.d/gunicorn`
+```
+/var/log/gunicorn/access.log
+{
+	daily
+	rotate 7
+	#compress
+	#delaycompress
+	missingok
+	notifempty
+	create 644 eventorganizer www-data
+}
+
+/var/log/gunicorn/error.log
+{
+	daily
+	rotate 7
+	#compress
+	#delaycompress
+	missingok
+	notifempty
+	create 644 eventorganizer www-data
+}
+```
 Then enable, start and check the service:
 ```
 sudo systemctl enable eventorganizer
