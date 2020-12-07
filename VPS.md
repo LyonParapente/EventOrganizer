@@ -162,6 +162,19 @@ sudo systemctl start eventorganizer
 sudo systemctl status eventorganizer
 ```
 
+Give ability to restart gunicorn to eventorganizer passwordless user:
+
+`sudo nano /etc/sudoers.d/eventorganizer`
+
+```
+eventorganizer ALL= NOPASSWD: /bin/systemctl restart eventorganizer
+eventorganizer ALL= NOPASSWD: /bin/systemctl start eventorganizer
+eventorganizer ALL= NOPASSWD: /bin/systemctl stop eventorganizer
+eventorganizer ALL= NOPASSWD: /bin/systemctl status eventorganizer
+```
+
+
+
 ## Configuring Nginx to Proxy Requests
 
 ### HTTP listener

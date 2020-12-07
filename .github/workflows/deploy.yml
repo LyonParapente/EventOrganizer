@@ -33,6 +33,20 @@ jobs:
         SOURCE: back/
         TARGET: /var/www/EventOrganizer/
 
+
+    - name: Multiple commands
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSHKEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd /var/www/EventOrganizer
+          pip install -r requirements.txt
+          find . -type d -name "__pycache__" -not -path "./env/*" -exec rmdir {} \;
+          sudo systemctl restart eventorganizer
+
     - name: Zip artifact
       run: |
         cd back;
