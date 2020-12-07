@@ -76,8 +76,6 @@ export function showEvent (calEvent: EventApi): void
 		return;
 	}
 
-	id('event_id').textContent = calEvent.id;
-
 	var start = calEvent.start,
 		end = calEvent.end;
 	if (end)
