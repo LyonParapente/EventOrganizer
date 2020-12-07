@@ -13,6 +13,9 @@ import urllib.parse
 import html
 import sys, traceback
 import random
+import ics
+import markdown
+import datetime
 
 # ------------------------------
 # Our helpers
@@ -589,6 +592,44 @@ def tomorrow_events():
 # def test_email():
 #   emails.test_email()
 #   return "OK", 200
+
+@app.route('/ics')
+@jwt_required
+def generate_ics():
+  event_id = request.args.get('event')
+  event = database.manager.db.get_event(event_id=event_id)
+  if event is None:
+    return "Invalid event", 404
+
+  c = ics.Calendar()
+  e = ics.Event()
+
+  e.name = event['title']
+  e.begin = event['start_date']
+  url = settings.domain+'/event:'+str(event['id'])
+  e.url = url
+  e.description = markdown.markdown(url+"\n\n"+(event['description'] or ''))
+
+  if event['end_date'] == event['start_date']:
+    e.make_all_day()
+  else:
+    e.end = event['end_date']
+
+  if event['gps_location']:
+    e.location = event['gps_location']
+  elif event['gps']:
+    e.location = event['gps']
+  elif event['location']:
+    e.location = event['location']
+
+  e.created = datetime.datetime.now()  # field required for Android!!
+  c.events.add(e)
+
+  response = make_response(str(c), 200)
+  response.headers['Content-Type'] = 'text/calendar'
+  response.headers['Content-Disposition'] = f'attachment; filename="event_{event_id}.ics"'
+  return response, 200
+
 
 # ------------------------------
 

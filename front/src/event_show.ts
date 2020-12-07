@@ -52,6 +52,8 @@ export function init_showEvent (cal: Calendar): void
 		});
 	});
 
+	i18n_inPlace(["#event_ics"], "title");
+
 	id('event_whatsapp').addEventListener('click', function ()
 	{
 		window.open(current_event.whatsapp_link);
@@ -219,6 +221,12 @@ export function showEvent (calEvent: EventApi): void
 			console.error(type, ex.responseText)
 		});
 	}
+
+	// ----------------------
+	// iCalendar
+
+	var event_ics = id('event_ics') as HTMLAnchorElement;
+	event_ics.setAttribute('href', 'ics?event='+calEvent.id);
 
 	// ----------------------
 	// Dates
