@@ -277,7 +277,7 @@ def login():
     form = request.form.to_dict()
 
     # Lost password management
-    if form['lost_password'] == '1':
+    if form.get('lost_password') == '1':
       if form.get('login') is None:
         return render_template('login.html', **lang,
           default_theme=settings.default_theme, error=lang['type_email'])
