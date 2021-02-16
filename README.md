@@ -27,7 +27,7 @@ Main goals:
 
 ## Front
 
-First time: `npm install --dev`
+First time: `npm install --also=dev`
 
 We're using [gulp.js](https://gulpjs.com/) to "compile" the front.
 

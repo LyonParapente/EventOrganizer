@@ -40,7 +40,7 @@
     "gulp-tslint": "^8.1.4",
     "gulp-uglify-es": "^1.0.4",
     "gulp-uglifycss": "^1.1.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "tsify": "^4.0.1",
     "tslint": "^6.1.0",
     "typescript": "^3.8.3",
