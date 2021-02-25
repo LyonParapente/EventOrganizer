@@ -26,7 +26,7 @@ const settings: Settings =
 	{
 		month: 'long'
 	},
-	default_event_color: "#3A87AD",
+	default_event_color: "#6E6E6E",
 	default_random_event_title:
 	[
 		"Allons voler ",
@@ -43,24 +43,28 @@ const settings: Settings =
 	{
 		default:
 		{
-			"sortie vol": '#3A87AD',
-			"rando-vol": '#B9EB1A',
-			cross: '#EB2DF5',
-			permanence: '#5FDCE2',
-			club: '#00C400',
-			weekend: '#FF9F89',
-			stage: 'green',
-			voyage: '#8D00FF',
-			compétition: '#212529',
-			REX: '#FBEA25',
-			conférence: '#FF4848',
-			théorie: '#C0B701',
-			dune: '#FF9900',
-			ski: '#662C67',
-			escalade: '#FF99CC',
-			jeux: '#8894F9',
-			annulée: '#8A8A8A',
-			autre: '#FB6F46'
+			"sortie vol": '#9B0000',
+			weekend: '#D50000',
+			"3-5 jours": '#FF4E1B',
+			cross: '#F38100',
+			stage: 'F9B222',
+			dune: '#F4DB6C',
+			compétition: '#9BAE88',
+			voyage: '#95C11F',
+			"rando-vol": '#6ABF4B',
+			itinérant: '#008D36',
+			permanence: '#A5E5D9',
+			club: '#00A887',
+			REX: '#36A9E1',
+			conférence: '#1D71B8',
+			théorie: '#002E7D',
+			ski: '#B9DBE5',
+			escalade: '#9E968D',
+			jeux: '#C19ADE',
+			films: '#99E6D8',
+			'coupe icare': '#6FCFEB',
+			autre: '#F3EFA1',
+			annulée: '#C1C1C1'
 		}
 	},
 	unsplash_tags: ['paraglider'],
