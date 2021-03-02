@@ -65,6 +65,28 @@ export function init_showEvent (cal: Calendar): void
 	{
 		id('comment_preview').classList.toggle('collapse');
 	});
+
+	var calendar_export_instance;
+	var event_ics = id('event_ics') as HTMLAnchorElement;
+	event_ics.addEventListener('click', function (evt)
+	{
+		if (calendar_export_instance)
+		{
+			calendar_export_instance.destroy();
+			calendar_export_instance = null;
+		}
+		else
+		{
+			var event = calendar.getEventById(current_event.event_id.toString());
+			calendar_export_instance = ShowCalendarExport(event);
+			setTimeout(() =>
+			{
+				calendar_export_instance.destroy();
+				calendar_export_instance = null;
+			}, 6000);
+		}
+		evt.preventDefault();
+	});
 }
 
 export function showEvent (calEvent: EventApi): void
@@ -219,12 +241,6 @@ export function showEvent (calEvent: EventApi): void
 			console.error(type, ex.responseText)
 		});
 	}
-
-	// ----------------------
-	// iCalendar
-
-	var event_ics = id('event_ics') as HTMLAnchorElement;
-	event_ics.setAttribute('href', 'ics?event='+calEvent.id);
 
 	// ----------------------
 	// Dates
@@ -383,6 +399,58 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 	tooltip.show();
 
 	setTimeout(() => tooltip.destroy(), 3000);
+}
+
+function ShowCalendarExport (event: EventApi): object
+{
+	var evt_start = toDateString(event.start).replace(/-/g, '');
+	var evt_end = evt_start;
+	if (event.end)
+	{
+		evt_end = toDateString(event.end).replace(/-/g, '');
+	}
+
+	var google_link = "https://calendar.google.com/calendar/u/0/r/eventedit?"+
+	[
+		"location="+encodeURIComponent(event.extendedProps.location),
+		"text="+encodeURIComponent(event.title),
+		"sprop=website:"+window.location.origin+"/event:"+event.id,
+		"details="+encodeURIComponent(DOMPurify.sanitize(marked(event.extendedProps.description))),
+		"dates="+evt_start+'/'+evt_end
+	].join('&');
+
+	var yahoo_link = "http://calendar.yahoo.com/?"+
+	[
+		"in_loc="+encodeURIComponent(event.extendedProps.location),
+		"TITLE="+encodeURIComponent(event.title),
+		"URL="+window.location.origin+"/event:"+event.id,
+		"DESC="+encodeURIComponent(DOMPurify.sanitize(marked(event.extendedProps.description))),
+		"ST="+evt_start,
+		"ET="+evt_end,
+		"v=60"
+	].join('&');
+
+	var links =
+	[
+		'<a href="'+google_link+'" target="_blank">Google</a>',
+		'<a href="ics?event='+event.id+'">iCal</a>',
+		'<a href="ics?event='+event.id+'">Android</a>',
+		'<a href="ics?event='+event.id+'">Outlook</a>',
+		'<a href="'+yahoo_link+'" target="_blank">Yahoo</a>'
+	];
+
+	// @ts-ignore html5tooltips
+	var tooltip = new HTML5TooltipUIComponent();
+	tooltip.set(
+	{
+		animateFunction: "spin",
+		contentText: links.join('<HR/>'),
+		stickTo: "bottom",
+		target: id('event_ics')
+	});
+	tooltip.mount();
+	tooltip.show();
+	return tooltip;
 }
 
 function SubmitComment ()
