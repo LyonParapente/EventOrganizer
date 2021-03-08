@@ -103,14 +103,22 @@
 					</div>
 					<div class="form-group row">
 						<label for="sortie_heure" class="col-sm-3 col-form-label">Time</label>
-						<div class="col-sm-9">
+						<div class="col-sm-2">
 							<input type="text" class="form-control" id="sortie_heure" tabindex="6" />
+						</div>
+						<div class="col form-row">
+							<div class="col-auto form-inline">
+								<label for="sortie_whatsapp"><i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i><span>invite link</span></label>&nbsp;<i class="fas fa-question-circle" id="WhatsApp_video"></i>
+							</div>
+							<div class="col">
+								<input type="text" class="form-control" id="sortie_whatsapp" placeholder="https://chat.whatsapp.com/..." tabindex="7" />
+							</div>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
 						<div class="col-sm-9">
-							<textarea class="form-control" id="sortie_description" rows="5"  tabindex="7" placeholder="Type a description... Markdown available!"></textarea>
+							<textarea class="form-control" id="sortie_description" rows="5" tabindex="8" placeholder="Type a description... Markdown available!"></textarea>
 							<button type="button" class="col btn btn-outline-secondary trad btn-sm" id="description_preview_btn">Preview</button>
 							<div id="description_preview" class="collapse"></div>
 						</div>
@@ -118,7 +126,7 @@
 					<div class="form-group row">
 						<label for="sortie_category" class="col-sm-3 col-form-label">Category</label>
 						<div class="col-sm-9 dropdown">
-							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" tabindex="8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
+							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" tabindex="9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
 							<div class="dropdown-menu" aria-labelledby="sortie_category">
 								<a class="dropdown-item trad" href="javascript:;">None</a>
 								<div class="dropdown-divider"></div>
@@ -134,7 +142,7 @@
 						</div>
 					</div>
 					<div id="event_post_error"></div>
-					<button type="submit" class="btn btn-outline-primary btn-lg btn-block trad" id="sortie_save" tabindex="9">Save</button>
+					<button type="submit" class="btn btn-outline-primary btn-lg btn-block trad" id="sortie_save" tabindex="10">Save</button>
 				</form>
 			</div>
 		</div>
@@ -144,7 +152,7 @@
 <div class="modal" id="eventProperties" style="display:none" tabindex="-1" role="dialog" aria-labelledby="event_title" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header align-items-center">
 				<span class="badge mr-2" id="event_category"></span>
 				<a href="javascript:;" class="mr-2"><i class="fas fa-bell" id="event_bell"></i></a>
 				<a href="" id="event_ics" title="Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)" class="mr-2"><i class="far fa-calendar-alt"></i></a>
@@ -206,11 +214,19 @@
 										</div>
 										<span class="form-control" id="event_author"></span>
 									</div>
-									<div class="input-group mt-auto pt-1" id="event_author_phone_box">
-										<div class="input-group-prepend">
-											<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
+									<div class="form-inline mt-auto pt-1">
+										<div class="input-group" id="event_author_phone_box">
+											<div class="input-group-prepend">
+												<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
+											</div>
+											<span class="form-control" id="event_author_phone"></span>
 										</div>
-										<span class="form-control" id="event_author_phone"></span>
+										<div class="input-group ml-1" id="event_author_whatsapp">
+											<div class="input-group-prepend">
+												<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
+											</div>
+											<span class="form-control"><a href="https://api.whatsapp.com/send?phone=">WhatsApp</a></span>
+										</div>
 									</div>
 									<div class="input-group mt-auto pt-1" id="event_author_email_box">
 										<div class="input-group-prepend">
@@ -230,9 +246,9 @@
 					<div class="text-break" id="event_description"></div>
 				</div>
 
-				<div class="container mx-0">
+				<div class="container-fluid">
 					<div class="row">
-						<div class="col-8 p-0">
+						<div class="col-md-8 p-0 mr-md-2">
 
 							<div class="form-inline mb-1">
 								<div class="input-group mr-1" id="event_rdv_time_box">
@@ -252,18 +268,18 @@
 
 							<div id="event_map" class="form-control"></div>
 						</div>
-						<div class="col pr-0 d-flex flex-column">
+						<div class="col p-0 d-flex flex-column mt-2">
 								<div class="flex-grow-1" id="event_participants">
-									<h4>Participants <span class="badge badge-success">5</span></h4>
+									<h3>Participants <span class="badge badge-success">5</span></h3>
 								</div>
 								<div class="flex-grow-1" id="event_interested">
-									<h4>Interested <span class="badge badge-info">2</span></h4>
+									<h3>Interested <span class="badge badge-info">2</span></h3>
 								</div>
 						</div>
 					</div>
 				</div>
 
-				<h5 class="text-muted mt-3 trad">Comments:</h5>
+				<h5 class="text-muted mt-2 trad">Comments:</h5>
 				<div id="event_comments" class="list-group text-break"></div>
 				<div id="event_comments_error" class="alert alert-danger trad" role="alert">Unable to load comments</div>
 				<form class="needs-validation form-inline mt-3 mb-0" novalidate>
@@ -289,6 +305,8 @@
 <script src="js/jquery.slim.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/bootstrap-colorpicker.min.js"></script>
+<script src="js/purify.min.js"></script>
+<script src="js/marked.min.js"></script>
 <script src="js/html5tooltips.min.js"></script>
 
 <script src="js/leaflet.js"></script>
