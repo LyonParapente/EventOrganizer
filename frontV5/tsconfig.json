@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowUmdGlobalAccess": true, // Leaflet
+    "baseUrl": "./src/"
+  }
+}

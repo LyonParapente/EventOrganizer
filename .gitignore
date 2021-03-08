@@ -1,0 +1,7 @@
+﻿*.back
+*.orig
+node_modules/
+package-lock.json
+
+frontV5/node_modules
+frontV5/dist
