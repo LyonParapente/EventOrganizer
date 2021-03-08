@@ -7,4 +7,4 @@ const fuse = fusebox({
   webIndex: {template: 'src/calendar.html'}
 });
 
-fuse.runProd();
+fuse.runDev();
