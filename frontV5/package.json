@@ -6,6 +6,7 @@
     "@fullcalendar/bootstrap": "^5.5.0",
     "@fullcalendar/core": "^5.5.1",
     "@fullcalendar/daygrid": "^5.5.0",
+    "@fullcalendar/interaction": "^5.5.0",
     "@fullcalendar/list": "^5.5.0",
     "bootstrap": "^4.6.0",
     "fuse-box": "^4.0.1-next.1"
