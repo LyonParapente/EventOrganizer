@@ -4,7 +4,7 @@ const fuse = fusebox({
   entry: 'src/main.ts',
   target: 'browser',
   devServer: true,
-  webIndex: {template: 'src/index.html'}
+  webIndex: {template: 'src/calendar.html'}
 });
 
 fuse.runProd();
