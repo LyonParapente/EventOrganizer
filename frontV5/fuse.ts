@@ -14,11 +14,17 @@ const fuse = fusebox({
           var readable = require('fs').createReadStream(eventsJson);
           readable.pipe(res);
         });
+
         app.get('/api/messages', function (req, res)
         {
           var eventsJson = path.join(__dirname, 'data/events/Event_'+req.query.event_id+'.json');
           var readable = require('fs').createReadStream(eventsJson);
           readable.pipe(res);
+        });
+
+        app.get('/api/event/:eventid/notifications_blacklist', function (req, res)
+        {
+          res.send('{"message": "Notifications blacklist not setted for this event", "block": false}');
         });
       }
     }

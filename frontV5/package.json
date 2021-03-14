@@ -8,11 +8,15 @@
     "@fullcalendar/daygrid": "^5.5.0",
     "@fullcalendar/interaction": "^5.5.0",
     "@fullcalendar/list": "^5.5.0",
+    "@types/dompurify": "^2.2.1",
     "@types/jquery": "^3.5.5",
+    "@types/marked": "^2.0.0",
     "bootstrap": "^4.6.0",
     "bootstrap-colorpicker": "^3.2.0",
+    "dompurify": "^2.2.7",
     "fuse-box": "^4.0.1-next.1",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "marked": "^2.0.1"
   },
   "devDependencies": {
     "node-sass": "^5.0.0",

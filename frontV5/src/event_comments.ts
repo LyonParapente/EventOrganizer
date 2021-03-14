@@ -3,6 +3,9 @@ import requestJson from './request_json';
 import settings from './settings';
 import { UpdateCommentPreview } from './event_show';
 
+import * as DOMPurify from 'dompurify';
+import * as marked from 'marked';
+
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 export default function loadComments (event: CurrentEvent): void

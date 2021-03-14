@@ -8,6 +8,8 @@ import requestJson from './request_json';
 import { EventApi } from '@fullcalendar/core';
 
 import * as jQuery from 'jquery';
+import * as DOMPurify from 'dompurify';
+import * as marked from 'marked';
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
