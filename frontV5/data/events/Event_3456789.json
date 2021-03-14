@@ -9,8 +9,9 @@
 	"participants": [
 		4145
 	],
+	"interested": [],
 	"users":
 	{
-		"4145": "Thibault ROHMER"
+		"4145": {"firstname": "Thibault", "lastname": "ROHMER"}
 	}
 }

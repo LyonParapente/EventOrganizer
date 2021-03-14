@@ -1,25 +1,20 @@
 [
 {
 	"id": 3456789,
+	"creator_id": 4145,
 	"title": "Test 1",
-	"start": "2021-03-07",
-	"user": {
-		"id": 4145,
-		"name": "Thibault ROHMER"
-	},
-	"desc": "Oh yeah!",
+	"start_date": "2021-03-07",
+	"description": "Oh yeah!",
 	"time": "20h00",
 	"location": ""
 },
 {
 	"id": 3456790,
+	"creator_id": 4145,
 	"title": "Test 2",
-	"start": "2021-03-20",
-	"user": {
-		"id": 4145,
-		"name": "Thibault ROHMER"
-	},
-	"desc": "*blabla*",
+	"start_date": "2021-03-20",
+	"end_date": "2021-03-22",
+	"description": "*blabla*",
 	"time": "13h00",
 	"category": "conference",
 	"location": "Annecy"

@@ -17,7 +17,7 @@
 	],
 	"users":
 	{
-		"5998": "John DOE",
-		"4145": "Thibault ROHMER"
+		"5998": {"firstname": "John", "lastname": "DOE"},
+		"4145": {"firstname": "Thibault", "lastname": "ROHMER"}
 	}
 }
