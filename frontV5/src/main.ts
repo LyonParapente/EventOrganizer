@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', function()
 		loadingEl = id('loading'),
 		loadingTimer: NodeJS.Timeout;
 
-  calendar = new Calendar(calendarEl,
-  {
-    plugins: [bootstrapPlugin, dayGridPlugin, listPlugin, interactionPlugin],
-    themeSystem: 'bootstrap',
+	calendar = new Calendar(calendarEl,
+	{
+		plugins: [bootstrapPlugin, dayGridPlugin, listPlugin, interactionPlugin],
+		themeSystem: 'bootstrap',
 
 		headerToolbar:
 		{
@@ -101,14 +101,14 @@ document.addEventListener('DOMContentLoaded', function()
 				}
 			}
 		},
-    
+
 		events: '/api/events',
 
 		locales: [frLocale],
 		locale: settings.lang,
 		timeZone: 'local',
 
-    initialView: 'dayGridMonth',
+		initialView: 'dayGridMonth',
 		initialDate: new Date(),
 
 		selectable: true, // for both month & basicWeek views
