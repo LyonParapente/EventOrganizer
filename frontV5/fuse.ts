@@ -7,7 +7,9 @@ const fuse = fusebox({
   devServer: {
     // open: true,
     httpServer: {
-      express: (app, express) => {        
+      express: (app, express) => {
+        app.use('/avatars/', express.static(path.join(__dirname, 'data/avatars'), {extensions: ['png', 'jpg']}));
+
         app.get('/api/events', function (req, res)
         {
           var eventsJson = path.join(__dirname, 'data/events/2021.json');
