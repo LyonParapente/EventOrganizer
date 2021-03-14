@@ -17,12 +17,16 @@ const fuse = fusebox({
           readable.pipe(res);
         });
 
-        app.get('/api/messages', function (req, res)
+        app.get('/api/messages', getEvent);
+        app.get('/api/event/:eventid', getEvent);
+
+        function getEvent (req, res)
         {
-          var eventsJson = path.join(__dirname, 'data/events/Event_'+req.query.event_id+'.json');
+          var event_id = req.query.event_id || req.params.eventid;
+          var eventsJson = path.join(__dirname, 'data/events/Event_'+event_id+'.json');
           var readable = require('fs').createReadStream(eventsJson);
           readable.pipe(res);
-        });
+        }
 
         app.get('/api/event/:eventid/notifications_blacklist', function (req, res)
         {
