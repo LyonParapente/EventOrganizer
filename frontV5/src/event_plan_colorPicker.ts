@@ -1,24 +1,23 @@
-import * as jQuery from 'jquery/dist/jquery.slim';
-import 'bootstrap-colorpicker';
+import * as Colorpicker from 'bootstrap-colorpicker';
 
 var sortie_category = document.getElementById("sortie_category");
 
 var colorPicker: BootstrapColorpicker = null;
 
 export function init_colorPicker (): void
-{
-	var $sortie_color_box = jQuery("#sortie_color_box").colorpicker(
+{/*
+	var sortie_color_box = document.getElementById('sortie_color_box');
+	colorPicker = new Colorpicker(sortie_color_box,
 	{
 		format: 'hex',
 		useAlpha: false,
 		inline: true,
 		fallbackColor: 'fff',
 		autoInputFallback: false
-	})
-	.on("colorpickerChange", onColorPickerChange);
-
-	colorPicker = $sortie_color_box.data('colorpicker');
+	});
 	colorPicker.hide(); // default state
+	sortie_color_box.addEventListener("colorpickerChange", onColorPickerChange);
+*/
 
 	var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
 	sortie_color.addEventListener('focus', function ()
@@ -26,14 +25,14 @@ export function init_colorPicker (): void
 		colorPicker.show();
 	});
 
-	jQuery(sortie_category.parentElement)
-	.on('show.bs.dropdown', function ()
+	var sortie_category_parent = sortie_category.parentElement;
+	sortie_category_parent.addEventListener('show.bs.dropdown', function ()
 	{
 		var text = sortie_category.textContent;
 		var val = text.indexOf('#') === 0 ? text : '';
 		sortie_color.value = val;
-	})
-	.on('hide.bs.dropdown', function (event)
+	});
+	sortie_category_parent.addEventListener('hide.bs.dropdown', function (event)
 	{
 		var clickEvent = (event as any).clickEvent;
 		if (clickEvent && clickEvent.target)

@@ -7,8 +7,9 @@ import settings from './settings';
 import { router } from './routing';
 import { planAnEvent } from './event_plan';
 import { Calendar, EventApi } from '@fullcalendar/core';
+import { one } from './util';
 
-import * as jQuery from 'jquery/dist/jquery.slim';
+import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
@@ -16,10 +17,12 @@ var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 var current_event: CurrentEvent = null;
 var calendar: Calendar = null;
+var eventPropertiesModal: bootstrap.Modal = null;
 
 export function init_showEvent (cal: Calendar): void
 {
 	calendar = cal;
+	eventPropertiesModal = new bootstrap.Modal(id("eventProperties"));
 	var form: HTMLFormElement = document.querySelector("#eventProperties form.needs-validation");
 
 	// Submit a comment
@@ -330,20 +333,20 @@ export function showEvent (calEvent: EventApi): void
 	event_location2.style.display = 'none';
 	event_location2.style.height = 'auto';
 
-	jQuery("#eventProperties")
-		.one('shown.bs.modal', function ()
-		{
-			initMap('event_map', false, eP.gps, eP.gps_location);
+	var eventProperties = id("eventProperties");
+	one(eventProperties, 'shown.bs.modal', function ()
+	{
+		initMap('event_map', false, eP.gps, eP.gps_location);
 
-			// Avoid keyboard popping on mobile
-			// id("event_comment").focus();
-		})
-		.one('hide.bs.modal', function ()
-		{
-			current_event = null;
-			router.navigate("", i18n("Planning"));
-		})
-		.modal('show');
+		// Avoid keyboard popping on mobile
+		// id("event_comment").focus();
+	});
+	one(eventProperties, 'hide.bs.modal', function ()
+	{
+		current_event = null;
+		router.navigate("", i18n("Planning"));
+	});
+	eventPropertiesModal.show();
 
 	// ----------------------
 	// Clipboard copy
@@ -509,8 +512,7 @@ function DeleteEvent (): void
 			var event = calendar.getEventById(current_event.event_id.toString());
 			event.remove();
 			current_event = null;
-
-			jQuery("#eventProperties").modal("hide");
+			eventPropertiesModal.hide();
 		},
 		function (type: string, ex: XMLHttpRequest)
 		{
@@ -529,7 +531,7 @@ function DeleteEvent (): void
 function EditEvent (): void
 {
 	var event = calendar.getEventById(current_event.event_id.toString());
-	jQuery("#eventProperties").modal("hide");
+	eventPropertiesModal.hide();
 	planAnEvent(event.start, event.end || event.start, event);
 }
 

@@ -2,8 +2,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'css/calendar.scss';
 
-import * as jQuery from 'jquery/dist/jquery.slim';
-
 import { Calendar } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';
 
@@ -11,6 +9,8 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
+
+import * as bootstrap from 'bootstrap';
 
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function()
 {
 	let calendarEl = id('calendar'),
 		loadingEl = id('loading'),
-		loadingTimer: number;
+		loadingTimer: NodeJS.Timeout;
 
   calendar = new Calendar(calendarEl,
   {
@@ -226,8 +226,8 @@ function init_routing ()
 		.add("", function ()
 		{
 			console.log('Show the planning');
-			jQuery("#eventProperties").modal('hide');
-			jQuery("#createEvent").modal('hide');
+			bootstrap.Modal.getInstance(id('eventProperties')).hide();
+			bootstrap.Modal.getInstance(id('createEvent')).hide();
 		});
 
 	if (location.pathname === router.root)

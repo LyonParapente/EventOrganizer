@@ -6,8 +6,9 @@ import { init_colorPicker } from './event_plan_colorPicker';
 import { router } from './routing';
 import requestJson from './request_json';
 import { EventApi } from '@fullcalendar/core';
+import { one } from './util';
 
-import * as jQuery from 'jquery/dist/jquery.slim';
+import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
@@ -17,10 +18,13 @@ var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
 var edited_event_id: string = null;
+var createEventModal: bootstrap.Modal = null;
 
 export function init_createEvent (onCreate): void
 {
+	createEventModal = new bootstrap.Modal(id("createEvent"));
 	var form: HTMLFormElement = document.querySelector("#createEventBody form.needs-validation");
+
 	// Submit an event
 	form.addEventListener('submit', function ()
 	{
@@ -210,24 +214,24 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 	UpdatePreview.call(sortie_desc);
 	id('description_preview').classList.add('collapse');
 
-	jQuery("#createEvent")
-		.one('shown.bs.modal', function ()
+	var createEvent = id("createEvent");
+	one(createEvent, 'shown.bs.modal', function ()
+	{
+		if (editedEvent)
 		{
-			if (editedEvent)
-			{
-				initMap('sortie_map', true, eP.gps, eP.gps_location);
-			}
-			else
-			{
-				initMap('sortie_map', true);
-			}
-			sortie_title.focus();
-		})
-		.one('hide.bs.modal', function ()
+			initMap('sortie_map', true, eP.gps, eP.gps_location);
+		}
+		else
 		{
-			router.navigate("", i18n("Planning"));
-		})
-		.modal('show');
+			initMap('sortie_map', true);
+		}
+		sortie_title.focus();
+	});
+	one(createEvent, 'hide.bs.modal', function ()
+	{
+		router.navigate("", i18n("Planning"));
+	});
+	createEventModal.show();
 }
 
 /* Returns a random integer between the specified values.
@@ -310,7 +314,7 @@ function SubmitEvent (onCreate)
 	function (data: any)
 	{
 		onCreate(data);
-		jQuery("#createEvent").modal("hide");
+		createEventModal.hide();
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
