@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function()
 				// Show only after a while, to avoid visual glitch when fast
 				loadingTimer = setTimeout(function()
 				{
+					calendarEl.appendChild(loadingEl);
 					loadingEl.style.display = 'block';
 				}, 200);
 			}
@@ -158,9 +159,10 @@ document.addEventListener('DOMContentLoaded', function()
 			{
 				clearTimeout(loadingTimer);
 				loadingEl.style.display = 'none';
+				document.body.appendChild(loadingEl);
 			}
 		}
-  });
+	});
 	(<any>window).calendar = calendar;
 	calendar.render();
 
