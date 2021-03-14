@@ -1,7 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import '@fortawesome/fontawesome-free/css/all.css';
-import 'css/calendar.scss';
-
 import { Calendar } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';
 
@@ -11,6 +7,16 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import * as bootstrap from 'bootstrap';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'css/themes/flatly.bootstrap.min.css';
+import 'css/calendar.scss';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+//TODO 'bootstrap-colorpicker.min.css';
+//TODO 'html5tooltips.min.css';
+import 'leaflet/dist/leaflet.css';
+import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
+import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
