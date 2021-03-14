@@ -1,0 +1,16 @@
+{
+	"comments": [
+		{
+			"date": "2021-03-08T13:24:00.000Z",
+			"user": 4145,
+			"comment": "hello test"
+		}
+	],
+	"participants": [
+		4145
+	],
+	"users":
+	{
+		"4145": "Thibault ROHMER"
+	}
+}

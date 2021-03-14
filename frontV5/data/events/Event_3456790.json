@@ -1,0 +1,23 @@
+{
+	"comments": [
+		{
+			"date": "2021-03-21T14:17:00.000Z",
+			"user": 5998,
+			"comment": "hello there"
+		},
+		{
+			"date": "2021-03-21T14:25:00.000Z",
+			"user": 4145,
+			"comment": "well hi"
+		}
+	],
+	"participants": [
+		5998,
+		4145
+	],
+	"users":
+	{
+		"5998": "John DOE",
+		"4145": "Thibault ROHMER"
+	}
+}
