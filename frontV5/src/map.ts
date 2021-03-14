@@ -1,9 +1,9 @@
 import settings from './settings';
 import { i18n } from './trads';
 
-/// <reference types="leaflet" />
-/// <reference types="esri-leaflet" />
-/// <reference types="esri-leaflet-geocoder" />
+import * as L from 'leaflet';
+import 'esri-leaflet';
+import 'esri-leaflet-geocoder';
 
 var mapList = {},
 	id: (string) => HTMLElement = document.getElementById.bind(document),
