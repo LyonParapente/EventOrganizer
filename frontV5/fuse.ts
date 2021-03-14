@@ -26,6 +26,13 @@ const fuse = fusebox({
         {
           res.send('{"message": "Notifications blacklist not setted for this event", "block": false}');
         });
+
+        app.get('/background/:resolution', function (req, res)
+        {
+          var bgImg = path.join(__dirname, 'data/background.jpg');
+          var readable = require('fs').createReadStream(bgImg);
+          readable.pipe(res);
+        });
       }
     }
   },
