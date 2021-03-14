@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'css/calendar.scss';
 
-import * as jQuery from 'jquery';
+import * as jQuery from 'jquery/dist/jquery.slim';
 
 import { Calendar } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';

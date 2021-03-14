@@ -8,7 +8,7 @@ import { router } from './routing';
 import { planAnEvent } from './event_plan';
 import { Calendar, EventApi } from '@fullcalendar/core';
 
-import * as jQuery from 'jquery';
+import * as jQuery from 'jquery/dist/jquery.slim';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 

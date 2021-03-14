@@ -1,4 +1,4 @@
-import * as jQuery from 'jquery';
+import * as jQuery from 'jquery/dist/jquery.slim';
 import 'bootstrap-colorpicker';
 
 var sortie_category = document.getElementById("sortie_category");

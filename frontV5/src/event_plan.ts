@@ -7,7 +7,7 @@ import { router } from './routing';
 import requestJson from './request_json';
 import { EventApi } from '@fullcalendar/core';
 
-import * as jQuery from 'jquery';
+import * as jQuery from 'jquery/dist/jquery.slim';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
