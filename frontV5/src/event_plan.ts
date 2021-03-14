@@ -7,6 +7,8 @@ import { router } from './routing';
 import requestJson from './request_json';
 import { EventApi } from '@fullcalendar/core';
 
+import * as jQuery from 'jquery';
+
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;

@@ -8,6 +8,8 @@ import { router } from './routing';
 import { planAnEvent } from './event_plan';
 import { Calendar, EventApi } from '@fullcalendar/core';
 
+import * as jQuery from 'jquery';
+
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 var current_event: CurrentEvent = null;

@@ -2,3 +2,16 @@
 - check if all calendar.scss instructions are useful with V5
 - check if themes are still ok
 - fix GetTheme so that it can work with fusebox dev/production modes
+- remove jquery
+function one (el, type, fn)
+{
+    function handler (event)
+    {
+        el.removeEventListener(type, handler);
+        fn(event);
+    }
+    el.addEventListener(type, handler);
+}
+
+
+- comparer les package.json pour les @types notamment

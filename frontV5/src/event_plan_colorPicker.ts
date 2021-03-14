@@ -1,3 +1,6 @@
+import * as jQuery from 'jquery';
+import 'bootstrap-colorpicker';
+
 var sortie_category = document.getElementById("sortie_category");
 
 var colorPicker: BootstrapColorpicker = null;

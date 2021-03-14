@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'css/calendar.scss';
 
+import * as jQuery from 'jquery';
+
 import { Calendar } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';
 
@@ -60,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function()
 			month:
 			{
 				showNonCurrentDates: false,
-				eventLimit: false // extend cell when too many events
+				dayMaxEventRows: false // extend cell when too many events
 			}
 		},
 		customButtons:
@@ -302,7 +304,7 @@ function onCreateEvent (event: any)
 
 function setBackgroundColor (calendarEl)
 {
-	var container = calendarEl.querySelector(".fc-view-container");
+	var container = calendarEl.querySelector(".fc-view-harness");
 	container.classList.add('bg-secondary');
 
 	// alpha according to theme
