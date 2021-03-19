@@ -4,7 +4,7 @@ Flask-RESTful==0.3.8
 flask-restful-swagger-3==0.1
 flask-bcrypt==0.7.1
 flask-jwt-extended==3.25.0
-Pillow==8.0.1
+Pillow==8.1.1
 mailjet_rest==1.3.4
 Flask-Mail==0.9.1
 Markdown==3.3.3
