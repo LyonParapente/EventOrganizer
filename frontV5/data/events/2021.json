@@ -25,6 +25,7 @@
 	"title": "Big title that doesn't fit in a cell",
 	"start_date": "2021-03-24",
 	"end_date": "2021-03-25",
-	"description": "**blabla**"
+	"description": "**blabla**",
+	"color": "#FF6FFF"
 }
 ]

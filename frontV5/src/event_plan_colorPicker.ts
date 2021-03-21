@@ -1,28 +1,28 @@
-import * as Colorpicker from 'bootstrap-colorpicker';
+import ColorPicker from 'simple-color-picker';
 
 var sortie_category = document.getElementById("sortie_category");
+var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
 
-var colorPicker: BootstrapColorpicker = null;
+var colorPicker = null;
 
 export function init_colorPicker (): void
-{/*
+{
 	var sortie_color_box = document.getElementById('sortie_color_box');
-	colorPicker = new Colorpicker(sortie_color_box,
-	{
-		format: 'hex',
-		useAlpha: false,
-		inline: true,
-		fallbackColor: 'fff',
-		autoInputFallback: false
-	});
-	colorPicker.hide(); // default state
-	sortie_color_box.addEventListener("colorpickerChange", onColorPickerChange);
-*/
 
-	var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
-	sortie_color.addEventListener('focus', function ()
+	colorPicker = new ColorPicker({
+		el: sortie_color_box,
+		width: 200,
+		height: 200
+	});
+	colorPicker.onChange(onColorPickerChangeIgnoreFirstCall);
+
+	sortie_color.addEventListener('keyup', function ()
 	{
-		colorPicker.show();
+		// User is typing something
+		if (this.value.match(/^#[a-fA-F0-9]{6}$/))
+		{
+			colorPicker.setColor(this.value);
+		}
 	});
 
 	var sortie_category_parent = sortie_category.parentElement;
@@ -31,59 +31,37 @@ export function init_colorPicker (): void
 		var text = sortie_category.textContent;
 		var val = text.indexOf('#') === 0 ? text : '';
 		sortie_color.value = val;
-	});
-	sortie_category_parent.addEventListener('hide.bs.dropdown', function (event)
-	{
-		var clickEvent = (event as any).clickEvent;
-		if (clickEvent && clickEvent.target)
-		{
-			var target = clickEvent.target;
-			if (target.id !== 'sortie_color_btn' &&
-				hasParentWithId(target, "sortie_color_box"))
-			{
-				event.preventDefault();
-				return false;
-			}
-		}
-		colorPicker.hide();
+		colorPicker.setColor(val);
 	});
 }
 
-function onColorPickerChange (event: BootstrapColorpickerEvent): void
+var firstCallDone = false;
+function onColorPickerChangeIgnoreFirstCall (hexStringColor: string): void
 {
-	if (event.color)
+	if (firstCallDone)
 	{
-		var colorBox = document.createElement('div');
-		var css =
-		{
-			display: 'inline-block',
-			backgroundColor: event.color.toString(),
-			color: event.color.isDark() ? 'white' : 'black'
-		};
-		Object.keys(css).forEach(option => colorBox.style[option] = css[option]);
-
-		colorBox.textContent = event.color.toString();
-
-		sortie_category.innerHTML = '';
-		sortie_category.appendChild(colorBox);
+		onColorPickerChange(hexStringColor);
 	}
-	else if ((event.target as HTMLInputElement).value.match(/^#[a-fA-F0-9]{6}$/))
+	else
 	{
-		// User is typing something
-		colorPicker.setValue((event.target as HTMLInputElement).value); // trigger colorpickerChange
+		firstCallDone = true;
+		sortie_color.value = '';
 	}
 }
-
-function hasParentWithId (element: Element, id: string): boolean
+function onColorPickerChange (hexStringColor: string): void
 {
-	var current = element;
-	while (current !== document.body)
+	sortie_color.value = hexStringColor;
+
+	var colorBox = document.createElement('div');
+	colorBox.textContent = hexStringColor;
+	var css =
 	{
-		if (current.id === id)
-		{
-			return true;
-		}
-		current = current.parentElement;
-	}
-	return false;
+		display: 'inline-block',
+		backgroundColor: hexStringColor,
+		color: colorPicker.isDark() ? 'white' : 'black'
+	};
+	Object.keys(css).forEach(option => colorBox.style[option] = css[option]);
+
+	sortie_category.innerHTML = '';
+	sortie_category.appendChild(colorBox);
 }

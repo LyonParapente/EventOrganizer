@@ -12,7 +12,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'css/themes/flatly.bootstrap.min.css';
 import 'css/calendar.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-//TODO 'bootstrap-colorpicker.min.css';
 
 import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';

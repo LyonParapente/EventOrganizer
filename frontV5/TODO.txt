@@ -7,5 +7,3 @@
 
 - move stuff into util.ts
 import { i18n } from './trads';
-
-- remove jquery from package.json
