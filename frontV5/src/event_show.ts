@@ -13,6 +13,10 @@ import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
+import 'html5tooltipsjs/html5tooltips.css';
+import html5tooltips from 'html5tooltipsjs';
+html5tooltips.autoinit(); // forces importation so that HTML5TooltipUIComponent is available
+
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 var current_event: CurrentEvent = null;

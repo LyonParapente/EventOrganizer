@@ -10,6 +10,8 @@ const fuse = fusebox({
       express: (app, express) => {
         app.use('/avatars/', express.static(path.join(__dirname, 'data/avatars'), {extensions: ['png', 'jpg']}));
 
+        app.use('/static/img/', express.static(path.join(__dirname, 'src/static/img'), {extensions: ['png', 'gif']}));
+
         app.get('/api/events', function (req, res)
         {
           var eventsJson = path.join(__dirname, 'data/events/2021.json');

@@ -13,7 +13,6 @@ import 'css/themes/flatly.bootstrap.min.css';
 import 'css/calendar.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 //TODO 'bootstrap-colorpicker.min.css';
-//TODO 'html5tooltips.min.css';
 import 'leaflet/dist/leaflet.css';
 import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
