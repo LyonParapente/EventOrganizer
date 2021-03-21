@@ -1,4 +1,3 @@
-- ouvrir sur http://localhost:4444/event:new
 - check if all expected css are loaded
 - check if all calendar.scss instructions are useful with V5
 - check if themes are still ok

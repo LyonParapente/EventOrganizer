@@ -18,11 +18,10 @@ var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
 var edited_event_id: string = null;
-var createEventModal: bootstrap.Modal = null;
+var createEventModal: bootstrap.Modal = new bootstrap.Modal(id("createEvent"));
 
 export function init_createEvent (onCreate): void
 {
-	createEventModal = new bootstrap.Modal(id("createEvent"));
 	var form: HTMLFormElement = document.querySelector("#createEventBody form.needs-validation");
 
 	// Submit an event

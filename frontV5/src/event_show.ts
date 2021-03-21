@@ -21,12 +21,11 @@ var id: (string) => HTMLElement = document.getElementById.bind(document);
 
 var current_event: CurrentEvent = null;
 var calendar: Calendar = null;
-var eventPropertiesModal: bootstrap.Modal = null;
+var eventPropertiesModal: bootstrap.Modal = new bootstrap.Modal(id("eventProperties"));
 
 export function init_showEvent (cal: Calendar): void
 {
 	calendar = cal;
-	eventPropertiesModal = new bootstrap.Modal(id("eventProperties"));
 	var form: HTMLFormElement = document.querySelector("#eventProperties form.needs-validation");
 
 	// Submit a comment
