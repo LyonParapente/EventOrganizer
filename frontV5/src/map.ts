@@ -4,6 +4,7 @@ import { i18n } from './trads';
 import * as L from 'leaflet';
 import 'esri-leaflet';
 import 'esri-leaflet-geocoder';
+import 'leaflet-fullscreen';
 
 var mapList = {},
 	id: (string) => HTMLElement = document.getElementById.bind(document),
