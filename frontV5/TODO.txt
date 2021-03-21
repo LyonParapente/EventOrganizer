@@ -1,3 +1,4 @@
+- ouvrir sur http://localhost:4444/event:new
 - check if all expected css are loaded
 - check if all calendar.scss instructions are useful with V5
 - check if themes are still ok
@@ -6,5 +7,9 @@
 - calendar global
 - rename unsplash background, ability to switch between unsplash & backgrounds
 
+- reprendre les trucs de gulp genre la copie des images de esri-leaflet-geocoder
+
 - move stuff into util.ts
 import { i18n } from './trads';
+
+- remove jquery from package.json

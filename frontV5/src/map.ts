@@ -2,9 +2,14 @@ import settings from './settings';
 import { i18n } from './trads';
 
 import * as L from 'leaflet';
-import 'esri-leaflet';
-import 'esri-leaflet-geocoder';
+import * as esrileaflet from 'esri-leaflet/dist/esri-leaflet-debug.js';
+import * as esrileafletgeocoder from 'esri-leaflet-geocoder';
 import 'leaflet-fullscreen';
+
+// @ts-ignore
+L.esri = L.esri || esrileaflet;
+// @ts-ignore
+L.esri.Geocoding = esrileafletgeocoder;
 
 import 'leaflet/dist/leaflet.css';
 import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
