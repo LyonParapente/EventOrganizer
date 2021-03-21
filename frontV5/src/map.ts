@@ -6,6 +6,10 @@ import 'esri-leaflet';
 import 'esri-leaflet-geocoder';
 import 'leaflet-fullscreen';
 
+import 'leaflet/dist/leaflet.css';
+import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
+import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
+
 var mapList = {},
 	id: (string) => HTMLElement = document.getElementById.bind(document),
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
