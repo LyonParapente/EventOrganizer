@@ -44,18 +44,27 @@ animation: fa-spin2 1s infinite linear;
   }
 }
 
-.fc-day, .fc-list-item, .fc-content-skeleton tbody td {
+/* Events and future days are clickable */
+.fc-event-title, .fc-list-event, .fc-day-today, .fc-day-future {
 cursor: pointer;
 }
 
-.fc-title {
+/* Nice effect when moving hover cells */
+.fc-day-today:hover, .fc-day-future:hover {
+background: var(--fc-neutral-bg-color, rgba(200, 200, 200, 0.2));
+}
+
+/* A long title should be fully visible: allow wrapping */
+.fc-event-title {
 white-space: normal;
 }
 
-.fc-event .fc-content {
+/* Events title are centered */
+.fc-event-title-container {
 text-align: center;
 }
 
+/* Map default height */
 #sortie_map, #event_map {
 min-height: 250px;
 }
