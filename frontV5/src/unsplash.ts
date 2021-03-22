@@ -7,8 +7,3 @@ export default function unsplash (tags: string[]=[], extraPath=''): void
   var url = `/background${extraPath}/${resolution}?${tags.join(',')}`;
   document.body.style.backgroundImage = "url('"+url+"')"
 }
-
-function unsplashL ()
-{
-  window.addEventListener('load', x => unsplash.apply(this, arguments));
-}
