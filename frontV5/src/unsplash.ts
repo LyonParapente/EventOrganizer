@@ -12,5 +12,3 @@ function unsplashL ()
 {
   window.addEventListener('load', x => unsplash.apply(this, arguments));
 }
-
-(<any>window).unsplashL = unsplashL;

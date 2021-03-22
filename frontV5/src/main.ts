@@ -23,7 +23,7 @@ import { router } from './routing';
 import requestJson from './request_json';
 import unsplash from './unsplash';
 
-export var calendar: Calendar;
+var calendar: Calendar = null;
 
 var id: (string) => HTMLElement = document.getElementById.bind(document);
 
@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function()
 			}
 		}
 	});
-	(<any>window).calendar = calendar;
 	calendar.render();
 
 	setBackgroundColor(calendarEl);
