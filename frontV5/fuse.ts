@@ -47,4 +47,12 @@ const fuse = fusebox({
   webIndex: {template: 'src/calendar.html'}
 });
 
-fuse.runDev();
+const isProduction = process.env.NODE_ENV === 'production'; // $Env:NODE_ENV="production"
+if (isProduction)
+{
+  fuse.runProd();
+}
+else
+{
+  fuse.runDev();
+}
