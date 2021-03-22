@@ -6,14 +6,14 @@ import { UpdateCommentPreview } from './event_show';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
-var id: (string) => HTMLElement = document.getElementById.bind(document);
+var id: (str: string) => HTMLElement = document.getElementById.bind(document);
 
 export default function loadComments (event: CurrentEvent): void
 {
 	var error_box = id("event_comments_error");
 	error_box.style.display = 'none';
 
-	var connected_user = get_connected_user();
+	var connected_user: ConnectedUser = get_connected_user();
 	var attributes =
 	{
 		"alt": getUserName(connected_user),
@@ -50,7 +50,7 @@ export default function loadComments (event: CurrentEvent): void
 	});
 }
 
-function CheckAuthentication (ex)
+function CheckAuthentication (ex: XMLHttpRequest)
 {
 	if (ex.status === 401)
 	{
@@ -417,7 +417,7 @@ function updateRegistration (button_id: string, box: HTMLElement)
 	}
 }
 
-function get_connected_user ()
+function get_connected_user (): ConnectedUser
 {
 	return window['connected_user'];
 }

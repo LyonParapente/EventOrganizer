@@ -1,4 +1,4 @@
-var csrf;
+var csrf: string;
 var csrf_cookies = document.cookie.split('; ')
   .map(x => x.split('='))
   .filter(x => x[0] === 'csrf_access_token');
@@ -7,7 +7,7 @@ if (csrf_cookies.length)
   csrf = csrf_cookies[0][1];
 }
 
-export default function requestJson (method: string, url: string, params: object, successCallback, failureCallback) {
+export default function requestJson (method: string, url: string, params: object, successCallback: (res: any, xhr: any)=>void, failureCallback: (err: string, xhr: any)=>void): void {
   method = method.toUpperCase();
   var body = null;
   if (method === 'GET') {
@@ -49,7 +49,7 @@ export default function requestJson (method: string, url: string, params: object
   xhr.send(body);
 }
 
-function injectQueryStringParams (url: string, params: object) {
+function injectQueryStringParams (url: string, params: object): string {
   var parameters = encodeParams(params);
   if (parameters)
   {
@@ -58,7 +58,7 @@ function injectQueryStringParams (url: string, params: object) {
   return url;
 }
 
-function encodeParams (params: object) {
+function encodeParams (params: object): string {
   var parts = [];
   for (var key in params) {
     if (params.hasOwnProperty(key)) {

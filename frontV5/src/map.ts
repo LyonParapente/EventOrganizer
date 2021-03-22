@@ -2,6 +2,7 @@ import settings from './settings';
 import { i18n } from './trads';
 
 import * as L from 'leaflet';
+// @ts-ignore
 import * as esrileaflet from 'esri-leaflet/dist/esri-leaflet-debug.js';
 import * as esrileafletgeocoder from 'esri-leaflet-geocoder';
 import 'leaflet-fullscreen';
@@ -16,7 +17,7 @@ import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 var mapList = {},
-	id: (string) => HTMLElement = document.getElementById.bind(document),
+	id: (str: string) => HTMLElement = document.getElementById.bind(document),
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
 	sortie_RDV_gps = <HTMLInputElement>id('sortie_RDV_gps'),
 	spinner_RDV = id('spinner_RDV');
@@ -188,7 +189,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			{
 				findLocation(this.value, marker, map);
 			});
-			var timeoutID = null;
+			var timeoutID: NodeJS.Timeout = null;
 			sortie_RDV.addEventListener('keyup', function ()
 			{
 				clearTimeout(timeoutID);
@@ -222,7 +223,7 @@ function resetMap (map: L.Map, point: L.LatLngTuple, marker: L.Marker): void
 	marker.on('move', onMarkerMove);
 }
 
-function onMarkerMove (evt): void
+function onMarkerMove (evt: any): void
 {
 	var position = evt.latlng.lat+', '+evt.latlng.lng;
 	sortie_RDV_gps.value = position;

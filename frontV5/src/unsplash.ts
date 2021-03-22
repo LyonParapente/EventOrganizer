@@ -1,4 +1,4 @@
-export default function unsplash (tags=[], extraPath='')
+export default function unsplash (tags: string[]=[], extraPath=''): void
 {
   const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
   const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);

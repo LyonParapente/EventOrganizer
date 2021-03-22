@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/core';
+import { Calendar, EventInputTransformer } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';
 
 import bootstrapPlugin from '@fullcalendar/bootstrap';
@@ -25,7 +25,46 @@ import unsplash from './unsplash';
 
 var calendar: Calendar = null;
 
-var id: (string) => HTMLElement = document.getElementById.bind(document);
+var id: (str: string) => HTMLElement = document.getElementById.bind(document);
+
+// Adapt server response to fullcalendar expected fields
+let eventDataTransform: EventInputTransformer = function (event)
+{
+	var orig = calendar.getEventById(event.id);
+	if (orig)
+	{
+		// Typically happens when we update an event
+		// Or when we create an event then scroll through months
+		orig.remove();
+	}
+
+	// -----
+
+	if (event.category)
+	{
+		event.color = getColor(event.category);
+	}
+	event.description = event.description || '';
+
+	// re-map start & end to expected properties
+	if (event.start_date) // if useful for onCreateEvent scenario
+	{
+		event.start = event.start_date;
+		delete event.start_date;
+	}
+	if (event.end_date)
+	{
+		event.end = event.end_date;
+		delete event.end_date;
+	}
+
+	if (typeof event.gps === 'string' && event.gps)
+	{
+		event.gps = event.gps.split(', ');
+	}
+
+	return event;
+}
 
 document.addEventListener('DOMContentLoaded', function()
 {
@@ -259,54 +298,15 @@ function updateUrlWithCurrentMonth ()
 	router.navigate(YYYY+"-"+monthNum, monthTrad+" "+YYYY);
 }
 
-// Adapt server response to fullcalendar expected fields
-function eventDataTransform (event)
-{
-	var orig = calendar.getEventById(event.id);
-	if (orig)
-	{
-		// Typically happens when we update an event
-		// Or when we create an event then scroll through months
-		orig.remove();
-	}
-
-	// -----
-
-	if (event.category)
-	{
-		event.color = getColor(event.category);
-	}
-	event.description = event.description || '';
-
-	// re-map start & end to expected properties
-	if (event.start_date) // if useful for onCreateEvent scenario
-	{
-		event.start = event.start_date;
-		delete event.start_date;
-	}
-	if (event.end_date)
-	{
-		event.end = event.end_date;
-		delete event.end_date;
-	}
-
-	if (typeof event.gps === 'string' && event.gps)
-	{
-		event.gps = event.gps.split(', ');
-	}
-
-	return event;
-}
-
 function onCreateEvent (event: any)
 {
 	eventDataTransform(event);
 	calendar.addEvent(event);
 }
 
-function setBackgroundColor (calendarEl)
+function setBackgroundColor (calendarEl: HTMLElement)
 {
-	var container = calendarEl.querySelector(".fc-view-harness");
+	var container: HTMLElement = calendarEl.querySelector(".fc-view-harness");
 	container.classList.add('bg-secondary');
 
 	// alpha according to theme

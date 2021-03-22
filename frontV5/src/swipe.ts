@@ -6,13 +6,13 @@ export default function swipedetector(el: HTMLElement|Document, callback: (direc
 		allowedTime = 300; // maximum time allowed to travel that distance
 
 	var touchsurface = el,
-	swipedir,
-	startX,
-	startY,
-	distX,
-	distY,
-	elapsedTime,
-	startTime,
+	swipedir: string,
+	startX: number,
+	startY: number,
+	distX: number,
+	distY: number,
+	elapsedTime: number,
+	startTime: number,
 	handleswipe = callback || function(){}; // tslint:disable-line
 
 	touchsurface.addEventListener('touchstart', function (e: TouchEvent)

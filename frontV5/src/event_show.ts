@@ -14,10 +14,9 @@ import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
 import 'html5tooltipsjs/html5tooltips.css';
-import html5tooltips from 'html5tooltipsjs';
-html5tooltips.autoinit(); // forces importation so that HTML5TooltipUIComponent is available
+import 'html5tooltipsjs';
 
-var id: (string) => HTMLElement = document.getElementById.bind(document);
+var id: (str: string) => HTMLElement = document.getElementById.bind(document);
 
 var current_event: CurrentEvent = null;
 var calendar: Calendar = null;
@@ -76,7 +75,7 @@ export function init_showEvent (cal: Calendar): void
 		id('comment_preview').classList.toggle('collapse');
 	});
 
-	var calendar_export_instance;
+	var calendar_export_instance: Tooltip;
 	var event_ics = id('event_ics') as HTMLAnchorElement;
 	event_ics.addEventListener('click', function (evt)
 	{
@@ -101,7 +100,7 @@ export function init_showEvent (cal: Calendar): void
 
 export function showEvent (calEvent: EventApi): void
 {
-	var connected_user = get_connected_user();
+	var connected_user: ConnectedUser = get_connected_user();
 	if (!connected_user)
 	{
 		window.location.assign('/login');
@@ -193,8 +192,7 @@ export function showEvent (calEvent: EventApi): void
 
 	var del_event = id('del_event');
 	var edit_event = id('edit_event');
-	var canEdit = connected_user.id === current_event.creator_id ||
-		connected_user.role === 'admin';
+	var canEdit = connected_user.id === current_event.creator_id || connected_user.role === 'admin';
 	if (!current_event.isFinished && canEdit)
 	{
 		del_event.style.display = '';
@@ -361,7 +359,7 @@ export function showEvent (calEvent: EventApi): void
 	ClipboardCopyLocation(event_rdv_location, event_rdv_location);
 }
 
-function ComputeLocationDimensions (el, el2)
+function ComputeLocationDimensions (el: HTMLElement, el2: HTMLElement)
 {
 	// Step 1 - Compute textarea height according to width
 	var w = el.offsetWidth + 1;
@@ -411,7 +409,7 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 	setTimeout(() => tooltip.destroy(), 3000);
 }
 
-function ShowCalendarExport (event: EventApi): object
+function ShowCalendarExport (event: EventApi): Tooltip
 {
 	var evt_start = toDateString(event.start).replace(/-/g, '');
 	var evt_end = evt_start;
@@ -450,7 +448,7 @@ function ShowCalendarExport (event: EventApi): object
 	];
 
 	// @ts-ignore html5tooltips
-	var tooltip = new HTML5TooltipUIComponent();
+	var tooltip: Tooltip = new HTML5TooltipUIComponent();
 	tooltip.set(
 	{
 		animateFunction: "spin",
@@ -538,12 +536,12 @@ function EditEvent (): void
 	planAnEvent(event.start, event.end || event.start, event);
 }
 
-function get_connected_user ()
+function get_connected_user (): ConnectedUser
 {
 	return window['connected_user'];
 }
 
-function SetBell (block): void
+function SetBell (block: boolean): void
 {
 	var event_bell = id('event_bell');
 	event_bell.className = block ? "far fa-bell-slash" : "fas fa-bell";

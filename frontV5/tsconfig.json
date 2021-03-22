@@ -3,7 +3,8 @@
     "target": "ES6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "allowUmdGlobalAccess": true, // Leaflet
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true, // window['connected_user']
     "baseUrl": "./src/"
   }
 }

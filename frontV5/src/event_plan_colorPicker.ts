@@ -1,9 +1,10 @@
+// @ts-ignore ColorPicker
 import ColorPicker from 'simple-color-picker';
 
 var sortie_category = document.getElementById("sortie_category");
 var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
 
-var colorPicker = null;
+var colorPicker: SimpleColorPicker = null;
 
 export function init_colorPicker (): void
 {
