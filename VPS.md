@@ -301,6 +301,19 @@ server {
     return 404; # managed by Certbot
 }
 ```
+## Scheduled task for tomorrow Events
+
+`nano ~/tomorrow_events.sh`
+
+Replace `<token>` with the value of `DAILY_CHECK` from `secrets.py`:
+
+```
+#!/bin/sh
+curl "https://calendrier.lyonparapente.fr/tomorrow_events?token=<token>" >~/curl_res.txt
+```
+
+Recommended: `encodeURIComponent(DAILY_CHECK)`
+
 
 ## Useful
 
