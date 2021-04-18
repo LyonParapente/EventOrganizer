@@ -187,8 +187,17 @@ server {
     server_name <your_domain>;
 
     location / {
+        if (-f /var/www/EventOrganizer/under_maintenance.html) {
+            return 503;
+        }
         include proxy_params;
         proxy_pass http://unix:/var/www/EventOrganizer/eventorganizer.sock;
+    }
+
+    error_page 503 /under_maintenance.html;
+    location = /under_maintenance.html {
+        root /var/www/EventOrganizer/;
+        internal;
     }
 }
 ```
