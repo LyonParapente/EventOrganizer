@@ -187,17 +187,8 @@ server {
     server_name <your_domain>;
 
     location / {
-        if (-f /var/www/EventOrganizer/under_maintenance.html) {
-            return 503;
-        }
         include proxy_params;
         proxy_pass http://unix:/var/www/EventOrganizer/eventorganizer.sock;
-    }
-
-    error_page 503 /under_maintenance.html;
-    location = /under_maintenance.html {
-        root /var/www/EventOrganizer/;
-        internal;
     }
 }
 ```
@@ -232,8 +223,8 @@ nano /etc/ssh/sshd_config  # Set Port to something else than 22
 /etc/init.d/ssh restart
 ```
 ### Hardening nginx
-`sudo nano /etc/nginx/sites-enabled/eventorganizer`
-Add this at the top of the file:
+`sudo nano /etc/nginx/conf.d/security.conf`
+Add this inside (following https://gist.github.com/plentz/6737338):
 
 ```
 # don't send the nginx version number in error pages and Server header
@@ -241,32 +232,78 @@ server_tokens off;
 
 # config to don't allow the browser to render the page inside an frame or iframe
 add_header X-Frame-Options SAMEORIGIN;
+
+# enables server-side protection from BEAST attacks
+# http://blog.ivanristic.com/2013/09/is-beast-still-a-threat.html
+# ssl_prefer_server_ciphers on;
+# disable SSLv3(enabled by default since nginx 0.8.19) since it's less secure then TLS http://en.wikipedia.org/wiki/Secure_Sockets_Layer#SSL_3.0
+ssl_protocols TLSv1.2 TLSv1.3;
+# ciphers chosen for forward secrecy and compatibility
+# http://blog.ivanristic.com/2013/08/configuring-apache-nginx-and-openssl-for-forward-secrecy.html
+ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
+
+# enable ocsp stapling (mechanism by which a site can convey certificate revocation information to visitors in a privacy-preserving, scalable manner)
+# http://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
+resolver 1.1.1.1 8.8.8.8;
+ssl_stapling on;
+ssl_stapling_verify on;
 ```
+Then edit again the website file:
+
+`sudo nano /etc/nginx/sites-enabled/eventorganizer`
+
 Comment the following line:  
 `include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot`  
-and add this in the section, following https://gist.github.com/plentz/6737338:
+and add this in the section, :
 
 ```
-    # enables server-side protection from BEAST attacks
-    # http://blog.ivanristic.com/2013/09/is-beast-still-a-threat.html
-    ssl_prefer_server_ciphers on;
-    # disable SSLv3(enabled by default since nginx 0.8.19) since it's less secure then TLS http://en.wikipedia.org/wiki/Secure_Sockets_Layer#SSL_3.0
-    ssl_protocols TLSv1.2 TLSv1.3;
-    # ciphers chosen for forward secrecy and compatibility
-    # http://blog.ivanristic.com/2013/08/configuring-apache-nginx-and-openssl-for-forward-secrecy.html
-    ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
-
-    # enable ocsp stapling (mechanism by which a site can convey certificate revocation information to visitors in a privacy-preserving, scalable manner)
-    # http://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox/
-    resolver 8.8.8.8 8.8.4.4;
-    ssl_stapling on;
-    ssl_stapling_verify on;
+     include /etc/nginx/conf.d/security.conf;
 ```
 Test: `sudo nginx -t`  
 Apply changes: `sudo systemctl restart nginx`  
 
+Overall file with maintenance page:
+
+```
+server {
+    server_name calendrier.lyonparapente.fr;
+
+    location / {
+        if (-f /var/www/EventOrganizer/under_maintenance.html) {
+            return 503;
+        }
+        include proxy_params;
+        proxy_pass http://unix:/var/www/EventOrganizer/eventorganizer.sock;
+    }
+
+    error_page 503 /under_maintenance.html;
+    location = /under_maintenance.html {
+        root /var/www/EventOrganizer/;
+        internal;
+    }
+
+    listen 443 ssl http2; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/calendrier.lyonparapente.fr/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/calendrier.lyonparapente.fr/privkey.pem; # managed by Certbot
+    #include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    include /etc/nginx/conf.d/security.conf;
+}
+server {
+    if ($host = calendrier.lyonparapente.fr) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name calendrier.lyonparapente.fr;
+    return 404; # managed by Certbot
+}
+```
 
 ## Useful
+
 A few helpful commands:
 ```
 source /var/www/EventOrganizer/back/env/bin/activate
