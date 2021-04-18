@@ -1,4 +1,4 @@
-export default function background (use_unsplash: boolean, tags: string[]=[], force: boolean=false): void
+export function background (use_unsplash: boolean, tags: string[]=[], force: boolean=false): void
 {
   const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
   const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -17,4 +17,16 @@ export default function background (use_unsplash: boolean, tags: string[]=[], fo
     url += (url.includes("?") ? "&" : "?") + "rand=" + new Date().getTime().toString();
   }
   document.body.style.backgroundImage = "url('"+url+"')"
+}
+
+export function setBackgroundColor (calendarEl: HTMLElement)
+{
+	var container: HTMLElement = calendarEl.querySelector(".fc-view-harness");
+	container.classList.add('bg-secondary');
+
+	// alpha according to theme
+	var color = getComputedStyle(container)['backgroundColor'];
+	var color_alpha = "rgba("+color.substring(4,color.length-1)+", 0.3)";
+	container.style.backgroundColor = color_alpha;
+	container.classList.remove('bg-secondary');
 }

@@ -20,7 +20,7 @@ import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
 import { router } from './routing';
 import requestJson from './request_json';
-import background from './background';
+import { background, setBackgroundColor } from './background';
 
 var calendar: Calendar = null;
 
@@ -297,16 +297,4 @@ function onCreateEvent (event: any)
 {
 	eventDataTransform(event);
 	calendar.addEvent(event);
-}
-
-function setBackgroundColor (calendarEl: HTMLElement)
-{
-	var container: HTMLElement = calendarEl.querySelector(".fc-view-harness");
-	container.classList.add('bg-secondary');
-
-	// alpha according to theme
-	var color = getComputedStyle(container)['backgroundColor'];
-	var color_alpha = "rgba("+color.substring(4,color.length-1)+", 0.3)";
-	container.style.backgroundColor = color_alpha;
-	container.classList.remove('bg-secondary');
 }
