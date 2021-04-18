@@ -41,6 +41,8 @@ const fuse = fusebox({
           var readable = require('fs').createReadStream(bgImg);
           readable.pipe(res);
         });
+
+        app.use('/css/themes/', express.static(path.join(__dirname, 'src/css/themes'), {extensions: ['css']}));
       }
     }
   },

@@ -1,9 +1,10 @@
-- fix GetTheme so that it can work with fusebox dev/production modes
 - rename unsplash background, ability to switch between unsplash & backgrounds
 
 - bug quand on sélectionne et déselectionne category: ca choisi la couleur #000000
 
-- reprendre les trucs de gulp genre la copie des images de esri-leaflet-geocoder
+- intégrer frontV5 et back
+    - css (dont theme) et js
+    - reprendre les trucs de gulp genre la copie des images de esri-leaflet-geocoder
 
 - move stuff into util.ts
 import { i18n } from './trads';

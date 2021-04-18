@@ -5,10 +5,36 @@
 	<title>Event Organizer Calendar</title>
 	<meta name="viewport" content="width=600" />
 	$css
-
+	<!-- <link rel="stylesheet" href="css/themes/flatly.bootstrap.min.css" /> see js at bottom -->
 	<link rel="icon" href="$import('static/favicon.ico')" />
 </head>
 <body>
+
+<div id="theme">Theme:
+	<select id="themeSelector">
+		<option value="cerulean">Cerulean</option>
+		<option value="cosmo">Cosmo</option>
+		<option value="cyborg">Cyborg</option>
+		<option value="darkly">Darkly</option>
+		<option value="flatly" selected="selected">Flatly</option>
+		<option value="journal">Journal</option>
+		<option value="litera">Litera</option>
+		<option value="lumen">Lumen</option>
+		<option value="lux">Lux</option>
+		<!--<option value="materia">Materia</option>-->
+		<option value="minty">Minty</option>
+		<option value="pulse">Pulse</option>
+		<option value="sandstone">Sandstone</option>
+		<option value="simplex">Simplex</option>
+		<option value="sketchy">Sketchy</option>
+		<option value="slate">Slate</option>
+		<option value="solar">Solar</option>
+		<option value="spacelab">Spacelab</option>
+		<option value="superhero">Superhero</option>
+		<option value="united">United</option>
+		<option value="yeti">Yeti</option>
+	</select>
+</div>
 
 <div id="calendar"></div>
 
@@ -272,8 +298,109 @@
 
 <a href="javascript:;" id="changeBg">Changer l'image</a>
 
-<script>connected_user={"role": "admin", "firstname": "Thibault", "lastname": "ROHMER", "notif_event_change": 1, "id": 4145};</script>
+<script>connected_user={"role": "admin", "firstname": "John", "lastname": "DOE", "notif_event_change": 1, "id": 4145};</script>
 
 $bundles
+
+<script>
+// For for front theme testing
+var theme;
+
+document.addEventListener('DOMContentLoaded', function ()
+{
+	var themeSelector = document.getElementById('themeSelector');
+	SelectFavoriteTheme(themeSelector);
+	theme = themeSelector.value;
+
+	SetTheme(theme);
+
+	themeSelector.addEventListener('change', function ()
+	{
+		SetTheme(this.value);
+	});
+});
+
+
+
+const localStorage_key = 'theme';
+
+function GetFavoriteTheme ()
+{
+	try
+	{
+		return JSON.parse(localStorage.getItem(localStorage_key));
+	}
+	catch(e)
+	{
+		localStorage.removeItem(localStorage_key);
+	}
+}
+
+function SelectFavoriteTheme (themeSelector)
+{
+	var favorite = GetFavoriteTheme();
+	if (favorite)
+	{
+		var options = themeSelector.options;
+		for (var i = 0; i < options.length; ++i)
+		{
+			var option = options[i];
+			option.selected = false;
+			option.removeAttribute('selected');
+			if (option.value === favorite.theme)
+			{
+				option.selected = true;
+				option.setAttribute('selected', 'selected');
+				return;
+			}
+		}
+	}
+}
+
+var currentStylesheet;
+function SetTheme (themeName)
+{
+	var stylesheetUrl = "css/themes/"+themeName+".bootstrap.min.css";
+
+	var link = document.createElement('link');
+	link.setAttribute('rel', 'stylesheet');
+	link.setAttribute('href', stylesheetUrl);
+	document.head.appendChild(link);
+
+	WhenStylesheetLoaded(link, function ()
+	{
+		if (currentStylesheet)
+		{
+			document.head.removeChild(currentStylesheet);
+		}
+		currentStylesheet = link;
+
+		if (theme !== themeName)
+		{
+			theme = themeName;
+
+			var infos = JSON.stringify({theme: themeName, lastModified: Date.now()});
+			localStorage.setItem(localStorage_key, infos);
+		}
+	});
+}
+
+function WhenStylesheetLoaded (linkNode, callback)
+{
+	var isReady = false;
+	function ready()
+	{
+		if (!isReady)
+		{
+			// avoid double-call
+			isReady = true;
+			callback();
+		}
+	}
+
+	linkNode.onload = ready; // does not work cross-browser
+	setTimeout(ready, 2000); // max wait. also handles browsers that don't support onload
+}
+</script>
 </body>
 </html>

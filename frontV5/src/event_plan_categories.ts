@@ -79,7 +79,7 @@ export function getColor (category: string): string
 function GetTheme (): string
 {
 	var styles = Array.apply(null, document.head.querySelectorAll('link'));
-	var themeCSS = styles.map(x => x.href).filter(x => x.includes('/css/theme/'))[0];
+	var themeCSS = styles.map((x:HTMLLinkElement) => x.href).filter((x:string) => x.includes('/css/theme/'))[0];
 	var theme = settings.default_theme;
 	if (themeCSS)
 	{

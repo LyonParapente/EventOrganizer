@@ -9,7 +9,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import * as bootstrap from 'bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'css/themes/flatly.bootstrap.min.css';
 import 'css/calendar.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
