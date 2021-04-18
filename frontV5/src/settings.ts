@@ -15,6 +15,7 @@ interface Settings
 			[key: string]: string
 		}
 	},
+	use_unsplash: boolean,
 	unsplash_tags: string[],
 	IGN_key: string,
 	international_prefix: string
@@ -69,6 +70,7 @@ const settings: Settings =
 			annulée: '#AAAAAA'
 		}
 	},
+	use_unsplash: false,
 	unsplash_tags: ['paraglider'],
 	IGN_key: 'o9q1uza84786tsx16keg17n0',
 	international_prefix: '+33'

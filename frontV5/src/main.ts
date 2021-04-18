@@ -20,7 +20,7 @@ import swipedetector from './swipe';
 import { getColor } from './event_plan_categories';
 import { router } from './routing';
 import requestJson from './request_json';
-import unsplash from './unsplash';
+import background from './background';
 
 var calendar: Calendar = null;
 
@@ -218,14 +218,10 @@ document.addEventListener('DOMContentLoaded', function()
 		}
 	});
 
-	if (settings.unsplash_tags)
-	{
-		unsplash(settings.unsplash_tags);
-	}
+	background(settings.use_unsplash, settings.unsplash_tags);
 	id('changeBg').addEventListener('click', function ()
 	{
-		var tags = settings.unsplash_tags.concat(new Date().getTime().toString())
-		unsplash(tags);
+		background(settings.use_unsplash, settings.unsplash_tags, true);
 	});
 });
 

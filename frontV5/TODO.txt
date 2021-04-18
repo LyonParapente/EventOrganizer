@@ -1,5 +1,3 @@
-- rename unsplash background, ability to switch between unsplash & backgrounds
-
 - bug quand on sélectionne et déselectionne category: ca choisi la couleur #000000
 
 - intégrer frontV5 et back
