@@ -303,7 +303,7 @@ server {
 ```
 ## Scheduled task for tomorrow Events
 
-`nano ~/tomorrow_events.sh`
+`nano ~/tomorrow_events.sh`  
 
 Replace `<token>` with the value of `DAILY_CHECK` from `secrets.py`:
 
@@ -312,8 +312,32 @@ Replace `<token>` with the value of `DAILY_CHECK` from `secrets.py`:
 curl "https://calendrier.lyonparapente.fr/tomorrow_events?token=<token>" >~/curl_res.txt
 ```
 
-Recommended: `encodeURIComponent(DAILY_CHECK)`
+Recommended: `encodeURIComponent(DAILY_CHECK)`  
 
+Then: `chmod u+x ~/tomorrow_events.sh`  
+
+And schedule it with: `crontab -e`  
+
+`0 17 * * * /bin/sh /home/eventorganizer/tomorrow_events.sh`
+
+## Automatic remote backup
+
+Store public key in `~/.ssh/authorized_keys` of the remote system user.  
+
+`nano ~/rsync_backup.sh`  and put this inside:  
+
+```#!/bin/sh
+#!/bin/sh
+rsync -arz --include="events.db" --include="avatars/***" --exclude="*" --delete -e "ssh -p <port>" /var/www/EventOrganizer/ <user>@<host>:~/backups/
+```
+
+Replace `<user>`, `<host>` and `<port>` with the appropriate values.
+
+Then: `chmod u+x ~/rsync_backup.sh`  
+
+And schedule it with: `crontab -e`  
+
+`0 */12 * * * /bin/sh /home/eventorganizer/rsync_backup.sh`
 
 ## Useful
 
