@@ -26,10 +26,10 @@ export function init_categories (): void
 		}
 	}
 
-	var sortie_category = document.getElementById("sortie_category");
-	category_dd.parentElement.addEventListener("click", function (evt)
+	var sortie_category = document.getElementById("sortie_category") as HTMLButtonElement;
+	(category_dd.parentElement as HTMLElement).addEventListener("click", function (evt)
 	{
-		var node = <HTMLElement>evt.target;
+		var node = evt.target as HTMLElement;
 		if (node.nodeName !== 'A')
 		{
 			if (node.id !== 'sortie_color_btn')
@@ -78,12 +78,12 @@ export function getColor (category: string): string
 
 function GetTheme (): string
 {
-	var styles = Array.apply(null, document.head.querySelectorAll('link'));
+	var styles = Array.from(document.head.querySelectorAll('link'));
 	var themeCSS = styles.map((x:HTMLLinkElement) => x.href).filter((x:string) => x.includes('/css/theme/'))[0];
 	var theme = settings.default_theme;
 	if (themeCSS)
 	{
-		theme = themeCSS.split('/').pop().split('.').shift();
+		theme = themeCSS.split('/').pop()!.split('.').shift()!;
 	}
 	return theme;
 }

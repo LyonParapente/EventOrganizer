@@ -1,10 +1,10 @@
 // @ts-ignore ColorPicker
 import ColorPicker from 'simple-color-picker';
 
-var sortie_category = document.getElementById("sortie_category");
+var sortie_category = document.getElementById("sortie_category") as HTMLElement;
 var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
 
-var colorPicker: SimpleColorPicker = null;
+var colorPicker: SimpleColorPicker;
 
 export function init_colorPicker (): void
 {
@@ -26,10 +26,10 @@ export function init_colorPicker (): void
 		}
 	});
 
-	var sortie_category_parent = sortie_category.parentElement;
+	var sortie_category_parent = sortie_category.parentElement as HTMLElement;
 	sortie_category_parent.addEventListener('show.bs.dropdown', function ()
 	{
-		var text = sortie_category.textContent;
+		var text = sortie_category.textContent as string;
 		var val = text.indexOf('#') === 0 ? text : '';
 		sortie_color.value = val;
 		colorPicker.setColor(val);
@@ -49,6 +49,7 @@ function onColorPickerChangeIgnoreFirstCall (hexStringColor: string): void
 		sortie_color.value = '';
 	}
 }
+
 function onColorPickerChange (hexStringColor: string): void
 {
 	sortie_color.value = hexStringColor;

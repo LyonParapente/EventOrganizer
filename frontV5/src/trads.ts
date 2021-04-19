@@ -109,12 +109,12 @@ export function i18n_inPlace (selectors: (string|HTMLElement)[]|NodeListOf<Eleme
 			{
 				if (attr)
 				{
-					var oldAttr = item.getAttribute(attr);
+					var oldAttr = item.getAttribute(attr) as string;
 					item.setAttribute(attr, i18n(oldAttr));
 				}
 				else
 				{
-					var oldText = item.textContent;
+					var oldText = item.textContent as string;
 					item.textContent = i18n(oldText);
 				}
 				translated.add(item);

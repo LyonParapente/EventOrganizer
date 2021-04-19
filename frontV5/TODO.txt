@@ -3,3 +3,7 @@
 - intégrer frontV5 et back
     - css (dont theme) et js
     - reprendre les trucs de gulp genre la copie des images de esri-leaflet-geocoder
+
+- déplacer les types dans .d.ts
+- gettheme => dans connected_user
+- ConnectedUser & co ds un fichier à part

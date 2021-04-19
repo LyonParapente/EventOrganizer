@@ -15,9 +15,9 @@ export default function swipedetector(el: HTMLElement|Document, callback: (direc
 	startTime: number,
 	handleswipe = callback || function(){}; // tslint:disable-line
 
-	touchsurface.addEventListener('touchstart', function (e: TouchEvent)
+	touchsurface.addEventListener('touchstart', function (e: Event)
 	{
-		var touchobj = e.changedTouches[0];
+		var touchobj = (e as TouchEvent).changedTouches[0];
 		swipedir = 'none';
 		distX = 0;
 		distY = 0;
@@ -26,9 +26,9 @@ export default function swipedetector(el: HTMLElement|Document, callback: (direc
 		startTime = new Date().getTime(); // record time when finger first makes contact with surface
 	}, false);
 
-	touchsurface.addEventListener('touchend', function (e: TouchEvent)
+	touchsurface.addEventListener('touchend', function (e: Event)
 	{
-		var touchobj = e.changedTouches[0];
+		var touchobj = (e as TouchEvent).changedTouches[0];
 		distX = touchobj.pageX - startX; // get horizontal dist traveled by finger while in contact with surface
 		distY = touchobj.pageY - startY; // get vertical dist traveled by finger while in contact with surface
 		elapsedTime = new Date().getTime() - startTime;

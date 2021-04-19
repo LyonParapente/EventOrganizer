@@ -1,14 +1,22 @@
 // Similar lib: https://github.com/KidkArolis/location-bar
 
+type RoutePath = string|RegExp;
+
+interface Route
+{
+	re: RoutePath;
+	handler: Function;
+}
+
 interface Router
 {
-	routes: string[];
+	routes: Route[];
 	root: string;
-	add (re: string|RegExp, handler: (...args: string[]) => void): Router;
-	remove (param: string|RegExp): Router;
+	add (re: RoutePath, handler: (...args: string[]) => void): Router;
+	remove (param: RoutePath|Function): Router;
 	check (path: string): Router;
-	navigate (path: string, title?: string, state?: {}, trigger?: boolean): Router;
-	replace (path: string, title?: string, state?: {}): Router;
+	navigate (path: string, title?: string, state?: object|null, trigger?: boolean): Router;
+	replace (path: string, title?: string, state?: object|null): Router;
 	title (text: string): void;
 }
 
@@ -50,7 +58,7 @@ export var router: Router =
 		}
 		return this;
 	},
-	navigate: function (path = '', title = null, state = null, trigger = false)
+	navigate: function (path = '', title = '', state = null, trigger = false)
 	{
 		var stateObj = state || {path};
 		try
@@ -65,7 +73,7 @@ export var router: Router =
 		}
 		return this;
 	},
-	replace: function (path = '', title = null, state = null)
+	replace: function (path = '', title = '', state = null)
 	{
 		try
 		{

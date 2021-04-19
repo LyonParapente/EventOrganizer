@@ -21,7 +21,7 @@ export function background (use_unsplash: boolean, tags: string[]=[], force: boo
 
 export function setBackgroundColor (calendarEl: HTMLElement)
 {
-	var container: HTMLElement = calendarEl.querySelector(".fc-view-harness");
+	var container = calendarEl.querySelector(".fc-view-harness") as HTMLElement;
 	container.classList.add('bg-secondary');
 
 	// alpha according to theme
