@@ -42,7 +42,7 @@ const fuse = fusebox({
           readable.pipe(res);
         });
 
-        app.use('/css/themes/', express.static(path.join(__dirname, 'src/css/themes'), {extensions: ['css']}));
+        app.use('/css/theme/', express.static(path.join(__dirname, 'src/css/theme'), {extensions: ['css']}));
       }
     }
   },

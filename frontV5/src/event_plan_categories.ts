@@ -12,9 +12,13 @@ export function create_category_badge (category: string, extraCSS?: string): HTM
 	return a;
 }
 
+var current_theme: string;
+
 export function init_categories (): void
 {
-	var category_dd = document.getElementById("sortie_categories");
+	current_theme = GetTheme();
+
+	var category_dd = document.getElementById("sortie_categories") as HTMLElement;
 	var badges_spacing = "ml-2 mb-2";
 	var colorConf = getColorConf();
 	for (var category in colorConf)
@@ -53,8 +57,6 @@ export function init_categories (): void
 		(document.getElementById('sortie_color') as HTMLInputElement).value = '';
 	});
 }
-
-var current_theme = GetTheme();
 
 function getColorConf (): object
 {

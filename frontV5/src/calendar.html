@@ -299,9 +299,6 @@
 <a href="javascript:;" id="changeBg">Changer l'image</a>
 
 <script>connected_user={"role": "admin", "firstname": "John", "lastname": "DOE", "notif_event_change": 1, "id": 4145};</script>
-
-$bundles
-
 <script>
 // For for front theme testing
 var theme;
@@ -319,8 +316,6 @@ document.addEventListener('DOMContentLoaded', function ()
 		SetTheme(this.value);
 	});
 });
-
-
 
 const localStorage_key = 'theme';
 
@@ -360,7 +355,7 @@ function SelectFavoriteTheme (themeSelector)
 var currentStylesheet;
 function SetTheme (themeName)
 {
-	var stylesheetUrl = "css/themes/"+themeName+".bootstrap.min.css";
+	var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
 
 	var link = document.createElement('link');
 	link.setAttribute('rel', 'stylesheet');
@@ -402,5 +397,7 @@ function WhenStylesheetLoaded (linkNode, callback)
 	setTimeout(ready, 2000); // max wait. also handles browsers that don't support onload
 }
 </script>
+
+$bundles
 </body>
 </html>
