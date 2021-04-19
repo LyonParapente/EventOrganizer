@@ -1,4 +1,5 @@
-import { i18n, toRelativeTimeString } from './trads';
+import { i18n } from './trads';
+import { toRelativeTimeString } from './datetime';
 import requestJson from './request_json';
 import settings from './settings';
 import { UpdateCommentPreview } from './event_show';

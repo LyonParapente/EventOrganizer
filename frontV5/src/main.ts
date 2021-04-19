@@ -12,8 +12,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'css/calendar.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-import { i18n, i18n_inPlace, toDateString } from './trads';
 import settings from './settings';
+import { i18n, i18n_inPlace } from './trads';
+import { toDateString } from './datetime';
 import { init_createEvent, planAnEvent } from './event_plan';
 import { init_showEvent, showEvent } from './event_show';
 import swipedetector from './swipe';

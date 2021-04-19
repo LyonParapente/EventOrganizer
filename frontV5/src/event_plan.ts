@@ -1,4 +1,5 @@
-import { i18n, i18n_inPlace, toDateString } from './trads';
+import { i18n, i18n_inPlace } from './trads';
+import { toDateString } from './datetime';
 import settings from './settings';
 import { initMap } from './map';
 import { init_categories, create_category_badge } from './event_plan_categories';
