@@ -19,7 +19,7 @@ import { id } from './dom';
 import { init_createEvent, planAnEvent } from './event_plan';
 import { init_showEvent, showEvent } from './event_show';
 import swipedetector from './swipe';
-import { getColor } from './event_plan_categories';
+import { getColor } from './theme';
 import { router } from './routing';
 import requestJson from './request_json';
 import { background, setBackgroundColor } from './background';

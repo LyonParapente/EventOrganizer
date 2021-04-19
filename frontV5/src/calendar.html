@@ -298,7 +298,7 @@
 
 <a href="javascript:;" id="changeBg">Changer l'image</a>
 
-<script>connected_user={"role": "admin", "firstname": "John", "lastname": "DOE", "notif_event_change": 1, "id": 4145};</script>
+<script>connected_user={"role": "admin", "firstname": "John", "lastname": "DOE", "theme": "darkly", "notif_event_change": 1, "id": 4145};</script>
 <script>
 // For for front theme testing
 var theme;
@@ -309,31 +309,17 @@ document.addEventListener('DOMContentLoaded', function ()
 	SelectFavoriteTheme(themeSelector);
 	theme = themeSelector.value;
 
-	SetTheme(theme);
+	LoadTheme(theme);
 
 	themeSelector.addEventListener('change', function ()
 	{
-		SetTheme(this.value);
+		LoadTheme(this.value);
 	});
 });
 
-const localStorage_key = 'theme';
-
-function GetFavoriteTheme ()
-{
-	try
-	{
-		return JSON.parse(localStorage.getItem(localStorage_key));
-	}
-	catch(e)
-	{
-		localStorage.removeItem(localStorage_key);
-	}
-}
-
 function SelectFavoriteTheme (themeSelector)
 {
-	var favorite = GetFavoriteTheme();
+	var favorite = window['connected_user'].theme;
 	if (favorite)
 	{
 		var options = themeSelector.options;
@@ -342,7 +328,7 @@ function SelectFavoriteTheme (themeSelector)
 			var option = options[i];
 			option.selected = false;
 			option.removeAttribute('selected');
-			if (option.value === favorite.theme)
+			if (option.value === favorite)
 			{
 				option.selected = true;
 				option.setAttribute('selected', 'selected');
@@ -353,7 +339,7 @@ function SelectFavoriteTheme (themeSelector)
 }
 
 var currentStylesheet;
-function SetTheme (themeName)
+function LoadTheme (themeName)
 {
 	var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
 
@@ -373,9 +359,7 @@ function SetTheme (themeName)
 		if (theme !== themeName)
 		{
 			theme = themeName;
-
-			var infos = JSON.stringify({theme: themeName, lastModified: Date.now()});
-			localStorage.setItem(localStorage_key, infos);
+			window['connected_user'].theme = themeName;
 		}
 	});
 }

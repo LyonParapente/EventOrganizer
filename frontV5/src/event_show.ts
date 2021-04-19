@@ -1,6 +1,6 @@
 import { i18n, i18n_inPlace } from './trads';
 import { toDateString } from './datetime';
-import { getColor } from './event_plan_categories';
+import { getColor } from './theme';
 import { initMap } from './map';
 import loadComments from './event_comments';
 import requestJson from './request_json';
@@ -9,6 +9,7 @@ import { router } from './routing';
 import { planAnEvent } from './event_plan';
 import { Calendar, EventApi } from '@fullcalendar/core';
 import { id, one } from './dom';
+import get_connected_user from './user';
 
 import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
@@ -533,11 +534,6 @@ function EditEvent (): void
 	var event = calendar.getEventById(current_event.event_id.toString()) as EventApi;
 	eventPropertiesModal.hide();
 	planAnEvent(event.start as Date, (event.end || event.start) as Date, event);
-}
-
-function get_connected_user (): ConnectedUser
-{
-	return window['connected_user'];
 }
 
 function SetBell (block: boolean): void

@@ -1,4 +1,4 @@
-import settings from './settings';
+import { getColor, getColorConf } from './theme';
 import { i18n } from './trads';
 
 export function create_category_badge (category: string, extraCSS?: string): HTMLElement
@@ -12,12 +12,8 @@ export function create_category_badge (category: string, extraCSS?: string): HTM
 	return a;
 }
 
-var current_theme: string;
-
 export function init_categories (): void
 {
-	current_theme = GetTheme();
-
 	var category_dd = document.getElementById("sortie_categories") as HTMLElement;
 	var badges_spacing = "ml-2 mb-2";
 	var colorConf = getColorConf();
@@ -58,34 +54,3 @@ export function init_categories (): void
 	});
 }
 
-function getColorConf (): object
-{
-	var theme = current_theme;
-	var colorConf;
-	if (settings.categories.hasOwnProperty(theme))
-	{
-		colorConf = settings.categories[theme];
-	}
-	else
-	{
-		colorConf = settings.categories.default;
-	}
-	return colorConf;
-}
-
-export function getColor (category: string): string
-{
-	return getColorConf()[category];
-}
-
-function GetTheme (): string
-{
-	var styles = Array.from(document.head.querySelectorAll('link'));
-	var themeCSS = styles.map((x:HTMLLinkElement) => x.href).filter((x:string) => x.includes('/css/theme/'))[0];
-	var theme = settings.default_theme;
-	if (themeCSS)
-	{
-		theme = themeCSS.split('/').pop()!.split('.').shift()!;
-	}
-	return theme;
-}

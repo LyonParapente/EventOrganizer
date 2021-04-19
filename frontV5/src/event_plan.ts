@@ -8,6 +8,7 @@ import { router } from './routing';
 import requestJson from './request_json';
 import { EventApi } from '@fullcalendar/core';
 import { id, one } from './dom';
+import get_connected_user from './user';
 
 import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
@@ -97,7 +98,7 @@ function init_WhatsApp_video ()
 
 export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: EventApi): void
 {
-	if (!window['connected_user'])
+	if (!get_connected_user())
 	{
 		window.location.assign('/login');
 		return;

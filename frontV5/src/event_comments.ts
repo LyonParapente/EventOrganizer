@@ -4,6 +4,7 @@ import { toRelativeTimeString } from './datetime';
 import requestJson from './request_json';
 import settings from './settings';
 import { UpdateCommentPreview } from './event_show';
+import get_connected_user from './user';
 
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
@@ -384,11 +385,6 @@ function updateRegistration (button_id: string, box: HTMLElement)
 			}
 		}
 	}
-}
-
-function get_connected_user (): ConnectedUser
-{
-	return window['connected_user'];
 }
 
 function edit_comment (comment: string)

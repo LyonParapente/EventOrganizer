@@ -200,7 +200,6 @@ def calendar():
     infos = get_jwt_claims()
     theme = infos['theme']
     infos['id'] = user_id
-    del infos['theme']
   header = render_template('header.html', **lang, is_connected=is_connected)
   return render_template('calendar.html', **lang, header=header,
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
