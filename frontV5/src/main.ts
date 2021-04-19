@@ -1,4 +1,4 @@
-import { Calendar, EventInputTransformer } from '@fullcalendar/core';
+import { Calendar, EventApi, EventInputTransformer } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';
 
 import bootstrapPlugin from '@fullcalendar/bootstrap';
@@ -23,14 +23,14 @@ import { router } from './routing';
 import requestJson from './request_json';
 import { background, setBackgroundColor } from './background';
 
-var calendar: Calendar = null;
+var calendar: Calendar;
 
-var id: (str: string) => HTMLElement = document.getElementById.bind(document);
+var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 // Adapt server response to fullcalendar expected fields
 let eventDataTransform: EventInputTransformer = function (event)
 {
-	var orig = calendar.getEventById(event.id);
+	var orig = calendar.getEventById(event.id as string);
 	if (orig)
 	{
 		// Typically happens when we update an event
@@ -241,11 +241,11 @@ function init_routing ()
 			requestJson('GET', '/api/event/'+num, null, function (data: object)
 			{
 				onCreateEvent(data);
-				var event = calendar.getEventById(num);
+				var event = calendar.getEventById(num) as EventApi;
 				if (edit)
 				{
 					console.log('Editing event:'+num);
-					planAnEvent(event.start, event.end||event.start, event);
+					planAnEvent(event.start as Date, (event.end||event.start) as Date, event);
 				}
 				else
 				{

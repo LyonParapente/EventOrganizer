@@ -17,7 +17,7 @@ import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 var mapList = {},
-	id: (str: string) => HTMLElement = document.getElementById.bind(document),
+	id = document.getElementById.bind(document) as (str: string) => HTMLElement,
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
 	sortie_RDV_gps = <HTMLInputElement>id('sortie_RDV_gps'),
 	spinner_RDV = id('spinner_RDV');
@@ -158,7 +158,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 					{
 						var searchMarker = L.marker(dataResults[j].latlng);
 						results.addLayer(searchMarker);
-						searchMarker.on('click', function ()
+						searchMarker.on('click', function (this: L.Marker)
 						{
 							let latlng = this.getLatLng();
 							marker.setLatLng(latlng);
@@ -189,7 +189,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			{
 				findLocation(this.value, marker, map);
 			});
-			var timeoutID: NodeJS.Timeout = null;
+			var timeoutID: NodeJS.Timeout;
 			sortie_RDV.addEventListener('keyup', function ()
 			{
 				clearTimeout(timeoutID);

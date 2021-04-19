@@ -7,7 +7,7 @@ import { UpdateCommentPreview } from './event_show';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
-var id: (str: string) => HTMLElement = document.getElementById.bind(document);
+var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 export default function loadComments (event: CurrentEvent): void
 {
@@ -187,7 +187,7 @@ function fillCreator (creator: User)
 		if (creator.has_whatsapp)
 		{
 			var event_author_whatsapp = id("event_author_whatsapp");
-			var author_whatsapp = event_author_whatsapp.querySelector('a');
+			var author_whatsapp = event_author_whatsapp.querySelector('a') as HTMLAnchorElement;
 			author_whatsapp.href = "https://api.whatsapp.com/send?phone=" + whatsappPhone(creator.phone);
 			event_author_whatsapp.style.display = '';
 		}
@@ -368,7 +368,7 @@ function updateRegistration (button_id: string, box: HTMLElement)
 		{
 			box.removeChild(user);
 			badge = box.querySelector('.badge') as HTMLSpanElement;
-			badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
+			badge.textContent = (parseInt(badge.textContent as string, 10) - 1).toString();
 		}
 
 		// Show registration buttons
@@ -395,7 +395,7 @@ function updateRegistration (button_id: string, box: HTMLElement)
 
 			// Increase counter
 			var badge = box.querySelector('.badge') as HTMLSpanElement;
-			badge.textContent = (parseInt(badge.textContent, 10) + 1).toString();
+			badge.textContent = (parseInt(badge.textContent as string, 10) + 1).toString();
 		}
 
 		// Hide interested section buttons when becoming participant
@@ -412,7 +412,7 @@ function updateRegistration (button_id: string, box: HTMLElement)
 			{
 				otherBox.removeChild(user);
 				badge = otherBox.querySelector('.badge') as HTMLSpanElement;
-				badge.textContent = (parseInt(badge.textContent, 10) - 1).toString();
+				badge.textContent = (parseInt(badge.textContent as string, 10) - 1).toString();
 			}
 		}
 	}

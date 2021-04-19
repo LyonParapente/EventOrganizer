@@ -13,20 +13,20 @@ import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
 
-var id: (str: string) => HTMLElement = document.getElementById.bind(document);
+var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
-var edited_event_id: string = null;
+var edited_event_id: string|null = null;
 var createEventModal: bootstrap.Modal = new bootstrap.Modal(id("createEvent"));
 
 export function init_createEvent (onCreate: Function): void
 {
-	var form: HTMLFormElement = document.querySelector("#createEventBody form.needs-validation");
+	var form = document.querySelector("#createEventBody form.needs-validation") as HTMLFormElement;
 
 	// Submit an event
-	form.addEventListener('submit', function ()
+	form.addEventListener('submit', function (event)
 	{
 		if (form.checkValidity())
 		{
@@ -131,14 +131,14 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 
 	i18n_inPlace(
 	[
-		sortie_title.labels[0],
-		sortie_lieu.labels[0],
-		sortie_RDV.labels[0],
+		sortie_title.labels![0],
+		sortie_lieu.labels![0],
+		sortie_RDV.labels![0],
 		"#createEventBody .date",
-		sortie_date_start.labels[0],
-		sortie_date_end.labels[0],
-		sortie_heure.labels[0],
-		sortie_whatsapp.labels[0].querySelector('span'),
+		sortie_date_start.labels![0],
+		sortie_date_end.labels![0],
+		sortie_heure.labels![0],
+		sortie_whatsapp.labels![0].querySelector('span') as HTMLSpanElement,
 		sortie_desc.labels[0],
 		sortie_category.labels[0],
 		"#sortie_save"
@@ -146,7 +146,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 	i18n_inPlace(["#sortie_description"], "placeholder");
 
 	// Reset submission checks
-	var form = document.querySelector("#createEventBody form");
+	var form = document.querySelector("#createEventBody form") as HTMLFormElement;
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 	id('event_post_error').style.display = 'none';
@@ -342,7 +342,7 @@ function SubmitEvent (onCreate: Function)
 	});
 }
 
-function UpdatePreview ()
+function UpdatePreview (this: HTMLTextAreaElement)
 {
 	id('description_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
 }

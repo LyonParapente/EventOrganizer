@@ -17,19 +17,19 @@ import * as marked from 'marked';
 import 'html5tooltipsjs/html5tooltips.css';
 import 'html5tooltipsjs';
 
-var id: (str: string) => HTMLElement = document.getElementById.bind(document);
+var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
-var current_event: CurrentEvent = null;
-var calendar: Calendar = null;
+var current_event: CurrentEvent;
+var calendar: Calendar;
 var eventPropertiesModal: bootstrap.Modal = new bootstrap.Modal(id("eventProperties"));
 
 export function init_showEvent (cal: Calendar): void
 {
 	calendar = cal;
-	var form: HTMLFormElement = document.querySelector("#eventProperties form.needs-validation");
+	var form = document.querySelector("#eventProperties form.needs-validation") as HTMLFormElement;
 
 	// Submit a comment
-	form.addEventListener('submit', function ()
+	form.addEventListener('submit', function (event)
 	{
 		if (form.checkValidity())
 		{
@@ -83,16 +83,16 @@ export function init_showEvent (cal: Calendar): void
 		if (calendar_export_instance)
 		{
 			calendar_export_instance.destroy();
-			calendar_export_instance = null;
+			calendar_export_instance = null!;
 		}
 		else
 		{
-			var event = calendar.getEventById(current_event.event_id.toString());
+			var event = calendar.getEventById(current_event.event_id.toString()) as EventApi;
 			calendar_export_instance = ShowCalendarExport(event);
 			setTimeout(() =>
 			{
 				calendar_export_instance.destroy();
-				calendar_export_instance = null;
+				calendar_export_instance = null!;
 			}, 6000);
 		}
 		evt.preventDefault();
@@ -108,16 +108,16 @@ export function showEvent (calEvent: EventApi): void
 		return;
 	}
 
-	var start = calEvent.start,
-		end = calEvent.end;
-	if (end)
+	var start = calEvent.start as Date,
+		end: Date;
+	if (calEvent.end)
 	{
 		// Remove 1 day because end is exclusive in datastore
-		end = new Date(end.getTime() - 86400000);
+		end = new Date(calEvent.end.getTime() - 86400000);
 	}
 	else
 	{
-		end = start;
+		end = start as Date;
 	}
 
 	var endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate());
@@ -144,7 +144,7 @@ export function showEvent (calEvent: EventApi): void
 	], "title");
 
 	// Reset submission checks
-	var form = document.querySelector("#eventProperties form");
+	var form = document.querySelector("#eventProperties form") as HTMLFormElement;
 	form.classList.remove('was-validated');
 	i18n_inPlace(form.querySelectorAll('.invalid-feedback'));
 	id('comment_post_error').style.display = 'none';
@@ -345,7 +345,7 @@ export function showEvent (calEvent: EventApi): void
 	});
 	one(eventProperties, 'hide.bs.modal', function ()
 	{
-		current_event = null;
+		current_event = null!;
 		router.navigate("", i18n("Planning"));
 	});
 	eventPropertiesModal.show();
@@ -412,7 +412,7 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 
 function ShowCalendarExport (event: EventApi): Tooltip
 {
-	var evt_start = toDateString(event.start).replace(/-/g, '');
+	var evt_start = toDateString(event.start as Date).replace(/-/g, '');
 	var evt_end = evt_start;
 	if (event.end)
 	{
@@ -511,9 +511,9 @@ function DeleteEvent (): void
 		var url = "/api/event/"+current_event.event_id.toString();
 		requestJson("DELETE", url, null, function (data: any)
 		{
-			var event = calendar.getEventById(current_event.event_id.toString());
+			var event = calendar.getEventById(current_event.event_id.toString()) as EventApi;
 			event.remove();
-			current_event = null;
+			current_event = null!;
 			eventPropertiesModal.hide();
 		},
 		function (type: string, ex: XMLHttpRequest)
@@ -532,9 +532,9 @@ function DeleteEvent (): void
 
 function EditEvent (): void
 {
-	var event = calendar.getEventById(current_event.event_id.toString());
+	var event = calendar.getEventById(current_event.event_id.toString()) as EventApi;
 	eventPropertiesModal.hide();
-	planAnEvent(event.start, event.end || event.start, event);
+	planAnEvent(event.start as Date, (event.end || event.start) as Date, event);
 }
 
 function get_connected_user (): ConnectedUser
@@ -549,7 +549,7 @@ function SetBell (block: boolean): void
 	event_bell.setAttribute('title', i18n(block ? 'NotificationsBlocked' : 'NotificationsNotBlocked'));
 }
 
-export function UpdateCommentPreview ()
+export function UpdateCommentPreview (this: HTMLTextAreaElement)
 {
 	id('comment_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
 }
