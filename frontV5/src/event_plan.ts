@@ -21,7 +21,7 @@ var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 var edited_event_id: string = null;
 var createEventModal: bootstrap.Modal = new bootstrap.Modal(id("createEvent"));
 
-export function init_createEvent (onCreate): void
+export function init_createEvent (onCreate: Function): void
 {
 	var form: HTMLFormElement = document.querySelector("#createEventBody form.needs-validation");
 
@@ -67,7 +67,7 @@ export function init_createEvent (onCreate): void
 function init_WhatsApp_video ()
 {
 	var whatsApp_video = id('WhatsApp_video');
-	var tooltip = null;
+	var tooltip: any = null;
 	whatsApp_video.addEventListener('click', function ()
 	{
 		// Mount on demand to prevent fat gif download too soon
@@ -245,7 +245,7 @@ function getRandomInt(min: number, max: number): number
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function SubmitEvent (onCreate)
+function SubmitEvent (onCreate: Function)
 {
 	var event_post_error = id('event_post_error');
 	event_post_error.style.display = 'none';
