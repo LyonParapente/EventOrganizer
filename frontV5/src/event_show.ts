@@ -8,7 +8,7 @@ import settings from './settings';
 import { router } from './routing';
 import { planAnEvent } from './event_plan';
 import { Calendar, EventApi } from '@fullcalendar/core';
-import { one } from './util';
+import { id, one } from './dom';
 
 import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
@@ -16,8 +16,6 @@ import * as marked from 'marked';
 
 import 'html5tooltipsjs/html5tooltips.css';
 import 'html5tooltipsjs';
-
-var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 var current_event: CurrentEvent;
 var calendar: Calendar;

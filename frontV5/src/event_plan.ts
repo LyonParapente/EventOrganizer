@@ -7,13 +7,11 @@ import { init_colorPicker } from './event_plan_colorPicker';
 import { router } from './routing';
 import requestJson from './request_json';
 import { EventApi } from '@fullcalendar/core';
-import { one } from './util';
+import { id, one } from './dom';
 
 import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
-
-var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;

@@ -1,4 +1,5 @@
 import { i18n } from './trads';
+import { id } from './dom';
 import { toRelativeTimeString } from './datetime';
 import requestJson from './request_json';
 import settings from './settings';
@@ -6,8 +7,6 @@ import { UpdateCommentPreview } from './event_show';
 
 import * as DOMPurify from 'dompurify';
 import * as marked from 'marked';
-
-var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 export default function loadComments (event: CurrentEvent): void
 {

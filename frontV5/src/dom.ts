@@ -7,3 +7,6 @@ export function one (el: HTMLElement, type: string, fn: Function): void
     }
     el.addEventListener(type, handler);
 }
+
+var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
+export { id };

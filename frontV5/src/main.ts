@@ -15,6 +15,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import settings from './settings';
 import { i18n, i18n_inPlace } from './trads';
 import { toDateString } from './datetime';
+import { id } from './dom';
 import { init_createEvent, planAnEvent } from './event_plan';
 import { init_showEvent, showEvent } from './event_show';
 import swipedetector from './swipe';
@@ -24,8 +25,6 @@ import requestJson from './request_json';
 import { background, setBackgroundColor } from './background';
 
 var calendar: Calendar;
-
-var id = document.getElementById.bind(document) as (str: string) => HTMLElement;
 
 // Adapt server response to fullcalendar expected fields
 let eventDataTransform: EventInputTransformer = function (event)

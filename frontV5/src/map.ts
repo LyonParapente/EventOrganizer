@@ -1,5 +1,6 @@
 import settings from './settings';
 import { i18n } from './trads';
+import { id } from './dom';
 
 import * as L from 'leaflet';
 // @ts-ignore
@@ -17,7 +18,6 @@ import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 var mapList = {},
-	id = document.getElementById.bind(document) as (str: string) => HTMLElement,
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
 	sortie_RDV_gps = <HTMLInputElement>id('sortie_RDV_gps'),
 	spinner_RDV = id('spinner_RDV');
