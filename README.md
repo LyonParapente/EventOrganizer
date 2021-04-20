@@ -27,26 +27,28 @@ Main goals:
 
 ## Front
 
+Front is made using TypeScript and [FuseBox](https://fuse-box.org/) bundler.  
+
 First time: `npm install --also=dev`
 
-We're using [gulp.js](https://gulpjs.com/) to "compile" the front.
+Launch compile & local web server with: `./node_modules/.bin/ts-node fuse.ts` (see run.bat)  
+Then open your browwer to http://localhost:4444/
 
-Just execute: `gulp`
-
-If you want a webserver with live reload: `gulp serve`  
-and your browser should open http://localhost:3000/calendar.html
-
-Each time you save a source file, [browserSync](https://www.browsersync.io) reloads the page of all connected browsers, even your phone :). See `gulp.watch` in gulpfile.js.
+Each time you save a source file, FuseBox reloads the page of all connected browsers, even your phone :).
 
 
 ## Back
 
 See [BACK](BACK.md) for how to configure both your local development environment your production environment.
 
+# Production deployment
+
+Follow the tutorial: [Flask + Gunicorn + Nginx + HTTPS](VPS.md)
 
 # Stack
 
-* [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com) & [jQuery](https://jquery.com/)
+* TypeScript and [FuseBox](https://fuse-box.org/) bundler
+* [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com)
 * [Font Awesome](https://fontawesome.com/)
 * [Leaflet](https://leafletjs.com) with [OpenStreetMap](https://www.openstreetmap.org/about) and [Esri](https://esri.github.io/esri-leaflet/)
 
