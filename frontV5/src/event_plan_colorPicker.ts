@@ -2,7 +2,7 @@
 import ColorPicker from 'simple-color-picker';
 
 var sortie_category = document.getElementById("sortie_category") as HTMLElement;
-var sortie_color = <HTMLInputElement>document.getElementById("sortie_color");
+var sortie_color = document.getElementById("sortie_color") as HTMLInputElement;
 
 var colorPicker: SimpleColorPicker;
 
@@ -32,7 +32,10 @@ export function init_colorPicker (): void
 		var text = sortie_category.textContent as string;
 		var val = text.indexOf('#') === 0 ? text : '';
 		sortie_color.value = val;
-		colorPicker.setColor(val);
+		if (val.length)
+		{
+			colorPicker.setColor(val);
+		}
 	});
 }
 
