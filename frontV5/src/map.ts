@@ -13,6 +13,8 @@ L.esri = L.esri || esrileaflet;
 // @ts-ignore
 L.esri.Geocoding = esrileafletgeocoder;
 
+L.Icon.Default.prototype.options.imagePath = "/static/css/leaflet/"; // for fusebox...
+
 import 'leaflet/dist/leaflet.css';
 import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';

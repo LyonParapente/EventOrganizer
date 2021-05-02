@@ -4,9 +4,10 @@
 	<meta charset="utf-8" />
 	<title>Event Organizer Calendar</title>
 	<meta name="viewport" content="width=600" />
-	$css
+	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
 	<!-- <link rel="stylesheet" href="css/themes/flatly.bootstrap.min.css" /> see js at bottom -->
-	<link rel="icon" href="$import('static/favicon.ico')" />
+	$css
+	<link rel="icon" href="$import('static/img/favicon.ico')" />
 </head>
 <body>
 
@@ -341,7 +342,7 @@ function SelectFavoriteTheme (themeSelector)
 var currentStylesheet;
 function LoadTheme (themeName)
 {
-	var stylesheetUrl = "css/theme/"+themeName+".bootstrap.min.css";
+	var stylesheetUrl = "static/css/theme/"+themeName+".bootstrap.min.css";
 
 	var link = document.createElement('link');
 	link.setAttribute('rel', 'stylesheet');

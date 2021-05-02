@@ -1,60 +1,101 @@
 import { fusebox } from 'fuse-box';
 import * as path from 'path';
+const fs = require('fs');
+const copydir = require('copy-dir');
 
-const fuse = fusebox({
-  entry: 'src/main.ts',
-  target: 'browser',
-  devServer: {
-    // open: true,
-    httpServer: {
-      express: (app, express) => {
-        app.use('/avatars/', express.static(path.join(__dirname, 'data/avatars'), {extensions: ['png', 'jpg']}));
+function getConfig (withDevServer: boolean)
+{
+  return fusebox(
+  {
+    entry: 'src/main.ts',
+    target: 'browser',
+    devServer: withDevServer ? {
+      // open: true,
+      httpServer: {
+        express: (app, express) => {
+          app.use('/avatars/', express.static(path.join(__dirname, 'data/avatars'), {extensions: ['png', 'jpg']}));
 
-        app.use('/static/img/', express.static(path.join(__dirname, 'src/static/img'), {extensions: ['png', 'gif']}));
+          app.use('/static/img/', express.static(path.join(__dirname, 'src/static/img'), {extensions: ['png', 'gif']}));
 
-        app.get('/api/events', function (req: any, res: any)
-        {
-          var eventsJson = path.join(__dirname, 'data/events/2021.json');
-          var readable = require('fs').createReadStream(eventsJson);
-          readable.pipe(res);
-        });
+          app.get('/api/events', function (req: any, res: any)
+          {
+            var eventsJson = path.join(__dirname, 'data/events/2021.json');
+            var readable = require('fs').createReadStream(eventsJson);
+            readable.pipe(res);
+          });
 
-        app.get('/api/messages', getEvent);
-        app.get('/api/event/:eventid', getEvent);
+          app.get('/api/messages', getEvent);
+          app.get('/api/event/:eventid', getEvent);
 
-        function getEvent (req: any, res: any)
-        {
-          var event_id = req.query.event_id || req.params.eventid;
-          var eventsJson = path.join(__dirname, 'data/events/Event_'+event_id+'.json');
-          var readable = require('fs').createReadStream(eventsJson);
-          readable.pipe(res);
+          function getEvent (req: any, res: any)
+          {
+            var event_id = req.query.event_id || req.params.eventid;
+            var eventsJson = path.join(__dirname, 'data/events/Event_'+event_id+'.json');
+            var readable = require('fs').createReadStream(eventsJson);
+            readable.pipe(res);
+          }
+
+          app.get('/api/event/:eventid/notifications_blacklist', function (req: any, res: any)
+          {
+            res.send('{"message": "Notifications blacklist not setted for this event", "block": false}');
+          });
+
+          app.get('/background/:resolution', function (req: any, res: any)
+          {
+            var bgImg = path.join(__dirname, 'data/background.jpg');
+            var readable = require('fs').createReadStream(bgImg);
+            readable.pipe(res);
+          });
+
+          app.use('/static/css/', express.static(path.join(__dirname, 'src/css'), {extensions: ['css']})); // bootstrap + theme
+          app.use('/static/resources/', express.static(path.join(__dirname, 'dist/resources')));
+          app.use('/static/css/leaflet/', express.static(path.join(__dirname, 'node_modules/leaflet/dist/images'), {extensions: ['png']}));
         }
-
-        app.get('/api/event/:eventid/notifications_blacklist', function (req: any, res: any)
-        {
-          res.send('{"message": "Notifications blacklist not setted for this event", "block": false}');
-        });
-
-        app.get('/background/:resolution', function (req: any, res: any)
-        {
-          var bgImg = path.join(__dirname, 'data/background.jpg');
-          var readable = require('fs').createReadStream(bgImg);
-          readable.pipe(res);
-        });
-
-        app.use('/css/theme/', express.static(path.join(__dirname, 'src/css/theme'), {extensions: ['css']}));
       }
+    } : false,
+    webIndex: {template: 'src/calendar.html'},
+    resources: {
+      resourceFolder: './resources/',
+      resourcePublicRoot: '/static/resources',
     }
-  },
-  webIndex: {template: 'src/calendar.html'}
-});
+  });
+}
 
 const isProduction = process.env.NODE_ENV === 'production'; // $Env:NODE_ENV="production"
+var fuse = getConfig(!isProduction);
+
 if (isProduction)
 {
-  fuse.runProd();
+  var dist_folder = '../back/static/';
+  fs.copyFileSync('node_modules/bootstrap/dist/css/bootstrap.min.css', dist_folder+'css/bootstrap.min.css'); // we manually load bootstrap for theme selection
+  fs.copyFileSync('node_modules/bootstrap/dist/css/bootstrap.min.css.map', dist_folder+'css/bootstrap.min.css.map');
+  copydir.sync('src/css/theme', dist_folder+'css/theme');
+  copydir.sync('node_modules/leaflet/dist/images', dist_folder+'css/leaflet');
+
+  fuse.runProd({
+    manifest: false,
+    bundles: {
+      distRoot: dist_folder,
+      app: 'app.js',
+      vendor: 'vendor.js',
+      styles: 'styles.css'
+    }
+  }).then(() =>
+  {
+    // Cleanup unecessary files
+    fs.unlinkSync(dist_folder+'index.html');
+    fs.unlinkSync(dist_folder+'manifest-browser.json');
+  });
 }
 else
 {
+  var destDir = 'src/css/';
+  if (!fs.existsSync(destDir))
+  {
+    fs.mkdirSync(destDir);
+  }
+  fs.copyFileSync('node_modules/bootstrap/dist/css/bootstrap.min.css', destDir+'bootstrap.min.css'); // we manually load bootstrap for theme selection
+  fs.copyFileSync('node_modules/bootstrap/dist/css/bootstrap.min.css.map', destDir+'bootstrap.min.css.map');
+
   fuse.runDev();
 }

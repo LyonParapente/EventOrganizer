@@ -23,5 +23,20 @@ export function getColor (category: string): string
 
 function getTheme (): string
 {
-	return get_connected_user().theme;
+	var user = get_connected_user();
+	if (user)
+	{
+		return user.theme;
+	}
+	else // ex: home page unauthenticated
+	{
+		var theme = settings.default_theme;
+		var styles = Array.from(document.head.querySelectorAll('link'));
+		var themeCSS = styles.map((x:HTMLLinkElement) => x.href).filter((x:string) => x.includes('/css/theme/'))[0];
+		if (themeCSS)
+		{
+			theme = themeCSS.split('/').pop()!.split('.').shift()!;
+		}
+		return theme;
+	}
 }
