@@ -16,7 +16,7 @@ export function background (use_unsplash: boolean, tags: string[]=[], force: boo
 	{
 		url += (url.includes("?") ? "&" : "?") + "rand=" + new Date().getTime().toString();
 	}
-	document.body.style.backgroundImage = "url('"+url+"')"
+	document.body.style.backgroundImage = "url('"+url+"')";
 }
 
 export function setBackgroundColor (calendarEl: HTMLElement)

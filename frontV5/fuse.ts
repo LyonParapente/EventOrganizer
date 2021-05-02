@@ -72,6 +72,10 @@ if (isProduction)
   copydir.sync('src/css/theme', dist_folder+'css/theme');
   copydir.sync('node_modules/leaflet/dist/images', dist_folder+'css/leaflet');
 
+  // for specific pages: login, register, ...
+  fs.copyFileSync('node_modules/@fortawesome/fontawesome-free/css/all.min.css', dist_folder+'css/fontawesome-all.min.css');
+  copydir.sync('node_modules/@fortawesome/fontawesome-free/webfonts', dist_folder+'webfonts');
+
   fuse.runProd({
     manifest: false,
     bundles: {
