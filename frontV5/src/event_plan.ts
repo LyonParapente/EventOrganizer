@@ -20,7 +20,7 @@ var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 var edited_event_id: string|null = null;
 var createEventModal: bootstrap.Modal = new bootstrap.Modal(id("createEvent"));
 
-export function init_createEvent (onCreate: Function): void
+export function init_createEvent (onCreate: (event: any) => void): void
 {
 	var form = document.querySelector("#createEventBody form.needs-validation") as HTMLFormElement;
 
@@ -244,7 +244,7 @@ function getRandomInt(min: number, max: number): number
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function SubmitEvent (onCreate: Function)
+function SubmitEvent (onCreate: (event: any) => void)
 {
 	var event_post_error = id('event_post_error');
 	event_post_error.style.display = 'none';

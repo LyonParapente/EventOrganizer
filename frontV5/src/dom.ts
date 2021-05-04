@@ -1,4 +1,4 @@
-export function one (el: HTMLElement, type: string, fn: Function): void
+export function one (el: HTMLElement, type: string, fn: (event: any) => void): void
 {
     function handler (event: any)
     {
