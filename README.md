@@ -29,12 +29,12 @@ Main goals:
 
 Front is made using TypeScript and [FuseBox](https://fuse-box.org/) bundler.  
 
-First time: `npm install --also=dev`
+First time: `npm install`
 
-Launch compile & local web server with: `./node_modules/.bin/ts-node fuse.ts` (see run.bat)  
-Then open your browwer to http://localhost:4444/
+Launch compile & local web server with: `.\run.bat`   
+Then open your browser to http://localhost:4444/
 
-Each time you save a source file, FuseBox reloads the page of all connected browsers, even your phone :).
+Each time you save a source file, FuseBox reloads the page of all connected browsers, even your phone :-).
 
 
 ## Back
