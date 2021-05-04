@@ -1,7 +1,8 @@
 # Local installation
 
 If you're new with Python, pip and virtualenv, please read [Installing packages using pip and virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)  
-Basically meaning:
+Basically meaning, for windows environment:
+
 ```
 # install virtualenv
 py -m pip install --user virtualenv
@@ -13,6 +14,8 @@ py -m venv env
 py -m pip install wheel
 py -m pip install -r .\requirements.txt
 ```
+
+For linux, replace `py` with `python3` and virtualenv activation with: `source env/bin/activate`
 
 # Local run (dev)
 
