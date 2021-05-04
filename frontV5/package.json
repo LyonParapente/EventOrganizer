@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Organize events in your community!",
   "license": "MIT",
+  "author": "Thibault ROHMER",
   "repository": {
     "type": "git",
     "url": "https://github.com/LyonParapente/EventOrganizer.git"
@@ -38,6 +39,8 @@
   "devDependencies": {
     "tslint": "^6.1.3"
   },
-  "author": "Thibault ROHMER",
-  "local:main": "./src/main.ts"
+  "local:main": "./src/main.ts",
+  "scripts": {
+    "build": "ts-node fuse.ts"
+  }
 }

@@ -13,14 +13,19 @@ jobs:
     - uses: actions/checkout@main
 
     - name: Set up Node.js version
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: '14.15.0'
+        node-version: '14.16.x'
 
-    - name: Compile front with Gulp
-      uses: elstudio/actions-js-build/build@v2
-      with:
-        wdPath: './front'
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./front
+
+    - name: Compile front
+      run: npm run build
+      working-directory: ./front
+      env:
+        NODE_ENV: production
 
     - name: Deploy on production via RSYNC
       uses: up9cloud/action-rsync@master
