@@ -1,6 +1,12 @@
 {
   "name": "EventOrganizer",
-  "version": "1.1.0",
+  "version": "1.2.0",
+  "description": "Organize events in your community!",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LyonParapente/EventOrganizer.git"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@fullcalendar/bootstrap": "^5.5.0",
