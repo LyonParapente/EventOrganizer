@@ -4,7 +4,7 @@ Organize events in your community!
 We're a paragliding club but this tool could definitely be used by other groups.  
 Our instance is located at: https://calendrier.lyonparapente.fr
 
-![Screenshot](https://github.com/LyonParapente/EventOrganizer/raw/master/screenshot.png)
+![Screenshot](https://github.com/LyonParapente/EventOrganizer/raw/main/screenshot.png)
 
 Main goals:
 * Mobile friendly
