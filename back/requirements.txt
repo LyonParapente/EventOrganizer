@@ -9,3 +9,4 @@ mailjet_rest==1.3.4
 Flask-Mail==0.9.1
 Markdown==3.3.4
 ics==0.7
+gunicorn===20.1.0
