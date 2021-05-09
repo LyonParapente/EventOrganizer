@@ -8,3 +8,8 @@ frontV5/dist
 frontV5/.cache
 frontV5/src/css/bootstrap.min.css
 frontV5/src/css/bootstrap.min.css.map
+
+front/dist/
+front/.cache/
+front/src/css/bootstrap.min.css
+front/src/css/bootstrap.min.css.map
