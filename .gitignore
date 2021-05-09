@@ -3,12 +3,6 @@
 node_modules/
 package-lock.json
 
-frontV5/node_modules
-frontV5/dist
-frontV5/.cache
-frontV5/src/css/bootstrap.min.css
-frontV5/src/css/bootstrap.min.css.map
-
 front/dist/
 front/.cache/
 front/src/css/bootstrap.min.css
