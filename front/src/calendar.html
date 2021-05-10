@@ -5,7 +5,7 @@
 	<title>Event Organizer Calendar</title>
 	<meta name="viewport" content="width=600" />
 	<link rel="stylesheet" href="static/css/bootstrap.min.css" />
-	<!-- <link rel="stylesheet" href="css/themes/flatly.bootstrap.min.css" /> see js at bottom -->
+	<!-- <link rel="stylesheet" href="static/css/theme/flatly.bootstrap.min.css" /> see js at bottom -->
 	$css
 	<link rel="icon" href="$import('static/img/favicon.ico')" />
 </head>
@@ -54,27 +54,27 @@
 			</div>
 			<div class="modal-body" id="createEventBody">
 				<form class="needs-validation" novalidate>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label for="sortie_title" class="col-sm-3 col-form-label">Title</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="sortie_title" tabindex="1" required autofocus />
 							<div class="invalid-feedback trad">Please provide a title</div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label for="sortie_lieu" class="col-sm-3 col-form-label">Activity location</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="sortie_lieu" tabindex="2" />
 							<div class="invalid-feedback trad">Please provide a location</div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label for="sortie_RDV" class="col-sm-3 col-form-label">Meeting location</label>
 						<div class="col-sm-9">
 							<div class="input-group">
 								<input type="text" class="form-control" id="sortie_RDV" tabindex="3" />
 								<input type="hidden" id="sortie_RDV_gps" />
-								<div class="input-group-append">
+								<div class="d-flex">
 									<div class="spinner-border text-secondary" role="status" id="spinner_RDV"></div>
 									<button class="btn btn-outline-primary btn-sm trad" type="button" id="sortie_RDV_reset">Reset</button>
 								</div>
@@ -82,7 +82,7 @@
 							<div id="sortie_map"></div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label class="col-sm-3 col-form-label date">Date</label>
 						<div class="col">
 							<label for="sortie_date_start">DateFrom</label>
@@ -95,21 +95,22 @@
 							<div class="invalid-feedback trad">Cannot end before start</div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label for="sortie_heure" class="col-sm-3 col-form-label">Time</label>
 						<div class="col-sm-2">
 							<input type="text" class="form-control" id="sortie_heure" tabindex="6" />
 						</div>
-						<div class="col form-row">
-							<div class="col-auto form-inline">
-								<label for="sortie_whatsapp"><i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i><span>invite link</span></label>&nbsp;<i class="fas fa-question-circle" id="WhatsApp_video"></i>
-							</div>
-							<div class="col">
-								<input type="text" class="form-control" id="sortie_whatsapp" placeholder="https://chat.whatsapp.com/..." tabindex="7" />
-							</div>
+						<div class="col-auto p-0">
+							<label for="sortie_whatsapp" class="col-form-label">
+								<i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i><span>invite link</span>
+							</label>
+							<i class="fas fa-question-circle" id="WhatsApp_video"></i>
+						</div>
+						<div class="col ps-1">
+							<input type="text" class="form-control" id="sortie_whatsapp" placeholder="https://chat.whatsapp.com/..." tabindex="7" />
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label for="sortie_description" class="col-sm-3 col-form-label">Description</label>
 						<div class="col-sm-9">
 							<textarea class="form-control" id="sortie_description" rows="5" tabindex="8" placeholder="Type a description... Markdown available!"></textarea>
@@ -117,7 +118,7 @@
 							<div id="description_preview" class="collapse"></div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="row mb-1">
 						<label for="sortie_category" class="col-sm-3 col-form-label">Category</label>
 						<div class="col-sm-9 dropdown">
 							<button class="btn btn-outline-primary dropdown-toggle trad" type="button" id="sortie_category" tabindex="9" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</button>
@@ -147,15 +148,15 @@
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header align-items-center">
-				<span class="badge mr-2" id="event_category"></span>
-				<a href="javascript:;" class="mr-2"><i class="fas fa-bell" id="event_bell"></i></a>
-				<a href="" id="event_ics" title="Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)" class="mr-2"><i class="far fa-calendar-alt"></i></a>
-				<button type="button" class="btn btn-outline-success d-flex align-items-center mr-2 p-0" id="event_whatsapp">
+				<span class="badge me-2" id="event_category"></span>
+				<a href="javascript:;" class="me-2"><i class="fas fa-bell" id="event_bell"></i></a>
+				<a href="" id="event_ics" title="Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)" class="me-2"><i class="far fa-calendar-alt"></i></a>
+				<button type="button" class="btn btn-outline-success d-flex align-items-center me-2 p-0" id="event_whatsapp">
 					<i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i>
 					WhatsApp
 				</button>
 				<h4 class="modal-title container text-center" id="event_title"></h4>
-				<button id="del_event" type="button" class="btn btn-outline-danger mr-2 trad">Delete</button><button id="edit_event" type="button" class="btn btn-primary mr-2 trad">Edit</button>
+				<button id="del_event" type="button" class="btn btn-outline-danger me-2 trad">Delete</button><button id="edit_event" type="button" class="btn btn-primary me-2 trad">Edit</button>
 				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -164,32 +165,24 @@
 				<div class="container mx-0">
 					<div class="row justify-content-around">
 
-						<div class="col-4 px-0 flex-column form-inline align-items-start">
-							<div class="input-group mt-auto pt-1" id="event_date_from">
-								<div class="input-group-prepend">
-									<div class="input-group-text trad">DateFrom</div>
-								</div>
+						<div class="col-4 px-0 d-flex flex-column align-items-start">
+							<div class="input-group w-auto mt-auto pt-1" id="event_date_from">
+								<div class="input-group-text trad">DateFrom</div>
 								<span class="form-control" id="event_date_start"></span>
 							</div>
 
-							<div class="input-group mt-auto pt-1" id="event_date_to">
-								<div class="input-group-prepend">
-									<div class="input-group-text trad">DateTo</div>
-								</div>
+							<div class="input-group w-auto mt-auto pt-1" id="event_date_to">
+								<div class="input-group-text trad">DateTo</div>
 								<span class="form-control" id="event_date_end"></span>
 							</div>
 
-							<div class="input-group mt-auto pt-1" id="event_date_the">
-								<div class="input-group-prepend">
-									<div class="input-group-text trad">DateThe</div>
-								</div>
+							<div class="input-group w-auto mt-auto pt-1" id="event_date_the">
+								<div class="input-group-text trad">DateThe</div>
 								<span class="form-control" id="event_date_day"></span>
 							</div>
 
-							<div class="input-group mt-auto pt-1" id="event_location_box">
-								<div class="input-group-prepend">
-									<div class="input-group-text" id="event_location_title"><i class="fas fa-map-marker" title="Activity location"></i></div><!-- trad -->
-								</div>
+							<div class="input-group w-auto mt-auto pt-1" id="event_location_box">
+								<div class="input-group-text" id="event_location_title"><i class="fas fa-map-marker" title="Activity location"></i></div><!-- trad -->
 								<span class="form-control" id="event_location"></span>
 								<textarea class="form-control bg-white" rows="1" readonly id="event_location2"></textarea>
 							</div>
@@ -201,31 +194,23 @@
 								<div class="col-auto px-0">
 									<div class="text-center mt-1"><a id="event_author_img"></a></div>
 								</div>
-								<div class="col-auto pr-0 flex-column form-inline align-items-start">
-									<div class="input-group mt-auto pt-1">
-										<div class="input-group-prepend">
-											<div class="input-group-text trad">By</div>
-										</div>
+								<div class="col-auto pe-0 d-flex flex-column align-items-start">
+									<div class="input-group w-auto mt-auto pt-1">
+										<div class="input-group-text trad">By</div>
 										<span class="form-control" id="event_author"></span>
 									</div>
-									<div class="form-inline mt-auto pt-1">
-										<div class="input-group" id="event_author_phone_box">
-											<div class="input-group-prepend">
-												<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
-											</div>
+									<div class="d-flex mt-auto pt-1">
+										<div class="input-group w-auto" id="event_author_phone_box">
+											<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
 											<span class="form-control" id="event_author_phone"></span>
 										</div>
-										<div class="input-group ml-1" id="event_author_whatsapp">
-											<div class="input-group-prepend">
-												<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
-											</div>
+										<div class="input-group w-auto ms-1" id="event_author_whatsapp">
+											<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
 											<span class="form-control"><a href="https://api.whatsapp.com/send?phone=">WhatsApp</a></span>
 										</div>
 									</div>
-									<div class="input-group mt-auto pt-1" id="event_author_email_box">
-										<div class="input-group-prepend">
-											<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div><!-- trad -->
-										</div>
+									<div class="input-group w-auto mt-auto pt-1" id="event_author_email_box">
+										<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div><!-- trad -->
 										<span class="form-control" id="event_author_email"></span>
 									</div>
 									<div class="mt-auto"></div>
@@ -242,21 +227,20 @@
 
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-md-8 p-0 mr-md-2">
+						<div class="col-md-8 p-0 me-md-2">
 
-							<div class="form-inline mb-1">
-								<div class="input-group mr-1" id="event_rdv_time_box">
-										<div class="input-group-prepend">
-											<div class="input-group-text"><i class="far fa-clock" id="event_rdv_time_title" title="Time"></i></div><!-- trad -->
-										</div>
+							<div class="row mb-1">
+								<div class="col-auto pe-0">
+									<div class="input-group w-auto me-1" id="event_rdv_time_box">
+										<div class="input-group-text"><i class="far fa-clock" id="event_rdv_time_title" title="Time"></i></div><!-- trad -->
 										<span class="form-control" id="event_rdv_time"></span>
-								</div>
-
-								<div class="input-group flex-grow-1" id="event_rdv_location_box">
-									<div class="input-group-prepend">
-										<div class="input-group-text" id="event_rdv_location_title"><i class="fas fa-map-marker-alt" title="Meeting location"></i></div><!-- trad -->
 									</div>
-									<input type="text" class="form-control bg-white" id="event_rdv_location" readonly />
+								</div>
+								<div class="col ps-0">
+									<div class="input-group" id="event_rdv_location_box">
+										<div class="input-group-text" id="event_rdv_location_title"><i class="fas fa-map-marker-alt" title="Meeting location"></i></div><!-- trad -->
+										<input type="text" class="form-control bg-white" id="event_rdv_location" readonly />
+									</div>
 								</div>
 							</div>
 
@@ -276,8 +260,8 @@
 				<h5 class="text-muted mt-2 trad">Comments:</h5>
 				<div id="event_comments" class="list-group text-break"></div>
 				<div id="event_comments_error" class="alert alert-danger trad" role="alert">Unable to load comments</div>
-				<form class="needs-validation form-inline mt-3 mb-0" novalidate>
-					<div class="input-group col pl-0">
+				<form class="needs-validation d-flex mt-3 mb-0" novalidate>
+					<div class="input-group col ps-0">
 						<img id="event_comment_avatar" />
 						<textarea class="form-control" id="event_comment" required rows="4" placeholder="Add a comment... Markdown available!"></textarea>
 						<div class="invalid-feedback trad">Please provide a comment</div>
