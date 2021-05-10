@@ -10,7 +10,7 @@ interface Settings
 	default_theme: string,
 	categories:
 	{
-		default:
+		[key: string]:
 		{
 			[key: string]: string
 		}

@@ -5,7 +5,7 @@ const settings: Settings =
 	{
 		month: 'long'
 	},
-	default_event_color: "#6E6E6E",
+	default_event_color: "#3A87AD",
 	default_random_event_title:
 	[
 		"Allons voler ",
@@ -23,28 +23,28 @@ const settings: Settings =
 	{
 		default:
 		{
-			"sortie vol": '#005CB9',
-			weekend: '#006BC0',
+			"sortie vol": '#3A87AD',
+			"rando-vol": '#B9EB1A',
+			cross: '#EB2DF5',
+			permanence: '#5FDCE2',
+			club: '#00C400',
+			weekend: '#FF9F89',
 			"3-5 jours": '#007AC7',
-			cross: '#3B89CE',
-			stage: '#6099D5',
-			dune: '#7EA9DC',
-			compétition: '#99B9E3',
-			voyage: '#B3CAEA',
-			"rando-vol": '#CCDBF1',
-			itinérant: '#E5ECF7',
-			permanence: '#007481',
-			club: '#81B8BE',
-			REX: '#00B189',
-			conférence: '#6ACCAF',
-			théorie: '#B8E6D6',
-			ski: '#80BC00',
-			escalade: '#9DC944',
-			jeux: '#B2D46C',
-			films: '#C6DE91',
+			itinérant: '#D29BFF',
+			films: '#AFD853',
 			'coupe icare': '#D9E9B5',
-			autre: '#ECF3D9',
-			annulée: '#AAAAAA'
+			stage: 'green',
+			voyage: '#8D00FF',
+			compétition: '#212529',
+			REX: '#FBEA25',
+			conférence: '#FF4848',
+			théorie: '#C0B701',
+			dune: '#FF9900',
+			ski: '#662C67',
+			escalade: '#FF99CC',
+			jeux: '#8894F9',
+			annulée: '#8A8A8A',
+			autre: '#FB6F46'
 		}
 	},
 	use_unsplash: false,
