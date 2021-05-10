@@ -68,6 +68,7 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+        body_path: last_release.md
 
     - name: Upload Release Asset
       id: upload-release-asset
