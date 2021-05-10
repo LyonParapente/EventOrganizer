@@ -57,9 +57,22 @@ function getConfig (withDevServer: boolean)
     resources: {
       resourceFolder: './resources/',
       resourcePublicRoot: '/static/resources',
+    },
+    stylesheet: {
+      macros: {
+        // Fix images not loaded by fusebox because having an '@' inside
+        "@": ""
+      }
     }
   });
 }
+
+// Fix for images not loaded on mobile (remove @ so that fusebox load them)
+fs.copyFileSync('node_modules/esri-leaflet-geocoder/dist/img/loading@2x.gif', 'node_modules/esri-leaflet-geocoder/dist/img/loading2x.gif');
+fs.copyFileSync('node_modules/esri-leaflet-geocoder/dist/img/search@2x.png', 'node_modules/esri-leaflet-geocoder/dist/img/search2x.png');
+fs.copyFileSync('node_modules/esri-leaflet-geocoder/dist/img/search@2x-disabled.png', 'node_modules/esri-leaflet-geocoder/dist/img/search2x-disabled.png');
+fs.copyFileSync('node_modules/leaflet-fullscreen/dist/fullscreen@2x.png', 'node_modules/leaflet-fullscreen/dist/fullscreen2x.png');
+
 
 const isProduction = process.env.NODE_ENV === 'production'; // $Env:NODE_ENV="production"
 var fuse = getConfig(!isProduction);
