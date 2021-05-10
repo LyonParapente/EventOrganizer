@@ -166,3 +166,8 @@ height: 80px;
 #comment_send_btn.edit {
 height: 50px;
 }
+
+/* Prevent grey background (disabled/readonly) for span.form-control */
+span.form-control:read-only {
+background-color: #fff;
+}

@@ -27,5 +27,14 @@
 	"end_date": "2021-03-25",
 	"description": "**blabla**",
 	"color": "#FF6FFF"
+},
+{
+	"id": 3456792,
+	"creator_id": 4145,
+	"title": "Test 3",
+	"start_date": "2021-05-11",
+	"description": "Oh yeah!",
+	"time": "20h00",
+	"location": "Au coq en pâte 36 Rue Tête d'Or, 69006 Lyon"
 }
 ]
