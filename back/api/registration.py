@@ -1,13 +1,13 @@
 from flask import abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.registration import Registration
 from database.manager import db
 from emails import send_new_registration, send_del_registration
 import sqlite3
 
 class RegisterAPI(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -71,14 +71,14 @@ class RegisterAPI(Resource):
       abort(500, e.args[0])
 
     # Email
-    claims = get_jwt_claims()
+    claims = get_jwt()
     user_name = claims['firstname'] + ' ' + claims['lastname']
     send_new_registration(event_id, user_id, user_name, props['interest'])
 
     return Registration(**props), 200
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -120,7 +120,7 @@ class RegisterAPI(Resource):
       abort(404, 'No registration deleted')
 
     # Email
-    claims = get_jwt_claims()
+    claims = get_jwt()
     user_name = claims['firstname'] + ' ' + claims['lastname']
     send_del_registration(event_id, user_id, user_name, previous['interest'])
 

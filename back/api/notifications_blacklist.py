@@ -5,7 +5,7 @@ from database.manager import db
 import sqlite3
 
 class NotificationsBlacklistAPI(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -46,7 +46,7 @@ class NotificationsBlacklistAPI(Resource):
     return {'message': 'Ignoring notifications for this event'}, 200
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -87,7 +87,7 @@ class NotificationsBlacklistAPI(Resource):
     return res, 200
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [

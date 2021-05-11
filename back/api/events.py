@@ -1,10 +1,10 @@
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import get_jwt_identity, jwt_optional
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from models.event import Event
 from database.manager import db
 
 class EventsAPI(Resource):
-  @jwt_optional
+  @jwt_required(optional=True)
   @swagger.doc({
     'tags': ['events'],
     # auth. optional, get more info though (description, whatsapp_link)

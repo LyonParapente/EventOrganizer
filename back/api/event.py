@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
 from emails import send_new_event
@@ -8,7 +8,7 @@ from helper import get_date_from_str
 import datetime
 
 class EventAPICreate(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -71,7 +71,7 @@ class EventAPICreate(Resource):
       pass
 
     # Email
-    claims = get_jwt_claims()
+    claims = get_jwt()
     creator_name = claims['firstname'] + ' ' + claims['lastname']
     try:
       send_new_event(new_event, creator_name)
@@ -83,7 +83,7 @@ class EventAPICreate(Resource):
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
 class EventAPI(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -125,7 +125,7 @@ class EventAPI(Resource):
     return Event(**filter_event_response(props))
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -178,7 +178,7 @@ class EventAPI(Resource):
 
     db_event = self.get(event_id)
 
-    claims = get_jwt_claims()
+    claims = get_jwt()
     if claims['role'] != 'admin':
       if db_event['creator_id'] != get_jwt_identity():
         abort(403, "You cannot update someone else event")
@@ -198,7 +198,7 @@ class EventAPI(Resource):
     return self.get(event_id)
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['event'],
     'security': [
@@ -235,7 +235,7 @@ class EventAPI(Resource):
 
     db_event = self.get(event_id)
 
-    claims = get_jwt_claims()
+    claims = get_jwt()
     if claims['role'] != 'admin':
       if db_event['creator_id'] != get_jwt_identity():
         abort(403, "You cannot delete someone else event")

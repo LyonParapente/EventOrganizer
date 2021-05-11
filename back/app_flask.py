@@ -2,8 +2,8 @@ import os
 import json
 from flask import Flask, redirect, request, render_template, make_response, send_file
 from flask_restful_swagger_3 import Api, swagger
-from flask_jwt_extended import JWTManager, jwt_required, jwt_optional, get_jwt_identity, get_jwt_claims
-from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_raw_jwt
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
+from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_jwt
 from flask_cors import CORS
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
@@ -78,7 +78,7 @@ def handle_exception(e):
   try:
     id = get_jwt_identity()
     if id is not None:
-      claims = get_jwt_claims()
+      claims = get_jwt()
       infos = "user_id: {}<br/>claims: {}<br/><br/>{}".format(id, json.dumps(claims), infos)
   except:
     pass
@@ -120,7 +120,7 @@ def should_be_connected(message):
   return response
 
 @jwt.expired_token_loader
-def expired_token_callback(expired_token):
+def expired_token_callback(jwt_header, jwt_payload):
   return should_be_connected('token expired')
 
 @jwt.invalid_token_loader(callback=should_be_connected)
@@ -178,7 +178,7 @@ app.url_map.converters['regex'] = RegexConverter
 
 @app.route('/')
 @app.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
-@jwt_optional
+@jwt_required(optional=True)
 def index(id=None):
   """Calendar"""
   return calendar()
@@ -186,7 +186,7 @@ def index(id=None):
 @app.route('/event:new')
 @app.route('/event:<int:id>')
 @app.route('/event:<int:id>:edit')
-@jwt_required
+@jwt_required()
 def event(id=None):
   """Event details"""
   return calendar()
@@ -197,7 +197,7 @@ def calendar():
   theme = settings.default_theme
   infos = {}
   if is_connected:
-    infos = get_jwt_claims()
+    infos = get_jwt()
     theme = infos['theme']
     infos['id'] = user_id
   header = render_template('header.html', **lang, is_connected=is_connected)
@@ -223,11 +223,11 @@ def swag():
 api_user = UserAPI()
 
 @app.route('/user:<int:id>')
-@jwt_required
+@jwt_required()
 def user(id):
   """User details"""
   user_item = api_user.get(id)
-  claims = get_jwt_claims()
+  claims = get_jwt()
 
   phone = user_item.get('phone', '')
   user_item['raw_phone'] = raw_phone(phone)
@@ -243,10 +243,10 @@ def user(id):
     TheWing=lang['TheWing'], presentation=presentation)
 
 @app.route('/users')
-@jwt_required
+@jwt_required()
 def users():
   """Users list"""
-  claims = get_jwt_claims()
+  claims = get_jwt()
   iam_admin = claims['role'] == 'admin'
   users = database.manager.db.list_users(include_new_and_expired=iam_admin)
   if iam_admin:
@@ -269,7 +269,7 @@ def users():
     approve=lang['APPROVE'], temporary=lang['TEMPORARY_USER'], delete=lang['DELETE'])
 
 @app.route('/login', methods=['GET', 'POST'])
-@jwt_optional
+@jwt_required(optional=True)
 def login():
   """Login"""
   if request.method == 'POST':
@@ -319,17 +319,17 @@ def login():
     default_theme=settings.default_theme)
 
 @app.route('/logout')
-@jwt_optional
+@jwt_required(optional=True)
 def logout():
   """Logout"""
-  LogoutAPI.disconnect(get_raw_jwt())
+  LogoutAPI.disconnect(get_jwt())
   response = make_response(render_template('login.html', **lang,
     default_theme=settings.default_theme))
   unset_jwt_cookies(response)
   return response
 
 @app.route('/register', methods=['GET', 'POST'])
-@jwt_optional
+@jwt_required(optional=True)
 def register():
   """Register an account"""
   if request.method == 'POST':
@@ -354,10 +354,10 @@ def register():
 
 @app.route('/approve/user:<int:id>', defaults={'role': 'user'})
 @app.route('/approve/user:<int:id>/<string:role>')
-@jwt_required
+@jwt_required()
 def approve_user(id, role):
   """Approve a user"""
-  claims = get_jwt_claims()
+  claims = get_jwt()
   if claims['role'] == 'admin':
     ret = '<br/><a href="/users">{}</a>'.format(lang['usersTitle'])
     desired_role = 'temporary' if role == 'temporary' else 'user'
@@ -371,10 +371,10 @@ def approve_user(id, role):
   return "NOPE", 403
 
 @app.route('/delete/user:<int:id>')
-@jwt_required
+@jwt_required()
 def delete_user(id):
   """Remove a newly registered user"""
-  claims = get_jwt_claims()
+  claims = get_jwt()
   if claims['role'] == 'admin':
     user_item = api_user.delete(id)
   return redirect('/users')
@@ -384,7 +384,7 @@ def allowed_file(filename):
     filename.rsplit('.', 1)[1].lower() in settings.uploads_allowed_extensions
 
 @app.route('/settings', methods=['GET', 'POST'])
-@jwt_required
+@jwt_required()
 def user_settings():
   """User settings"""
   id = get_jwt_identity()
@@ -423,7 +423,7 @@ def user_settings():
       message = lang['saved']
 
       # Regenerate new token so that new infos are stored in claims
-      claims = get_jwt_claims()
+      claims = get_jwt()
       claims['id'] = id
       claims['firstname'] = form['firstname']
       claims['lastname'] = form['lastname']
@@ -446,7 +446,7 @@ def user_settings():
   if user_item['theme'] != settings.default_theme:
     themes[settings.default_theme] += ' ('+lang['default']+')'
 
-  csrf_token = get_raw_jwt().get("csrf")
+  csrf_token = get_jwt().get("csrf")
   return render_template('user_settings.html', **lang, header=header,
     user=user_item, themes=themes, csrf_token=csrf_token,
     message=message, error=error, user_id=id, random=randomString())
@@ -460,13 +460,13 @@ def regenerate_claims(claims, dest):
   return response
 
 @app.route('/password', methods=['GET', 'POST'])
-@jwt_optional
+@jwt_required(optional=True)
 def change_password():
   """Change password"""
 
   id = get_jwt_identity()
   if id is not None:
-    claims = get_jwt_claims()
+    claims = get_jwt()
     theme = claims['theme']
     is_connected = True
   else:
@@ -501,13 +501,13 @@ def change_password():
 
   header = render_template('header.html', **lang, is_connected=is_connected)
 
-  csrf_token = get_raw_jwt().get("csrf")
+  csrf_token = get_jwt().get("csrf")
   return render_template('user_password.html', **lang, header=header,
     csrf_token=csrf_token, theme=theme,
     message=message, error=error, is_connected=is_connected)
 
 @app.route('/avatars/<string:name>')
-@jwt_required
+@jwt_required()
 def avatar(name):
   """Get avatar"""
   parts = name.split('-')
@@ -587,13 +587,13 @@ def tomorrow_events():
   return "UNAUTHORIZED", 401
 
 # @app.route('/test_email')
-# @jwt_required
+# @jwt_required()
 # def test_email():
 #   emails.test_email()
 #   return "OK", 200
 
 @app.route('/ics')
-@jwt_required
+@jwt_required()
 def generate_ics():
   event_id = request.args.get('event')
   event = database.manager.db.get_event(event_id=event_id)

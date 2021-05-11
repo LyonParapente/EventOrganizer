@@ -17,7 +17,7 @@ def create_basic_user_infos(props):
   return user_infos
 
 class MessagesAPI(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['messages'],
     'security': [

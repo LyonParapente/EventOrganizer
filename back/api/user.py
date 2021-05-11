@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
@@ -53,7 +53,7 @@ class UserAPICreate(Resource):
 
 
 class UserAPI(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['user'],
     'security': [
@@ -95,7 +95,7 @@ class UserAPI(Resource):
     return User(**filter_user_response(props))
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['user'],
     'security': [
@@ -162,7 +162,7 @@ class UserAPI(Resource):
     return 200,updated_props
 
 
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['user'],
     'security': [
@@ -199,7 +199,7 @@ class UserAPI(Resource):
 
     user = db.get_user(user_id=user_id)
 
-    claims = get_jwt_claims()
+    claims = get_jwt()
     if claims['role'] == 'admin' and user['role']=='new':
       rowcount = db.delete_user(user_id)
       if rowcount < 1:

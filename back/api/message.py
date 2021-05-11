@@ -1,12 +1,12 @@
 from flask import request, abort
 from flask_restful_swagger_3 import Resource, swagger
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.message import Message, MessageCreate
 from database.manager import db
 from emails import send_new_message
 
 class MessageAPICreate(Resource):
-  @jwt_required
+  @jwt_required()
   @swagger.doc({
     'tags': ['message'],
     'security': [
@@ -71,7 +71,7 @@ class MessageAPICreate(Resource):
 
     # Email
     if not editLatest:
-      claims = get_jwt_claims()
+      claims = get_jwt()
       author_name = claims['firstname'] + ' ' + claims['lastname']
       send_new_message(author_name, author_id, props['event_id'], props['comment'])
 
