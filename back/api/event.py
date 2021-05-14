@@ -7,38 +7,14 @@ from emails import send_new_event
 from helper import get_date_from_str
 import datetime
 
+@swagger.tags('event')
+@swagger.security(BearerAuth=[], CookieAuth=[])
 class EventAPICreate(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': Event
-        }
-      }
-    },
-    'responses': {
-      '201': {
-        'description': 'Created event',
-        'content': {
-          'application/json': {
-            'schema': Event
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Creation forbidden'
-      }
-    }
-  })
+  @swagger.expected(required=True, schema=Event)
+  @swagger.response(response_code=201, description="Created event", schema=Event)
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=403, description="Creation forbidden")
   def post(self):
     """Create an event"""
     # Validate request body with schema model
@@ -82,41 +58,13 @@ class EventAPICreate(Resource):
 
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
+@swagger.tags('event')
+@swagger.security(BearerAuth=[], CookieAuth=[])
 class EventAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Event',
-        'content': {
-          'application/json': {
-            'schema': Event
-           }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  @swagger.response(response_code=200, description="Event", schema=Event)
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=404, description="Event not found")
   def get(self, event_id):
     """Get details of an event"""
     props = db.get_event(event_id)
@@ -126,51 +74,11 @@ class EventAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': Event
-        }
-      }
-    },
-
-    'responses': {
-      '200': {
-        'description': 'Updated event',
-        'content': {
-          'application/json': {
-            'schema': Event
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Update forbidden'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  @swagger.expected(required=True, schema=Event)
+  @swagger.response(response_code=200, description="Updated event", schema=Event)
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=403, description="Update forbidden")
+  @swagger.response(response_code=404, description="Event not found")
   def put(self, event_id):
     """Update an event"""
     # Validate request body with schema model
@@ -199,37 +107,10 @@ class EventAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Confirmation message',
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Deletion forbidden'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  @swagger.response(response_code=200, description="Confirmation message")
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=403, description="Deletion forbidden")
+  @swagger.response(response_code=404, description="Event not found")
   def delete(self, event_id):
     """Delete an event"""
 

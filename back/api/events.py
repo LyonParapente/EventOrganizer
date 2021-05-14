@@ -5,43 +5,28 @@ from database.manager import db
 
 class EventsAPI(Resource):
   @jwt_required(optional=True)
-  @swagger.doc({
-    'tags': ['events'],
-    # auth. optional, get more info though (description, whatsapp_link)
-    #'security': [
-    #  {'BearerAuth': []}
-    #],
-    'parameters': [
-      {
-        'name': 'start',
-        'description': 'Start date of the interval being fetched',
-        'in': 'query',
-        'required': False,
-        'schema': {
-          'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
-        }
-      },
-      {
-        'name': 'end',
-        'description': 'Exclusive end date of the interval being fetched',
-        'in': 'query',
-        'required': False,
-        'schema': {
-          'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
-        }
+  @swagger.tags('events')
+  @swagger.parameters([
+    {
+      'name': 'start',
+      'description': 'Start date of the interval being fetched',
+      'in': 'query',
+      'required': False,
+      'schema': {
+        'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
       }
-    ],
-    'responses': {
-      '200': {
-        'description': 'List of events',
-        'content': {
-          'application/json': {
-            'schema': Event.array()
-          }
-        }
+    },
+    {
+      'name': 'end',
+      'description': 'Exclusive end date of the interval being fetched',
+      'in': 'query',
+      'required': False,
+      'schema': {
+        'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
       }
     }
-  })
+  ])
+  @swagger.reorder_list_with(Event, response_code=200, description="List of events")
   def get(self, _parser):
     """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)

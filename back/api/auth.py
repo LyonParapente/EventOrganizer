@@ -11,42 +11,29 @@ import datetime
 bcrypt = Bcrypt()
 
 class LoginAPI(Resource):
-  @swagger.doc({
-    'tags': ['auth'],
-    'parameters': [
-      {
-        'name': 'login',
-        'required': True,
-        'description': 'User email',
-        'in': 'query',
-        'schema': {
-          'type': 'string'
-        }
-      },
-      {
-        'name': 'password',
-        'required': True,
-        'description': 'User password',
-        'in': 'query',
-        'schema': {
-          'type': 'string'
-        }
+  @swagger.tags('auth')
+  @swagger.parameters([
+    {
+      'name': 'login',
+      'required': True,
+      'description': 'User email',
+      'in': 'query',
+      'schema': {
+        'type': 'string'
       }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Successfully logged in',
-        'content': {
-          'application/json': {
-            'schema': AccessToken
-          }
-        }
-      },
-      '401': {
-        'description': 'Authentication failed'
+    },
+    {
+      'name': 'password',
+      'required': True,
+      'description': 'User password',
+      'in': 'query',
+      'schema': {
+        'type': 'string'
       }
     }
-  })
+  ])
+  @swagger.response(response_code=200, description="Successfully logged in", schema=AccessToken)
+  @swagger.response(response_code=401, description="Authentication failed")
   def post(self):
     """Login"""
     infos = request.args.to_dict()
@@ -147,20 +134,10 @@ class LoginAPI(Resource):
 
 
 class LogoutAPI(Resource):
-  @swagger.doc({
-    'tags': ['auth'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'responses': {
-      '200': {
-        'description': 'Successfully logged out'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
+  @swagger.tags('auth')
+  @swagger.security(BearerAuth=[], CookieAuth=[])
+  @swagger.response(response_code=200, description="Successfully logged out")
+  @swagger.response(response_code=401, description="Not authenticated")
   def get(self):
     """Logout"""
     self.disconnect(get_jwt())

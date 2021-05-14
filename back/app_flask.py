@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, redirect, request, render_template, make_response, send_file
-from flask_restful_swagger_3 import Api, swagger
+from flask_restful_swagger_3 import Api, swagger, get_swagger_blueprint
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_jwt
 from flask_cors import CORS
@@ -31,23 +31,25 @@ from image import resize_image
 import emails
 
 # ------------------------------
-# Authent part 1: Swagger description
+# Swagger Part 1
 
-components = {
-  'securitySchemes': {
-    'BearerAuth': {
-      'type': 'http',
-      'scheme': 'bearer',
-      'bearerFormat': 'JWT'
-    }
+authorizations = {
+  'BearerAuth': {
+    'type': 'http',
+    'scheme': 'bearer',
+    'bearerFormat': 'JWT'
+  },
+  'CookieAuth': {
+    'type': 'apiKey',
+    'name': 'access_token_cookie',
+    'in': 'cookie'
   }
 }
 
 # Apply the security globally to all operations
 api_security = [
   # We don't JWT on all API, but just on some
-  # See 'security' on @swagger.doc
-  #{'BearerAuth': []}
+  # See @swagger.security(BearerAuth=[], CookieAuth=[])
 ]
 
 # ------------------------------
@@ -55,10 +57,27 @@ api_security = [
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-api = Api(app, components=components, security=api_security)
+api = Api(app, authorizations=authorizations, security=api_security, title="EventOrganizer")
 
 app.config.from_pyfile('secrets.py')
 emails.init(app)
+
+# ------------------------------
+# Swagger Part 2
+
+SWAGGER_URL = '/api/doc'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = 'swagger.json'  # Our API url (can of course be a local resource)
+
+app.config.setdefault('SWAGGER_BLUEPRINT_URL_PREFIX', '/swagger')  # Swagger UI
+swagger_blueprint_url_prefix = app.config.get('SWAGGER_BLUEPRINT_URL_PREFIX', '')
+
+with app.app_context():
+  swagger_blueprint = get_swagger_blueprint(
+    api.open_api_object,
+    swagger_prefix_url=SWAGGER_URL,
+    swagger_url=API_URL
+  )
+  app.register_blueprint(swagger_blueprint, url_prefix=swagger_blueprint_url_prefix)
 
 # ------------------------------
 # Generic error handlers
@@ -97,7 +116,7 @@ def error_page(infos):
     infos=infos, theme=settings.default_theme, header=header)
 
 # ------------------------------
-# Authent part 2: JWT config
+# JWT config
 
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 app.config['JWT_COOKIE_SAMESITE'] = 'Lax'
@@ -205,15 +224,15 @@ def calendar():
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
 
 
-@app.route('/swagger')
-def swag():
+@app.route('/swaggerexternal')
+def swaggeruiexternal():
   """Redirect to Swagger UI"""
   hostname = request.environ["SERVER_NAME"]
   if app.debug:
     hostname = 'localhost'
   port = request.environ["SERVER_PORT"]
   protocol = request.environ["wsgi.url_scheme"]
-  url = "http://petstore.swagger.io/?url={}://{}:{}/api/swagger.json".format(protocol, hostname, port)
+  url = "http://petstore.swagger.io/?url={}://{}:{}/api/doc/swagger.json".format(protocol, hostname, port)
   return redirect(url)
 
 #@app.route("/environ")

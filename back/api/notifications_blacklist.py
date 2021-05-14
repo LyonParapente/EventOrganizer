@@ -4,33 +4,12 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.manager import db
 import sqlite3
 
+@swagger.tags('event')
+@swagger.security(BearerAuth=[], CookieAuth=[])
 class NotificationsBlacklistAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Notifications blacklist added'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
+  @swagger.response(response_code=200, description="Notifications blacklist added")
+  @swagger.response(response_code=401, description="Not authenticated")
   def put(self, event_id):
     """Add a notifications blacklist"""
     user_id = get_jwt_identity()
@@ -47,31 +26,8 @@ class NotificationsBlacklistAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Notifications blacklist response'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
+  @swagger.response(response_code=200, description="Notifications blacklist response")
+  @swagger.response(response_code=401, description="Not authenticated")
   def get(self, event_id):
     """Get a notifications blacklist"""
     user_id = get_jwt_identity()
@@ -88,34 +44,9 @@ class NotificationsBlacklistAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Notifications blacklist removed'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Notifications blacklist not found'
-      }
-    }
-  })
+  @swagger.response(response_code=200, description="Notifications blacklist removed")
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=404, description="Notifications blacklist not found")
   def delete(self, event_id):
     """Delete a notifications blacklist"""
     user_id = get_jwt_identity()

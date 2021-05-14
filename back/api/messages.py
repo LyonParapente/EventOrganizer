@@ -18,39 +18,22 @@ def create_basic_user_infos(props):
 
 class MessagesAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['messages'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'description': 'Event identifier',
-        'in': 'query',
-        'required': True,
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'List of messages',
-        'content': {
-          'application/json': {
-            'schema': Messages
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Event not found'
+  @swagger.tags('messages')
+  @swagger.security(BearerAuth=[], CookieAuth=[])
+  @swagger.parameters([
+    {
+      'name': 'event_id',
+      'description': 'Event identifier',
+      'in': 'query',
+      'required': True,
+      'schema': {
+        'type': 'integer'
       }
     }
-  })
+  ])
+  @swagger.reorder_list_with(Messages, response_code=200, description="List of messages")
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=404, description="Event not found")
   def get(self, _parser):
     """Download the list of messages for an event"""
     query = _parser.parse_args(strict=True)

@@ -7,36 +7,12 @@ from emails import send_new_message
 
 class MessageAPICreate(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['message'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': Message
-        }
-      }
-    },
-    'responses': {
-      '201': {
-        'description': 'Created message',
-        'content': {
-          'application/json': {
-            'schema': Message
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Update forbidden'
-      }
-    }
-  })
+  @swagger.tags('message')
+  @swagger.security(BearerAuth=[], CookieAuth=[])
+  @swagger.expected(required=True, schema=Message)
+  @swagger.response(response_code=201, description="Created message", schema=Message)
+  @swagger.response(response_code=401, description="Not authenticated")
+  @swagger.response(response_code=403, description="Update forbidden")
   def post(self):
     """Create a message"""
     args = request.json
