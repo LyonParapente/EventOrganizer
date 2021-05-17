@@ -50,7 +50,7 @@ export function init_showEvent (cal: Calendar): void
 	{
 		var is_blocking = this.classList.contains('fa-bell-slash');
 		var verb = is_blocking ? "DELETE" : "PUT";
-		requestJson(verb, "/api/event/"+current_event.event_id+"/notifications_blacklist", null,
+		requestJson(verb, "/api/event/"+current_event.event_id+"/notifications_blocklist", null,
 		function (data: any)
 		{
 			SetBell(verb === "PUT");
@@ -238,7 +238,7 @@ export function showEvent (calEvent: EventApi): void
 	}
 	else
 	{
-		requestJson("GET", "/api/event/"+calEvent.id+"/notifications_blacklist", null,
+		requestJson("GET", "/api/event/"+calEvent.id+"/notifications_blocklist", null,
 		function (data: any)
 		{
 			event_bell.style.display = '';

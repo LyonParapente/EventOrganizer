@@ -150,8 +150,8 @@ api.add_resource(EventAPI,         settings.api_path+'/event/<int:event_id>')
 from api.registration import RegisterAPI
 api.add_resource(RegisterAPI,      settings.api_path+'/event/<int:event_id>/registration')
 
-from api.notifications_blacklist import NotificationsBlacklistAPI
-api.add_resource(NotificationsBlacklistAPI, settings.api_path+'/event/<int:event_id>/notifications_blacklist')
+from api.notifications_blocklist import NotificationsBlocklistAPI
+api.add_resource(NotificationsBlocklistAPI, settings.api_path+'/event/<int:event_id>/notifications_blocklist')
 
 from api.events import EventsAPI
 api.add_resource(EventsAPI,        settings.api_path+'/events')

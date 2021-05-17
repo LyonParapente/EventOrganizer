@@ -52,7 +52,7 @@ class DBManage(object):
   from .manage_events import insert_event, get_event, update_event, delete_event, get_events_list
   from .manage_messages import insert_message, get_last_message, edit_message, get_messages_list
   from .manage_registration import set_registration, get_registration, delete_registration
-  from .manage_notifications_blacklist import set_notifications_blacklist, list_notifications_blacklist, delete_notifications_blacklist
+  from .manage_notifications_blocklist import set_notifications_blocklist, list_notifications_blocklist, delete_notifications_blocklist
 
 db = None
 def init(db_filepath):

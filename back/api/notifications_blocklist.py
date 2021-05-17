@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.manager import db
 import sqlite3
 
-class NotificationsBlacklistAPI(Resource):
+class NotificationsBlocklistAPI(Resource):
   @jwt_required()
   @swagger.doc({
     'tags': ['event'],
@@ -24,7 +24,7 @@ class NotificationsBlacklistAPI(Resource):
     ],
     'responses': {
       '200': {
-        'description': 'Notifications blacklist added'
+        'description': 'Notifications blocklist added'
       },
       '401': {
         'description': 'Not authenticated'
@@ -32,10 +32,10 @@ class NotificationsBlacklistAPI(Resource):
     }
   })
   def put(self, event_id):
-    """Add a notifications blacklist"""
+    """Add a notifications blocklist"""
     user_id = get_jwt_identity()
     try:
-      db.set_notifications_blacklist(event_id, user_id)
+      db.set_notifications_blocklist(event_id, user_id)
     except sqlite3.IntegrityError as err:
       if str(err) == "FOREIGN KEY constraint failed":
         abort(404, 'Event not found')
@@ -65,7 +65,7 @@ class NotificationsBlacklistAPI(Resource):
     ],
     'responses': {
       '200': {
-        'description': 'Notifications blacklist response'
+        'description': 'Notifications blocklist response'
       },
       '401': {
         'description': 'Not authenticated'
@@ -73,15 +73,15 @@ class NotificationsBlacklistAPI(Resource):
     }
   })
   def get(self, event_id):
-    """Get a notifications blacklist"""
+    """Get a notifications blocklist"""
     user_id = get_jwt_identity()
     try:
-      row = db.list_notifications_blacklist(event_id, user_id)
+      row = db.list_notifications_blocklist(event_id, user_id)
     except Exception as e:
       abort(500, e.args[0])
 
     if row is None:
-      res = {'message': 'Notifications blacklist not setted for this event', 'block': False }
+      res = {'message': 'Notifications blocklist not setted for this event', 'block': False }
     else:
       res = {'message': 'Ignoring notifications for this event', 'block': True}
     return res, 200
@@ -106,22 +106,22 @@ class NotificationsBlacklistAPI(Resource):
     ],
     'responses': {
       '200': {
-        'description': 'Notifications blacklist removed'
+        'description': 'Notifications blocklist removed'
       },
       '401': {
         'description': 'Not authenticated'
       },
       '404': {
-        'description': 'Notifications blacklist not found'
+        'description': 'Notifications blocklist not found'
       }
     }
   })
   def delete(self, event_id):
-    """Delete a notifications blacklist"""
+    """Delete a notifications blocklist"""
     user_id = get_jwt_identity()
 
-    rowcount = db.delete_notifications_blacklist(event_id, user_id)
+    rowcount = db.delete_notifications_blocklist(event_id, user_id)
     if rowcount < 1:
-      abort(404, 'Notifications blacklist was not found')
+      abort(404, 'Notifications blocklist was not found')
 
-    return {'message': 'Notifications blacklist deleted'}, 200
+    return {'message': 'Notifications blocklist deleted'}, 200

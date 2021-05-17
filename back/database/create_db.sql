@@ -74,7 +74,7 @@ INSERT INTO sqlite_sequence VALUES(events_registration, 0);
 INSERT INTO sqlite_sequence VALUES(messages, 0);
 */
 
-CREATE TABLE IF NOT EXISTS "events_notifications_blacklist" (
+CREATE TABLE IF NOT EXISTS "events_notifications_blocklist" (
 "event_id" INTEGER NOT NULL,
 "user_id" INTEGER NOT NULL,
 FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,

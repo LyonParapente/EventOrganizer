@@ -319,10 +319,10 @@ def get_users_to_contact(event_id, ignore_id):
     users[str(user_id)] = user
 
   # Filter out users who don't want to be notified
-  blacklist_raw = db.list_notifications_blacklist(event_id)
-  blacklist = [r['user_id'] for r in blacklist_raw]
+  blocklist_raw = db.list_notifications_blocklist(event_id)
+  blocklist = [r['user_id'] for r in blocklist_raw]
   for id in list(users.keys()):
-    if int(id) in blacklist:
+    if int(id) in blocklist:
       del users[id]
 
   return users.values()

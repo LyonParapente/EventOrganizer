@@ -168,5 +168,5 @@ class LogoutAPI(Resource):
 
   @staticmethod
   def disconnect(token):
-    #TODO: blacklist for instance
+    #TODO: blocklist for instance
     print(token)

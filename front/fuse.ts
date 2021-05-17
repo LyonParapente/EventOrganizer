@@ -35,9 +35,9 @@ function getConfig (withDevServer: boolean)
             readable.pipe(res);
           }
 
-          app.get('/api/event/:eventid/notifications_blacklist', function (req: any, res: any)
+          app.get('/api/event/:eventid/notifications_blocklist', function (req: any, res: any)
           {
-            res.send('{"message": "Notifications blacklist not setted for this event", "block": false}');
+            res.send('{"message": "Notifications blocklist not setted for this event", "block": false}');
           });
 
           app.get('/background/:resolution', function (req: any, res: any)
