@@ -24,7 +24,7 @@ domain = settings.emails['domain']
 
 header = """
 <div align="center">
-<img src="{site}/static/logo_115.png" alt="Logo"/>
+<img src="{site}/static/img/logo_115.png" alt="Logo"/>
 </div>
 <br />
 """.format(site=domain)
