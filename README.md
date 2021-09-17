@@ -39,7 +39,7 @@ Each time you save a source file, FuseBox reloads the page of all connected brow
 
 ## Back
 
-See [BACK](BACK.md) for how to configure both your local development environment your production environment.
+See [BACK](BACK.md) for how to configure both your local development environment.
 
 # Production deployment
 
