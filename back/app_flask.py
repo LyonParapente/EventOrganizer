@@ -73,13 +73,19 @@ def handle_exception(e):
   if isinstance(e, HTTPException):
     return e
   exc_type, exc_value, exc_traceback = sys.exc_info()
-  infos = "<br/>".join(traceback.format_exception(exc_type, exc_value,
-                                          exc_traceback))
+  infos = "<br/>".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+
   try:
     id = get_jwt_identity()
     if id is not None:
       claims = get_jwt()
       infos = "user_id: {}<br/>claims: {}<br/><br/>{}".format(id, json.dumps(claims), infos)
+  except:
+    pass
+
+  try:
+    user_agent = request.headers.get('User-Agent')
+    infos = "{}<br/><br/>UA: {}".format(infos, user_agent)
   except:
     pass
 
