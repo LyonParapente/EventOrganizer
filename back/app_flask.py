@@ -281,21 +281,21 @@ def login():
   if request.method == 'POST':
     form = request.form.to_dict()
 
+    if form.get('login') is None or form['login']=='':
+      return render_template('login.html', **lang,
+        default_theme=settings.default_theme, error=lang['type_email'])
+
     # Lost password management
     if form.get('lost_password') == '1':
-      if form.get('login') is None:
-        return render_template('login.html', **lang,
-          default_theme=settings.default_theme, error=lang['type_email'])
-      else:
-        res = LoginAPI.lost_password(form['login'])
-        if res:
-          params = {'token': res['token'], 'uid': res['uid']}
-          temp_access = '/password?'+urllib.parse.urlencode(params)
-          emails.send_lost_password(form['login'], res['name'], temp_access)
-        # Whatever the result (user found or not), show the same message
-        # to avoid leaking data about registered users
-        return render_template('login.html', **lang,
-          default_theme=settings.default_theme, message=lang['checkemail'])
+      res = LoginAPI.lost_password(form['login'])
+      if res:
+        params = {'token': res['token'], 'uid': res['uid']}
+        temp_access = '/password?'+urllib.parse.urlencode(params)
+        emails.send_lost_password(form['login'], res['name'], temp_access)
+      # Whatever the result (user found or not), show the same message
+      # to avoid leaking data about registered users
+      return render_template('login.html', **lang,
+        default_theme=settings.default_theme, message=lang['checkemail'])
 
     expires = settings.web_JWT_ACCESS_TOKEN_EXPIRES
     app.config['JWT_SESSION_COOKIE'] = True
