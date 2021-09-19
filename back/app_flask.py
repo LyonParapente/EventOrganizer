@@ -592,6 +592,13 @@ def tomorrow_events():
 #   emails.test_email()
 #   return "OK", 200
 
+# @app.route('/exception')
+# def test_exception():
+#   #raise Exception('fake exception')
+#   resize_image("test.jpg", settings.backgrounds_folder+'/test.jpg', format='jpg', quality=75,
+#       width=1400, height=800, enlarge=True, mode='crop')
+#   return "OK", 200
+
 @app.route('/ics')
 @jwt_required()
 def generate_ics():

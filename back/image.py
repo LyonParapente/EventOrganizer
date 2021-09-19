@@ -153,14 +153,28 @@ def post_process(image, sharpen=None):
 def resize_image(path, dest_path, width=None, height=None, quality=90,
   enlarge=False, sharpen=None, format=None, mode='crop', background='white'):
 
-  image = Image.open(path)
-  image = resize(image,
-    background=background,
-    enlarge=enlarge,
-    height=height,
-    mode=mode,
-    width=width,
-  )
+  try:
+    image = Image.open(path)
+    image = resize(image,
+      background=background,
+      enlarge=enlarge,
+      height=height,
+      mode=mode,
+      width=width,
+    )
+  except Exception as exception:
+    params = 'width={} height={} filename={} quality={} enlarge={} sharpen={} format={} mode={} background={}'.format(
+      width,
+      height,
+      os.path.basename(path),
+      quality,
+      enlarge,
+      sharpen,
+      format,
+      mode,
+      background
+    )
+    raise Exception('Resize image exception', params, exception)
   sharpen = re.split(r'[+:;,_/ ]', sharpen) if sharpen else None
   image = post_process(image, sharpen=sharpen)
 
