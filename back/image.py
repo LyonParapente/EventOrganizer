@@ -1,6 +1,7 @@
 from PIL import Image, ImageFilter
 from io import BytesIO as StringIO
 import os
+import re
 
 FIT = 'fit'
 CROP = 'crop'
@@ -184,4 +185,3 @@ def resize_image(path, dest_path, width=None, height=None, quality=90,
   dest_file = open(dest_path, 'wb')
   image.save(dest_file, format, quality=quality)
   dest_file.close()
-
