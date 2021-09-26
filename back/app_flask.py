@@ -570,7 +570,10 @@ def rescue_background(width, height):
 def get_image_resized(background, width, height):
   # Simple protection
   if width > 5000 or height > 5000:
-    return "TOO BIG"
+    return "TOO BIG", 403
+
+  if width == 0 or height == 0:
+    return "INVALID DIMENSIONS", 400
 
   filename = os.path.basename(background)
   filename_without_extension, extension = os.path.splitext(filename)
