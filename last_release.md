@@ -1,3 +1,2 @@
-* Prevent exception when resize_image gets invalid dimensions (width or height is 0)
-* Fix a warning (missing import)
-
+* Use reply_to field for email to target a noreply invalid address
+* Avoid sending emails to settings.emails['from_email'] (so that inbox don't fill up)

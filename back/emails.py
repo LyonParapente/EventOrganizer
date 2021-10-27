@@ -18,8 +18,6 @@ import copy
 
 flask_app = None
 
-from_email = settings.emails['from_email']
-from_name = settings.emails['from_name']
 domain = settings.emails['domain']
 
 header = """
@@ -57,8 +55,12 @@ def send_emails_mailjet(messages):
   """Send one or more emails through mailjet api"""
   for message in messages:
     message['From'] = {
-      "Email": from_email,
-      "Name": from_name
+      "Email": settings.emails['from_email'],
+      "Name": settings.emails['from_name']
+    }
+    message['ReplyTo'] = {
+      "Email": settings.emails['reply_to_email'],
+      "Name": settings.emails['reply_to_name']
     }
     message['HTMLPart'] = header + message['HTMLPart'] + footer
 
@@ -106,7 +108,8 @@ def send_emails_smtp(app, messages):
             bcc = chunk
           else:
             recipients = chunk
-          msg = Message(message['Subject'], recipients=recipients, bcc=bcc)
+          reply_to = settings.emails['reply_to_name']+" <"+settings.emails['reply_to_email']+">"
+          msg = Message(message['Subject'], recipients=recipients, bcc=bcc, reply_to=reply_to)
           msg.html = message['HTMLPart']
           mail.send(msg)
       except:
@@ -255,12 +258,6 @@ def send_new_event(event, creator_name):
 
   messages = [
     {
-      "To": [
-        {
-          "Email": from_email,
-          "Name": from_name
-        }
-      ],
       "Bcc": recipients,
       "Subject": "{creator_name} vient d'ajouter la sortie {title} ({date_infos})".format(creator_name=creator_name, title=event['title'], date_infos=date_infos),
       "HTMLPart": """
@@ -341,12 +338,6 @@ def send_new_message(author_name, author_id, event_id, comment):
   recipients = compute_recipients(event_users)
   messages = [
     {
-      "To": [
-        {
-          "Email": from_email,
-          "Name": from_name
-        }
-      ],
       "Bcc": recipients,
       "Subject": "{author_name} a posté un commentaire pour la sortie {title}".format(author_name=author_name, title=title),
       "HTMLPart": """
@@ -379,12 +370,6 @@ def send_new_registration(event_id, user_id, user_name, interest):
   recipients = compute_recipients(event_users)
   messages = [
     {
-      "To": [
-        {
-          "Email": from_email,
-          "Name": from_name
-        }
-      ],
       "Bcc": recipients,
       "Subject": "{user_name} participe à la sortie {title}".format(user_name=user_name, title=title),
       "HTMLPart": """
@@ -415,12 +400,6 @@ def send_del_registration(event_id, user_id, user_name, interest):
   recipients = compute_recipients(event_users)
   messages = [
     {
-      "To": [
-        {
-          "Email": from_email,
-          "Name": from_name
-        }
-      ],
       "Bcc": recipients,
       "Subject": "{user_name} annule sa participation à la sortie {title}".format(user_name=user_name, title=title),
       "HTMLPart": """
@@ -476,12 +455,6 @@ def send_tomorrow_events():
 
   messages = [
     {
-      "To": [
-        {
-          "Email": from_email,
-          "Name": from_name
-        }
-      ],
       "Bcc": recipients,
       "Subject": titre,
       "HTMLPart": """
@@ -498,11 +471,11 @@ def test_email():
     {
       "To": [
         {
-          "Email": "lyonparapente@gmail.com",
-          "Name": from_name
+          "Email": settings.emails['test_email'],
+          "Name": settings.emails['from_name']
         }
       ],
-      "Subject": "Test email",
+      "Subject": "Test email " + str(datetime.datetime.now()),
       "HTMLPart": """
 Hello world!<br />
 <b>gras</b>
@@ -520,7 +493,7 @@ def init(app):
   app.config['MAIL_DEBUG'] = app.debug
   app.config['MAIL_USERNAME'] = settings.emails['username']
   #app.config['MAIL_PASSWORD'] = '' # set in secrets.py
-  app.config['MAIL_DEFAULT_SENDER'] = from_name+" <"+from_email+">"
+  app.config['MAIL_DEFAULT_SENDER'] = settings.emails['from_name']+" <"+settings.emails['from_email']+">"
   global mail
   mail = Mail(app)
   global flask_app

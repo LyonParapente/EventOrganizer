@@ -48,6 +48,9 @@ emails = {
   "use_ssl": True,
   "from_email": "calendrier@lyonparapente.fr",
   "from_name": "Lyon Parapente",
+  "reply_to_email": "noreply@lyonparapente.fr",
+  "reply_to_name": "Lyon Parapente",
+  "test_email": "lyonparapente@gmail.com",
   "domain": domain,
   "max_recipients_per_mail": 50
 }
