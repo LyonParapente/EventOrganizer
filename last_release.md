@@ -1,2 +1,1 @@
-* Use reply_to field for email to target a noreply invalid address
-* Avoid sending emails to settings.emails['from_email'] (so that inbox don't fill up)
+* Arbitrary expression injection in Pillow. CVE-2022-22817. Bump pillow from 8.3.2 to 9.0.0.
