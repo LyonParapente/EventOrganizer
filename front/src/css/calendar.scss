@@ -45,7 +45,7 @@ animation: fa-spin2 1s infinite linear;
 }
 
 /* Events and future days are clickable */
-.fc-event-title, .fc-list-event, .fc-day-today, .fc-day-future {
+.fc-event-main, .fc-list-event {
 cursor: pointer;
 }
 
