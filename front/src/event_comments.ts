@@ -7,7 +7,7 @@ import { UpdateCommentPreview } from './event_show';
 import get_connected_user from './user';
 
 import * as DOMPurify from 'dompurify';
-import * as marked from 'marked';
+import { marked } from 'marked';
 
 export default function loadComments (event: CurrentEvent): void
 {
@@ -215,7 +215,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User, canEd
 			col.appendChild(comment_infos);
 			var p = document.createElement("p");
 			p.className = 'blockquote my-1';
-			p.innerHTML = DOMPurify.sanitize(marked(comment.comment));
+			p.innerHTML = DOMPurify.sanitize(marked.parse(comment.comment));
 		col.appendChild(p);
 	groupitem.appendChild(col);
 	return groupitem;

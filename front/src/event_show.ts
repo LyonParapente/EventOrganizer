@@ -13,7 +13,7 @@ import get_connected_user from './user';
 
 import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
-import * as marked from 'marked';
+import { marked } from 'marked';
 
 import 'html5tooltipsjs/html5tooltips.css';
 import 'html5tooltipsjs';
@@ -154,7 +154,7 @@ export function showEvent (calEvent: EventApi): void
 	id("event_title").textContent = calEvent.title;
 	var event_description = id("event_description");
 	var desc = calEvent.extendedProps.description || i18n('No description');
-	event_description.innerHTML = DOMPurify.sanitize(marked(desc));
+	event_description.innerHTML = DOMPurify.sanitize(marked.parse(desc));
 
 	// ----------------------
 	// WhatsApp
@@ -418,12 +418,13 @@ function ShowCalendarExport (event: EventApi): Tooltip
 		evt_end = toDateString(event.end).replace(/-/g, '');
 	}
 
+	var details_secure = DOMPurify.sanitize(marked.parse(event.extendedProps.description));
 	var google_link = "https://calendar.google.com/calendar/u/0/r/eventedit?"+
 	[
 		"location="+encodeURIComponent(event.extendedProps.location),
 		"text="+encodeURIComponent(event.title),
 		"sprop=website:"+window.location.origin+"/event:"+event.id,
-		"details="+encodeURIComponent(DOMPurify.sanitize(marked(event.extendedProps.description))),
+		"details="+encodeURIComponent(details_secure),
 		"dates="+evt_start+'/'+evt_end
 	].join('&');
 
@@ -432,7 +433,7 @@ function ShowCalendarExport (event: EventApi): Tooltip
 		"in_loc="+encodeURIComponent(event.extendedProps.location),
 		"TITLE="+encodeURIComponent(event.title),
 		"URL="+window.location.origin+"/event:"+event.id,
-		"DESC="+encodeURIComponent(DOMPurify.sanitize(marked(event.extendedProps.description))),
+		"DESC="+encodeURIComponent(details_secure),
 		"ST="+evt_start,
 		"ET="+evt_end,
 		"v=60"
@@ -545,7 +546,7 @@ function SetBell (block: boolean): void
 
 export function UpdateCommentPreview (this: HTMLTextAreaElement)
 {
-	id('comment_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
+	id('comment_preview').innerHTML = DOMPurify.sanitize(marked.parse(this.value));
 }
 
 function RemoveEditComment ()

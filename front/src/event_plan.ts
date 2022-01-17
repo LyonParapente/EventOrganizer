@@ -12,7 +12,7 @@ import get_connected_user from './user';
 
 import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
-import * as marked from 'marked';
+import { marked } from 'marked';
 
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
@@ -343,5 +343,5 @@ function SubmitEvent (onCreate: (event: any) => void)
 
 function UpdatePreview (this: HTMLTextAreaElement)
 {
-	id('description_preview').innerHTML = DOMPurify.sanitize(marked(this.value));
+	id('description_preview').innerHTML = DOMPurify.sanitize(marked.parse(this.value));
 }
