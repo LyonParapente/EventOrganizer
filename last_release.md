@@ -1,1 +1,3 @@
-* Arbitrary expression injection in Pillow. CVE-2022-22817. Bump pillow from 8.3.2 to 9.0.0.
+* Protect against CVE-2022-21680: Inefficient Regular Expression Complexity in marked.
+* Upgrade others npm packages.
+* Fix cursor look over events since upgrade
