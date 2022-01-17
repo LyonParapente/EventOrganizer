@@ -1,7 +1,6 @@
 ﻿*.back
 *.orig
 node_modules/
-package-lock.json
 
 front/dist/
 front/.cache/
