@@ -27,7 +27,7 @@ import { background, setBackgroundColor } from './background';
 var calendar: Calendar;
 
 // Adapt server response to fullcalendar expected fields
-let eventDataTransform: EventInputTransformer = function (event)
+const eventDataTransform: EventInputTransformer = function (event)
 {
 	var orig = calendar.getEventById(event.id as string);
 	if (orig)
@@ -67,9 +67,9 @@ let eventDataTransform: EventInputTransformer = function (event)
 
 document.addEventListener('DOMContentLoaded', function()
 {
-	let calendarEl = id('calendar'),
-		loadingEl = id('loading'),
-		loadingTimer: NodeJS.Timeout;
+	const calendarEl = id('calendar'),
+		loadingEl = id('loading');
+	let loadingTimer: NodeJS.Timeout;
 
 	calendar = new Calendar(calendarEl,
 	{
@@ -252,7 +252,7 @@ function init_routing ()
 					showEvent(event);
 				}
 				calendar.gotoDate(event.start);
-			}, function(){}); // tslint:disable-line
+			}, function(){/* do nothing */});
 		})
 		.add(/([0-9]{4})-([0-9]{2})/, function (year, month)
 		{

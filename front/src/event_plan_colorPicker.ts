@@ -1,4 +1,3 @@
-// @ts-ignore ColorPicker
 import ColorPicker from 'simple-color-picker';
 
 var sortie_category = document.getElementById("sortie_category") as HTMLElement;
@@ -8,7 +7,7 @@ var colorPicker: SimpleColorPicker;
 
 export function init_colorPicker (): void
 {
-	var sortie_color_box = document.getElementById('sortie_color_box');
+	var sortie_color_box = document.getElementById('sortie_color_box') as HTMLElement;
 
 	colorPicker = new ColorPicker({
 		el: sortie_color_box,

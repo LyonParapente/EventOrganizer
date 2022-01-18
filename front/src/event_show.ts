@@ -22,6 +22,14 @@ var current_event: CurrentEvent;
 var calendar: Calendar;
 var eventPropertiesModal: bootstrap.Modal = new bootstrap.Modal(id("eventProperties"));
 
+var fake_current_event =
+{
+	event_id: -1,
+	creator_id: -1,
+	isFinished: true,
+	whatsapp_link: ''
+};
+
 export function init_showEvent (cal: Calendar): void
 {
 	calendar = cal;
@@ -51,7 +59,7 @@ export function init_showEvent (cal: Calendar): void
 		var is_blocking = this.classList.contains('fa-bell-slash');
 		var verb = is_blocking ? "DELETE" : "PUT";
 		requestJson(verb, "/api/event/"+current_event.event_id+"/notifications_blocklist", null,
-		function (data: any)
+		function ()
 		{
 			SetBell(verb === "PUT");
 		},
@@ -75,14 +83,14 @@ export function init_showEvent (cal: Calendar): void
 		id('comment_preview').classList.toggle('collapse');
 	});
 
-	var calendar_export_instance: Tooltip;
+	var calendar_export_instance: Tooltip | null;
 	var event_ics = id('event_ics') as HTMLAnchorElement;
 	event_ics.addEventListener('click', function (evt)
 	{
 		if (calendar_export_instance)
 		{
 			calendar_export_instance.destroy();
-			calendar_export_instance = null!;
+			calendar_export_instance = null;
 		}
 		else
 		{
@@ -90,8 +98,11 @@ export function init_showEvent (cal: Calendar): void
 			calendar_export_instance = ShowCalendarExport(event);
 			setTimeout(() =>
 			{
-				calendar_export_instance.destroy();
-				calendar_export_instance = null!;
+				if (calendar_export_instance)
+				{
+					calendar_export_instance.destroy();
+					calendar_export_instance = null;
+				}
 			}, 6000);
 		}
 		evt.preventDefault();
@@ -239,7 +250,7 @@ export function showEvent (calEvent: EventApi): void
 	else
 	{
 		requestJson("GET", "/api/event/"+calEvent.id+"/notifications_blocklist", null,
-		function (data: any)
+		function (data: NotificationBlocklistResponse)
 		{
 			event_bell.style.display = '';
 			SetBell(data.block);
@@ -344,7 +355,7 @@ export function showEvent (calEvent: EventApi): void
 	});
 	one(eventProperties, 'hide.bs.modal', function ()
 	{
-		current_event = null!;
+		current_event = fake_current_event;
 		router.navigate("", i18n("Planning"));
 	});
 	eventPropertiesModal.show();
@@ -394,7 +405,6 @@ function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputE
 
 function ShowClipboarTooltip (element: HTMLElement, html: string): void
 {
-	// @ts-ignore html5tooltips
 	var tooltip = new HTML5TooltipUIComponent();
 	tooltip.set(
 	{
@@ -448,7 +458,6 @@ function ShowCalendarExport (event: EventApi): Tooltip
 		'<a href="'+yahoo_link+'" target="_blank">Yahoo</a>'
 	];
 
-	// @ts-ignore html5tooltips
 	var tooltip: Tooltip = new HTML5TooltipUIComponent();
 	tooltip.set(
 	{
@@ -509,11 +518,11 @@ function DeleteEvent (): void
 	if (confirm(i18n('Confirm')))
 	{
 		var url = "/api/event/"+current_event.event_id.toString();
-		requestJson("DELETE", url, null, function (data: any)
+		requestJson("DELETE", url, null, function ()
 		{
 			var event = calendar.getEventById(current_event.event_id.toString()) as EventApi;
 			event.remove();
-			current_event = null!;
+			current_event = fake_current_event;
 			eventPropertiesModal.hide();
 		},
 		function (type: string, ex: XMLHttpRequest)

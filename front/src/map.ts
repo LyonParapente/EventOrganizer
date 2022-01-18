@@ -28,7 +28,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 {
 	var defaultPoint: L.LatLngTuple = gps || settings.default_map_center;
 	var map: L.Map, marker: L.Marker;
-	if (mapList.hasOwnProperty(elem_id))
+	if (Object.prototype.hasOwnProperty.call(mapList, elem_id))
 	{
 		map = mapList[elem_id].map;
 		marker = mapList[elem_id].marker;
@@ -45,12 +45,11 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		{
 			attribution: '&copy; <a href="https://www.openstreetmap.org>/copyright">OpenStreetMap</a> | <a href="http://viewfinderpanoramas.org">SRTM</a> | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
 		});
-
-		var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+		/*var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
 		{
 			subdomains: ['mt0','mt1','mt2','mt3'],
 			attribution: "Google, Images"
-		});
+		});*/
 
 		var tileLayers =
 		{
@@ -74,7 +73,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			};
 			for (var niceName in ignLayers)
 			{
-				if (ignLayers.hasOwnProperty(niceName))
+				if (Object.prototype.hasOwnProperty.call(ignLayers, niceName))
 				{
 					var ignLayer = ignLayers[niceName];
 					var ignTileLayer =	L.tileLayer(
@@ -149,7 +148,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 				results.clearLayers();
 				if (dataResults.length === 1)
 				{
-					let latlng = dataResults[0].latlng;
+					const latlng = dataResults[0].latlng;
 					marker.setLatLng(latlng);
 					onMarkerMove({latlng});
 				}
@@ -162,7 +161,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 						results.addLayer(searchMarker);
 						searchMarker.on('click', function (this: L.Marker)
 						{
-							let latlng = this.getLatLng();
+							const latlng = this.getLatLng();
 							marker.setLatLng(latlng);
 							marker.addTo(map);
 							onMarkerMove({latlng});

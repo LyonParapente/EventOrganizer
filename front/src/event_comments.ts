@@ -146,7 +146,7 @@ function fillCreator (creator: User)
 	id("event_author").textContent = getUserName(creator);
 	if (creator.phone)
 	{
-		let a = document.createElement('a');
+		const a = document.createElement('a');
 		a.href = "tel:"+rawPhone(creator.phone);
 		a.innerHTML = DOMPurify.sanitize(nicePhone(creator.phone));
 		id("event_author_phone").innerHTML = ''
@@ -163,7 +163,7 @@ function fillCreator (creator: User)
 	}
 	if (creator.email)
 	{
-		let a = document.createElement('a');
+		const a = document.createElement('a');
 		a.href = "mailto:"+creator.email;
 		a.innerHTML = DOMPurify.sanitize(creator.email);
 		id("event_author_email").innerHTML = ''
@@ -273,7 +273,7 @@ function createRegistrations(registrations: number[], users: UsersDictionary, is
 	for (var i = 0; i < registrations.length; ++i)
 	{
 		var registration = registrations[i].toString();
-		if (users.hasOwnProperty(registration))
+		if (Object.prototype.hasOwnProperty.call(users, registration))
 		{
 			addRegistration(registration, users[registration], container);
 		}
@@ -300,7 +300,7 @@ function addRegistration (user_id: string, user: User, container: HTMLElement)
 function registerToEvent (event_id: number, interest: number, button_id: string, container: HTMLElement)
 {
 	var url = "/api/event/"+event_id.toString()+'/registration?interest='+interest;
-	requestJson("PUT", url, null, function (data: any)
+	requestJson("PUT", url, null, function ()
 	{
 		updateRegistration(button_id, container);
 	},
@@ -314,7 +314,7 @@ function registerToEvent (event_id: number, interest: number, button_id: string,
 function unregisterFromEvent (event_id: number, button_id: string, container: HTMLElement)
 {
 	var url = "/api/event/"+event_id.toString()+'/registration';
-	requestJson("DELETE", url, null, function (data: any)
+	requestJson("DELETE", url, null, function ()
 	{
 		updateRegistration(button_id, container);
 	},

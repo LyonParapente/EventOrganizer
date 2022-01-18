@@ -1,4 +1,4 @@
-export function background (use_unsplash: boolean, tags: string[]=[], force: boolean=false): void
+export function background (use_unsplash: boolean, tags: string[]=[], force=false): void
 {
 	const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);

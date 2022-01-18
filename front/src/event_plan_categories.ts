@@ -19,7 +19,7 @@ export function init_categories (): void
 	var colorConf = getColorConf();
 	for (var category in colorConf)
 	{
-		if (colorConf.hasOwnProperty(category))
+		if (Object.prototype.hasOwnProperty.call(colorConf, category))
 		{
 			var badge = create_category_badge(category, badges_spacing);
 			category_dd.appendChild(badge);

@@ -45,7 +45,10 @@ export var router: Router =
 		{
 			history.pushState(stateObj, title, this.root + path);
 		}
-		catch (ex) { }
+		catch (ex)
+		{
+			// continue regardless of error
+		}
 		this.title(title);
 		if (trigger)
 		{
@@ -59,7 +62,10 @@ export var router: Router =
 		{
 			history.replaceState(state, title, this.root + path);
 		}
-		catch (ex) { }
+		catch (ex)
+		{
+			// continue regardless of error
+		}
 		this.title(title);
 		return this;
 	},
@@ -70,7 +76,10 @@ export var router: Router =
 		{
 			document.getElementsByTagName('title')[0].innerHTML = text.replace('<','&lt;').replace('>','&gt;').replace(' & ',' &amp; ');
 		}
-		catch (ex) { }
+		catch (ex)
+		{
+			// continue regardless of error
+		}
 	}
 };
 

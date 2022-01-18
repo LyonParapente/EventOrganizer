@@ -13,7 +13,7 @@ export default function swipedetector(el: HTMLElement|Document, callback: (direc
 	distY: number,
 	elapsedTime: number,
 	startTime: number,
-	handleswipe = callback || function(){}; // tslint:disable-line
+	handleswipe = callback || function(){/* do nothing */};
 
 	touchsurface.addEventListener('touchstart', function (e: Event)
 	{

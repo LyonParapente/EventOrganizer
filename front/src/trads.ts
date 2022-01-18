@@ -68,10 +68,10 @@ const trads =
 
 export function i18n (key: string, ...args: string[]): string
 {
-	var dic = (trads as any)[settings.lang];
+	var dic = (trads as object)[settings.lang];
 	if (dic)
 	{
-		if (dic.hasOwnProperty(key))
+		if (Object.prototype.hasOwnProperty.call(dic, key))
 		{
 			var trad = dic[key];
 			return i18nFormat(trad, args);

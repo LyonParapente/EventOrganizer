@@ -10,15 +10,18 @@ if (csrf_cookies.length)
 export default function requestJson (method: string, url: string, params: object|null, successCallback: (res: any, xhr: any)=>void, failureCallback: (err: string, xhr: any)=>void): void {
   method = method.toUpperCase();
   var body = null;
-  if (method === 'GET') {
+  if (method === 'GET')
+  {
     url = injectQueryStringParams(url, params);
   }
-  else {
+  else
+  {
     body = JSON.stringify(params);
   }
   var xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
-  if (method !== 'GET') {
+  if (method !== 'GET')
+  {
     xhr.setRequestHeader('Content-Type', 'application/json');
     if (csrf)
     {
@@ -26,30 +29,36 @@ export default function requestJson (method: string, url: string, params: object
     }
   }
   xhr.onload = function () {
-    if (xhr.status >= 200 && xhr.status < 400) {
+    if (xhr.status >= 200 && xhr.status < 400)
+    {
       var res;
-      try {
+      try
+      {
         res = JSON.parse(xhr.responseText);
       }
-      catch (err) {
-        failureCallback('Failure parsing JSON: '+err.message, xhr);
+      catch (err)
+      {
+        failureCallback('Failure parsing JSON: '+(err as ErrorEvent).message, xhr);
       }
       if (res)
       {
         successCallback(res, xhr);
       }
     }
-    else {
+    else
+    {
       failureCallback('Request failed', xhr);
     }
   };
-  xhr.onerror = function () {
+  xhr.onerror = function ()
+  {
     failureCallback('Request failed', xhr);
   };
   xhr.send(body);
 }
 
-function injectQueryStringParams (url: string, params: object|null): string {
+function injectQueryStringParams (url: string, params: object|null): string
+{
   var parameters = encodeParams(params);
   if (parameters)
   {
@@ -58,10 +67,13 @@ function injectQueryStringParams (url: string, params: object|null): string {
   return url;
 }
 
-function encodeParams (params: object|null): string {
+function encodeParams (params: object|null): string
+{
   var parts = [];
-  for (var key in params) {
-    if (params.hasOwnProperty(key)) {
+  for (var key in params)
+  {
+    if (Object.prototype.hasOwnProperty.call(params, key))
+    {
       parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
     }
   }

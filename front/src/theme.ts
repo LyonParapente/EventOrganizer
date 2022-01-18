@@ -5,7 +5,7 @@ export function getColorConf (): object
 {
 	var theme = getTheme();
 	var colorConf;
-	if (settings.categories.hasOwnProperty(theme))
+	if (Object.prototype.hasOwnProperty.call(settings.categories, theme))
 	{
 		colorConf = settings.categories[theme];
 	}
@@ -35,7 +35,11 @@ function getTheme (): string
 		var themeCSS = styles.map((x:HTMLLinkElement) => x.href).filter((x:string) => x.includes('/css/theme/'))[0];
 		if (themeCSS)
 		{
-			theme = themeCSS.split('/').pop()!.split('.').shift()!;
+			var themeFilename = themeCSS.split('/').pop();
+			if (themeFilename)
+			{
+				theme = themeFilename.split('.')[0];
+			}
 		}
 		return theme;
 	}

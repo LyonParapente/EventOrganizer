@@ -72,7 +72,6 @@ function init_WhatsApp_video ()
 		// Mount on demand to prevent fat gif download too soon
 		if (!tooltip)
 		{
-			// @ts-ignore html5tooltips
 			tooltip = new HTML5TooltipUIComponent();
 			tooltip.set(
 			{
@@ -130,14 +129,14 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 
 	i18n_inPlace(
 	[
-		sortie_title.labels![0],
-		sortie_lieu.labels![0],
-		sortie_RDV.labels![0],
+		(sortie_title.labels as NodeListOf<HTMLLabelElement>)[0],
+		(sortie_lieu.labels as NodeListOf<HTMLLabelElement>)[0],
+		(sortie_RDV.labels as NodeListOf<HTMLLabelElement>)[0],
 		"#createEventBody .date",
-		sortie_date_start.labels![0],
-		sortie_date_end.labels![0],
-		sortie_heure.labels![0],
-		sortie_whatsapp.labels![0].querySelector('span') as HTMLSpanElement,
+		(sortie_date_start.labels as NodeListOf<HTMLLabelElement>)[0],
+		(sortie_date_end.labels as NodeListOf<HTMLLabelElement>)[0],
+		(sortie_heure.labels as NodeListOf<HTMLLabelElement>)[0],
+		(sortie_whatsapp.labels as NodeListOf<HTMLLabelElement>)[0].querySelector('span') as HTMLSpanElement,
 		sortie_desc.labels[0],
 		sortie_category.labels[0],
 		"#sortie_save"
