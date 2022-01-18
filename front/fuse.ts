@@ -1,6 +1,6 @@
 import { fusebox } from 'fuse-box';
 import * as path from 'path';
-const fs = require('fs');
+import * as fs from 'fs';
 const copydir = require('copy-dir');
 
 function getConfig (withDevServer: boolean)
@@ -20,7 +20,7 @@ function getConfig (withDevServer: boolean)
           app.get('/api/events', function (req: any, res: any)
           {
             var eventsJson = path.join(__dirname, 'data/events/2021.json');
-            var readable = require('fs').createReadStream(eventsJson);
+            var readable = fs.createReadStream(eventsJson);
             readable.pipe(res);
           });
 
@@ -31,7 +31,7 @@ function getConfig (withDevServer: boolean)
           {
             var event_id = req.query.event_id || req.params.eventid;
             var eventsJson = path.join(__dirname, 'data/events/Event_'+event_id+'.json');
-            var readable = require('fs').createReadStream(eventsJson);
+            var readable = fs.createReadStream(eventsJson);
             readable.pipe(res);
           }
 
@@ -43,7 +43,7 @@ function getConfig (withDevServer: boolean)
           app.get('/background/:resolution', function (req: any, res: any)
           {
             var bgImg = path.join(__dirname, 'data/background.jpg');
-            var readable = require('fs').createReadStream(bgImg);
+            var readable = fs.createReadStream(bgImg);
             readable.pipe(res);
           });
 

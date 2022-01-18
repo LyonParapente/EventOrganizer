@@ -262,8 +262,8 @@ function init_routing ()
 		.add("", function ()
 		{
 			console.log('Show the planning');
-			bootstrap.Modal.getInstance(id('eventProperties')).hide();
-			bootstrap.Modal.getInstance(id('createEvent')).hide();
+			bootstrap.Modal.getInstance(id('eventProperties'))?.hide();
+			bootstrap.Modal.getInstance(id('createEvent'))?.hide();
 		});
 
 	if (location.pathname === router.root)
