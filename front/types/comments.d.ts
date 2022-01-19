@@ -28,3 +28,11 @@ interface RegistrationInfos
 	buttonDelMsg: string,
 	interest: number
 }
+
+interface EventMessages
+{
+	users: UsersDictionary,
+	comments: Comment[],
+	participants: number[],
+	interested: number[]
+}

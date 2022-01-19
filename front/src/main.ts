@@ -1,4 +1,4 @@
-import { Calendar, EventApi, EventInputTransformer } from '@fullcalendar/core';
+import { Calendar, EventApi, EventInputTransformer, EventInput } from '@fullcalendar/core';
 import frLocale from '@fullcalendar/core/locales/fr';
 
 import bootstrapPlugin from '@fullcalendar/bootstrap';
@@ -27,7 +27,7 @@ import { background, setBackgroundColor } from './background';
 var calendar: Calendar;
 
 // Adapt server response to fullcalendar expected fields
-const eventDataTransform: EventInputTransformer = function (event)
+const eventDataTransform: EventInputTransformer = function (event: EventInput)
 {
 	var orig = calendar.getEventById(event.id as string);
 	if (orig)
@@ -293,7 +293,7 @@ function updateUrlWithCurrentMonth ()
 	router.navigate(YYYY+"-"+monthNum, monthTrad+" "+YYYY);
 }
 
-function onCreateEvent (event: any)
+function onCreateEvent (event: EventInput)
 {
 	eventDataTransform(event);
 	calendar.addEvent(event);

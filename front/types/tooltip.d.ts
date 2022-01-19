@@ -1,12 +1,11 @@
-
-interface Tooltip
-{
-	set(config: TooltipConfig): void;
+declare class HTML5TooltipUIComponent {
+	constructor();
+	set(config: HTML5TooltipConfig): void;
 	mount(): void;
 	show(): void;
 	destroy(): void;
 }
 
-interface TooltipConfig {
+interface HTML5TooltipConfig {
 	[propName: string]: string|HTMLElement;
 }

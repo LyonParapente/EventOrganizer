@@ -83,7 +83,7 @@ export function init_showEvent (cal: Calendar): void
 		id('comment_preview').classList.toggle('collapse');
 	});
 
-	var calendar_export_instance: Tooltip | null;
+	var calendar_export_instance: HTML5TooltipUIComponent | null;
 	var event_ics = id('event_ics') as HTMLAnchorElement;
 	event_ics.addEventListener('click', function (evt)
 	{
@@ -419,7 +419,7 @@ function ShowClipboarTooltip (element: HTMLElement, html: string): void
 	setTimeout(() => tooltip.destroy(), 3000);
 }
 
-function ShowCalendarExport (event: EventApi): Tooltip
+function ShowCalendarExport (event: EventApi): HTML5TooltipUIComponent
 {
 	var evt_start = toDateString(event.start as Date).replace(/-/g, '');
 	var evt_end = evt_start;
@@ -458,7 +458,7 @@ function ShowCalendarExport (event: EventApi): Tooltip
 		'<a href="'+yahoo_link+'" target="_blank">Yahoo</a>'
 	];
 
-	var tooltip: Tooltip = new HTML5TooltipUIComponent();
+	var tooltip = new HTML5TooltipUIComponent();
 	tooltip.set(
 	{
 		animateFunction: "spin",

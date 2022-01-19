@@ -7,7 +7,8 @@ if (csrf_cookies.length)
   csrf = csrf_cookies[0][1];
 }
 
-export default function requestJson (method: string, url: string, params: object|null, successCallback: (res: any, xhr: any)=>void, failureCallback: (err: string, xhr: any)=>void): void {
+export default function requestJson (method: string, url: string, params: object|null, successCallback: (res: JSON, xhr: XMLHttpRequest)=>void, failureCallback: (err: string, xhr: XMLHttpRequest)=>void): void
+{
   method = method.toUpperCase();
   var body = null;
   if (method === 'GET')
@@ -28,7 +29,8 @@ export default function requestJson (method: string, url: string, params: object
       xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
     }
   }
-  xhr.onload = function () {
+  xhr.onload = function ()
+  {
     if (xhr.status >= 200 && xhr.status < 400)
     {
       var res;

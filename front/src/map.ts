@@ -141,14 +141,13 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			}).addTo(map);
 
 			var results = new L.LayerGroup().addTo(map);
-			searchControl.on('results', function (data)
+			searchControl.on('results', function (data: unknown)
 			{
-				// data is of type L.esri.Geocoding.Results
-				var dataResults = (data as any).results;
+				var dataResults = (data as L.esri.Geocoding.Results).results;
 				results.clearLayers();
 				if (dataResults.length === 1)
 				{
-					const latlng = dataResults[0].latlng;
+					const latlng = dataResults[0].latlng as L.LatLng;
 					marker.setLatLng(latlng);
 					onMarkerMove({latlng});
 				}
@@ -157,7 +156,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 					marker.removeFrom(map);
 					for (var j = dataResults.length - 1; j >= 0; j--)
 					{
-						var searchMarker = L.marker(dataResults[j].latlng);
+						var searchMarker = L.marker(dataResults[j].latlng as L.LatLngExpression);
 						results.addLayer(searchMarker);
 						searchMarker.on('click', function (this: L.Marker)
 						{
@@ -182,7 +181,8 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 				{
 					spinner_RDV.style.display = 'none';
 					if (error) {return;}
-					sortie_RDV.value = (result.address as any).Match_addr;
+					var address = result.address as unknown as ReverseGeocodeAddressResult; // @types/esri-leaflet-geocoder is incorrect so workaround
+					sortie_RDV.value = address.Match_addr;
 				});
 			});
 
@@ -224,9 +224,10 @@ function resetMap (map: L.Map, point: L.LatLngTuple, marker: L.Marker): void
 	marker.on('move', onMarkerMove);
 }
 
-function onMarkerMove (evt: any): void
+function onMarkerMove (evt: L.LeafletEvent | {latlng: L.LatLng}): void
 {
-	var position = evt.latlng.lat+', '+evt.latlng.lng;
+	var latlng = (evt as L.LeafletMouseEvent).latlng;
+	var position = latlng.lat+', '+latlng.lng;
 	sortie_RDV_gps.value = position;
 	if (sortie_RDV.value.length === 0 || sortie_RDV.value.match(/\d+\.\d+, \d+\.\d+/))
 	{

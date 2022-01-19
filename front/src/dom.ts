@@ -1,6 +1,6 @@
-export function one (el: HTMLElement, type: string, fn: (event: any) => void): void
+export function one (el: HTMLElement, type: string, fn: (event: Event) => void): void
 {
-    function handler (event: any)
+    function handler (event: Event)
     {
         el.removeEventListener(type, handler);
         fn(event);

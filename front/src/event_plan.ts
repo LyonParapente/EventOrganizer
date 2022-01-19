@@ -6,7 +6,7 @@ import { init_categories, create_category_badge } from './event_plan_categories'
 import { init_colorPicker } from './event_plan_colorPicker';
 import { router } from './routing';
 import requestJson from './request_json';
-import { EventApi } from '@fullcalendar/core';
+import { EventApi, EventInput } from '@fullcalendar/core';
 import { id, one } from './dom';
 import get_connected_user from './user';
 
@@ -20,7 +20,7 @@ var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 var edited_event_id: string|null = null;
 var createEventModal: bootstrap.Modal = new bootstrap.Modal(id("createEvent"));
 
-export function init_createEvent (onCreate: (event: any) => void): void
+export function init_createEvent (onCreate: (event: EventInput) => void): void
 {
 	var form = document.querySelector("#createEventBody form.needs-validation") as HTMLFormElement;
 
@@ -66,7 +66,7 @@ export function init_createEvent (onCreate: (event: any) => void): void
 function init_WhatsApp_video ()
 {
 	var whatsApp_video = id('WhatsApp_video');
-	var tooltip: any = null;
+	var tooltip: any = null; // eslint-disable-line
 	whatsApp_video.addEventListener('click', function ()
 	{
 		// Mount on demand to prevent fat gif download too soon
@@ -243,7 +243,7 @@ function getRandomInt(min: number, max: number): number
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function SubmitEvent (onCreate: (event: any) => void)
+function SubmitEvent (onCreate: (event: EventInput) => void)
 {
 	var event_post_error = id('event_post_error');
 	event_post_error.style.display = 'none';
@@ -309,7 +309,7 @@ function SubmitEvent (onCreate: (event: any) => void)
 	}
 
 	requestJson(method, url, body,
-	function (data: any)
+	function (data: EventInput)
 	{
 		onCreate(data);
 		createEventModal.hide();

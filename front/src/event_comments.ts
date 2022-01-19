@@ -32,10 +32,10 @@ export default function loadComments (event: CurrentEvent): void
 	var interested = id("event_interested");
 	participants.innerHTML = interested.innerHTML = '';
 
-	requestJson("GET", "/api/messages?event_id="+event.event_id.toString(), null, function (data: JSON)
+	requestJson("GET", "/api/messages?event_id="+event.event_id.toString(), null, function (data)
 	{
 		event_comments.innerHTML = ''; // Remove spinner
-		receiveEventInfos(data, event_comments, event, participants, interested);
+		receiveEventInfos(data as unknown as EventMessages, event_comments, event, participants, interested);
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
@@ -59,7 +59,7 @@ function CheckAuthentication (ex: XMLHttpRequest)
 	}
 }
 
-function receiveEventInfos(data: any, event_comments: HTMLElement, event: CurrentEvent, participantsEl: HTMLElement, interestedEl: HTMLElement): void
+function receiveEventInfos(data: EventMessages, event_comments: HTMLElement, event: CurrentEvent, participantsEl: HTMLElement, interestedEl: HTMLElement): void
 {
 	fillCreator(data.users[event.creator_id]);
 
