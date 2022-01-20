@@ -66,7 +66,7 @@ export function init_createEvent (onCreate: (event: EventInput) => void): void
 function init_WhatsApp_video ()
 {
 	var whatsApp_video = id('WhatsApp_video');
-	var tooltip: any = null; // eslint-disable-line
+	var tooltip: HTML5TooltipUIComponent;
 	whatsApp_video.addEventListener('click', function ()
 	{
 		// Mount on demand to prevent fat gif download too soon
@@ -164,7 +164,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		edited_event_id = editedEvent.id;
 		modal_title.textContent = i18n('Edit an event');
 		sortie_title.value = editedEvent.title;
-		var eP = editedEvent.extendedProps;
+		var eP = editedEvent.extendedProps as ExtendedProps; // for eslint
 		sortie_lieu.value = eP.location || '';
 		sortie_RDV.value = eP.gps_location || '';
 		sortie_heure.value = eP.time || '';
@@ -260,7 +260,7 @@ function SubmitEvent (onCreate: (event: EventInput) => void)
 	var category = id("sortie_category") as HTMLButtonElement;
 	var color = id("sortie_color") as HTMLInputElement;
 
-	var category_str = category.textContent;
+	var category_str = category.textContent as string;
 	if (category_str === i18n('None') || color.value)
 	{
 		category_str = '';
@@ -309,35 +309,37 @@ function SubmitEvent (onCreate: (event: EventInput) => void)
 	}
 
 	requestJson(method, url, body,
-	function (data: EventInput)
-	{
-		onCreate(data);
-		createEventModal.hide();
-	},
-	function (type: string, ex: XMLHttpRequest)
-	{
-		if (ex.status === 401)
+		function (data: EventInput)
 		{
-			window.location.assign('/login');
-		}
-		else if (ex.status === 400)
+			onCreate(data);
+			createEventModal.hide();
+		},
+		function (type: string, ex: XMLHttpRequest)
 		{
-			if (JSON.parse(ex.responseText).message === "Invalid WhatsApp link")
+			if (ex.status === 401)
 			{
-				whatsapp_link.classList.add('is-invalid');
+				window.location.assign('/login');
+			}
+			else if (ex.status === 400)
+			{
+				var json = JSON.parse(ex.responseText) as RequestResponseException;
+				if (json.message === "Invalid WhatsApp link")
+				{
+					whatsapp_link.classList.add('is-invalid');
+				}
+			}
+			else
+			{
+				console.error(type, ex.responseText)
+				event_post_error.textContent = i18n('Unable to save');
+				event_post_error.style.display = '';
+				if (ex.status === 403)
+				{
+					event_post_error.textContent += " : " + i18n('insufficient rights')
+				}
 			}
 		}
-		else
-		{
-			console.error(type, ex.responseText)
-			event_post_error.textContent = i18n('Unable to save');
-			event_post_error.style.display = '';
-			if (ex.status === 403)
-			{
-				event_post_error.textContent += " : " + i18n('insufficient rights')
-			}
-		}
-	});
+	);
 }
 
 function UpdatePreview (this: HTMLTextAreaElement)

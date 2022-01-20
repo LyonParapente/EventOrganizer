@@ -2,7 +2,7 @@ export function background (use_unsplash: boolean, tags: string[]=[], force=fals
 {
 	const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-	var resolution = vw + "x" + vh;
+	var resolution = `${vw}x${vh}`;
 	var url;
 	if (use_unsplash)
 	{

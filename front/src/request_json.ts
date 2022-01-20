@@ -7,7 +7,7 @@ if (csrf_cookies.length)
   csrf = csrf_cookies[0][1];
 }
 
-export default function requestJson (method: string, url: string, params: object|null, successCallback: (res: JSON, xhr: XMLHttpRequest)=>void, failureCallback: (err: string, xhr: XMLHttpRequest)=>void): void
+export default function requestJson (method: string, url: string, params: QueryParameters, successCallback: (res: JSON, xhr: XMLHttpRequest)=>void, failureCallback: (err: string, xhr: XMLHttpRequest)=>void): void
 {
   method = method.toUpperCase();
   var body = null;
@@ -36,7 +36,7 @@ export default function requestJson (method: string, url: string, params: object
       var res;
       try
       {
-        res = JSON.parse(xhr.responseText);
+        res = JSON.parse(xhr.responseText) as JSON;
       }
       catch (err)
       {
@@ -59,7 +59,7 @@ export default function requestJson (method: string, url: string, params: object
   xhr.send(body);
 }
 
-function injectQueryStringParams (url: string, params: object|null): string
+function injectQueryStringParams (url: string, params: QueryParameters): string
 {
   var parameters = encodeParams(params);
   if (parameters)
@@ -69,7 +69,7 @@ function injectQueryStringParams (url: string, params: object|null): string
   return url;
 }
 
-function encodeParams (params: object|null): string
+function encodeParams (params: QueryParameters): string
 {
   var parts = [];
   for (var key in params)

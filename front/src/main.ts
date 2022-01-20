@@ -41,19 +41,19 @@ const eventDataTransform: EventInputTransformer = function (event: EventInput)
 
 	if (event.category)
 	{
-		event.color = getColor(event.category);
+		event.color = getColor(event.category as string);
 	}
-	event.description = event.description || '';
+	event.description = event.description as string || '';
 
 	// re-map start & end to expected properties
 	if (event.start_date) // if useful for onCreateEvent scenario
 	{
-		event.start = event.start_date;
+		event.start = event.start_date as string;
 		delete event.start_date;
 	}
 	if (event.end_date)
 	{
-		event.end = event.end_date;
+		event.end = event.end_date as string;
 		delete event.end_date;
 	}
 
@@ -272,7 +272,7 @@ function init_routing ()
 	}
 	else if (history.state)
 	{
-		router.check(history.state.path);
+		router.check((history.state as {path: string}).path);
 	}
 	else
 	{
@@ -285,11 +285,11 @@ function updateUrlWithCurrentMonth ()
 	var now = calendar.getDate();
 
 	var monthTrad = new Intl.DateTimeFormat(settings.lang, {month: "long"}).format(now);
-	monthTrad = monthTrad.charAt(0).toLocaleUpperCase(settings.lang) + monthTrad.substr(1);
+	monthTrad = monthTrad.charAt(0).toLocaleUpperCase(settings.lang) + monthTrad.substring(1);
 
-	var YYYY = now.getFullYear();
+	var YYYY = now.getFullYear().toString();
 	var MM = now.getMonth() + 1;
-	var monthNum = MM < 10 ? '0' + MM : MM.toString();
+	var monthNum = MM < 10 ? '0' + MM.toString() : MM.toString();
 	router.navigate(YYYY+"-"+monthNum, monthTrad+" "+YYYY);
 }
 

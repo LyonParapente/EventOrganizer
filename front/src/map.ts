@@ -19,7 +19,7 @@ import 'leaflet/dist/leaflet.css';
 import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
-var mapList = {},
+var mapList: MapDictionary = {},
 	sortie_RDV = <HTMLInputElement>id('sortie_RDV'),
 	sortie_RDV_gps = <HTMLInputElement>id('sortie_RDV_gps'),
 	spinner_RDV = id('spinner_RDV');
@@ -32,7 +32,6 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 	{
 		map = mapList[elem_id].map;
 		marker = mapList[elem_id].marker;
-
 		resetMap(map, defaultPoint, marker);
 	}
 	else
@@ -75,7 +74,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 			{
 				if (Object.prototype.hasOwnProperty.call(ignLayers, niceName))
 				{
-					var ignLayer = ignLayers[niceName];
+					var ignLayer = ignLayers[niceName] as string;
 					var ignTileLayer =	L.tileLayer(
 						"https://wxs.ign.fr/"+ignKey+"/geoportail/wmts?" +
 						"&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
@@ -121,7 +120,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 		marker.on('click', function ()
 		{
 			var latlng = marker.getLatLng();
-			var url = "http://maps.google.com/maps?daddr=loc:"+latlng.lat+"+"+latlng.lng;
+			var url = "http://maps.google.com/maps?daddr=loc:"+latlng.lat.toString()+"+"+latlng.lng.toString();
 			marker.unbindPopup();
 			marker.bindPopup('<a href="'+url+'" target="_blank">'+i18n('Open in Google Maps')+'</a>').openPopup();
 		});
@@ -227,7 +226,7 @@ function resetMap (map: L.Map, point: L.LatLngTuple, marker: L.Marker): void
 function onMarkerMove (evt: L.LeafletEvent | {latlng: L.LatLng}): void
 {
 	var latlng = (evt as L.LeafletMouseEvent).latlng;
-	var position = latlng.lat+', '+latlng.lng;
+	var position = latlng.lat.toString()+', '+latlng.lng.toString();
 	sortie_RDV_gps.value = position;
 	if (sortie_RDV.value.length === 0 || sortie_RDV.value.match(/\d+\.\d+, \d+\.\d+/))
 	{
@@ -245,7 +244,7 @@ function findLocation (text: string, marker: L.Marker, map: L.Map): void
 		spinner_RDV.style.display = 'none';
 		if (response.results.length > 0)
 		{
-			var bestResult = response.results[0];
+			var bestResult = response.results[0] as NearbyResult;
 			marker.addTo(map);
 			marker.setLatLng(bestResult.latlng);
 			map.flyToBounds(bestResult.bounds); // animation

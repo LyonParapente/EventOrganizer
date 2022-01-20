@@ -68,12 +68,12 @@ const trads =
 
 export function i18n (key: string, ...args: string[]): string
 {
-	var dic = (trads as object)[settings.lang];
+	var dic = trads[settings.lang] as string;
 	if (dic)
 	{
 		if (Object.prototype.hasOwnProperty.call(dic, key))
 		{
-			var trad = dic[key];
+			var trad = dic[key] as string;
 			return i18nFormat(trad, args);
 		}
 		else
@@ -88,7 +88,7 @@ function i18nFormat (trad: string, replaceValues: string[]): string
 {
 	for (var i = 0; i < replaceValues.length; ++i)
 	{
-		var regex = new RegExp("\\{" + i + "\\}", "g");
+		var regex = new RegExp("\\{" + i.toString() + "\\}", "g");
 		trad = trad.replace(regex, replaceValues[i]);
 	}
 	return trad;

@@ -18,12 +18,12 @@ export default function loadComments (event: CurrentEvent): void
 	var attributes =
 	{
 		"alt": getUserName(connected_user),
-		"src": "/avatars/"+connected_user.id+"-130",
+		"src": `/avatars/${connected_user.id}-130`,
 		"height": 110
 	};
 	var event_comment_avatar = id("event_comment_avatar");
 	Object.keys(attributes).forEach(attr =>
-		event_comment_avatar.setAttribute(attr, attributes[attr]));
+		event_comment_avatar.setAttribute(attr, (attributes[attr] as string|number).toString()));
 
 	var event_comments = id('event_comments');
 	event_comments.innerHTML = '<div class="spinner-border m-auto" role="status"></div>';
@@ -73,7 +73,7 @@ function receiveEventInfos(data: EventMessages, event_comments: HTMLElement, eve
 
 		if (!user)
 		{
-			console.warn("Missing user "+userid);
+			console.warn(`Missing user $userid`);
 		}
 
 		var isLatest = i === data.comments.length - 1;
@@ -180,9 +180,9 @@ function createCommentEntry (comment: Comment, userid: number, user: User, canEd
 	groupitem.className = 'list-group-item p-1 d-flex';
 		var d = document.createElement('div');
 			var a = document.createElement('a');
-			a.href = "/user:"+userid;
+			a.href = `/user:$userid`;
 				var avatar = new Image();
-				avatar.src = "/avatars/"+userid+"-60";
+				avatar.src = `/avatars/${userid}-60`;
 				avatar.alt = getUserName(user);
 				avatar.title = getUserName(user);
 			a.appendChild(avatar);
@@ -207,7 +207,7 @@ function createCommentEntry (comment: Comment, userid: number, user: User, canEd
 			var comment_infos = document.createElement('span');
 			comment_infos.className = 'border-bottom border-light';
 				a = document.createElement('a');
-				a.href = "/user:"+userid;
+				a.href = `/user:$userid`;
 				a.appendChild(document.createTextNode(getUserName(user)));
 			comment_infos.appendChild(a);
 			comment_infos.appendChild(document.createTextNode(' - ' + dateText));
@@ -299,7 +299,7 @@ function addRegistration (user_id: string, user: User, container: HTMLElement)
 
 function registerToEvent (event_id: number, interest: number, button_id: string, container: HTMLElement)
 {
-	var url = "/api/event/"+event_id.toString()+'/registration?interest='+interest;
+	var url = `/api/event/$event_id/registration?interest=$interest`;
 	requestJson("PUT", url, null, function ()
 	{
 		updateRegistration(button_id, container);

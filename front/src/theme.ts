@@ -18,7 +18,7 @@ export function getColorConf (): object
 
 export function getColor (category: string): string
 {
-	return getColorConf()[category];
+	return getColorConf()[category] as string;
 }
 
 function getTheme (): string

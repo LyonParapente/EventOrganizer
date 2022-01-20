@@ -26,3 +26,14 @@ interface EditedEvent
 	creation_datetime: string
 	*/
 }
+
+interface ExtendedProps
+{
+	location: string;
+	gps_location: string;
+	gps: [number, number];
+	time: string;
+	whatsapp_link: string;
+	description: string;
+	category: string;
+}

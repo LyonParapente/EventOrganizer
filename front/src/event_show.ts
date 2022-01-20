@@ -58,7 +58,7 @@ export function init_showEvent (cal: Calendar): void
 	{
 		var is_blocking = this.classList.contains('fa-bell-slash');
 		var verb = is_blocking ? "DELETE" : "PUT";
-		requestJson(verb, "/api/event/"+current_event.event_id+"/notifications_blocklist", null,
+		requestJson(verb, `/api/event/${current_event.event_id}/notifications_blocklist`, null,
 		function ()
 		{
 			SetBell(verb === "PUT");
@@ -127,7 +127,7 @@ export function showEvent (calEvent: EventApi): void
 	}
 	else
 	{
-		end = start as Date;
+		end = start;
 	}
 
 	var endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate());
@@ -136,9 +136,9 @@ export function showEvent (calEvent: EventApi): void
 	current_event =
 	{
 		event_id: parseInt(calEvent.id, 10),
-		creator_id: calEvent.extendedProps.creator_id,
+		creator_id: calEvent.extendedProps.creator_id as number,
 		isFinished: endMidnightPlus24H.getTime() < new Date().getTime(),
-		whatsapp_link: calEvent.extendedProps.whatsapp_link
+		whatsapp_link: calEvent.extendedProps.whatsapp_link as string
 	}
 	loadComments(current_event);
 
@@ -164,7 +164,7 @@ export function showEvent (calEvent: EventApi): void
 
 	id("event_title").textContent = calEvent.title;
 	var event_description = id("event_description");
-	var desc = calEvent.extendedProps.description || i18n('No description');
+	var desc = calEvent.extendedProps.description as string || i18n('No description');
 	event_description.innerHTML = DOMPurify.sanitize(marked.parse(desc));
 
 	// ----------------------
@@ -185,7 +185,7 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Category
 
-	var category = calEvent.extendedProps.category;
+	var category = calEvent.extendedProps.category as string;
 	var event_category = id("event_category");
 	if (category)
 	{
@@ -222,11 +222,11 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Author
 
-	var creator_id = calEvent.extendedProps.creator_id;
+	var creator_id = calEvent.extendedProps.creator_id as number;
 	var author_img = new Image();
-	author_img.src = "/avatars/"+creator_id+"-130";
+	author_img.src = `/avatars/${creator_id}-130`;
 	var event_author_img = id("event_author_img");
-	event_author_img.setAttribute("href", "/user:"+creator_id);
+	event_author_img.setAttribute("href", `/user:$creator_id`);
 	event_author_img.innerHTML = '';
 	event_author_img.appendChild(author_img);
 
@@ -250,10 +250,10 @@ export function showEvent (calEvent: EventApi): void
 	else
 	{
 		requestJson("GET", "/api/event/"+calEvent.id+"/notifications_blocklist", null,
-		function (data: NotificationBlocklistResponse)
+		function (data: JSON)
 		{
 			event_bell.style.display = '';
-			SetBell(data.block);
+			SetBell((data as unknown as NotificationBlocklistResponse).block);
 		},
 		function (type: string, ex: XMLHttpRequest)
 		{
@@ -288,7 +288,7 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Activity location
 
-	var location = calEvent.extendedProps.location;
+	var location = calEvent.extendedProps.location as string;
 	var event_location_text = location || "";
 	var event_location = id("event_location"),
 		event_location2 = id("event_location2") as HTMLTextAreaElement;
@@ -304,7 +304,7 @@ export function showEvent (calEvent: EventApi): void
 	// ----------------------
 	// Rendez-vous time & location
 
-	var time = calEvent.extendedProps.time;
+	var time = calEvent.extendedProps.time as string;
 	id("event_rdv_time").textContent = time || "";
 	id("event_rdv_time_box").style.display = time ? '' : 'none';
 
@@ -314,11 +314,11 @@ export function showEvent (calEvent: EventApi): void
 	{
 		if (eP.gps_location)
 		{
-			rdv_location_text = eP.gps_location;
+			rdv_location_text = eP.gps_location as string;
 		}
 		else
 		{
-			rdv_location_text = eP.gps.join(', ');
+			rdv_location_text = (eP.gps as number[]).join(', ');
 		}
 	}
 	var event_rdv_location = id("event_rdv_location") as HTMLInputElement;
@@ -348,7 +348,7 @@ export function showEvent (calEvent: EventApi): void
 	var eventProperties = id("eventProperties");
 	one(eventProperties, 'shown.bs.modal', function ()
 	{
-		initMap('event_map', false, eP.gps, eP.gps_location);
+		initMap('event_map', false, eP.gps as L.LatLngTuple|undefined, eP.gps_location as string|undefined);
 
 		// Avoid keyboard popping on mobile
 		// id("event_comment").focus();
@@ -374,14 +374,14 @@ function ComputeLocationDimensions (el: HTMLElement, el2: HTMLElement)
 {
 	// Step 1 - Compute textarea height according to width
 	var w = el.offsetWidth + 1;
-	el2.style.width = w+'px';
+	el2.style.width = w.toString()+'px';
 
 	el.style.display = 'none';
 	el2.style.display = '';
 
 	// Step 2 - Adjust textarea height
 	var height = el2.scrollHeight + (el2.offsetHeight - el2.clientHeight);
-	el2.style.height = height+'px';
+	el2.style.height = height.toString()+'px';
 }
 
 function ClipboardCopyLocation (clickTarget: HTMLElement, copyTarget: HTMLInputElement|HTMLTextAreaElement)
@@ -428,10 +428,10 @@ function ShowCalendarExport (event: EventApi): HTML5TooltipUIComponent
 		evt_end = toDateString(event.end).replace(/-/g, '');
 	}
 
-	var details_secure = DOMPurify.sanitize(marked.parse(event.extendedProps.description));
+	var details_secure = DOMPurify.sanitize(marked.parse(event.extendedProps.description as string));
 	var google_link = "https://calendar.google.com/calendar/u/0/r/eventedit?"+
 	[
-		"location="+encodeURIComponent(event.extendedProps.location),
+		"location="+encodeURIComponent(event.extendedProps.location as string || ''),
 		"text="+encodeURIComponent(event.title),
 		"sprop=website:"+window.location.origin+"/event:"+event.id,
 		"details="+encodeURIComponent(details_secure),
@@ -440,7 +440,7 @@ function ShowCalendarExport (event: EventApi): HTML5TooltipUIComponent
 
 	var yahoo_link = "http://calendar.yahoo.com/?"+
 	[
-		"in_loc="+encodeURIComponent(event.extendedProps.location),
+		"in_loc="+encodeURIComponent(event.extendedProps.location as string || ''),
 		"TITLE="+encodeURIComponent(event.title),
 		"URL="+window.location.origin+"/event:"+event.id,
 		"DESC="+encodeURIComponent(details_secure),
@@ -480,37 +480,38 @@ function SubmitComment ()
 	var editLatest = comment_send_btn.getAttribute("data-action") === "edit";
 	var body =
 	{
-		event_id: current_event.event_id,
+		event_id: current_event.event_id.toString(),
 		comment: textarea.value,
-		editLatest: editLatest
+		editLatest: editLatest.toString()
 	};
 	requestJson("POST", "/api/message", body,
-	function ()
-	{
-		textarea.value = '';
-
-		var comment_preview = id('comment_preview');
-		comment_preview.innerHTML = '';
-		comment_preview.classList.add('collapse');
-
-		if (editLatest)
+		function ()
 		{
-			RemoveEditComment();
-		}
+			textarea.value = '';
 
-		// Reload all comments because there might be new comments from others
-		loadComments(current_event);
-	},
-	function (type: string, ex: XMLHttpRequest)
-	{
-		if (ex.status === 401)
+			var comment_preview = id('comment_preview');
+			comment_preview.innerHTML = '';
+			comment_preview.classList.add('collapse');
+
+			if (editLatest)
+			{
+				RemoveEditComment();
+			}
+
+			// Reload all comments because there might be new comments from others
+			loadComments(current_event);
+		},
+		function (type: string, ex: XMLHttpRequest)
 		{
-			window.location.assign('/login');
+			if (ex.status === 401)
+			{
+				window.location.assign('/login');
+			}
+			console.error(type, ex.responseText)
+			comment_post_error.innerHTML = i18n('Unable to save');
+			comment_post_error.style.display = '';
 		}
-		console.error(type, ex.responseText)
-		comment_post_error.innerHTML = i18n('Unable to save');
-		comment_post_error.style.display = '';
-	});
+	);
 }
 
 function DeleteEvent (): void
@@ -529,7 +530,8 @@ function DeleteEvent (): void
 		{
 			try
 			{
-				alert(JSON.parse(ex.responseText).message);
+				var json = JSON.parse(ex.responseText) as RequestResponseException;
+				alert(json.message);
 			}
 			finally
 			{
