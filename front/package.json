@@ -31,15 +31,13 @@
     "html5tooltipsjs": "^1.7.3",
     "leaflet": "^1.7.1",
     "leaflet-fullscreen": "^1.0.2",
-    "marked": "^4.0.10",
+    "marked": "^4.0.12",
     "node-sass": "^7.0.1",
     "simple-color-picker": "^1.0.5",
-    "ts-node": "^10.4.0"
-  },
-  "devDependencies": {
+    "ts-node": "^10.4.0",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
-    "eslint": "^8.7.0",
+    "eslint": "^8.9.0",
     "typescript": "^4.5.4"
   },
   "local:main": "./src/main.ts",
