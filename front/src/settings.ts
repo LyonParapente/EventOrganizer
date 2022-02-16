@@ -49,7 +49,7 @@ const settings: Settings =
 	},
 	use_unsplash: false,
 	unsplash_tags: ['paraglider'],
-	IGN_key: 'o9q1uza84786tsx16keg17n0',
+	IGN_key: 'h62ss3f9nubg3eo7udzium9n',
 	international_prefix: '+33'
 };
 export default settings;

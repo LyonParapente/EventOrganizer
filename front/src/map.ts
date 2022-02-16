@@ -59,8 +59,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 
 		if (settings.IGN_key)
 		{
-			// https://geoservices.ign.fr/documentation/utilisation_web/wmts-leaflet.html
-			// https://geoservices.ign.fr/documentation/donnees-ressources-wmts.html
+			// https://geoservices.ign.fr/
 			var ignKey = window.location.hostname === 'localhost' ? 'choisirgeoportail' : settings.IGN_key;
 			var ignLayers = {
 				"IGN Satellite": "ORTHOIMAGERY.ORTHOPHOTOS",
