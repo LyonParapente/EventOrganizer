@@ -480,9 +480,9 @@ function SubmitComment ()
 	var editLatest = comment_send_btn.getAttribute("data-action") === "edit";
 	var body =
 	{
-		event_id: current_event.event_id.toString(),
+		event_id: current_event.event_id,
 		comment: textarea.value,
-		editLatest: editLatest.toString()
+		editLatest: editLatest
 	};
 	requestJson("POST", "/api/message", body,
 		function ()

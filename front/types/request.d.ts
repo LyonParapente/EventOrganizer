@@ -1,6 +1,6 @@
 type QueryParameters = null |
 {
-    [x: string]: string
+    [x: string]: string|boolean|number
 };
 
 type RequestResponseException =
