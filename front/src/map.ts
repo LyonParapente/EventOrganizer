@@ -59,28 +59,27 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 
 		if (settings.IGN_key)
 		{
-			// https://geoservices.ign.fr/
-			var ignKey = window.location.hostname === 'localhost' ? 'choisirgeoportail' : settings.IGN_key;
 			var ignLayers = {
-				"IGN Satellite": "ORTHOIMAGERY.ORTHOPHOTOS",
-				"IGN": "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+				"IGN Satellite": {name: "ORTHOIMAGERY.ORTHOPHOTOS", key: "ortho"},
+				"Plan IGN": {name: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2", key: "cartes", format: "image/png"},
 
-				// Work only with key and referrer
-				"IGN Scan": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
-				"IGN Touristic Scan": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR",
+				// Work only with key and referrer => Add "http://localhost:5000/" to allowed referrer in https://geoservices.ign.fr/ account key settings
+				"IGN": {name: "GEOGRAPHICALGRIDSYSTEMS.MAPS"},
+				"SCAN OACI": {name: "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI"},
+				"IGN Touristic Scan": {name: "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR"},
 			};
 			for (var niceName in ignLayers)
 			{
 				if (Object.prototype.hasOwnProperty.call(ignLayers, niceName))
 				{
-					var ignLayer = ignLayers[niceName] as string;
+					var ignLayer = ignLayers[niceName];
 					var ignTileLayer =	L.tileLayer(
-						"https://wxs.ign.fr/"+ignKey+"/geoportail/wmts?" +
+						"https://wxs.ign.fr/"+(ignLayer.key||settings.IGN_key)+"/geoportail/wmts?" +
 						"&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0" +
 						"&STYLE=normal" +
 						"&TILEMATRIXSET=PM" +
-						"&FORMAT=image/jpeg" +
-						"&LAYER="+ignLayer +
+						"&FORMAT="+(ignLayer.format||"image/jpeg") +
+						"&LAYER="+ignLayer.name +
 						"&TILEMATRIX={z}" +
 						"&TILEROW={y}" +
 						"&TILECOL={x}",
