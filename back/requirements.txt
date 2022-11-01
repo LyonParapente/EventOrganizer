@@ -1,3 +1,6 @@
+jinja2<3.1.0
+itsdangerous<2.1.0
+Werkzeug<2.0.0
 Flask==1.1.2
 Flask-Cors==3.0.10
 Flask-RESTful==0.3.8
