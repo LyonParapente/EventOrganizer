@@ -13,6 +13,7 @@ import base64
 import datetime
 import html
 import sys
+import traceback
 from threading import Thread
 import copy
 
@@ -114,7 +115,10 @@ def send_emails_smtp(app, messages):
           mail.send(msg)
       except:
         with open("smtp_errors.txt", "a") as myfile:
-          myfile.write(str(sys.exc_info()[0]))
+          myfile.write(str(start)+'\n')
+          myfile.write(str(sys.exc_info()[0])) # type of exception
+          myfile.write('\n')
+          myfile.write(traceback.format_exc())
           myfile.write('\n')
   end = datetime.datetime.now()
   # print("send_emails_smtp took: " + str(end - start))
