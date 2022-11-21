@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, redirect, request, render_template, make_response, send_file
-from flask_restful_swagger_3 import Api, swagger
+from flask_restful import Api
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_jwt
 from flask_cors import CORS
@@ -55,9 +55,10 @@ api_security = [
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-api = Api(app, components=components, security=api_security)
+#api = Api(app, components=components, security=api_security)  # TODO
+api = Api(app)
 
-app.config.from_pyfile('secrets.py')
+app.config.from_pyfile('app_secrets.py')
 emails.init(app)
 
 # ------------------------------

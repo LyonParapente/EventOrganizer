@@ -1,5 +1,5 @@
 from flask import request, abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.message import Message, MessageCreate
 from database.manager import db
@@ -7,36 +7,36 @@ from emails import send_new_message
 
 class MessageAPICreate(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['message'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': Message
-        }
-      }
-    },
-    'responses': {
-      '201': {
-        'description': 'Created message',
-        'content': {
-          'application/json': {
-            'schema': Message
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Update forbidden'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['message'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'requestBody': {
+  #     'required': True,
+  #     'content': {
+  #       'application/json': {
+  #         'schema': Message
+  #       }
+  #     }
+  #   },
+  #   'responses': {
+  #     '201': {
+  #       'description': 'Created message',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': Message
+  #         }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '403': {
+  #       'description': 'Update forbidden'
+  #     }
+  #   }
+  # })
   def post(self):
     """Create a message"""
     args = request.json

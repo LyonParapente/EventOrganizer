@@ -43,7 +43,7 @@ emails = {
   "use_mailjet": False,
   "server": "SSL0.OVH.NET",
   "port": 465,
-  "username": "calendrier@lyonparapente.fr",  # password in secrets.py
+  "username": "calendrier@lyonparapente.fr",  # password in app_secrets.py
   "use_tls": False,
   "use_ssl": True,
   "from_email": "calendrier@lyonparapente.fr",
@@ -54,4 +54,3 @@ emails = {
   "domain": domain,
   "max_recipients_per_mail": 50
 }
-

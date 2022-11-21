@@ -1,35 +1,35 @@
 from flask import request, abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
 
 class UserAPICreate(Resource):
-  @swagger.doc({
-    'tags': ['user'],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': User
-        }
-      }
-    },
-    'responses': {
-      '201': {
-        'description': 'Created user',
-        'content': {
-          'application/json': {
-            'schema': User
-          }
-        }
-      },
-      '409': {
-        'description': 'Email already registered'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['user'],
+  #   'requestBody': {
+  #     'required': True,
+  #     'content': {
+  #       'application/json': {
+  #         'schema': User
+  #       }
+  #     }
+  #   },
+  #   'responses': {
+  #     '201': {
+  #       'description': 'Created user',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': User
+  #         }
+  #       }
+  #     },
+  #     '409': {
+  #       'description': 'Email already registered'
+  #     }
+  #   }
+  # })
   def post(self):
     """Create a user"""
     # Validate request body with schema model
@@ -54,39 +54,39 @@ class UserAPICreate(Resource):
 
 class UserAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['user'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'user_id',
-        'required': True,
-        'description': 'User identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'User',
-        'content': {
-          'application/json': {
-            'schema': User
-           }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'User not found'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['user'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'user_id',
+  #       'required': True,
+  #       'description': 'User identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'User',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': User
+  #          }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '404': {
+  #       'description': 'User not found'
+  #     }
+  #   }
+  # })
   def get(self, user_id):
     """Get details of a user"""
     props = db.get_user(user_id=user_id)
@@ -96,51 +96,51 @@ class UserAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['user'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'user_id',
-        'required': True,
-        'description': 'User identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': User
-        }
-      }
-    },
+  # @swagger.doc({
+  #   'tags': ['user'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'user_id',
+  #       'required': True,
+  #       'description': 'User identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'requestBody': {
+  #     'required': True,
+  #     'content': {
+  #       'application/json': {
+  #         'schema': User
+  #       }
+  #     }
+  #   },
 
-    'responses': {
-      '200': {
-        'description': 'Updated user',
-        'content': {
-          'application/json': {
-            'schema': User
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Update forbidden'
-      },
-      '404': {
-        'description': 'User not found'
-      }
-    }
-  })
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Updated user',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': User
+  #         }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '403': {
+  #       'description': 'Update forbidden'
+  #     },
+  #     '404': {
+  #       'description': 'User not found'
+  #     }
+  #   }
+  # })
   def put(self, user_id):
     """Update a user"""
     # Validate request body with schema model
@@ -163,37 +163,37 @@ class UserAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['user'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'user_id',
-        'required': True,
-        'description': 'User identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Confirmation message'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Deletion forbidden'
-      },
-      '404': {
-        'description': 'User not found'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['user'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'user_id',
+  #       'required': True,
+  #       'description': 'User identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Confirmation message'
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '403': {
+  #       'description': 'Deletion forbidden'
+  #     },
+  #     '404': {
+  #       'description': 'User not found'
+  #     }
+  #   }
+  # })
   def delete(self, user_id):
     """Delete a user"""
 

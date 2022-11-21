@@ -1,47 +1,47 @@
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from models.event import Event
 from database.manager import db
 
 class EventsAPI(Resource):
   @jwt_required(optional=True)
-  @swagger.doc({
-    'tags': ['events'],
-    # auth. optional, get more info though (description, whatsapp_link)
-    #'security': [
-    #  {'BearerAuth': []}
-    #],
-    'parameters': [
-      {
-        'name': 'start',
-        'description': 'Start date of the interval being fetched',
-        'in': 'query',
-        'required': False,
-        'schema': {
-          'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
-        }
-      },
-      {
-        'name': 'end',
-        'description': 'Exclusive end date of the interval being fetched',
-        'in': 'query',
-        'required': False,
-        'schema': {
-          'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'List of events',
-        'content': {
-          'application/json': {
-            'schema': Event.array()
-          }
-        }
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['events'],
+  #   # auth. optional, get more info though (description, whatsapp_link)
+  #   #'security': [
+  #   #  {'BearerAuth': []}
+  #   #],
+  #   'parameters': [
+  #     {
+  #       'name': 'start',
+  #       'description': 'Start date of the interval being fetched',
+  #       'in': 'query',
+  #       'required': False,
+  #       'schema': {
+  #         'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
+  #       }
+  #     },
+  #     {
+  #       'name': 'end',
+  #       'description': 'Exclusive end date of the interval being fetched',
+  #       'in': 'query',
+  #       'required': False,
+  #       'schema': {
+  #         'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'List of events',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': Event.array()
+  #         }
+  #       }
+  #     }
+  #   }
+  # })
   def get(self, _parser):
     """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)

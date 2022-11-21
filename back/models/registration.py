@@ -1,5 +1,7 @@
-from flask_restful_swagger_3 import Schema
-from flask import abort
+#from flask_restful_swagger_3 import Schema
+
+class Schema():
+  plop = 'plop'
 
 class Registration(Schema):
   type = 'object'

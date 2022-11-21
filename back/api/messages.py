@@ -1,5 +1,5 @@
 from flask import abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from models.message import Messages, MessagesComment, MessagesUser
 from models.user import silence_user_fields
@@ -18,39 +18,39 @@ def create_basic_user_infos(props):
 
 class MessagesAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['messages'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'description': 'Event identifier',
-        'in': 'query',
-        'required': True,
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'List of messages',
-        'content': {
-          'application/json': {
-            'schema': Messages
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['messages'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'description': 'Event identifier',
+  #       'in': 'query',
+  #       'required': True,
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'List of messages',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': Messages
+  #         }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '404': {
+  #       'description': 'Event not found'
+  #     }
+  #   }
+  # })
   def get(self, _parser):
     """Download the list of messages for an event"""
     query = _parser.parse_args(strict=True)

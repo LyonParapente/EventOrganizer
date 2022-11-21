@@ -1,9 +1,12 @@
-from flask_restful_swagger_3 import Schema
+#from flask_restful_swagger_3 import Schema
 from flask import abort
 import settings
 from trads import trads
 
 en = trads['en']
+
+class Schema():
+  plop = 'plop'
 
 class User(Schema):
   type = 'object'

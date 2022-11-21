@@ -1,5 +1,5 @@
 from flask import request, abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
@@ -9,36 +9,36 @@ import datetime
 
 class EventAPICreate(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': Event
-        }
-      }
-    },
-    'responses': {
-      '201': {
-        'description': 'Created event',
-        'content': {
-          'application/json': {
-            'schema': Event
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Creation forbidden'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'requestBody': {
+  #     'required': True,
+  #     'content': {
+  #       'application/json': {
+  #         'schema': Event
+  #       }
+  #     }
+  #   },
+  #   'responses': {
+  #     '201': {
+  #       'description': 'Created event',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': Event
+  #         }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '403': {
+  #       'description': 'Creation forbidden'
+  #     }
+  #   }
+  # })
   def post(self):
     """Create an event"""
     # Validate request body with schema model
@@ -84,39 +84,39 @@ class EventAPICreate(Resource):
 
 class EventAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Event',
-        'content': {
-          'application/json': {
-            'schema': Event
-           }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'required': True,
+  #       'description': 'Event identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Event',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': Event
+  #          }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '404': {
+  #       'description': 'Event not found'
+  #     }
+  #   }
+  # })
   def get(self, event_id):
     """Get details of an event"""
     props = db.get_event(event_id)
@@ -126,51 +126,51 @@ class EventAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': Event
-        }
-      }
-    },
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'required': True,
+  #       'description': 'Event identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'requestBody': {
+  #     'required': True,
+  #     'content': {
+  #       'application/json': {
+  #         'schema': Event
+  #       }
+  #     }
+  #   },
 
-    'responses': {
-      '200': {
-        'description': 'Updated event',
-        'content': {
-          'application/json': {
-            'schema': Event
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Update forbidden'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Updated event',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': Event
+  #         }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '403': {
+  #       'description': 'Update forbidden'
+  #     },
+  #     '404': {
+  #       'description': 'Event not found'
+  #     }
+  #   }
+  # })
   def put(self, event_id):
     """Update an event"""
     # Validate request body with schema model
@@ -199,37 +199,37 @@ class EventAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Confirmation message',
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Deletion forbidden'
-      },
-      '404': {
-        'description': 'Event not found'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'required': True,
+  #       'description': 'Event identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Confirmation message',
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '403': {
+  #       'description': 'Deletion forbidden'
+  #     },
+  #     '404': {
+  #       'description': 'Event not found'
+  #     }
+  #   }
+  # })
   def delete(self, event_id):
     """Delete an event"""
 

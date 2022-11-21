@@ -1,36 +1,36 @@
 from flask import abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.manager import db
 import sqlite3
 
 class NotificationsBlocklistAPI(Resource):
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Notifications blocklist added'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'required': True,
+  #       'description': 'Event identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Notifications blocklist added'
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     }
+  #   }
+  # })
   def put(self, event_id):
     """Add a notifications blocklist"""
     user_id = get_jwt_identity()
@@ -47,31 +47,31 @@ class NotificationsBlocklistAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Notifications blocklist response'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'required': True,
+  #       'description': 'Event identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Notifications blocklist response'
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     }
+  #   }
+  # })
   def get(self, event_id):
     """Get a notifications blocklist"""
     user_id = get_jwt_identity()
@@ -88,34 +88,34 @@ class NotificationsBlocklistAPI(Resource):
 
 
   @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Notifications blocklist removed'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Notifications blocklist not found'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['event'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'parameters': [
+  #     {
+  #       'name': 'event_id',
+  #       'required': True,
+  #       'description': 'Event identifier',
+  #       'in': 'path',
+  #       'schema': {
+  #         'type': 'integer'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Notifications blocklist removed'
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     },
+  #     '404': {
+  #       'description': 'Notifications blocklist not found'
+  #     }
+  #   }
+  # })
   def delete(self, event_id):
     """Delete a notifications blocklist"""
     user_id = get_jwt_identity()

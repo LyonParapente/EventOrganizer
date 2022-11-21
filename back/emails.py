@@ -7,8 +7,7 @@ from flask import request
 import markdown
 import settings
 #---
-import os
-import secrets
+import app_secrets
 import base64
 import datetime
 import html
@@ -77,7 +76,7 @@ def send_emails_mailjet(messages):
     'Messages': messages
   }
   #print(data)
-  auth = (secrets.mailjet_api_key, secrets.mailjet_api_secret)
+  auth = (app_secrets.mailjet_api_key, app_secrets.mailjet_api_secret)
   mailjet = Client(auth=auth, version='v3.1')
   result = mailjet.send.create(data=data)
   if result.status_code != 200:
@@ -496,7 +495,7 @@ def init(app):
   app.config['MAIL_USE_SSL'] = settings.emails['use_ssl']
   app.config['MAIL_DEBUG'] = app.debug
   app.config['MAIL_USERNAME'] = settings.emails['username']
-  #app.config['MAIL_PASSWORD'] = '' # set in secrets.py
+  #app.config['MAIL_PASSWORD'] = '' # set in app_secrets.py
   app.config['MAIL_DEFAULT_SENDER'] = settings.emails['from_name']+" <"+settings.emails['from_email']+">"
   global mail
   mail = Mail(app)

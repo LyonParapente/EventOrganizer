@@ -1,5 +1,5 @@
 from flask import request, abort
-from flask_restful_swagger_3 import Resource, Schema, swagger
+from flask_restful import Resource
 from flask_jwt_extended import create_access_token, get_jwt
 from flask_bcrypt import Bcrypt
 from models.auth import AccessToken
@@ -11,42 +11,42 @@ import datetime
 bcrypt = Bcrypt()
 
 class LoginAPI(Resource):
-  @swagger.doc({
-    'tags': ['auth'],
-    'parameters': [
-      {
-        'name': 'login',
-        'required': True,
-        'description': 'User email',
-        'in': 'query',
-        'schema': {
-          'type': 'string'
-        }
-      },
-      {
-        'name': 'password',
-        'required': True,
-        'description': 'User password',
-        'in': 'query',
-        'schema': {
-          'type': 'string'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Successfully logged in',
-        'content': {
-          'application/json': {
-            'schema': AccessToken
-          }
-        }
-      },
-      '401': {
-        'description': 'Authentication failed'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['auth'],
+  #   'parameters': [
+  #     {
+  #       'name': 'login',
+  #       'required': True,
+  #       'description': 'User email',
+  #       'in': 'query',
+  #       'schema': {
+  #         'type': 'string'
+  #       }
+  #     },
+  #     {
+  #       'name': 'password',
+  #       'required': True,
+  #       'description': 'User password',
+  #       'in': 'query',
+  #       'schema': {
+  #         'type': 'string'
+  #       }
+  #     }
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Successfully logged in',
+  #       'content': {
+  #         'application/json': {
+  #           'schema': AccessToken
+  #         }
+  #       }
+  #     },
+  #     '401': {
+  #       'description': 'Authentication failed'
+  #     }
+  #   }
+  # })
   def post(self):
     """Login"""
     infos = request.args.to_dict()
@@ -147,20 +147,20 @@ class LoginAPI(Resource):
 
 
 class LogoutAPI(Resource):
-  @swagger.doc({
-    'tags': ['auth'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'responses': {
-      '200': {
-        'description': 'Successfully logged out'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
+  # @swagger.doc({
+  #   'tags': ['auth'],
+  #   'security': [
+  #     {'BearerAuth': []}
+  #   ],
+  #   'responses': {
+  #     '200': {
+  #       'description': 'Successfully logged out'
+  #     },
+  #     '401': {
+  #       'description': 'Not authenticated'
+  #     }
+  #   }
+  # })
   def get(self):
     """Logout"""
     self.disconnect(get_jwt())

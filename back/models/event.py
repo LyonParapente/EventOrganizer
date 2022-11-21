@@ -1,5 +1,8 @@
-from flask_restful_swagger_3 import Schema
+#from flask_restful_swagger_3 import Schema
 from flask import abort
+
+class Schema():
+  plop = 'plop'
 
 class Event(Schema):
   type = 'object'

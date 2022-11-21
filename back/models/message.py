@@ -1,4 +1,6 @@
-from flask_restful_swagger_3 import Schema
+#from flask_restful_swagger_3 import Schema
+class Schema():
+  plop = 'plop'
 
 class Message(Schema):
   type = 'object'
