@@ -1,9 +1,11 @@
 from flask_restful import Resource
+from flask_apispec import marshal_with
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from models.event import Event
+from models.event import EventsList
 from database.manager import db
 
-class EventsAPI(Resource):
+class EventsAPI(MethodResource, Resource):
   @jwt_required(optional=True)
   # @swagger.doc({
   #   'tags': ['events'],
@@ -42,6 +44,7 @@ class EventsAPI(Resource):
   #     }
   #   }
   # })
+  @marshal_with(EventsList)
   def get(self, _parser):
     """Download a list of events (in a date range)"""
     query = _parser.parse_args(strict=True)
@@ -58,6 +61,6 @@ class EventsAPI(Resource):
           del streamlined_event['whatsapp_link']
         if streamlined_event.get('description'):
           del streamlined_event['description']
-      events_list[i] = Event(**streamlined_event)
+      events_list[i] = streamlined_event
 
     return events_list

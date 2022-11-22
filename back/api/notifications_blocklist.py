@@ -1,10 +1,11 @@
 from flask import abort
 from flask_restful import Resource
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.manager import db
 import sqlite3
 
-class NotificationsBlocklistAPI(Resource):
+class NotificationsBlocklistAPI(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['event'],

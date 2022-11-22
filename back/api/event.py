@@ -1,5 +1,7 @@
 from flask import request, abort
 from flask_restful import Resource
+from flask_apispec import marshal_with
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.event import Event, validate_event, filter_event_response
 from database.manager import db
@@ -7,7 +9,7 @@ from emails import send_new_event
 from helper import get_date_from_str
 import datetime
 
-class EventAPICreate(Resource):
+class EventAPICreate(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['event'],
@@ -39,6 +41,7 @@ class EventAPICreate(Resource):
   #     }
   #   }
   # })
+  @marshal_with(Event)
   def post(self):
     """Create an event"""
     # Validate request body with schema model
@@ -57,7 +60,7 @@ class EventAPICreate(Resource):
     except Exception as e:
       abort(500, e.args[0])
 
-    new_event = Event(**filter_event_response(props))
+    new_event = filter_event_response(props)
 
     # The creator of an event is immediately registered as participant
     try:
@@ -82,7 +85,7 @@ class EventAPICreate(Resource):
 
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
-class EventAPI(Resource):
+class EventAPI(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['event'],
@@ -117,12 +120,13 @@ class EventAPI(Resource):
   #     }
   #   }
   # })
+  @marshal_with(Event)
   def get(self, event_id):
     """Get details of an event"""
     props = db.get_event(event_id)
     if type(props) is not dict:
       abort(404, 'Event not found')
-    return Event(**filter_event_response(props))
+    return filter_event_response(props)
 
 
   @jwt_required()
@@ -174,7 +178,7 @@ class EventAPI(Resource):
   def put(self, event_id):
     """Update an event"""
     # Validate request body with schema model
-    event = validate_event(request.json, update=True)
+    validate_event(request.json, update=True)
 
     db_event = self.get(event_id)
 

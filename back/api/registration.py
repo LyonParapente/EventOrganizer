@@ -1,12 +1,13 @@
 from flask import abort
-from flask_restful import Resource
+from flask_restful import Resource, marshal
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.registration import Registration
 from database.manager import db
 from emails import send_new_registration, send_del_registration
 import sqlite3
 
-class RegisterAPI(Resource):
+class RegisterAPI(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['event'],
@@ -75,7 +76,7 @@ class RegisterAPI(Resource):
     user_name = claims['firstname'] + ' ' + claims['lastname']
     send_new_registration(event_id, user_id, user_name, props['interest'])
 
-    return Registration(**props), 200
+    return marshal(props, Registration), 200
 
 
   @jwt_required()

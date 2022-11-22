@@ -58,6 +58,28 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 #api = Api(app, components=components, security=api_security)  # TODO
 api = Api(app)
 
+# ------------------------------
+# Swagger
+
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from flask_apispec.extension import FlaskApiSpec
+
+app.config.update({
+  'APISPEC_SPEC': APISpec(
+    title='EventOrganizer',
+    version='v1',
+    plugins=[MarshmallowPlugin()],
+    openapi_version='2.0.0'
+  ),
+  'APISPEC_SWAGGER_URL': '/swagger/',  # URI to access API Doc JSON 
+  'APISPEC_SWAGGER_UI_URL': '/swagger-ui/'  # URI to access UI of API Doc
+})
+docs = FlaskApiSpec(app)
+
+# ------------------------------
+# Secrets
+
 app.config.from_pyfile('app_secrets.py')
 emails.init(app)
 
@@ -149,29 +171,40 @@ app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7Mo
 from api.auth import LoginAPI, LogoutAPI
 api.add_resource(LoginAPI,         settings.api_path+'/auth/login')
 api.add_resource(LogoutAPI,        settings.api_path+'/auth/logout')
+docs.register(LoginAPI)
+docs.register(LogoutAPI)
 
 from api.event import EventAPICreate, EventAPI
 api.add_resource(EventAPICreate,   settings.api_path+'/event')
 api.add_resource(EventAPI,         settings.api_path+'/event/<int:event_id>')
+docs.register(EventAPICreate)
+docs.register(EventAPI)
 
 from api.registration import RegisterAPI
 api.add_resource(RegisterAPI,      settings.api_path+'/event/<int:event_id>/registration')
+docs.register(RegisterAPI)
 
 from api.notifications_blocklist import NotificationsBlocklistAPI
 api.add_resource(NotificationsBlocklistAPI, settings.api_path+'/event/<int:event_id>/notifications_blocklist')
+docs.register(NotificationsBlocklistAPI)
 
 from api.events import EventsAPI
 api.add_resource(EventsAPI,        settings.api_path+'/events')
+docs.register(EventsAPI)
 
 from api.user import UserAPICreate, UserAPI
 api.add_resource(UserAPICreate,    settings.api_path+'/user')
 api.add_resource(UserAPI,          settings.api_path+'/user/<int:user_id>')
+docs.register(UserAPICreate)
+docs.register(UserAPI)
 
 from api.message import MessageAPICreate
 api.add_resource(MessageAPICreate, settings.api_path+'/message')
+docs.register(MessageAPICreate)
 
 from api.messages import MessagesAPI
 api.add_resource(MessagesAPI,      settings.api_path+'/messages')
+docs.register(MessagesAPI)
 
 # ------------------------------
 # Routes
@@ -212,7 +245,7 @@ def calendar():
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
 
 
-@app.route('/swagger')
+@app.route('/swagger-online')
 def swag():
   """Redirect to Swagger UI"""
   hostname = request.environ["SERVER_NAME"]
@@ -220,7 +253,7 @@ def swag():
     hostname = 'localhost'
   port = request.environ["SERVER_PORT"]
   protocol = request.environ["wsgi.url_scheme"]
-  url = "http://petstore.swagger.io/?url={}://{}:{}/api/swagger.json".format(protocol, hostname, port)
+  url = "http://petstore.swagger.io/?url={}://{}:{}/swagger".format(protocol, hostname, port)
   return redirect(url)
 
 #@app.route("/environ")

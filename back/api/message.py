@@ -1,11 +1,12 @@
 from flask import request, abort
-from flask_restful import Resource
+from flask_restful import Resource, marshal
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
-from models.message import Message, MessageCreate
+from models.message import Message
 from database.manager import db
 from emails import send_new_message
 
-class MessageAPICreate(Resource):
+class MessageAPICreate(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['message'],
@@ -45,7 +46,8 @@ class MessageAPICreate(Resource):
 
     try:
       # Validate request body with schema model
-      message = MessageCreate(**args)
+      #message = MessageCreate(**args)
+      message = marshal(args, Message) # TODO https://marshmallow.readthedocs.io/en/stable/quickstart.html#validation
     except ValueError as e:
       abort(400, e.args[0])
 
@@ -75,4 +77,4 @@ class MessageAPICreate(Resource):
       author_name = claims['firstname'] + ' ' + claims['lastname']
       send_new_message(author_name, author_id, props['event_id'], props['comment'])
 
-    return Message(**props), 201, {'Location': request.path + '/' + str(props['id'])}
+    return marshal(props, Message), 201, {'Location': request.path + '/' + str(props['id'])}

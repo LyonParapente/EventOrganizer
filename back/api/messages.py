@@ -1,5 +1,6 @@
 from flask import abort
-from flask_restful import Resource
+from flask_restful import Resource, marshal
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required
 from models.message import Messages, MessagesComment, MessagesUser
 from models.user import silence_user_fields
@@ -16,7 +17,7 @@ def create_basic_user_infos(props):
     user_infos['has_whatsapp'] = True
   return user_infos
 
-class MessagesAPI(Resource):
+class MessagesAPI(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['messages'],
@@ -107,4 +108,4 @@ class MessagesAPI(Resource):
       'participants': participants,
       'interested': interested
     }
-    return Messages(**result)
+    return marshal(result, Messages)

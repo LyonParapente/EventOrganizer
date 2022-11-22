@@ -1,5 +1,7 @@
 from flask import request, abort
 from flask_restful import Resource
+from flask_apispec import marshal_with
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import create_access_token, get_jwt
 from flask_bcrypt import Bcrypt
 from models.auth import AccessToken
@@ -10,7 +12,7 @@ import datetime
 
 bcrypt = Bcrypt()
 
-class LoginAPI(Resource):
+class LoginAPI(MethodResource, Resource):
   # @swagger.doc({
   #   'tags': ['auth'],
   #   'parameters': [
@@ -47,6 +49,7 @@ class LoginAPI(Resource):
   #     }
   #   }
   # })
+  @marshal_with(AccessToken)
   def post(self):
     """Login"""
     infos = request.args.to_dict()
@@ -146,7 +149,7 @@ class LoginAPI(Resource):
       return "Invalid token",401
 
 
-class LogoutAPI(Resource):
+class LogoutAPI(MethodResource, Resource):
   # @swagger.doc({
   #   'tags': ['auth'],
   #   'security': [

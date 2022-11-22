@@ -1,11 +1,12 @@
 from flask import request, abort
-from flask_restful import Resource
+from flask_restful import Resource, marshal
+from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.user import User, validate_user, filter_user_response
 from database.manager import db
 import sqlite3
 
-class UserAPICreate(Resource):
+class UserAPICreate(MethodResource, Resource):
   # @swagger.doc({
   #   'tags': ['user'],
   #   'requestBody': {
@@ -37,7 +38,7 @@ class UserAPICreate(Resource):
     code, result = self.from_dict(user)
     if code != 200:
       abort(code, result)
-    return User(**filter_user_response(result)), 201, {'Location': request.path + '/' + str(result['id'])}
+    return marshal(filter_user_response(result), User), 201, {'Location': request.path + '/' + str(result['id'])}
 
   @staticmethod
   def from_dict(dict):
@@ -52,7 +53,7 @@ class UserAPICreate(Resource):
     return 200,props
 
 
-class UserAPI(Resource):
+class UserAPI(MethodResource, Resource):
   @jwt_required()
   # @swagger.doc({
   #   'tags': ['user'],
@@ -92,7 +93,7 @@ class UserAPI(Resource):
     props = db.get_user(user_id=user_id)
     if type(props) is not dict:
       abort(404, 'User not found')
-    return User(**filter_user_response(props))
+    return marshal(filter_user_response(props), User)
 
 
   @jwt_required()

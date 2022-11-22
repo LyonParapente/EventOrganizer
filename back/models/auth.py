@@ -1,10 +1,10 @@
-#from flask_restful_swagger_3 import Schema
+from marshmallow import Schema, fields
 
-class Schema():
-  plop = 'plop'
+# class AccessToken(Schema):
+#   type = 'object'
+#   properties = {
+#     'access_token': {'type': 'string', 'readOnly': True}
+#   }
 
 class AccessToken(Schema):
-  type = 'object'
-  properties = {
-    'access_token': {'type': 'string', 'readOnly': True}
-  }
+  access_token = fields.String()
