@@ -1,6 +1,6 @@
 from flask import request, abort
 from flask_restful import Resource
-from flask_apispec import marshal_with
+from flask_apispec import marshal_with, use_kwargs, doc
 from flask_apispec.views import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.event import Event, validate_event, filter_event_response
@@ -41,9 +41,10 @@ class EventAPICreate(MethodResource, Resource):
   #     }
   #   }
   # })
+  @doc(description='Create an event', tags=['Event'])
+  @use_kwargs(Event)
   @marshal_with(Event)
   def post(self):
-    """Create an event"""
     # Validate request body with schema model
     event = validate_event(request.json, create=True)
 

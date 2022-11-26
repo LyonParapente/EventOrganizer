@@ -22,11 +22,11 @@ from flask import abort
 #   # required on response:
 #   required = ['id', 'title', 'start_date', 'creator_id', 'creation_datetime']
 
-class Event(Schema):
-  id = fields.Integer(default=101)
+class EventBase(Schema):
+  id = fields.Integer(default=101, dump_only=True)
   title = fields.String(default='My event title')
-  start_date = fields.String(default='2020-04-16')
-  end_date = fields.String(default='2020-04-17')
+  start_date = fields.Date(default='2020-04-16')
+  end_date = fields.Date(default='2020-04-17')
   time = fields.String(default='16h')
   description = fields.String(default='Welcome to this event')
   location= fields.String(default='Annecy')
@@ -35,12 +35,24 @@ class Event(Schema):
   category = fields.String(default='conference')
   color = fields.String(default='#662C67')
   whatsapp_link = fields.String(default='https://chat.whatsapp.com/D8CuyAfZilxKbCgdIK8ZX5')
-  creator_id = fields.Integer(default= 101)
-  creation_datetime = fields.DateTime(dt_format='iso8601')
+  creator_id = fields.Integer(default= 101, dump_only=True)
+  creation_datetime = fields.DateTime(dump_only=True)
 
-#EventsList = {fields.List(fields.Nested(Event))}
+class Event(EventBase):
+  id = fields.Integer(default=101, dump_only=True, required=True)
+  title = fields.String(default='My event title', required=True)
+  start_date = fields.Date(default='2020-04-16', required=True)
+  creator_id = fields.Integer(default= 101, dump_only=True, required=True)
+  creation_datetime = fields.DateTime(dump_only=True, required=True)
+
 EventsList = Event(many=True)
 
+class EventCreate(EventBase):
+  title = fields.String(default='My event title', required=True)
+  start_date = fields.Date(default='2020-04-16', required=True)
+
+class EventUpdate(EventBase):
+  pass
 
 # The following classes do not appear in swagger
 # class EventCreate(Event):

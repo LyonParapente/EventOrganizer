@@ -7,4 +7,4 @@ from marshmallow import Schema, fields
 #   }
 
 class AccessToken(Schema):
-  access_token = fields.String()
+  access_token = fields.String(dump_only=True)
