@@ -1,10 +1,9 @@
-from flask import request, abort
-from flask_restful import Resource
-from flask_apispec import marshal_with
-from flask_apispec.views import MethodResource
+from flask.views import MethodView
+from apiflask import APIBlueprint
 from flask_jwt_extended import create_access_token, get_jwt
 from flask_bcrypt import Bcrypt
-from models.auth import AccessToken
+from models.auth import AccessToken, LoginData
+from models.simple import SimpleMessage
 from database.manager import db
 from helper import get_datetime_from_str
 import settings
@@ -12,56 +11,24 @@ import datetime
 
 bcrypt = Bcrypt()
 
-class LoginAPI(MethodResource, Resource):
-  # @swagger.doc({
-  #   'tags': ['auth'],
-  #   'parameters': [
-  #     {
-  #       'name': 'login',
-  #       'required': True,
-  #       'description': 'User email',
-  #       'in': 'query',
-  #       'schema': {
-  #         'type': 'string'
-  #       }
-  #     },
-  #     {
-  #       'name': 'password',
-  #       'required': True,
-  #       'description': 'User password',
-  #       'in': 'query',
-  #       'schema': {
-  #         'type': 'string'
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Successfully logged in',
-  #       'content': {
-  #         'application/json': {
-  #           'schema': AccessToken
-  #         }
-  #       }
-  #     },
-  #     '401': {
-  #       'description': 'Authentication failed'
-  #     }
-  #   }
-  # })
-  @marshal_with(AccessToken)
-  def post(self):
+AuthBP = APIBlueprint('Auth', __name__)
+
+class LoginAPI(MethodView):
+  @AuthBP.post('/login')
+  @AuthBP.input(LoginData, location='query')
+  @AuthBP.output(AccessToken, description='Successfully logged in')
+  @AuthBP.doc(responses={401: 'Authentication failed'})
+  def login(self, data):
     """Login"""
-    infos = request.args.to_dict()
-    access_token = LoginAPI.authenticate(
-      infos['login'],
-      infos['password'],
+    access_token = self.authenticate(
+      data['login'],
+      data['password'],
       settings.api_JWT_ACCESS_TOKEN_EXPIRES
     )
     if access_token is None:
       # do not use abort() for website
       return {'message': 'Authentication failed'}, 401
-    return AccessToken(**{'access_token': access_token}), 200
+    return {'access_token': access_token}, 200
 
   @staticmethod
   def authenticate(email, password, expires_delta):
@@ -120,7 +87,7 @@ class LoginAPI(MethodResource, Resource):
       return "Password changed",200
     else:
       return "Invalid old password",401
-  
+
   @staticmethod
   def lost_password(user_email):
     user = db.get_user(email=user_email)
@@ -149,22 +116,11 @@ class LoginAPI(MethodResource, Resource):
       return "Invalid token",401
 
 
-class LogoutAPI(MethodResource, Resource):
-  # @swagger.doc({
-  #   'tags': ['auth'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Successfully logged out'
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     }
-  #   }
-  # })
-  def get(self):
+
+  @AuthBP.get('/logout')
+  @AuthBP.output(SimpleMessage, description='Successfully logged out')
+  @AuthBP.doc(security='BearerAuth')
+  def logout(self):
     """Logout"""
     self.disconnect(get_jwt())
     return {'message': 'Logged out'}, 200
@@ -172,4 +128,4 @@ class LogoutAPI(MethodResource, Resource):
   @staticmethod
   def disconnect(token):
     #TODO: blocklist for instance
-    print(token)
+    print("disconnect: "+token)

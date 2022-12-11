@@ -1,52 +1,25 @@
-from flask import request, abort
-from flask_restful import Resource
-from flask_apispec import marshal_with, use_kwargs, doc
-from flask_apispec.views import MethodResource
+from flask import request
+from flask.views import MethodView
+from apiflask import APIBlueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
-from models.event import Event, validate_event, filter_event_response
+from models.event import EventCreate, EventUpdate, Event, filter_event_response
+from models.simple import SimpleMessage
 from database.manager import db
 from emails import send_new_event
 from helper import get_date_from_str
 import datetime
 
-class EventAPICreate(MethodResource, Resource):
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'requestBody': {
-  #     'required': True,
-  #     'content': {
-  #       'application/json': {
-  #         'schema': Event
-  #       }
-  #     }
-  #   },
-  #   'responses': {
-  #     '201': {
-  #       'description': 'Created event',
-  #       'content': {
-  #         'application/json': {
-  #           'schema': Event
-  #         }
-  #       }
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     },
-  #     '403': {
-  #       'description': 'Creation forbidden'
-  #     }
-  #   }
-  # })
-  @doc(description='Create an event', tags=['Event'])
-  @use_kwargs(Event)
-  @marshal_with(Event)
-  def post(self):
-    # Validate request body with schema model
-    event = validate_event(request.json, create=True)
+EventBP = APIBlueprint('Event', __name__)
+
+class EventAPI(MethodView):
+
+  decorators = [jwt_required(), EventBP.doc(security='BearerAuth')]
+
+  @EventBP.input(EventCreate)
+  @EventBP.output(Event, status_code=201, description='Created event')
+  @EventBP.doc(responses={403: 'Creation forbidden'})
+  def post(self, event):
+    """Create an event"""
 
     end_date = event['end_date'] if event.get('end_date') else event['start_date']
     event_end = get_date_from_str(end_date)
@@ -86,42 +59,8 @@ class EventAPICreate(MethodResource, Resource):
 
     return new_event, 201, {'Location': request.path + '/' + str(props['id'])}
 
-class EventAPI(MethodResource, Resource):
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'parameters': [
-  #     {
-  #       'name': 'event_id',
-  #       'required': True,
-  #       'description': 'Event identifier',
-  #       'in': 'path',
-  #       'schema': {
-  #         'type': 'integer'
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Event',
-  #       'content': {
-  #         'application/json': {
-  #           'schema': Event
-  #          }
-  #       }
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     },
-  #     '404': {
-  #       'description': 'Event not found'
-  #     }
-  #   }
-  # })
-  @marshal_with(Event)
+
+  @EventBP.output(Event, status_code=200, description='Event')
   def get(self, event_id):
     """Get details of an event"""
     props = db.get_event(event_id)
@@ -130,57 +69,11 @@ class EventAPI(MethodResource, Resource):
     return filter_event_response(props)
 
 
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'parameters': [
-  #     {
-  #       'name': 'event_id',
-  #       'required': True,
-  #       'description': 'Event identifier',
-  #       'in': 'path',
-  #       'schema': {
-  #         'type': 'integer'
-  #       }
-  #     }
-  #   ],
-  #   'requestBody': {
-  #     'required': True,
-  #     'content': {
-  #       'application/json': {
-  #         'schema': Event
-  #       }
-  #     }
-  #   },
-
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Updated event',
-  #       'content': {
-  #         'application/json': {
-  #           'schema': Event
-  #         }
-  #       }
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     },
-  #     '403': {
-  #       'description': 'Update forbidden'
-  #     },
-  #     '404': {
-  #       'description': 'Event not found'
-  #     }
-  #   }
-  # })
-  def put(self, event_id):
+  @EventBP.input(EventUpdate)
+  @EventBP.output(Event, status_code=200, description='Updated event')
+  @EventBP.doc(responses={403: 'Update forbidden'})
+  def put(self, event_id, event):
     """Update an event"""
-    # Validate request body with schema model
-    validate_event(request.json, update=True)
-
     db_event = self.get(event_id)
 
     claims = get_jwt()
@@ -195,7 +88,7 @@ class EventAPI(MethodResource, Resource):
       abort(403, 'Cannot modify a past event')
 
     try:
-      db.update_event(event_id, **request.json)
+      db.update_event(event_id, **event)
     except Exception as e:
       abort(500, e.args[0])
 
@@ -203,38 +96,8 @@ class EventAPI(MethodResource, Resource):
     return self.get(event_id)
 
 
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'parameters': [
-  #     {
-  #       'name': 'event_id',
-  #       'required': True,
-  #       'description': 'Event identifier',
-  #       'in': 'path',
-  #       'schema': {
-  #         'type': 'integer'
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Confirmation message',
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     },
-  #     '403': {
-  #       'description': 'Deletion forbidden'
-  #     },
-  #     '404': {
-  #       'description': 'Event not found'
-  #     }
-  #   }
-  # })
+  @EventBP.output(SimpleMessage, description='Confirmation message')
+  @EventBP.doc(responses={403: 'Deletion forbidden'})
   def delete(self, event_id):
     """Delete an event"""
 
@@ -256,3 +119,8 @@ class EventAPI(MethodResource, Resource):
     if rowcount < 1:
       abort(404, 'No event was deleted')
     return {'message': 'Event deleted'}, 200
+
+
+EventAPI_view = EventAPI.as_view('EventAPI')
+EventBP.add_url_rule('/event', view_func=EventAPI_view, methods=['POST'])
+EventBP.add_url_rule('/event/<int:event_id>', view_func=EventAPI_view, methods=['GET', 'PUT', 'DELETE'])

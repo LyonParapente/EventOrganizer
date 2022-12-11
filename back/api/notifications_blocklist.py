@@ -1,37 +1,18 @@
-from flask import abort
-from flask_restful import Resource
-from flask_apispec.views import MethodResource
+from flask.views import MethodView
+from apiflask import APIBlueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.simple import SimpleMessage
+from models.notifications_blocklist import NotificationsBlocklistResponseMessageWithBlock
 from database.manager import db
 import sqlite3
 
-class NotificationsBlocklistAPI(MethodResource, Resource):
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'parameters': [
-  #     {
-  #       'name': 'event_id',
-  #       'required': True,
-  #       'description': 'Event identifier',
-  #       'in': 'path',
-  #       'schema': {
-  #         'type': 'integer'
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Notifications blocklist added'
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     }
-  #   }
-  # })
+NotificationsBlocklistBP = APIBlueprint('NotificationsBlocklist', __name__, tag='Event')
+
+class NotificationsBlocklistAPI(MethodView):
+
+  decorators = [jwt_required(), NotificationsBlocklistBP.doc(security='BearerAuth')]
+
+  @NotificationsBlocklistBP.output(SimpleMessage, description='Notifications blocklist added')
   def put(self, event_id):
     """Add a notifications blocklist"""
     user_id = get_jwt_identity()
@@ -47,32 +28,7 @@ class NotificationsBlocklistAPI(MethodResource, Resource):
     return {'message': 'Ignoring notifications for this event'}, 200
 
 
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'parameters': [
-  #     {
-  #       'name': 'event_id',
-  #       'required': True,
-  #       'description': 'Event identifier',
-  #       'in': 'path',
-  #       'schema': {
-  #         'type': 'integer'
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Notifications blocklist response'
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     }
-  #   }
-  # })
+  @NotificationsBlocklistBP.output(NotificationsBlocklistResponseMessageWithBlock, description='Notifications blocklist response')
   def get(self, event_id):
     """Get a notifications blocklist"""
     user_id = get_jwt_identity()
@@ -88,35 +44,8 @@ class NotificationsBlocklistAPI(MethodResource, Resource):
     return res, 200
 
 
-  @jwt_required()
-  # @swagger.doc({
-  #   'tags': ['event'],
-  #   'security': [
-  #     {'BearerAuth': []}
-  #   ],
-  #   'parameters': [
-  #     {
-  #       'name': 'event_id',
-  #       'required': True,
-  #       'description': 'Event identifier',
-  #       'in': 'path',
-  #       'schema': {
-  #         'type': 'integer'
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'Notifications blocklist removed'
-  #     },
-  #     '401': {
-  #       'description': 'Not authenticated'
-  #     },
-  #     '404': {
-  #       'description': 'Notifications blocklist not found'
-  #     }
-  #   }
-  # })
+  @NotificationsBlocklistBP.output(SimpleMessage, description='Notifications blocklist removed')
+  @NotificationsBlocklistBP.doc(responses={404: 'Notifications blocklist not found'})
   def delete(self, event_id):
     """Delete a notifications blocklist"""
     user_id = get_jwt_identity()
@@ -126,3 +55,7 @@ class NotificationsBlocklistAPI(MethodResource, Resource):
       abort(404, 'Notifications blocklist was not found')
 
     return {'message': 'Notifications blocklist deleted'}, 200
+
+
+NotificationsBlocklistPI_view = NotificationsBlocklistAPI.as_view('NotificationsBlocklistAPI')
+NotificationsBlocklistBP.add_url_rule('/event/<int:event_id>/notifications_blocklist', view_func=NotificationsBlocklistPI_view)

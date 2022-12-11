@@ -1,83 +1,53 @@
-from marshmallow import Schema, fields
-from flask import abort
+from apiflask import Schema, fields
+from marshmallow import ValidationError
 
-# class Event(Schema):
-#   type = 'object'
-#   properties = {
-#     'id': {'type': 'integer', 'readOnly': True, 'example': 101},
-#     'title': {'type': 'string', 'example': 'My event title'},
-#     'start_date': {'type': 'string', 'format': 'date', 'example': '2020-04-16'},
-#     'end_date': {'type': 'string', 'format': 'date', 'example': '2020-04-17'},
-#     'time': {'type': 'string', 'example': '16h'},
-#     'description': {'type': 'string', 'example': 'Welcome to this event'},
-#     'location': {'type': 'string', 'example': 'Annecy'},
-#     'gps': {'type': 'string', 'example': '45.721892, 4.919573'},
-#     'gps_location': {'type': 'string', 'example': 'La Halle Mode & Chaussures | Bron'},
-#     'category': {'type': 'string', 'example': 'conference'},
-#     'color': {'type': 'string', 'example': '#662C67'},
-#     'whatsapp_link': {'type': 'string', 'example': 'https://chat.whatsapp.com/D8CuyAfZilxKbCgdIK8ZX5'},
-#     'creator_id': {'type': 'integer', 'readOnly': True, 'example': 101},
-#     'creation_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.403284Z'}
-#   }
-#   # required on response:
-#   required = ['id', 'title', 'start_date', 'creator_id', 'creation_datetime']
+def validate_whatsapp_link(n):
+  if n != '' and not n.startswith('https://chat.whatsapp.com/'):
+    raise ValidationError("Invalid WhatsApp link")
+
 
 class EventBase(Schema):
-  id = fields.Integer(default=101, dump_only=True)
-  title = fields.String(default='My event title')
-  start_date = fields.Date(default='2020-04-16')
-  end_date = fields.Date(default='2020-04-17')
-  time = fields.String(default='16h')
-  description = fields.String(default='Welcome to this event')
-  location= fields.String(default='Annecy')
-  gps = fields.String(default='45.721892, 4.919573')
-  gps_location = fields.String(default='La Halle Mode & Chaussures | Bron')
-  category = fields.String(default='conference')
-  color = fields.String(default='#662C67')
-  whatsapp_link = fields.String(default='https://chat.whatsapp.com/D8CuyAfZilxKbCgdIK8ZX5')
-  creator_id = fields.Integer(default= 101, dump_only=True)
-  creation_datetime = fields.DateTime(dump_only=True)
-
-class Event(EventBase):
-  id = fields.Integer(default=101, dump_only=True, required=True)
-  title = fields.String(default='My event title', required=True)
-  start_date = fields.Date(default='2020-04-16', required=True)
-  creator_id = fields.Integer(default= 101, dump_only=True, required=True)
-  creation_datetime = fields.DateTime(dump_only=True, required=True)
-
-EventsList = Event(many=True)
+  title = fields.String(example='My event title')
+  start_date = fields.Date(example='2020-04-16')
+  end_date = fields.Date(example='2020-04-17')
+  time = fields.String(example='16h')
+  description = fields.String(example='Welcome to this event')
+  location= fields.String(example='Annecy')
+  gps = fields.String(example='45.721892, 4.919573')
+  gps_location = fields.String(example='La Halle Mode & Chaussures | Bron')
+  category = fields.String(example='conference')
+  color = fields.String(example='#662C67')
+  whatsapp_link = fields.String(example='https://chat.whatsapp.com/D8CuyAfZilxKbCgdIK8ZX5', validate=validate_whatsapp_link)
 
 class EventCreate(EventBase):
-  title = fields.String(default='My event title', required=True)
-  start_date = fields.Date(default='2020-04-16', required=True)
+  title = fields.String(example='My event title', required=True)
+  start_date = fields.Date(example='2020-04-16', required=True)
+
+class Event(EventCreate):
+  id = fields.Integer(example=101, dump_only=True, required=True)
+  creator_id = fields.Integer(example=101, dump_only=True, required=True)
+  creation_datetime = fields.DateTime(dump_only=True, required=True, example='2020-04-13T16:30:04.403284Z')
 
 class EventUpdate(EventBase):
   pass
 
-# The following classes do not appear in swagger
-# class EventCreate(Event):
-#   required = ['title', 'start_date']
-# class EventUpdate(Event):
-#   required = []
 
-def validate_event(json, create=False, update=False):
-  try:
-    # if create == True:
-    #   user = EventCreate(**json)
-    # elif update == True:
-    #   user = EventUpdate(**json)
-    user = json # TODO: https://marshmallow.readthedocs.io/en/stable/quickstart.html#validation
-    if json.get('whatsapp_link', '') != '' and not json['whatsapp_link'].startswith('https://chat.whatsapp.com/'):
-      raise ValueError('Invalid WhatsApp link')
-  except ValueError as e:
-    abort(400, e.args[0])
-  return user
+# ----------
+# Inputs
+
+class EventsQuery(Schema):
+  start = fields.Date(metadata={'description': 'Start date of the interval being fetched'}, example='2021-01-01') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
+  end = fields.Date(metadata={'description': 'Exclusive end date of the interval being fetched'}, example='2020-04-16') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
+
+# ----------
+
+#TODO: remove next block
 
 def filter_event_response(props):
   # Always remove writeOnly fields for output
-  for field in Event.properties:
-    if Event.properties[field].get('writeOnly') is True:
-      props[field] = None
+  # for field in Event.properties:
+  #   if Event.properties[field].get('writeOnly') is True:
+  #     props[field] = None
 
   streamlined_event = {k: v for k, v in props.items() if v is not None}
   return streamlined_event

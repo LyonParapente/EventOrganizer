@@ -1,66 +1,46 @@
-from flask_restful import Resource
-from flask_apispec import marshal_with
-from flask_apispec.views import MethodResource
+from apiflask import APIBlueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from models.event import EventsList
+from models.event import EventsQuery, Event
 from database.manager import db
+from helper import get_date_from_str, get_datetime_from_str
 
-class EventsAPI(MethodResource, Resource):
-  @jwt_required(optional=True)
-  # @swagger.doc({
-  #   'tags': ['events'],
-  #   # auth. optional, get more info though (description, whatsapp_link)
-  #   #'security': [
-  #   #  {'BearerAuth': []}
-  #   #],
-  #   'parameters': [
-  #     {
-  #       'name': 'start',
-  #       'description': 'Start date of the interval being fetched',
-  #       'in': 'query',
-  #       'required': False,
-  #       'schema': {
-  #         'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
-  #       }
-  #     },
-  #     {
-  #       'name': 'end',
-  #       'description': 'Exclusive end date of the interval being fetched',
-  #       'in': 'query',
-  #       'required': False,
-  #       'schema': {
-  #         'type': 'string' # to be compatible with https://fullcalendar.io/docs/events-json-feed
-  #       }
-  #     }
-  #   ],
-  #   'responses': {
-  #     '200': {
-  #       'description': 'List of events',
-  #       'content': {
-  #         'application/json': {
-  #           'schema': Event.array()
-  #         }
-  #       }
-  #     }
-  #   }
-  # })
-  @marshal_with(EventsList)
-  def get(self, _parser):
-    """Download a list of events (in a date range)"""
-    query = _parser.parse_args(strict=True)
-    events_list = db.get_events_list(query["start"], query["end"])
+EventsBP = APIBlueprint('Events', __name__)
 
-    user_id = get_jwt_identity()
-    is_connected = user_id is not None
+@EventsBP.get('/')
+@jwt_required(optional=True)
+@EventsBP.input(EventsQuery, location='query')
+@EventsBP.output(Event(many=True), description='List of events')
+def getEvents(query):
+  """Download a list of events (in a date range)"""
+  start = query.get('start')
+  end = query.get('end')
+  events_list = db.get_events_list(start, end)
 
-    for i in range(len(events_list)):
-      event = events_list[i]
-      streamlined_event = {k: v for k, v in event.items() if v is not None}
-      if not is_connected:
-        if streamlined_event.get('whatsapp_link'):
-          del streamlined_event['whatsapp_link']
-        if streamlined_event.get('description'):
-          del streamlined_event['description']
-      events_list[i] = streamlined_event
+  user_id = get_jwt_identity()
+  is_connected = user_id is not None
 
-    return events_list
+  for i in range(len(events_list)):
+    event = events_list[i]
+    streamlined_event = {k: v for k, v in event.items() if v is not None}
+
+    # For apiflask serialization
+    streamlined_event['start_date'] = get_date_from_str(event['start_date'])
+    if not event['end_date']:
+      streamlined_event['end_date'] = None
+    else:
+      streamlined_event['end_date'] = get_date_from_str(event['end_date'])
+
+    creation_datetime = event['creation_datetime']
+    if creation_datetime.endswith('Z'):
+      creation_datetime = creation_datetime[:-1]
+    streamlined_event['creation_datetime'] = get_datetime_from_str(creation_datetime)
+
+    if not is_connected:
+      if streamlined_event.get('whatsapp_link'):
+        del streamlined_event['whatsapp_link']
+      if streamlined_event.get('description'):
+        del streamlined_event['description']
+
+    events_list[i] = streamlined_event
+
+  return events_list
