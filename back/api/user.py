@@ -1,6 +1,6 @@
 from flask import request
 from flask.views import MethodView
-from apiflask import APIBlueprint, fields, abort
+from apiflask import APIBlueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.user import UserCreate, UserUpdate, UserResponse, filter_user_response
 from models.simple import SimpleMessage
@@ -19,7 +19,7 @@ def post(data):
     props = db.insert_user(**data)
   except sqlite3.IntegrityError as err:
     if str(err) == "UNIQUE constraint failed: users.email":
-      abort(409, 'Email already registered')
+      abort(409, 'Email already registered') # OWASP Account Enumeration; but form is public and login is email...
     abort(500, err.args[0])
   except Exception as e:
     abort(500, e.args[0])

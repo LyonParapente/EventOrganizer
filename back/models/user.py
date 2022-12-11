@@ -9,7 +9,6 @@ class UserBase(Schema):
   lastname = fields.String(example='DOE')
   email = fields.Email(example='john.doe@gmail.com', validate=validators.Length(min=5))
   share_email = fields.Boolean(example=False, load_only=True, metadata={'description': 'Does the user allow his/her email to be public?'})
-  password = fields.String(example='password', load_only=True, validate=validators.Length(min=6))
   phone = fields.String(example='01.02.03.04.05')
   share_phone = fields.Boolean(example=False, load_only=True, metadata={'description': 'Does the user allow his/her phone to be public?'})
   has_whatsapp = fields.Boolean(example=False)
@@ -29,8 +28,8 @@ class UserResponse(UserBase):
 class UserCreate(UserBase):
   firstname = fields.String(example='John', required=True)
   lastname = fields.String(example='DOE', required=True)
-  email = fields.Email(example='john.doe@gmail.com', validate=validators.Length(min=5))
-  password = fields.String(example='password', load_only=True, validate=validators.Length(min=6))
+  email = fields.Email(example='john.doe@gmail.com', required=True, validate=validators.Length(min=5))
+  password = fields.String(example='password', required=True, load_only=True, validate=validators.Length(min=6))
 
 class UserUpdate(UserBase):
   pass
