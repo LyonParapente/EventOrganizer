@@ -137,7 +137,7 @@ app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7Mo
 # ------------------------------
 # API
 
-from api.auth import AuthBP, LoginAPI
+from api.auth import AuthBP, LoginAPI, LogoutAPI
 app.register_blueprint(AuthBP, url_prefix=settings.api_path+'/auth/')
 
 from api.event import EventBP
@@ -318,7 +318,7 @@ def login():
 @jwt_required(optional=True)
 def logout():
   """Logout"""
-  LoginAPI.disconnect(get_jwt())
+  LogoutAPI.disconnect(get_jwt())
   response = make_response(render_template('login.html', **lang,
     default_theme=settings.default_theme))
   unset_jwt_cookies(response)

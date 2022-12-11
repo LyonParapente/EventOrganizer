@@ -1,6 +1,5 @@
-from flask.views import MethodView
-from apiflask import APIBlueprint
-from flask_jwt_extended import create_access_token, get_jwt
+from apiflask import APIBlueprint, abort
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from flask_bcrypt import Bcrypt
 from models.auth import AccessToken, LoginData
 from models.simple import SimpleMessage
@@ -13,23 +12,22 @@ bcrypt = Bcrypt()
 
 AuthBP = APIBlueprint('Auth', __name__)
 
-class LoginAPI(MethodView):
-  @AuthBP.post('/login')
-  @AuthBP.input(LoginData, location='query')
-  @AuthBP.output(AccessToken, description='Successfully logged in')
-  @AuthBP.doc(responses={401: 'Authentication failed'})
-  def login(self, data):
-    """Login"""
-    access_token = self.authenticate(
-      data['login'],
-      data['password'],
-      settings.api_JWT_ACCESS_TOKEN_EXPIRES
-    )
-    if access_token is None:
-      # do not use abort() for website
-      return {'message': 'Authentication failed'}, 401
-    return {'access_token': access_token}, 200
+@AuthBP.post('/login')
+@AuthBP.input(LoginData)
+@AuthBP.output(AccessToken, description='Successfully logged in')
+@AuthBP.doc(responses={401: 'Authentication failed'})
+def login(data):
+  """Login"""
+  access_token = LoginAPI.authenticate(
+    data['login'],
+    data['password'],
+    settings.api_JWT_ACCESS_TOKEN_EXPIRES
+  )
+  if access_token is None:
+    abort(401, 'Authentication failed')
+  return {'access_token': access_token}, 200
 
+class LoginAPI():
   @staticmethod
   def authenticate(email, password, expires_delta):
     user = db.get_user(email=email)
@@ -117,15 +115,18 @@ class LoginAPI(MethodView):
 
 
 
-  @AuthBP.get('/logout')
-  @AuthBP.output(SimpleMessage, description='Successfully logged out')
-  @AuthBP.doc(security='BearerAuth')
-  def logout(self):
-    """Logout"""
-    self.disconnect(get_jwt())
-    return {'message': 'Logged out'}, 200
+@AuthBP.get('/logout')
+@jwt_required(optional=True)
+@AuthBP.output(SimpleMessage, description='Successfully logged out')
+@AuthBP.doc(security='BearerAuth')
+def logout():
+  """Logout"""
+  LogoutAPI.disconnect(get_jwt())
+  return {'message': 'Logged out'}, 200
 
+class LogoutAPI():
   @staticmethod
-  def disconnect(token):
-    #TODO: blocklist for instance
-    print("disconnect: "+token)
+  def disconnect(token_dict):
+    if (len(token_dict) > 0):
+      #TODO: blocklist for instance
+      print("disconnect: "+str(token_dict))
