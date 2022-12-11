@@ -637,6 +637,7 @@ def generate_ics():
 
 
 # ------------------------------
+app.register_blueprint(bpapp)
 
 if __name__ == '__main__':
   # local development
