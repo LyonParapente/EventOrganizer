@@ -1,4 +1,5 @@
 import datetime
+from helper import get_datetime_from_str
 
 def insert_event(self, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
@@ -37,6 +38,8 @@ def insert_event(self, *,
     new_event['id'] = cursor.lastrowid
   finally:
     db.close()
+
+  new_event['creation_datetime'] = get_datetime_from_str(new_event['creation_datetime'].rstrip('Z'))
   return new_event
 
 def get_event(self, event_id):
@@ -45,9 +48,13 @@ def get_event(self, event_id):
   try:
     get_event = """SELECT * FROM events WHERE id=?"""
     cursor.execute(get_event, (event_id,))
-    return cursor.fetchone()
+    res = cursor.fetchone()
   finally:
     db.close()
+
+  if res is not None:
+    res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
+  return res
 
 def update_event(self, event_id, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
@@ -154,4 +161,5 @@ def get_events_list(self, start, end, fetch_start_before=True):
 
   for event in events_list:
     del event["end_date_bis"]
+    event['creation_datetime'] = get_datetime_from_str(event['creation_datetime'].rstrip('Z'))
   return events_list

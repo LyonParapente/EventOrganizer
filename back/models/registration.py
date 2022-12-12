@@ -5,4 +5,4 @@ class Registration(Schema):
   interest = fields.Integer(example=2, validate=validators.OneOf([1, 2]), required=True)
   event_id = fields.Integer(example=12345, dump_only=True, required=True)
   user_id = fields.Integer(example=101, dump_only=True, required=True)
-  lastupdate_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, example='2020-04-13T16:30:04.461593Z')
+  lastupdate_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, example='2020-04-13T16:30:04.461593')

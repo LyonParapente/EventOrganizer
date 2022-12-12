@@ -47,9 +47,7 @@ class LoginAPI():
 
   @staticmethod
   def get_expiration_datetime(user):
-    datetimeWithoutZ = user['creation_datetime'][:-1]
-    creation_datetime = get_datetime_from_str(datetimeWithoutZ)
-    expiration_datetime = creation_datetime + settings.temporary_user_duration
+    expiration_datetime = user['creation_datetime'] + settings.temporary_user_duration
     return expiration_datetime
 
   @staticmethod

@@ -5,7 +5,7 @@ class MessageResponse(Schema):
   comment = fields.String(example='This is my message', required=True)
   author_id = fields.Integer(example=101, dump_only=True, required=True)
   event_id = fields.Integer(example=12345, dump_only=False, required=True)
-  creation_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, required=True, example='2020-04-13T16:30:04.403284Z')
+  creation_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, required=True, example='2020-04-13T16:30:04.403284')
 
 class MessageCreate(Schema):
   comment = fields.String(example='This is my message', required=True)
@@ -16,7 +16,7 @@ class MessageCreate(Schema):
 # Messages:
 
 class MessagesComment(Schema):
-  date = fields.DateTime(dt_format='iso8601', example='2020-04-13T16:30:04.403284Z', required=True)
+  date = fields.DateTime(dt_format='iso8601', example='2020-04-13T16:30:04.403284', required=True)
   user = fields.Integer(example=101, required=True)
   comment = fields.String(example='This is my message', required=True)
 

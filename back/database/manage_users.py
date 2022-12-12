@@ -1,6 +1,6 @@
 import datetime
 import settings
-from helper import randomString
+from helper import randomString, get_datetime_from_str
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
@@ -12,6 +12,7 @@ def insert_user(self, *,
   Force use of keyworded arguments to prevent from field mismatch and interface incompatibility"""
 
   pw_hash = bcrypt.generate_password_hash(password).decode()
+  now = datetime.datetime.utcnow()
 
   new_user = {
     'firstname': firstname,
@@ -29,7 +30,7 @@ def insert_user(self, *,
     'notif_tomorrow_events': notif_tomorrow_events,
     'wing': wing,
     'presentation': presentation,
-    'creation_datetime': datetime.datetime.utcnow().isoformat()+'Z'
+    'creation_datetime': now.isoformat()+'Z'
   }
   columns = ','.join(tuple(new_user))
   questions = ','.join(['?' for x in new_user])
@@ -44,6 +45,9 @@ def insert_user(self, *,
     new_user['id'] = cursor.lastrowid
   finally:
     db.close()
+
+  new_user['creation_datetime'] = now
+
   return new_user
 
 def get_user(self, user_id=None, email=None):
@@ -56,9 +60,13 @@ def get_user(self, user_id=None, email=None):
     else:
       get_user = """SELECT * FROM users WHERE email=?"""
       cursor.execute(get_user, (email,))
-    return cursor.fetchone()
+    res = cursor.fetchone()
   finally:
     db.close()
+
+  if res is not None:
+    res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
+  return res
 
 def list_users(self, include_new_and_expired=False, only_admins=False,
     notif_new_event=False, notif_event_change=False, notif_tomorrow_events=False):
@@ -83,7 +91,11 @@ def list_users(self, include_new_and_expired=False, only_admins=False,
       list_users += " AND notif_tomorrow_events=1"
 
     cursor.execute(list_users)
-    return cursor.fetchall()
+    res = cursor.fetchall()
+
+    for user in res:
+      user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
+    return res
   finally:
     db.close()
 

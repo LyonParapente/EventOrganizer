@@ -23,17 +23,12 @@ def getEvents(query):
     event = events_list[i]
     streamlined_event = {k: v for k, v in event.items() if v is not None}
 
-    # For apiflask serialization
+    # For apiflask serialization TODO move inside db.get_events_list ?
     streamlined_event['start_date'] = get_date_from_str(event['start_date'])
     if not event['end_date']:
       streamlined_event['end_date'] = None
     else:
       streamlined_event['end_date'] = get_date_from_str(event['end_date'])
-
-    creation_datetime = event['creation_datetime']
-    if creation_datetime.endswith('Z'):
-      creation_datetime = creation_datetime[:-1]
-    streamlined_event['creation_datetime'] = get_datetime_from_str(creation_datetime)
 
     if not is_connected:
       if streamlined_event.get('whatsapp_link'):

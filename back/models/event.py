@@ -26,7 +26,7 @@ class EventCreate(EventBase):
 class Event(EventCreate):
   id = fields.Integer(example=101, dump_only=True, required=True)
   creator_id = fields.Integer(example=101, dump_only=True, required=True)
-  creation_datetime = fields.DateTime(dump_only=True, required=True, example='2020-04-13T16:30:04.403284Z')
+  creation_datetime = fields.DateTime(dump_only=True, required=True, example='2020-04-13T16:30:04.403284')
 
 class EventUpdate(EventBase):
   pass

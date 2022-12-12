@@ -1,4 +1,5 @@
 import datetime
+from helper import get_datetime_from_str
 
 def set_registration(self, *,
     event_id=None, user_id=None, interest=None):
@@ -31,6 +32,8 @@ def set_registration(self, *,
     registration['id'] = cursor.lastrowid
   finally:
     db.close()
+
+  registration['lastupdate_datetime'] = get_datetime_from_str(registration['lastupdate_datetime'].rstrip('Z'))
   return registration
 
 def get_registration(self, event_id, user_id):
@@ -42,9 +45,13 @@ def get_registration(self, event_id, user_id):
       WHERE event_id=? AND user_id=?
     """
     cursor.execute(get_registration, (event_id, user_id))
-    return cursor.fetchone()
+    res = cursor.fetchone()
   finally:
     db.close()
+
+  if res is not None:
+    res['lastupdate_datetime'] = get_datetime_from_str(res['lastupdate_datetime'].rstrip('Z'))
+  return res
 
 def delete_registration(self, event_id, user_id):
   """Delete a specific registration from database"""

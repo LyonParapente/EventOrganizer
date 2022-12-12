@@ -23,7 +23,7 @@ class UserResponse(UserBase):
   id = fields.Integer(example=101, dump_only=True, required=True)
   firstname = fields.String(example='John', required=True)
   lastname = fields.String(example='DOE', required=True)
-  creation_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, required=True, example='2020-04-13T16:30:04.461593Z')
+  creation_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, required=True, example='2020-04-13T16:30:04.461593')
 
 class UserCreate(UserBase):
   firstname = fields.String(example='John', required=True)
