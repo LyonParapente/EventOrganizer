@@ -215,7 +215,7 @@ def swag():
 #def environ():
 #  return "{} <br/><br/><br/> {}".format(request.environ, os.environ)
 
-from api.user import UserAPI
+from api.user import UserAPI, post as createUser
 api_user = UserAPI()
 
 @bpapp.route('/user:<int:id>')
@@ -329,7 +329,7 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
-    code, result = api_user.post(request.form)
+    code, result = createUser(request.form)
     if code == 200:
       f = request.form
       emails.send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])

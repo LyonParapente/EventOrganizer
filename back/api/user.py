@@ -26,7 +26,6 @@ def post(data):
 
   return filter_user_response(props), 201, {'Location': request.path + '/' + str(props['id'])}
 
-
 class UserAPI(MethodView):
 
   decorators = [jwt_required(), UserBP.doc(security='BearerAuth')]
@@ -34,26 +33,29 @@ class UserAPI(MethodView):
   @UserBP.output(UserResponse, description='User')
   def get(self, user_id):
     """Get details of a user"""
+    return self.get_internal(user_id)
+
+  @staticmethod
+  def get_internal(user_id):
     props = db.get_user(user_id=user_id)
     if type(props) is not dict:
       abort(404, 'User not found')
     return filter_user_response(props)
 
-
   @UserBP.input(UserUpdate)
   @UserBP.output(UserResponse, description='Updated user')
   @UserBP.doc(responses={403: 'Update forbidden'})
-  def put(self, user_id):  # TODO: use PATCH
+  def put(self, user_id, data):  # TODO: use PATCH
     """Update a user"""
     if user_id != get_jwt_identity():
       abort(403, "You cannot update someone else")
     try:
-      updated_props = db.update_user(user_id, **dict)
+      updated_props = db.update_user(user_id, **data)
     except Exception as e:
       abort(500, e.args[0])
 
     # Retrieve updated user with all public properties
-    return self.get(user_id)
+    return self.get_internal(user_id)
 
 
   @UserBP.output(SimpleMessage, description='Confirmation message')
@@ -78,7 +80,6 @@ class UserAPI(MethodView):
     db.update_user_role(user_id, "deleted")
 
     # Note: a real delete would delete all user's messages and registration and events by CASCADE
-
     return {'message': 'User deleted'}, 200
 
 

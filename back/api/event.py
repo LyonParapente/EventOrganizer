@@ -63,10 +63,14 @@ class EventAPI(MethodView):
   @EventBP.output(Event, status_code=200, description='Event')
   def get(self, event_id):
     """Get details of an event"""
+    return self.get_internal(event_id)
+
+  @staticmethod
+  def get_internal(event_id):
     props = db.get_event(event_id)
     if type(props) is not dict:
       abort(404, 'Event not found')
-    return filter_event_response(props)
+    return props
 
 
   @EventBP.input(EventUpdate)
@@ -93,7 +97,7 @@ class EventAPI(MethodView):
       abort(500, e.args[0])
 
     # Retrieve updated event with filtered properties
-    return self.get(event_id)
+    return self.get_internal(event_id)
 
 
   @EventBP.output(SimpleMessage, description='Confirmation message')
