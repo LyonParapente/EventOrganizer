@@ -2,7 +2,7 @@ from flask import request
 from flask.views import MethodView
 from apiflask import APIBlueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
-from models.event import EventCreate, EventUpdate, Event, filter_event_response
+from models.event import EventCreate, EventUpdate, Event
 from models.simple import SimpleMessage
 from database.manager import db
 from emails import send_new_event
@@ -34,7 +34,7 @@ class EventAPI(MethodView):
     except Exception as e:
       abort(500, e.args[0])
 
-    new_event = filter_event_response(props)
+    new_event = props
 
     # The creator of an event is immediately registered as participant
     try:

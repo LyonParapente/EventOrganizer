@@ -38,16 +38,3 @@ class EventUpdate(EventBase):
 class EventsQuery(Schema):
   start = fields.Date(metadata={'description': 'Start date of the interval being fetched'}, example='2021-01-01') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
   end = fields.Date(metadata={'description': 'Exclusive end date of the interval being fetched'}, example='2020-04-16') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
-
-# ----------
-
-#TODO: remove next block
-
-def filter_event_response(props):
-  # Always remove writeOnly fields for output
-  # for field in Event.properties:
-  #   if Event.properties[field].get('writeOnly') is True:
-  #     props[field] = None
-
-  streamlined_event = {k: v for k, v in props.items() if v is not None}
-  return streamlined_event

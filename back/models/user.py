@@ -41,13 +41,6 @@ def filter_user_response(props):
 
   silence_user_fields(props)
 
-  #TODO: remove next block
-
-  # Always remove writeOnly fields for output
-  # for field in User.properties:
-  #   if User.properties[field].get('writeOnly') is True:
-  #     props[field] = None
-
   # Technical field
   del props['role']
 
