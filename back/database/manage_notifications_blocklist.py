@@ -1,11 +1,12 @@
-import datetime
-
 def set_notifications_blocklist(self, event_id, user_id):
   """Insert a notifications blocklist in the database"""
 
-  # Use or replace to fail silently in case it's already setted
+  res = self.list_notifications_blocklist(event_id, user_id)
+  if res is not None:
+    return 0
+
   insert_blocklist = """
-    INSERT OR REPLACE INTO events_notifications_blocklist(event_id,user_id)
+    INSERT INTO events_notifications_blocklist(event_id,user_id)
     VALUES(?,?)
   """
 
