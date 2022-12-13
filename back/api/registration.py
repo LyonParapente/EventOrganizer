@@ -11,16 +11,15 @@ RegisterBP = APIBlueprint('Registration', __name__, tag='Event')
 
 class RegisterAPI(MethodView):
 
-  decorators = [jwt_required(), RegisterBP.doc(security='BearerAuth')]
+  decorators = [jwt_required(), RegisterBP.doc(security='BearerAuth', responses={404: 'Event not found'})]
 
   @RegisterBP.input({'interest': fields.Integer(required=True, validate=validators.OneOf([1, 2]), metadata={'description': 'Interest (1=interested, 2=participate)'})}, location='query')
   @RegisterBP.output(Registration, description='Registration saved/updated')
-  @RegisterBP.doc(responses={404: 'Event not found'})
-  def put(self, event_id, interest):
+  def put(self, event_id, data):
     """Save or update a registration"""
     user_id = get_jwt_identity()
     try:
-      props = db.set_registration(event_id=event_id, user_id=user_id, interest=interest)
+      props = db.set_registration(event_id=event_id, user_id=user_id, interest=data["interest"])
     except sqlite3.IntegrityError as err:
       if str(err) == "FOREIGN KEY constraint failed":
         abort(404, 'Event not found')
@@ -37,7 +36,6 @@ class RegisterAPI(MethodView):
 
 
   @RegisterBP.output(SimpleMessage, description='Confirmation message')
-  @RegisterBP.doc(responses={404: 'Registration not found'})
   def delete(self, event_id):
     """Delete a registration"""
     user_id = get_jwt_identity()
