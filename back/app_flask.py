@@ -222,7 +222,8 @@ api_user = UserAPI()
 @jwt_required()
 def user(id):
   """User details"""
-  user_item = api_user.get(id)
+  res, http_code = api_user.get(id)
+  user_item = res.json
   claims = get_jwt()
 
   phone = user_item.get('phone', '')
@@ -372,7 +373,7 @@ def delete_user(id):
   """Remove a newly registered user"""
   claims = get_jwt()
   if claims['role'] == 'admin':
-    user_item = api_user.delete(id)
+    res, http_code = api_user.delete(id)
   return redirect('/users')
 
 def allowed_file(filename):
@@ -414,8 +415,8 @@ def user_settings():
     del form['csrf_token']
     del form['remove_avatar']
 
-    code, result = api_user.put(id, form)
-    if code == 200:
+    res, httpcode = api_user.put(id, form)
+    if httpcode == 200:
       message = lang['saved']
 
       # Regenerate new token so that new infos are stored in claims
@@ -429,7 +430,7 @@ def user_settings():
       # message is lost... but we have to redirect for csrf_token variable
       return regenerate_claims(claims, '/settings')
     else:
-      #print(result)
+      #print(res)
       error = lang['saved_error']
 
   header = render_template('header.html', **lang,
