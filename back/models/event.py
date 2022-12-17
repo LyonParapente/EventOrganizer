@@ -32,6 +32,10 @@ class EventUpdate(EventBase):
   pass
 
 
+def filter_event_response(props):
+  streamlined_event = {k: v for k, v in props.items() if v is not None}
+  return streamlined_event
+
 # ----------
 # Inputs
 
