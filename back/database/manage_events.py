@@ -166,4 +166,8 @@ def get_events_list(self, start, end, fetch_start_before=True):
   for event in events_list:
     del event["end_date_bis"]
     event['creation_datetime'] = get_datetime_from_str(event['creation_datetime'].rstrip('Z'))
+
+    event['start_date'] = get_date_from_str(event['start_date'])
+    if event['end_date']:
+      event['end_date'] = get_date_from_str(event['end_date'])
   return events_list

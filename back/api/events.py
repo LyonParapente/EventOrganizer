@@ -2,7 +2,6 @@ from apiflask import APIBlueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from models.event import EventsQuery, Event
 from database.manager import db
-from helper import get_date_from_str, get_datetime_from_str
 
 EventsBP = APIBlueprint('Events', __name__)
 
@@ -22,13 +21,6 @@ def getEvents(query):
   for i in range(len(events_list)):
     event = events_list[i]
     streamlined_event = {k: v for k, v in event.items() if v is not None}
-
-    # For apiflask serialization TODO move inside db.get_events_list ?
-    streamlined_event['start_date'] = get_date_from_str(event['start_date'])
-    if not event['end_date']:
-      streamlined_event['end_date'] = None
-    else:
-      streamlined_event['end_date'] = get_date_from_str(event['end_date'])
 
     if not is_connected:
       if streamlined_event.get('whatsapp_link'):
