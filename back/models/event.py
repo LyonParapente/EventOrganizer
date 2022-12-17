@@ -40,5 +40,7 @@ def filter_event_response(props):
 # Inputs
 
 class EventsQuery(Schema):
-  start = fields.Date(metadata={'description': 'Start date of the interval being fetched'}, example='2021-01-01') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
-  end = fields.Date(metadata={'description': 'Exclusive end date of the interval being fetched'}, example='2020-04-16') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
+  # Cannot use fields.Date because fullcalendar automatically adds time
+  # start=2019-02-01T00%3A00%3A00%2B01%3A00&end=2019-03-01T00%3A00%3A00%2B01%3A00
+  start = fields.String(metadata={'description': 'Start date of the interval being fetched'}, example='2021-01-01') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
+  end = fields.String(metadata={'description': 'Exclusive end date of the interval being fetched'}, example='2020-04-16') # String to be compatible with https://fullcalendar.io/docs/events-json-feed
