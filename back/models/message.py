@@ -25,7 +25,7 @@ class MessagesUser(Schema):
   lastname = fields.String(example='DOE', required=True)
   phone = fields.String(example='01.02.03.04.05', metadata={'description': 'present if share_phone is true'})
   has_whatsapp = fields.Boolean(example=True)
-  email = fields.Email(example='john.doe@gmail.com', validate=validators.Length(min=5), metadata={'description': 'present if share_email is true'})
+  email = fields.String(example='john.doe@gmail.com', metadata={'description': 'present if share_email is true'})
 
 class Messages(Schema):
   users = fields.Dict(keys=fields.String(), values=fields.Nested(MessagesUser), required=True)

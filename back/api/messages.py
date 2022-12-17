@@ -22,9 +22,9 @@ def create_basic_user_infos(props):
 @MessagesBP.input({'event_id': fields.Integer(required=True)}, location='query')
 @MessagesBP.output(Messages, description='List of messages')
 @MessagesBP.doc(security='BearerAuth', responses={404: 'Event not found'})
-def get(event_id):
+def get(query):
   """Download the list of messages for an event"""
-  messages, registrations, creator = db.get_messages_list(event_id)
+  messages, registrations, creator = db.get_messages_list(query['event_id'])
 
   if creator is None:
     abort(404, 'Event not found')
@@ -36,7 +36,7 @@ def get(event_id):
 
   for registration in registrations:
     silence_user_fields(registration)
-    user = MessagesUser(**create_basic_user_infos(registration))
+    user = MessagesUser().load(create_basic_user_infos(registration))
     # Add user to list
     user_id = registration['user_id']
     users[str(user_id)] = user
@@ -48,19 +48,20 @@ def get(event_id):
 
   for message in messages:
     silence_user_fields(message)
-    user = MessagesUser(**create_basic_user_infos(message))
+    user = MessagesUser().load(create_basic_user_infos(message))
     # Add user to dict (or overwrite)
     users[str(message['author_id'])] = user
 
-    comments.append(MessagesComment(**{
-      'date': message['creation_datetime'],
+    comment = MessagesComment().load({
+      'date': str(message['creation_datetime']),
       'user': message['author_id'],
       'comment': message['comment']
-    }))
+    })
+    comments.append(comment)
 
   # Add creator to dict (or overwrite)
   silence_user_fields(creator)
-  user = MessagesUser(**create_basic_user_infos(creator))
+  user = MessagesUser().load(create_basic_user_infos(creator))
   users[str(creator['id'])] = user
 
   # Remove empty phone or email
