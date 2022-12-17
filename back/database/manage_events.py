@@ -1,5 +1,5 @@
 import datetime
-from helper import get_datetime_from_str
+from helper import get_datetime_from_str, get_date_from_str
 
 def insert_event(self, *,
     title=None, start_date=None, end_date=None, time=None, description=None,
@@ -54,6 +54,10 @@ def get_event(self, event_id):
 
   if res is not None:
     res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
+    res['start_date'] = get_date_from_str(res['start_date'])
+    if res['end_date'] is not None:
+      res['end_date'] = get_date_from_str(res['end_date'])
+
   return res
 
 def update_event(self, event_id, *,
