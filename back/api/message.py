@@ -18,8 +18,11 @@ def post(message):
   message['author_id'] = author_id
 
   props = None
-  editLatest = message['editLatest']
-  del message['editLatest']
+  editLatest = False
+  if 'editLatest' in message:
+    editLatest = message['editLatest']
+    del message['editLatest']
+
   if editLatest:
     last_msg = db.get_last_message(message['event_id'])
     if last_msg and last_msg['author_id'] == author_id:
