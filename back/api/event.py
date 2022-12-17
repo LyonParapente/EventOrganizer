@@ -6,7 +6,6 @@ from models.event import EventCreate, EventUpdate, Event, filter_event_response
 from models.simple import SimpleMessage
 from database.manager import db
 from emails import send_new_event
-from helper import get_date_from_str
 import datetime
 
 EventBP = APIBlueprint('Event', __name__)
@@ -22,9 +21,8 @@ class EventAPI(MethodView):
     """Create an event"""
 
     end_date = event['end_date'] if event.get('end_date') else event['start_date']
-    event_end = get_date_from_str(end_date)
     today = datetime.date.today()
-    if event_end < today:
+    if end_date < today:
       abort(403, 'Cannot create an event in the past')
 
     creator_id = get_jwt_identity()
@@ -78,7 +76,8 @@ class EventAPI(MethodView):
   @EventBP.doc(responses={403: 'Update forbidden'})
   def put(self, event_id, event):
     """Update an event"""
-    db_event = self.get(event_id)
+    # Check event creator and end_date
+    db_event = self.get_internal(event_id)
 
     claims = get_jwt()
     if claims['role'] != 'admin':
@@ -87,8 +86,7 @@ class EventAPI(MethodView):
 
     today = datetime.date.today()
     end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
-    event_end = get_date_from_str(end_date)
-    if event_end < today:
+    if end_date < today:
       abort(403, 'Cannot modify a past event')
 
     try:
@@ -105,7 +103,7 @@ class EventAPI(MethodView):
   def delete(self, event_id):
     """Delete an event"""
 
-    db_event = self.get(event_id)
+    db_event = self.get_internal(event_id)
 
     claims = get_jwt()
     if claims['role'] != 'admin':
@@ -114,8 +112,7 @@ class EventAPI(MethodView):
 
     today = datetime.date.today()
     end_date = db_event['end_date'] if db_event.get('end_date') else db_event['start_date']
-    event_end = get_date_from_str(end_date)
-    if event_end < today:
+    if end_date < today:
       abort(403, 'Cannot delete a past event')
 
     # messages & registrations are also delete by cascade
