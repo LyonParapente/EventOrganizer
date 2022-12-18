@@ -8,7 +8,6 @@ import markdown
 import settings
 #---
 import app_secrets
-import base64
 import datetime
 import html
 import sys
@@ -91,6 +90,10 @@ def compute_recipients_inline(contacts):
   return recipients
 
 def send_emails_smtp(app, messages):
+  if app.debug:
+    print(messages)
+    return # do not send real email when developing
+
   start = datetime.datetime.now()
   with app.app_context():
     for message in messages:
@@ -127,8 +130,8 @@ def send_emails_smtp_async(messages):
 
 def send_application_exception(exception_infos):
   with open("exceptions.txt", "a") as myfile:
-      myfile.write(exception_infos)
-      myfile.write('\n')
+    myfile.write(exception_infos)
+    myfile.write('\n')
 
   message = [
     {
