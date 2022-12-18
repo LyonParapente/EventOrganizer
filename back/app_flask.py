@@ -36,11 +36,6 @@ import emails
 app = APIFlask(__name__, title='EventOrganizer API', docs_path='/swagger', version='1.1')
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
-if app.debug:
-  # avoid werkzeug extra slash and 308 redirection
-  app.url_map.strict_slashes = False
-
 app.security_schemes = {
   'BearerAuth': {
     'type': 'http',
@@ -175,6 +170,9 @@ class RegexConverter(BaseConverter):
     self.regex = items[0]
 
 app.url_map.converters['regex'] = RegexConverter
+
+# avoid werkzeug extra slash and 308 redirection
+app.url_map.strict_slashes = False
 
 @bpapp.route('/')
 @bpapp.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
