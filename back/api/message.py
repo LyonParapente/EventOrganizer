@@ -7,7 +7,7 @@ from emails import send_new_message
 
 MessageBP = APIBlueprint('Message', __name__)
 
-@MessageBP.post('/')
+@MessageBP.post('/message')
 @jwt_required()
 @MessageBP.input(MessageCreate)
 @MessageBP.output(MessageResponse, status_code=201, description='Created message')

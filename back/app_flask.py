@@ -36,6 +36,11 @@ import emails
 app = APIFlask(__name__, title='EventOrganizer API', docs_path='/swagger', version='1.1')
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+
+if app.debug:
+  # avoid werkzeug extra slash and 308 redirection
+  app.url_map.strict_slashes = False
+
 app.security_schemes = {
   'BearerAuth': {
     'type': 'http',
@@ -138,7 +143,7 @@ app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7Mo
 # API
 
 from api.auth import AuthBP, LoginAPI, LogoutAPI
-app.register_blueprint(AuthBP, url_prefix=settings.api_path+'/auth/')
+app.register_blueprint(AuthBP, url_prefix=settings.api_path+'/auth')
 
 from api.event import EventBP
 app.register_blueprint(EventBP, url_prefix=settings.api_path)
@@ -150,16 +155,16 @@ from api.notifications_blocklist import NotificationsBlocklistBP
 app.register_blueprint(NotificationsBlocklistBP, url_prefix=settings.api_path)
 
 from api.events import EventsBP
-app.register_blueprint(EventsBP, url_prefix=settings.api_path+'/events')
+app.register_blueprint(EventsBP, url_prefix=settings.api_path)
 
 from api.user import UserBP
 app.register_blueprint(UserBP, url_prefix=settings.api_path)
 
 from api.message import MessageBP
-app.register_blueprint(MessageBP, url_prefix=settings.api_path+'/message')
+app.register_blueprint(MessageBP, url_prefix=settings.api_path)
 
 from api.messages import MessagesBP
-app.register_blueprint(MessagesBP, url_prefix=settings.api_path+'/messages')
+app.register_blueprint(MessagesBP, url_prefix=settings.api_path)
 
 # ------------------------------
 # Routes

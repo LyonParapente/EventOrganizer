@@ -5,7 +5,7 @@ from database.manager import db
 
 EventsBP = APIBlueprint('Events', __name__)
 
-@EventsBP.get('/')
+@EventsBP.get('/events')
 @jwt_required(optional=True)
 @EventsBP.input(EventsQuery, location='query')
 @EventsBP.output(Event(many=True), description='List of events')

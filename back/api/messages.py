@@ -17,7 +17,7 @@ def create_basic_user_infos(props):
     user_infos['has_whatsapp'] = True
   return user_infos
 
-@MessagesBP.get('/')
+@MessagesBP.get('/messages')
 @jwt_required()
 @MessagesBP.input({'event_id': fields.Integer(required=True)}, location='query')
 @MessagesBP.output(Messages, description='List of messages')
