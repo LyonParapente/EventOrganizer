@@ -6,14 +6,18 @@ Our instance is located at: https://calendrier.lyonparapente.fr
 
 ![Screenshot](https://github.com/LyonParapente/EventOrganizer/raw/main/screenshot.png)
 
+An event:  
+![Screenshot event](https://github.com/LyonParapente/EventOrganizer/raw/main/screenshot_event.png)
+
 Main goals:
 * Mobile friendly
 * Ability to organize events for one or more days
   * Each event has a name, description, date and meeting point
+  * A map shows the rendez-vous point
   * Comments can be exchange between members for this event
-  * Nice to have: organize transport (how many vehicules available for how many persons...)
+  * Each member can set his/her status to participant or interested
 * Intuitive & nice looking
-* List of members (restrict access)
+* List of members (access restricted)
 * Emails notifications
 * Promote communication (Phone, WhatsApp, ...)
 
