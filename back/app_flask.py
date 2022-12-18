@@ -616,15 +616,15 @@ def generate_ics():
   e = ics.Event()
 
   e.name = event['title']
-  e.begin = event['start_date']
+  e.begin = str(event['start_date'])
   url = settings.domain+'/event:'+str(event['id'])
   e.url = url
   e.description = markdown.markdown(url+"\n\n"+(event['description'] or ''))
 
-  if event['end_date'] == event['start_date']:
+  if str(event['end_date']) == str(event['start_date']):
     e.make_all_day()
   else:
-    e.end = event['end_date']
+    e.end = str(event['end_date'])
 
   if event['gps_location']:
     e.location = event['gps_location']
