@@ -12,7 +12,7 @@ static/css/leaflet/
 static/css/webfonts/
 events.db
 events.db-journal
-secrets.py
+app_secrets.py
 avatars/
 backgrounds/
 uploads/
