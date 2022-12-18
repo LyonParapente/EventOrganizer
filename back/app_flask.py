@@ -415,7 +415,7 @@ def user_settings():
     del form['csrf_token']
     del form['remove_avatar']
 
-    res, httpcode = api_user.put(id, form)
+    res, httpcode = api_user.put_internal(id, form)
     if httpcode == 200:
       message = lang['saved']
 

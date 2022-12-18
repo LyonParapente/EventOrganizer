@@ -40,17 +40,20 @@ class UserAPI(MethodView):
     props = db.get_user(user_id=user_id)
     if type(props) is not dict:
       abort(404, 'User not found')
-    return filter_user_response(props)
+    return filter_user_response(props), 200
 
   @UserBP.input(UserUpdate)
   @UserBP.output(UserResponse, description='Updated user')
   @UserBP.doc(responses={403: 'Update forbidden'})
-  def put(self, user_id, data):  # TODO: use PATCH
+  def put(self, user_id, json):  # TODO: use PATCH
     """Update a user"""
+    return self.put_internal(user_id, json)
+
+  def put_internal(self, user_id, json):
     if user_id != get_jwt_identity():
       abort(403, "You cannot update someone else")
     try:
-      updated_props = db.update_user(user_id, **data)
+      updated_props = db.update_user(user_id, **json)
     except Exception as e:
       abort(500, e.args[0])
 
