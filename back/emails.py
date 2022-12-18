@@ -246,10 +246,10 @@ def send_new_event(event, creator_name):
   all_users = db.list_users(notif_new_event=True, include_new_and_expired=True)
   recipients = compute_recipients(all_users)
 
-  start_date = nice_date(get_date_from_str(event['start_date']), settings.lang_locale)
+  start_date = nice_date(event['start_date'], settings.lang_locale)
   date_infos = start_date
-  if event['end_date'] and event['start_date'] != event['end_date']:
-    end_date_obj = get_date_from_str(event['end_date'])
+  if event['end_date'] and str(event['start_date']) != str(event['end_date']):
+    end_date_obj = event['end_date']
     end_date_obj -= datetime.timedelta(days=1)
     end_date = nice_date(end_date_obj, settings.lang_locale)
     date_infos += " -> " + end_date
