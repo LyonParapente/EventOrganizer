@@ -333,18 +333,18 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
-    code, result = createUser(request.form)
-    if code == 200:
+    httpcode, result, opts = createUser(request.form)
+    if httpcode == 201:
       f = request.form
       emails.send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
       return render_template('register.html', **lang, message=lang['checkemail'])
     else:
-      if code == 409:
+      if httpcode == 409:
         result = lang['alreadyRegistered']
       else:
         result = lang['register_error']
       return render_template('register.html', **lang,
-        default_theme=settings.default_theme, error=result), code
+        default_theme=settings.default_theme, error=result), httpcode
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/')

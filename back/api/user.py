@@ -13,18 +13,24 @@ UserBP = APIBlueprint('User', __name__)
 @UserBP.input(UserCreate)
 @UserBP.output(UserResponse, status_code=201, description='Created user')
 @UserBP.doc(responses={409: 'Email already registered'})
-def post(json):
+def createUser(json):
   """Create a user"""
+  httpcode, res, opts = post(json)
+  if httpcode != 201:
+    abort(httpcode, res)
+  return (res, httpcode, opts)
+
+def post(json):
   try:
     props = db.insert_user(**json)
   except sqlite3.IntegrityError as err:
     if str(err) == "UNIQUE constraint failed: users.email":
-      abort(409, 'Email already registered') # OWASP Account Enumeration; but form is public and login is email...
-    abort(500, err.args[0])
+      return (409, 'Email already registered', None) # OWASP Account Enumeration; but form is public and login is email...
+    return (500, err.args[0], None)
   except Exception as e:
-    abort(500, e.args[0])
+    return (500, e.args[0], None)
 
-  return filter_user_response(props), 201, {'Location': request.path + '/' + str(props['id'])}
+  return (201, filter_user_response(props), {'Location': request.path + '/' + str(props['id'])})
 
 class UserAPI(MethodView):
 
