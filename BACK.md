@@ -21,17 +21,15 @@ For linux, replace `py` with `python3` and virtualenv activation with: `source e
 
 `py .\app_flask.py`
 
-Now open your browser to http://localhost:5000/  
-It should redirect you to:
-http://petstore.swagger.io/?url=http://localhost:5000/api/swagger.json  
-Which allows you to see and interact with the API (click "Try it out").
+Now open your browser to http://localhost:5000/swagger  
+It should allows you to see and interact with the API (click "Try it out").
 
 You can also query:
-* http://localhost:5000/api/swagger.json
-* http://localhost:5000/api/v1.0/events?year=2020
+* http://localhost:5000/swagger-online
+* http://localhost:5000/api/events?year=2020
 
 Insert an event in database:  
-`curl -i -H "Content-Type: application/json" -X POST -d "{\"title\": \"mon titre\", \"location\": \"mon endroit\", \"start_date\": \"2020-03-29\"}" http://localhost:5000/api/v1.0/events`
+`curl -i -H "Content-Type: application/json" -X POST -d "{\"title\": \"mon titre\", \"location\": \"mon endroit\", \"start_date\": \"2020-03-29\"}" http://localhost:5000/api/events`
 
 
 # Linux hosting (prod)
