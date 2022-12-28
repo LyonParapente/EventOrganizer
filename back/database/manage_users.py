@@ -191,3 +191,65 @@ def update_user_role(self, user_id, role, previous_role=None):
     return cursor.rowcount
   finally:
     db.close()
+
+
+def list_users_by_score(self, include_new_and_expired=False):
+  """Fetch all users and sort them by activity score (created event = 10; participation = 5; interested = 2; comment = 1) on the last 12 months """
+  db, cursor = self._connect()
+  try:
+    extra_filter = ""
+    if not include_new_and_expired:
+      extra_filter = " AND role!='new' AND role!='expired'"
+
+    look_back = "-12 months"
+    list_users = f"""
+      SELECT id, firstname, lastname, email, role, creation_datetime,
+        nb_created_events, nb_participations, nb_interests, nb_comments,
+        (nb_created_events*10 + nb_participations*5 + nb_interests*2 + nb_comments) AS score
+      FROM
+      users LEFT JOIN 
+      (
+        SELECT creators.uid AS uid, nb_created_events, nb_participations, nb_interests, nb_comments
+        FROM
+        (
+          -- Events created by
+          SELECT creator_id AS uid, COUNT(*) AS nb_created_events
+          FROM events
+          WHERE start_date>=date('now', '{look_back}')
+          AND start_date<date('now')
+          GROUP BY creator_id
+        ) AS creators,
+        (
+          -- Number of participations and interests by user
+          SELECT user_id AS uid, SUM(IIF(interest == 1, 1, 0)) AS nb_interests, SUM(IIF(interest == 2, 1, 0)) AS nb_participations
+          FROM events_registrations, events
+          WHERE events_registrations.event_id = events.id
+          AND start_date>=date('now', '{look_back}')
+          AND start_date<date('now')
+          GROUP BY user_id
+        ) AS actors,
+        (
+          -- Number of comments per user
+          SELECT author_id AS uid, COUNT(*) AS nb_comments
+          FROM messages, events
+          WHERE messages.event_id = events.id
+          AND start_date>=date('now', '{look_back}')
+          AND start_date<date('now')
+          GROUP BY author_id
+        ) AS commentators
+        WHERE creators.uid=actors.uid AND actors.uid=commentators.uid
+        GROUP BY creators.uid
+      ) AS metrics ON users.id=metrics.uid
+      WHERE role IS NOT NULL AND role!='deleted'
+      {extra_filter}
+      GROUP BY users.id
+      ORDER BY score DESC
+    """
+
+    cursor.execute(list_users)
+    res = cursor.fetchall()
+    for user in res:
+      user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
+    return res
+  finally:
+    db.close()

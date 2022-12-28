@@ -58,7 +58,8 @@ trads = {
   'APPROVE': 'APPROUVER',
   'TEMPORARY_USER': 'TEMPORAIRE',
   'DELETE': 'SUPPRIMER',
-  'ChangeBackground': "Changer l'image"
+  'ChangeBackground': "Changer l'image",
+  'usersDescription': 'Liste des utilistateurs trié par activité sur les 12 derniers mois (évènement ajouté = 10; participation = 5; intéressé(e) = 2; commentaire = 1)'
  },
  'en': {
   'lang': 'en',
@@ -118,7 +119,8 @@ trads = {
   'APPROVE': 'APPROVE',
   'TEMPORARY_USER': 'TEMPORARY',
   'DELETE': 'DELETE',
-  'ChangeBackground': 'Change Background'
+  'ChangeBackground': 'Change Background',
+  'usersDescription': 'Users sorted by activity score (created event = 10; participation = 5; interested = 2; comment = 1) on the last 12 months'
  }
 }
 

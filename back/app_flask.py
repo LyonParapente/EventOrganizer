@@ -251,7 +251,7 @@ def users():
   """Users list"""
   claims = get_jwt()
   iam_admin = claims['role'] == 'admin'
-  users = database.manager.db.list_users(include_new_and_expired=iam_admin)
+  users = database.manager.db.list_users_by_score(include_new_and_expired=iam_admin)
   if iam_admin:
     # Add a border to list admins and new users
     for user in users:
@@ -267,7 +267,7 @@ def users():
 
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
-    title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'],
+    title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'], usersDescription=lang['usersDescription'],
     users=users, theme=claims['theme'], header=header, iam_admin=iam_admin,
     approve=lang['APPROVE'], temporary=lang['TEMPORARY_USER'], delete=lang['DELETE'])
 
