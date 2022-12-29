@@ -250,9 +250,9 @@ def user(id):
 def users():
   """Users list"""
   claims = get_jwt()
-  iam_admin = claims['role'] == 'admin'
-  users = database.manager.db.list_users_by_score(include_new_and_expired=iam_admin)
-  if iam_admin:
+  is_admin = claims['role'] == 'admin'
+  users = database.manager.db.list_users_by_score(include_new_and_expired=is_admin)
+  if is_admin:
     # Add a border to list admins and new users
     for user in users:
       if user['role']=='admin':
@@ -268,7 +268,7 @@ def users():
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
     title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'], usersDescription=lang['usersDescription'],
-    users=users, theme=claims['theme'], header=header, iam_admin=iam_admin,
+    users=users, theme=claims['theme'], header=header, is_admin=is_admin,
     approve=lang['APPROVE'], temporary=lang['TEMPORARY_USER'], delete=lang['DELETE'])
 
 @bpapp.route('/login', methods=['GET', 'POST'])
