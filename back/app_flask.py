@@ -33,8 +33,11 @@ import emails
 # ------------------------------
 # Flask initialization
 
-app = APIFlask(__name__, title='EventOrganizer API', docs_path='/swagger', version='1.1')
+app = APIFlask(__name__, title='EventOrganizer API', docs_path='/swagger', spec_path='/openapi.yaml', version='1.1')
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+# openapi swagger in yaml
+app.config['SPEC_FORMAT'] = 'yaml'
 
 app.security_schemes = {
   'BearerAuth': {
