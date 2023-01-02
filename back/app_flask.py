@@ -376,7 +376,7 @@ def approve_user(id, role):
 @bpapp.route('/delete/user:<int:id>')
 @jwt_required()
 def delete_user(id):
-  """Remove a newly registered user"""
+  """Remove a registered user"""
   claims = get_jwt()
   if claims['role'] == 'admin':
     res, http_code = api_user.delete(id)
