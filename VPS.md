@@ -91,8 +91,8 @@ pip install -r requirements.txt
 
 ## Setup application
 ```
-cp secrets.sample.py app_secrets.py
-nano secrets.py  # make required changes
+cp app_secrets.sample.py app_secrets.py
+nano app_secrets.py  # make required changes
 ```
 Also make sure settings are ok:
 ```
