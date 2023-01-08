@@ -260,15 +260,18 @@ def users():
       elif user['role']=='new':
         user['border'] = 'border-info'
 
+  first_inactive_user = None
   for user in users:
     LoginAPI.test_user_expiration(user)
     if user['role']=='temporary':
       user['expiration_date'] = LoginAPI.get_expiration_datetime(user)
+    if first_inactive_user is None and user['score'] is None:
+      first_inactive_user = user['id']
 
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
-    title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'], usersDescription=lang['usersDescription'],
-    users=users, theme=claims['theme'], header=header, is_admin=is_admin,
+    title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'], usersDescription=lang['usersDescription'], inactiveUsersDescription=lang['inactiveUsersDescription'],
+    users=users, theme=claims['theme'], header=header, is_admin=is_admin, first_inactive_user=first_inactive_user,
     approve=lang['APPROVE'], temporary=lang['TEMPORARY_USER'], delete=lang['DELETE'])
 
 @bpapp.route('/login', methods=['GET', 'POST'])

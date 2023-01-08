@@ -23,19 +23,20 @@ word-wrap: normal;
 {{header|safe}}
 <div class="container-fluid mt-2">
 
-<div class="text-center text-info">{{usersDescription}}</div>
+<div class="text-center text-info">{{usersDescription|safe}}</div>
 <div class="d-flex flex-wrap justify-content-center text-center">
 {% for user in users %}
 <span class="card member {{user['border']}}">
-	{% if iam_admin and user['role'] in ['new','temporary','expired'] %}<a href="/approve/user:{{user['id']}}/user">{{approve}}</a> {% if iam_admin and user['role']=='new' %}<a href="/approve/user:{{user['id']}}/temporary">{{temporary}}</a> <a href="/delete/user:{{user['id']}}">{{delete}}</a>{% endif %}{% endif %}
+	{% if is_admin and user['role'] in ['new','temporary'] %}<a href="/approve/user:{{user['id']}}/user">{{approve}}</a> {% if is_admin and user['role']=='new' %}<a href="/approve/user:{{user['id']}}/temporary">{{temporary}}</a> <a href="/delete/user:{{user['id']}}">{{delete}}</a>{% endif %}{% endif %}
 	<a href="/user:{{user['id']}}"><img src="/avatars/{{user['id']}}-130" alt="{{user['firstname']}} {{user['lastname']}}" class="card-img-top" /></a>
 	<div class="card-body">
 		{{user['firstname']}} {{user['lastname']}}
-		{% if iam_admin and user['role']=='admin' %}<span class="text-danger">admin</span>{% endif %}
+		{% if user['role']=='admin' %}<span class="text-danger">admin</span>{% endif %}
 		{% if user['role']=='temporary' %}<span class="text-warning">temporaire - {{user['expiration_date'].strftime("%d/%m/%Y")}}</span>{% endif %}
-		{% if iam_admin and user['role']=='expired' %}<span class="text-danger">expiré</span>{% endif %}
+		{% if is_admin and user['role']=='expired' %}<span class="text-danger">expiré</span>{% endif %}
 	</div>
 </span>
+{% if user['id'] == first_inactive_user %}</div><hr class="m-5" /><div class="text-center text-warning">{{inactiveUsersDescription}}</div><div class="d-flex flex-wrap justify-content-center text-center">{% endif %}
 {% endfor %}
 </div>
 

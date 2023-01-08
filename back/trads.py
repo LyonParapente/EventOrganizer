@@ -59,7 +59,8 @@ trads = {
   'TEMPORARY_USER': 'TEMPORAIRE',
   'DELETE': 'SUPPRIMER',
   'ChangeBackground': "Changer l'image",
-  'usersDescription': 'Liste des utilistateurs trié par activité sur les 12 derniers mois (évènement ajouté = 10; participation = 5; intéressé(e) = 2; commentaire = 1)'
+  'usersDescription': 'Liste des utilisateurs trié par activité sur les 12 derniers mois<br />Activité évaluée ainsi : évènement ajouté = 10pts; participation = 5pts; intéressé(e) = 2pts; commentaire = 1pts<br />Les plus actifs en premier',
+  'inactiveUsersDescription': 'Liste des utilisateurs inactifs sur les 12 derniers mois'
  },
  'en': {
   'lang': 'en',
@@ -120,7 +121,8 @@ trads = {
   'TEMPORARY_USER': 'TEMPORARY',
   'DELETE': 'DELETE',
   'ChangeBackground': 'Change Background',
-  'usersDescription': 'Users sorted by activity score (created event = 10; participation = 5; interested = 2; comment = 1) on the last 12 months'
+  'usersDescription': 'Users sorted by activity score on the last 12 months<br />Activiy computed as: created event = 10pts; participation = 5pts; interested = 2pts; comment = 1pt<br />Most active users at top',
+  'inactiveUsersDescription': 'Inactive users on the last 12 months'
  }
 }
 
