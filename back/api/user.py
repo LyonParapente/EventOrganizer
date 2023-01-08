@@ -1,5 +1,5 @@
 from flask import request
-from flask.views import MethodView
+from apiflask.views import MethodView
 from apiflask import APIBlueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.user import UserCreate, UserUpdate, UserResponse, filter_user_response

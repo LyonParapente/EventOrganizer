@@ -1,4 +1,4 @@
-from flask.views import MethodView
+from apiflask.views import MethodView
 from apiflask import APIBlueprint, fields, validators, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.registration import Registration
