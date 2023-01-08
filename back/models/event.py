@@ -23,10 +23,13 @@ class EventCreate(EventBase):
   title = fields.String(example='My event title', required=True)
   start_date = fields.Date(example='2020-04-16', required=True)
 
-class Event(EventCreate):
+class EventServerInfos(Schema):
   id = fields.Integer(example=101, dump_only=True, required=True)
   creator_id = fields.Integer(example=101, dump_only=True, required=True)
   creation_datetime = fields.DateTime(dump_only=True, required=True, example='2020-04-13T16:30:04.403284')
+
+class Event(EventCreate,EventServerInfos):
+  pass
 
 class EventUpdate(EventBase):
   pass
