@@ -111,10 +111,13 @@ def update_user(self, user_id, *,
   else:
     pw_hash = bcrypt.generate_password_hash(password).decode()
 
+  if email is not None:
+    email = email.lower()
+
   fields_to_update = {
     'firstname': firstname,
     'lastname': lastname,
-    'email': email.lower(),
+    'email': email,
     'password': pw_hash,
     'share_email': share_email,
     'phone': phone,
