@@ -223,38 +223,42 @@ def list_users_by_score(self, include_new_and_expired=False):
         nb_created_events, nb_participations, nb_interests, nb_comments,
         (nb_created_events*10 + nb_participations*5 + nb_interests*2 + nb_comments) AS score
       FROM
-      users LEFT JOIN 
+      users LEFT JOIN
       (
-        SELECT creators.uid AS uid, nb_created_events, nb_participations, nb_interests, nb_comments
-        FROM
-        (
+        SELECT uid,
+          SUM(nb_created_events) AS nb_created_events,
+          SUM(nb_interests) AS nb_interests,
+          SUM(nb_participations) AS nb_participations,
+          SUM(nb_comments) AS nb_comments
+        FROM (
           -- Events created by
-          SELECT creator_id AS uid, COUNT(*) AS nb_created_events
+          SELECT creator_id AS uid, COUNT(*) AS nb_created_events, 0 AS nb_interests, 0 AS nb_participations, 0 as nb_comments
           FROM events
           WHERE start_date>=date('now', '{look_back}')
           AND start_date<date('now')
           GROUP BY creator_id
-        ) AS creators,
-        (
+
+          UNION ALL
+
           -- Number of participations and interests by user
-          SELECT user_id AS uid, SUM(IIF(interest == 1, 1, 0)) AS nb_interests, SUM(IIF(interest == 2, 1, 0)) AS nb_participations
+          SELECT user_id AS uid, 0, SUM(IIF(interest == 1, 1, 0)) AS nb_interests, SUM(IIF(interest == 2, 1, 0)) AS nb_participations, 0
           FROM events_registrations, events
           WHERE events_registrations.event_id = events.id
           AND start_date>=date('now', '{look_back}')
           AND start_date<date('now')
           GROUP BY user_id
-        ) AS actors,
-        (
+
+          UNION ALL
+
           -- Number of comments per user
-          SELECT author_id AS uid, COUNT(*) AS nb_comments
+          SELECT author_id AS uid, 0, 0, 0, COUNT(*) AS nb_comments
           FROM messages, events
           WHERE messages.event_id = events.id
           AND start_date>=date('now', '{look_back}')
           AND start_date<date('now')
           GROUP BY author_id
-        ) AS commentators
-        WHERE creators.uid=actors.uid AND actors.uid=commentators.uid
-        GROUP BY creators.uid
+        )
+        GROUP BY uid
       ) AS metrics ON users.id=metrics.uid
       WHERE role IS NOT NULL AND role!='deleted'
       {extra_filter}
@@ -264,9 +268,11 @@ def list_users_by_score(self, include_new_and_expired=False):
 
     cursor.execute(list_users)
     res = cursor.fetchall()
+
     for user in res:
       user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
       user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user['last_login_datetime'] is not None else None
+
     return res
   finally:
     db.close()
