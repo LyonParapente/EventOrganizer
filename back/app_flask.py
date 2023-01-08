@@ -34,7 +34,7 @@ import emails
 # Flask initialization
 
 app = APIFlask(__name__, title='EventOrganizer API', docs_path='/swagger', spec_path='/openapi.yaml', version='1.1')
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}, r"/openapi.yaml": {"origins": "*"}})
 
 # openapi swagger in yaml
 app.config['SPEC_FORMAT'] = 'yaml'
@@ -214,7 +214,7 @@ def swag():
     hostname = 'localhost'
   port = request.environ["SERVER_PORT"]
   protocol = request.environ["wsgi.url_scheme"]
-  url = "http://petstore.swagger.io/?url={}://{}:{}/swagger".format(protocol, hostname, port)
+  url = "http://petstore.swagger.io/?url={}://{}:{}/openapi.yaml".format(protocol, hostname, port)
   return redirect(url)
 
 #@bpapp.route("/environ")
