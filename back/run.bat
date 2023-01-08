@@ -2,8 +2,7 @@
 
 CALL env\Scripts\activate
 
-::py -m pip install wheel
 ::py -m pip install -r .\requirements.txt
 
-SET FLASK_ENV=development
+SET FLASK_DEBUG=1
 py .\app_flask.py
