@@ -138,7 +138,7 @@ def update_user(self, user_id, *,
     # Build the update sql command
     update_user = "UPDATE users SET "
     for k in fields_to_update.keys():
-        update_user += k + "=?,"
+      update_user += k + "=?,"
     # Remove trailing column
     update_user = update_user.rstrip(',')
     update_user += " WHERE id=?"
