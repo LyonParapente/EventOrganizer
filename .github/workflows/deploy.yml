@@ -59,10 +59,10 @@ jobs:
         zip -r ../artifact.zip *
 
     - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          body_path: last_release.md
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: Release ${{ github.ref }}
-          files: artifact.zip
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        body_path: last_release.md
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Release ${{ github.ref }}
+        files: artifact.zip
