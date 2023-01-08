@@ -1,8 +1,8 @@
-from flask import request, abort
-from flask_restful_swagger_3 import Resource, Schema, swagger
-from flask_jwt_extended import create_access_token, get_jwt
+from apiflask import APIBlueprint, abort
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from flask_bcrypt import Bcrypt
-from models.auth import AccessToken
+from models.auth import AccessToken, LoginData
+from models.simple import SimpleMessage
 from database.manager import db
 from helper import get_datetime_from_str
 import settings
@@ -10,56 +10,24 @@ import datetime
 
 bcrypt = Bcrypt()
 
-class LoginAPI(Resource):
-  @swagger.doc({
-    'tags': ['auth'],
-    'parameters': [
-      {
-        'name': 'login',
-        'required': True,
-        'description': 'User email',
-        'in': 'query',
-        'schema': {
-          'type': 'string'
-        }
-      },
-      {
-        'name': 'password',
-        'required': True,
-        'description': 'User password',
-        'in': 'query',
-        'schema': {
-          'type': 'string'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Successfully logged in',
-        'content': {
-          'application/json': {
-            'schema': AccessToken
-          }
-        }
-      },
-      '401': {
-        'description': 'Authentication failed'
-      }
-    }
-  })
-  def post(self):
-    """Login"""
-    infos = request.args.to_dict()
-    access_token = LoginAPI.authenticate(
-      infos['login'],
-      infos['password'],
-      settings.api_JWT_ACCESS_TOKEN_EXPIRES
-    )
-    if access_token is None:
-      # do not use abort() for website
-      return {'message': 'Authentication failed'}, 401
-    return AccessToken(**{'access_token': access_token}), 200
+AuthBP = APIBlueprint('Auth', __name__)
 
+@AuthBP.post('/login')
+@AuthBP.input(LoginData)
+@AuthBP.output(AccessToken, description='Successfully logged in')
+@AuthBP.doc(responses={401: 'Authentication failed'})
+def login(json):
+  """Login"""
+  access_token = LoginAPI.authenticate(
+    json['login'],
+    json['password'],
+    settings.api_JWT_ACCESS_TOKEN_EXPIRES
+  )
+  if access_token is None:
+    abort(401, 'Authentication failed')
+  return {'access_token': access_token}, 200
+
+class LoginAPI():
   @staticmethod
   def authenticate(email, password, expires_delta):
     user = db.get_user(email=email)
@@ -79,9 +47,7 @@ class LoginAPI(Resource):
 
   @staticmethod
   def get_expiration_datetime(user):
-    datetimeWithoutZ = user['creation_datetime'][:-1]
-    creation_datetime = get_datetime_from_str(datetimeWithoutZ)
-    expiration_datetime = creation_datetime + settings.temporary_user_duration
+    expiration_datetime = user['creation_datetime'] + settings.temporary_user_duration
     return expiration_datetime
 
   @staticmethod
@@ -117,7 +83,7 @@ class LoginAPI(Resource):
       return "Password changed",200
     else:
       return "Invalid old password",401
-  
+
   @staticmethod
   def lost_password(user_email):
     user = db.get_user(email=user_email)
@@ -146,27 +112,19 @@ class LoginAPI(Resource):
       return "Invalid token",401
 
 
-class LogoutAPI(Resource):
-  @swagger.doc({
-    'tags': ['auth'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'responses': {
-      '200': {
-        'description': 'Successfully logged out'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
-  def get(self):
-    """Logout"""
-    self.disconnect(get_jwt())
-    return {'message': 'Logged out'}, 200
 
+@AuthBP.get('/logout')
+@jwt_required(optional=True)
+@AuthBP.output(SimpleMessage, description='Successfully logged out')
+@AuthBP.doc(security='BearerAuth')
+def logout():
+  """Logout"""
+  LogoutAPI.disconnect(get_jwt())
+  return {'message': 'Logged out'}, 200
+
+class LogoutAPI():
   @staticmethod
-  def disconnect(token):
-    #TODO: blocklist for instance
-    print(token)
+  def disconnect(token_dict):
+    if (len(token_dict) > 0):
+      #TODO: blocklist for instance
+      print("disconnect: "+str(token_dict))

@@ -1,68 +1,25 @@
-from flask import abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask.views import MethodView
+from apiflask import APIBlueprint, fields, validators, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models.registration import Registration
+from models.simple import SimpleMessage
 from database.manager import db
 from emails import send_new_registration, send_del_registration
 import sqlite3
 
-class RegisterAPI(Resource):
-  @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      },
-      {
-        'name': 'interest',
-        'required': True,
-        'description': 'Interest (1=interested, 2=participate)',
-        'in': 'query',
-        'schema': {
-          'type': 'integer',
-          'enum': [1, 2]
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Registration saved/updated',
-        'content': {
-          'application/json': {
-            'schema': Registration
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      }
-    }
-  })
-  def put(self, event_id, _parser):
+RegisterBP = APIBlueprint('Registration', __name__, tag='Event')
+
+class RegisterAPI(MethodView):
+
+  decorators = [jwt_required(), RegisterBP.doc(security='BearerAuth', responses={404: 'Event not found'})]
+
+  @RegisterBP.input({'interest': fields.Integer(required=True, validate=validators.OneOf([1, 2]), metadata={'description': 'Interest (1=interested, 2=participate)'})}, location='query')
+  @RegisterBP.output(Registration, description='Registration saved/updated')
+  def put(self, event_id, query):
     """Save or update a registration"""
     user_id = get_jwt_identity()
-    query = _parser.parse_args(strict=True)
-    query['event_id'] = event_id
-    query['user_id'] = user_id
     try:
-      if query['interest'] not in [1,2]:
-        raise ValueError('Invalid value for interest')
-      registration = Registration(**query)
-    except ValueError as e:
-      abort(400, e.args[0])
-
-    try:
-      props = db.set_registration(**registration)
+      props = db.set_registration(event_id=event_id, user_id=user_id, interest=query["interest"])
     except sqlite3.IntegrityError as err:
       if str(err) == "FOREIGN KEY constraint failed":
         abort(404, 'Event not found')
@@ -75,38 +32,10 @@ class RegisterAPI(Resource):
     user_name = claims['firstname'] + ' ' + claims['lastname']
     send_new_registration(event_id, user_id, user_name, props['interest'])
 
-    return Registration(**props), 200
+    return props, 200
 
 
-  @jwt_required()
-  @swagger.doc({
-    'tags': ['event'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'event_id',
-        'required': True,
-        'description': 'Event identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Confirmation message'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'Registration not found'
-      }
-    }
-  })
+  @RegisterBP.output(SimpleMessage, description='Confirmation message')
   def delete(self, event_id):
     """Delete a registration"""
     user_id = get_jwt_identity()
@@ -125,3 +54,7 @@ class RegisterAPI(Resource):
     send_del_registration(event_id, user_id, user_name, previous['interest'])
 
     return {'message': 'Registration deleted'}, 200
+
+
+RegistrationAPI_view = RegisterAPI.as_view('RegisterAPI')
+RegisterBP.add_url_rule('/event/<int:event_id>/registration', view_func=RegistrationAPI_view)

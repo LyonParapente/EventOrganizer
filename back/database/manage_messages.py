@@ -1,4 +1,5 @@
 import datetime
+from helper import get_datetime_from_str
 
 def insert_message(self, *,
     comment=None, author_id=None, event_id=None):
@@ -24,6 +25,8 @@ def insert_message(self, *,
     new_message['id'] = cursor.lastrowid
   finally:
     db.close()
+
+  new_message['creation_datetime'] = get_datetime_from_str(new_message['creation_datetime'].rstrip('Z'))
   return new_message
 
 def get_last_message(self, event_id):
@@ -39,6 +42,9 @@ def get_last_message(self, event_id):
     message = cursor.fetchone()
   finally:
     db.close()
+
+  if message is not None:
+    message['creation_datetime'] = get_datetime_from_str(message['creation_datetime'].rstrip('Z'))
   return message
 
 def edit_message(self, id, comment, author_id, event_id):
@@ -86,6 +92,8 @@ def get_messages_list(self, event_id):
   try:
     cursor.execute(get_messages, (event_id,))
     messages_list = cursor.fetchall()
+    for msg in messages_list:
+      msg['creation_datetime'] = get_datetime_from_str(msg['creation_datetime'].rstrip('Z'))
 
     cursor.execute(get_registrations, (event_id,))
     registrations_list = cursor.fetchall()

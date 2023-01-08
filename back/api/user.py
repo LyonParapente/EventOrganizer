@@ -1,199 +1,74 @@
-from flask import request, abort
-from flask_restful_swagger_3 import Resource, swagger
+from flask import request
+from flask.views import MethodView
+from apiflask import APIBlueprint, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
-from models.user import User, validate_user, filter_user_response
+from models.user import UserCreate, UserUpdate, UserResponse, filter_user_response
+from models.simple import SimpleMessage
 from database.manager import db
 import sqlite3
 
-class UserAPICreate(Resource):
-  @swagger.doc({
-    'tags': ['user'],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': User
-        }
-      }
-    },
-    'responses': {
-      '201': {
-        'description': 'Created user',
-        'content': {
-          'application/json': {
-            'schema': User
-          }
-        }
-      },
-      '409': {
-        'description': 'Email already registered'
-      }
-    }
-  })
-  def post(self):
-    """Create a user"""
-    # Validate request body with schema model
-    user = validate_user(request.json, create=True)
-    code, result = self.from_dict(user)
-    if code != 200:
-      abort(code, result)
-    return User(**filter_user_response(result)), 201, {'Location': request.path + '/' + str(result['id'])}
+UserBP = APIBlueprint('User', __name__)
 
-  @staticmethod
-  def from_dict(dict):
-    try:
-      props = db.insert_user(**dict)
-    except sqlite3.IntegrityError as err:
-      if str(err) == "UNIQUE constraint failed: users.email":
-        return (409, 'Email already registered')
-      return (500, err.args[0])
-    except Exception as e:
-      return (500, e.args[0])
-    return 200,props
+@UserBP.post('/user')
+@UserBP.input(UserCreate)
+@UserBP.output(UserResponse, status_code=201, description='Created user')
+@UserBP.doc(responses={409: 'Email already registered'})
+def createUser(json):
+  """Create a user"""
+  httpcode, res, opts = post(json)
+  if httpcode != 201:
+    abort(httpcode, res)
+  return (res, httpcode, opts)
 
+def post(json):
+  try:
+    props = db.insert_user(**json)
+  except sqlite3.IntegrityError as err:
+    if str(err) == "UNIQUE constraint failed: users.email":
+      return (409, 'Email already registered', None) # OWASP Account Enumeration; but form is public and login is email...
+    return (500, err.args[0], None)
+  except Exception as e:
+    return (500, e.args[0], None)
 
-class UserAPI(Resource):
-  @jwt_required()
-  @swagger.doc({
-    'tags': ['user'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'user_id',
-        'required': True,
-        'description': 'User identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'User',
-        'content': {
-          'application/json': {
-            'schema': User
-           }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '404': {
-        'description': 'User not found'
-      }
-    }
-  })
+  return (201, filter_user_response(props), {'Location': request.path + '/' + str(props['id'])})
+
+class UserAPI(MethodView):
+
+  decorators = [jwt_required(), UserBP.doc(security='BearerAuth')]
+
+  @UserBP.output(UserResponse, description='User')
   def get(self, user_id):
     """Get details of a user"""
+    return self.get_internal(user_id)
+
+  @staticmethod
+  def get_internal(user_id):
     props = db.get_user(user_id=user_id)
     if type(props) is not dict:
       abort(404, 'User not found')
-    return User(**filter_user_response(props))
+    return filter_user_response(props), 200
 
-
-  @jwt_required()
-  @swagger.doc({
-    'tags': ['user'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'user_id',
-        'required': True,
-        'description': 'User identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'requestBody': {
-      'required': True,
-      'content': {
-        'application/json': {
-          'schema': User
-        }
-      }
-    },
-
-    'responses': {
-      '200': {
-        'description': 'Updated user',
-        'content': {
-          'application/json': {
-            'schema': User
-          }
-        }
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Update forbidden'
-      },
-      '404': {
-        'description': 'User not found'
-      }
-    }
-  })
-  def put(self, user_id):
+  @UserBP.input(UserUpdate)
+  @UserBP.output(UserResponse, description='Updated user')
+  @UserBP.doc(responses={403: 'Update forbidden'})
+  def put(self, user_id, json):  # TODO: use PATCH
     """Update a user"""
-    # Validate request body with schema model
-    user = validate_user(request.json, update=True)
-    code, result = self.put_from_dict(user_id, user)
-    if code != 200:
-      abort(code, result)
-    # Retrieve updated user with all public properties
-    return self.get(user_id)
+    return self.put_internal(user_id, json)
 
-  @staticmethod
-  def put_from_dict(user_id, dict):
+  def put_internal(self, user_id, json):
     if user_id != get_jwt_identity():
-      return (403, "You cannot update someone else")
+      abort(403, "You cannot update someone else")
     try:
-      updated_props = db.update_user(user_id, **dict)
+      updated_props = db.update_user(user_id, **json)
     except Exception as e:
-      return (500, e.args[0])
-    return 200,updated_props
+      abort(500, e.args[0])
+
+    # Retrieve updated user with all public properties
+    return self.get_internal(user_id)
 
 
-  @jwt_required()
-  @swagger.doc({
-    'tags': ['user'],
-    'security': [
-      {'BearerAuth': []}
-    ],
-    'parameters': [
-      {
-        'name': 'user_id',
-        'required': True,
-        'description': 'User identifier',
-        'in': 'path',
-        'schema': {
-          'type': 'integer'
-        }
-      }
-    ],
-    'responses': {
-      '200': {
-        'description': 'Confirmation message'
-      },
-      '401': {
-        'description': 'Not authenticated'
-      },
-      '403': {
-        'description': 'Deletion forbidden'
-      },
-      '404': {
-        'description': 'User not found'
-      }
-    }
-  })
+  @UserBP.output(SimpleMessage, description='Confirmation message')
+  @UserBP.doc(responses={403: 'Deletion forbidden'})
   def delete(self, user_id):
     """Delete a user"""
 
@@ -214,5 +89,8 @@ class UserAPI(Resource):
     db.update_user_role(user_id, "deleted")
 
     # Note: a real delete would delete all user's messages and registration and events by CASCADE
-
     return {'message': 'User deleted'}, 200
+
+
+UserAPI_view = UserAPI.as_view('UserAPI')
+UserBP.add_url_rule('/user/<int:user_id>', view_func=UserAPI_view)

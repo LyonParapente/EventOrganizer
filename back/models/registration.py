@@ -1,14 +1,8 @@
-from flask_restful_swagger_3 import Schema
-from flask import abort
+from apiflask import Schema, fields, validators
 
 class Registration(Schema):
-  type = 'object'
-  properties = {
-    'id': {'type': 'integer', 'readOnly': True, 'example': 17},
-    'interest': {'type': 'integer', 'enum': [1,2], 'example': 2},
-    'event_id': {'type': 'integer', 'readOnly': True, 'example': 12345},
-    'user_id': {'type': 'integer', 'readOnly': True, 'example': 101},
-    'lastupdate_datetime': {'type': 'string', 'format': 'date-time', 'readOnly': True, 'example': '2020-04-13T16:30:04.461593Z'}
-  }
-  required = ['interest', 'event_id', 'user_id']
-
+  id = fields.Integer(example=17, dump_only=True)
+  interest = fields.Integer(example=2, validate=validators.OneOf([1, 2]), required=True)
+  event_id = fields.Integer(example=12345, dump_only=True, required=True)
+  user_id = fields.Integer(example=101, dump_only=True, required=True)
+  lastupdate_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, example='2020-04-13T16:30:04.461593')

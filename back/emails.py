@@ -7,9 +7,7 @@ from flask import request
 import markdown
 import settings
 #---
-import os
-import secrets
-import base64
+import app_secrets
 import datetime
 import html
 import sys
@@ -77,7 +75,7 @@ def send_emails_mailjet(messages):
     'Messages': messages
   }
   #print(data)
-  auth = (secrets.mailjet_api_key, secrets.mailjet_api_secret)
+  auth = (app_secrets.mailjet_api_key, app_secrets.mailjet_api_secret)
   mailjet = Client(auth=auth, version='v3.1')
   result = mailjet.send.create(data=data)
   if result.status_code != 200:
@@ -92,6 +90,10 @@ def compute_recipients_inline(contacts):
   return recipients
 
 def send_emails_smtp(app, messages):
+  if app.debug:
+    print(messages)
+    return # do not send real email when developing
+
   start = datetime.datetime.now()
   with app.app_context():
     for message in messages:
@@ -128,8 +130,8 @@ def send_emails_smtp_async(messages):
 
 def send_application_exception(exception_infos):
   with open("exceptions.txt", "a") as myfile:
-      myfile.write(exception_infos)
-      myfile.write('\n')
+    myfile.write(exception_infos)
+    myfile.write('\n')
 
   message = [
     {
@@ -247,10 +249,10 @@ def send_new_event(event, creator_name):
   all_users = db.list_users(notif_new_event=True, include_new_and_expired=True)
   recipients = compute_recipients(all_users)
 
-  start_date = nice_date(get_date_from_str(event['start_date']), settings.lang_locale)
+  start_date = nice_date(event['start_date'], settings.lang_locale)
   date_infos = start_date
-  if event['end_date'] and event['start_date'] != event['end_date']:
-    end_date_obj = get_date_from_str(event['end_date'])
+  if event['end_date'] and str(event['start_date']) != str(event['end_date']):
+    end_date_obj = event['end_date']
     end_date_obj -= datetime.timedelta(days=1)
     end_date = nice_date(end_date_obj, settings.lang_locale)
     date_infos += " -> " + end_date
@@ -496,7 +498,7 @@ def init(app):
   app.config['MAIL_USE_SSL'] = settings.emails['use_ssl']
   app.config['MAIL_DEBUG'] = app.debug
   app.config['MAIL_USERNAME'] = settings.emails['username']
-  #app.config['MAIL_PASSWORD'] = '' # set in secrets.py
+  #app.config['MAIL_PASSWORD'] = '' # set in app_secrets.py
   app.config['MAIL_DEFAULT_SENDER'] = settings.emails['from_name']+" <"+settings.emails['from_email']+">"
   global mail
   mail = Mail(app)

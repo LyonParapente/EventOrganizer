@@ -1,65 +1,34 @@
-from flask_restful_swagger_3 import Schema
+from apiflask import Schema, fields, validators
 
-class Message(Schema):
-  type = 'object'
-  properties = {
-    'id': {'type': 'integer', 'readOnly': True, 'example': 54321},
-    'comment': {'type': 'string', 'example': 'This is my message', 'minLength': 1},
-    'author_id': {'type': 'integer', 'readOnly': True, 'example': 101},
-    'event_id': {'type': 'integer', 'readOnly': False, 'example': 12345},
-    'editLatest': {'type': 'boolean', 'writeOnly': True, 'example': False},
-    'creation_datetime': {'type': 'string', 'format': 'date-time',
-      'readOnly': True, 'example': '2020-04-13T16:30:04.403284Z'}
-  }
-  # required on response:
-  required = ['id', 'comment', 'author_id', 'event_id', 'creation_datetime']
+class MessageResponse(Schema):
+  id = fields.Integer(example=54321, dump_only=True, required=True)
+  comment = fields.String(example='This is my message', required=True)
+  author_id = fields.Integer(example=101, dump_only=True, required=True)
+  event_id = fields.Integer(example=12345, dump_only=False, required=True)
+  creation_datetime = fields.DateTime(dt_format='iso8601', dump_only=True, required=True, example='2020-04-13T16:30:04.403284')
 
-class MessageCreate(Message):
-  required = ['comment', 'author_id', 'event_id']
+class MessageCreate(Schema):
+  comment = fields.String(example='This is my message', required=True)
+  event_id = fields.Integer(example=12345, required=True)
+  editLatest = fields.Boolean(example=False, load_only=True)
 
 #--------------------------------------------------
+# Messages:
 
 class MessagesComment(Schema):
-  type = 'object'
-  properties = {
-    'date': {'type': 'string', 'format': 'date-time', 'example': '2020-04-13T16:30:04.461593Z'},
-    'user': {'type': 'integer', 'example': 101},
-    'comment': {'type': 'string', 'example': 'This is my message'}
-  }
-  required = ['date', 'user', 'comment']
+  date = fields.DateTime(dt_format='iso8601', example='2020-04-13T16:30:04.403284', required=True)
+  user = fields.Integer(example=101, required=True)
+  comment = fields.String(example='This is my message', required=True)
 
 class MessagesUser(Schema):
-  type = 'object'
-  properties = {
-    'firstname': {'type': 'string', 'example': 'John'},
-    'lastname': {'type': 'string', 'example': 'DOE'},
-    'phone': {'type': 'string', 'example': '01.02.03.04.05',
-      'description': 'present if share_phone is true'},
-    'has_whatsapp': {'type': 'boolean', 'example': True},
-    'email': {'type': 'string', 'format': 'email',
-      'example': 'john.doe@gmail.com', 'minLength': 5,
-      'description': 'present if share_email is true'}
-  }
-  required = ['firstname', 'lastname']
+  firstname = fields.String(example='John', required=True)
+  lastname = fields.String(example='DOE', required=True)
+  phone = fields.String(example='01.02.03.04.05', metadata={'description': 'present if share_phone is true'})
+  has_whatsapp = fields.Boolean(example=True)
+  email = fields.String(example='john.doe@gmail.com', metadata={'description': 'present if share_email is true'})
 
 class Messages(Schema):
-  type = 'object'
-  properties = {
-    'users': {
-      'type': 'object',
-      'additionalProperties': MessagesUser
-    },
-    'comments': {
-      'type': 'array',
-      'items': MessagesComment
-    },
-    'participants': {
-      'type': 'array',
-      'items': {'type': 'integer', 'example': 101}
-    },
-    'interested': {
-      'type': 'array',
-      'items': {'type': 'integer', 'example': [102,103]}
-    }
-  }
-  required = ['users', 'comments', 'participants', 'interested']
+  users = fields.Dict(keys=fields.String(), values=fields.Nested(MessagesUser), required=True)
+  comments = fields.List(fields.Nested(MessagesComment), required=True)
+  participants = fields.List(fields.Integer(), required=True, example=[101])
+  interested = fields.List(fields.Integer(), required=True, example=[102,103])

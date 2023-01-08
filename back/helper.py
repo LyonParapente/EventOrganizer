@@ -10,8 +10,7 @@ def randomString(stringLength=8):
   return ''.join(random.choice(letters) for i in range(stringLength))
 
 def nice_date(date, lang):
-  lang_full = locale.normalize(lang)
-  locale.setlocale(locale.LC_ALL, lang_full)
+  locale.setlocale(locale.LC_ALL, lang)
   result = '{0:%A} {1} {0:%B} {0:%Y}'.format(date, date.day)
   locale.setlocale(locale.LC_ALL, 'C') # reset
   return result

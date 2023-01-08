@@ -10,12 +10,13 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
+    - name: Checkout main
+      uses: actions/checkout@main
 
     - name: Set up Node.js version
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '14.16.x'
+        node-version: 18
 
     - name: Install dependencies
       run: npm install

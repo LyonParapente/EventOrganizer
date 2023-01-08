@@ -1,7 +1,7 @@
 import os
 import json
-from flask import Flask, redirect, request, render_template, make_response, send_file
-from flask_restful_swagger_3 import Api, swagger
+from apiflask import APIFlask, APIBlueprint
+from flask import redirect, request, render_template, make_response, send_file
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
 from flask_jwt_extended import unset_jwt_cookies, set_access_cookies, get_jwt
 from flask_cors import CORS
@@ -31,33 +31,28 @@ from image import resize_image
 import emails
 
 # ------------------------------
-# Authent part 1: Swagger description
+# Flask initialization
 
-components = {
-  'securitySchemes': {
-    'BearerAuth': {
-      'type': 'http',
-      'scheme': 'bearer',
-      'bearerFormat': 'JWT'
-    }
+app = APIFlask(__name__, title='EventOrganizer API', docs_path='/swagger', spec_path='/openapi.yaml', version='1.1')
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+# openapi swagger in yaml
+app.config['SPEC_FORMAT'] = 'yaml'
+
+app.security_schemes = {
+  'BearerAuth': {
+    'type': 'http',
+    'scheme': 'bearer',
+    'bearerFormat': 'JWT'
   }
 }
 
-# Apply the security globally to all operations
-api_security = [
-  # We don't JWT on all API, but just on some
-  # See 'security' on @swagger.doc
-  #{'BearerAuth': []}
-]
+bpapp = APIBlueprint('website', __name__, enable_openapi=False)
 
 # ------------------------------
-# Flask initialization
+# Secrets
 
-app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
-api = Api(app, components=components, security=api_security)
-
-app.config.from_pyfile('secrets.py')
+app.config.from_pyfile('app_secrets.py')
 emails.init(app)
 
 # ------------------------------
@@ -145,32 +140,29 @@ app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7Mo
 # ------------------------------
 # API
 
-from api.auth import LoginAPI, LogoutAPI
-api.add_resource(LoginAPI,         settings.api_path+'/auth/login')
-api.add_resource(LogoutAPI,        settings.api_path+'/auth/logout')
+from api.auth import AuthBP, LoginAPI, LogoutAPI
+app.register_blueprint(AuthBP, url_prefix=settings.api_path+'/auth')
 
-from api.event import EventAPICreate, EventAPI
-api.add_resource(EventAPICreate,   settings.api_path+'/event')
-api.add_resource(EventAPI,         settings.api_path+'/event/<int:event_id>')
+from api.event import EventBP
+app.register_blueprint(EventBP, url_prefix=settings.api_path)
 
-from api.registration import RegisterAPI
-api.add_resource(RegisterAPI,      settings.api_path+'/event/<int:event_id>/registration')
+from api.registration import RegisterBP
+app.register_blueprint(RegisterBP, url_prefix=settings.api_path)
 
-from api.notifications_blocklist import NotificationsBlocklistAPI
-api.add_resource(NotificationsBlocklistAPI, settings.api_path+'/event/<int:event_id>/notifications_blocklist')
+from api.notifications_blocklist import NotificationsBlocklistBP
+app.register_blueprint(NotificationsBlocklistBP, url_prefix=settings.api_path)
 
-from api.events import EventsAPI
-api.add_resource(EventsAPI,        settings.api_path+'/events')
+from api.events import EventsBP
+app.register_blueprint(EventsBP, url_prefix=settings.api_path)
 
-from api.user import UserAPICreate, UserAPI
-api.add_resource(UserAPICreate,    settings.api_path+'/user')
-api.add_resource(UserAPI,          settings.api_path+'/user/<int:user_id>')
+from api.user import UserBP
+app.register_blueprint(UserBP, url_prefix=settings.api_path)
 
-from api.message import MessageAPICreate
-api.add_resource(MessageAPICreate, settings.api_path+'/message')
+from api.message import MessageBP
+app.register_blueprint(MessageBP, url_prefix=settings.api_path)
 
-from api.messages import MessagesAPI
-api.add_resource(MessagesAPI,      settings.api_path+'/messages')
+from api.messages import MessagesBP
+app.register_blueprint(MessagesBP, url_prefix=settings.api_path)
 
 # ------------------------------
 # Routes
@@ -182,16 +174,19 @@ class RegexConverter(BaseConverter):
 
 app.url_map.converters['regex'] = RegexConverter
 
-@app.route('/')
-@app.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
+# avoid werkzeug extra slash and 308 redirection
+app.url_map.strict_slashes = False
+
+@bpapp.route('/')
+@bpapp.route('/<regex("[0-9]{4}-[0-9]{2}"):id>')
 @jwt_required(optional=True)
 def index(id=None):
   """Calendar"""
   return calendar()
 
-@app.route('/event:new')
-@app.route('/event:<int:id>')
-@app.route('/event:<int:id>:edit')
+@bpapp.route('/event:new')
+@bpapp.route('/event:<int:id>')
+@bpapp.route('/event:<int:id>:edit')
 @jwt_required()
 def event(id=None):
   """Event details"""
@@ -211,7 +206,7 @@ def calendar():
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
 
 
-@app.route('/swagger')
+@bpapp.route('/swagger-online')
 def swag():
   """Redirect to Swagger UI"""
   hostname = request.environ["SERVER_NAME"]
@@ -219,20 +214,22 @@ def swag():
     hostname = 'localhost'
   port = request.environ["SERVER_PORT"]
   protocol = request.environ["wsgi.url_scheme"]
-  url = "http://petstore.swagger.io/?url={}://{}:{}/api/swagger.json".format(protocol, hostname, port)
+  url = "http://petstore.swagger.io/?url={}://{}:{}/swagger".format(protocol, hostname, port)
   return redirect(url)
 
-#@app.route("/environ")
+#@bpapp.route("/environ")
 #def environ():
 #  return "{} <br/><br/><br/> {}".format(request.environ, os.environ)
 
+from api.user import UserAPI, post as createUser
 api_user = UserAPI()
 
-@app.route('/user:<int:id>')
+@bpapp.route('/user:<int:id>')
 @jwt_required()
 def user(id):
   """User details"""
-  user_item = api_user.get(id)
+  res, http_code = api_user.get(id)
+  user_item = res.json
   claims = get_jwt()
 
   phone = user_item.get('phone', '')
@@ -248,7 +245,7 @@ def user(id):
     user=user_item, theme=claims['theme'], header=header,
     TheWing=lang['TheWing'], presentation=presentation)
 
-@app.route('/users')
+@bpapp.route('/users')
 @jwt_required()
 def users():
   """Users list"""
@@ -274,7 +271,7 @@ def users():
     users=users, theme=claims['theme'], header=header, iam_admin=iam_admin,
     approve=lang['APPROVE'], temporary=lang['TEMPORARY_USER'], delete=lang['DELETE'])
 
-@app.route('/login', methods=['GET', 'POST'])
+@bpapp.route('/login', methods=['GET', 'POST'])
 @jwt_required(optional=True)
 def login():
   """Login"""
@@ -324,7 +321,7 @@ def login():
   return render_template('login.html', **lang,
     default_theme=settings.default_theme)
 
-@app.route('/logout')
+@bpapp.route('/logout')
 @jwt_required(optional=True)
 def logout():
   """Logout"""
@@ -334,23 +331,23 @@ def logout():
   unset_jwt_cookies(response)
   return response
 
-@app.route('/register', methods=['GET', 'POST'])
+@bpapp.route('/register', methods=['GET', 'POST'])
 @jwt_required(optional=True)
 def register():
   """Register an account"""
   if request.method == 'POST':
-    code, result = UserAPICreate.from_dict(request.form.to_dict())
-    if code == 200:
+    httpcode, result, opts = createUser(request.form)
+    if httpcode == 201:
       f = request.form
       emails.send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
       return render_template('register.html', **lang, message=lang['checkemail'])
     else:
-      if code == 409:
+      if httpcode == 409:
         result = lang['alreadyRegistered']
       else:
         result = lang['register_error']
       return render_template('register.html', **lang,
-        default_theme=settings.default_theme, error=result), code
+        default_theme=settings.default_theme, error=result), httpcode
   elif get_jwt_identity() is not None:
     # Already connected
     return redirect('/')
@@ -358,8 +355,8 @@ def register():
   return render_template('register.html', **lang,
     default_theme=settings.default_theme)
 
-@app.route('/approve/user:<int:id>', defaults={'role': 'user'})
-@app.route('/approve/user:<int:id>/<string:role>')
+@bpapp.route('/approve/user:<int:id>', defaults={'role': 'user'})
+@bpapp.route('/approve/user:<int:id>/<string:role>')
 @jwt_required()
 def approve_user(id, role):
   """Approve a user"""
@@ -376,20 +373,20 @@ def approve_user(id, role):
     return "ALREADY APPROVED"+ret
   return "NOPE", 403
 
-@app.route('/delete/user:<int:id>')
+@bpapp.route('/delete/user:<int:id>')
 @jwt_required()
 def delete_user(id):
   """Remove a newly registered user"""
   claims = get_jwt()
   if claims['role'] == 'admin':
-    user_item = api_user.delete(id)
+    res, http_code = api_user.delete(id)
   return redirect('/users')
 
 def allowed_file(filename):
   return '.' in filename and \
     filename.rsplit('.', 1)[1].lower() in settings.uploads_allowed_extensions
 
-@app.route('/settings', methods=['GET', 'POST'])
+@bpapp.route('/settings', methods=['GET', 'POST'])
 @jwt_required()
 def user_settings():
   """User settings"""
@@ -420,12 +417,12 @@ def user_settings():
     form['notif_event_change'] = False if form.get('notif_event_change') is None else True
     form['notif_tomorrow_events'] = False if form.get('notif_tomorrow_events') is None else True
 
-    # Remove extra fields that would break UserAPI.put_from_dict()
+    # Remove extra fields that would break .put()
     del form['csrf_token']
     del form['remove_avatar']
 
-    code, result = UserAPI.put_from_dict(id, form)
-    if code == 200:
+    res, httpcode = api_user.put_internal(id, form)
+    if httpcode == 200:
       message = lang['saved']
 
       # Regenerate new token so that new infos are stored in claims
@@ -439,7 +436,7 @@ def user_settings():
       # message is lost... but we have to redirect for csrf_token variable
       return regenerate_claims(claims, '/settings')
     else:
-      #print(result)
+      #print(res)
       error = lang['saved_error']
 
   header = render_template('header.html', **lang,
@@ -465,7 +462,7 @@ def regenerate_claims(claims, dest):
   set_access_cookies(response, token)
   return response
 
-@app.route('/password', methods=['GET', 'POST'])
+@bpapp.route('/password', methods=['GET', 'POST'])
 @jwt_required(optional=True)
 def change_password():
   """Change password"""
@@ -512,7 +509,7 @@ def change_password():
     csrf_token=csrf_token, theme=theme,
     message=message, error=error, is_connected=is_connected)
 
-@app.route('/avatars/<string:name>')
+@bpapp.route('/avatars/<string:name>')
 @jwt_required()
 def avatar(name):
   """Get avatar"""
@@ -555,14 +552,14 @@ for filename in os.listdir('uploads/backgrounds'):
     filepath = 'uploads/backgrounds/' + filename
     available_backgrounds.append(filepath)
 
-@app.route('/background/<int:width>x<int:height>')
+@bpapp.route('/background/<int:width>x<int:height>')
 def background(width, height):
   """Get proper size background"""
   rand = random.randint(0, len(available_backgrounds) - 1)
   background = available_backgrounds[rand]
   return get_image_resized(background, width, height)
 
-@app.route('/background/rescue/<int:width>x<int:height>')
+@bpapp.route('/background/rescue/<int:width>x<int:height>')
 def rescue_background(width, height):
   background = 'static/img/rescue.jpg'
   return get_image_resized(background, width, height)
@@ -587,7 +584,7 @@ def get_image_resized(background, width, height):
 
   return send_file(dest_path)
 
-@app.route('/tomorrow_events')
+@bpapp.route('/tomorrow_events')
 def tomorrow_events():
   token = request.args.get('token')
   if token == app.config['DAILY_CHECK']:
@@ -608,7 +605,7 @@ def tomorrow_events():
 #       width=1400, height=800, enlarge=True, mode='crop')
 #   return "OK", 200
 
-@app.route('/ics')
+@bpapp.route('/ics')
 @jwt_required()
 def generate_ics():
   event_id = request.args.get('event')
@@ -620,15 +617,15 @@ def generate_ics():
   e = ics.Event()
 
   e.name = event['title']
-  e.begin = event['start_date']
+  e.begin = str(event['start_date'])
   url = settings.domain+'/event:'+str(event['id'])
   e.url = url
   e.description = markdown.markdown(url+"\n\n"+(event['description'] or ''))
 
-  if event['end_date'] == event['start_date']:
+  if str(event['end_date']) == str(event['start_date']):
     e.make_all_day()
   else:
-    e.end = event['end_date']
+    e.end = str(event['end_date'])
 
   if event['gps_location']:
     e.location = event['gps_location']
@@ -647,6 +644,7 @@ def generate_ics():
 
 
 # ------------------------------
+app.register_blueprint(bpapp)
 
 if __name__ == '__main__':
   # local development

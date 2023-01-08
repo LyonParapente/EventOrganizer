@@ -31,11 +31,11 @@ Main goals:
 
 ## Front
 
-Front is made using TypeScript and [FuseBox](https://fuse-box.org/) bundler.  
+Front is made using TypeScript and [FuseBox](https://github.com/fuse-box/fuse-box) bundler.  
 
 First time: `npm install`
 
-Launch compile & local web server with: `.\run.bat`   
+Launch compile & local web server with: `.\run.bat`  
 Then open your browser to http://localhost:4444/
 
 Each time you save a source file, FuseBox reloads the page of all connected browsers, even your phone :-).
@@ -43,7 +43,7 @@ Each time you save a source file, FuseBox reloads the page of all connected brow
 
 ## Back
 
-See [BACK](BACK.md) for how to configure both your local development environment.
+See [BACK](BACK.md) for how to configure your local development environment.
 
 # Production deployment
 
@@ -51,7 +51,7 @@ Follow the tutorial: [Flask + Gunicorn + Nginx + HTTPS](VPS.md)
 
 # Stack
 
-* TypeScript and [FuseBox](https://fuse-box.org/) bundler
+* [TypeScript](https://www.typescriptlang.org/) and [FuseBox](https://github.com/fuse-box/fuse-box) bundler
 * [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com)
 * [Font Awesome](https://fontawesome.com/)
 * [Leaflet](https://leafletjs.com) with [OpenStreetMap](https://www.openstreetmap.org/about) and [Esri](https://esri.github.io/esri-leaflet/)
