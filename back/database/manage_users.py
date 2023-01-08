@@ -66,6 +66,7 @@ def get_user(self, user_id=None, email=None):
 
   if res is not None:
     res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
+    res['last_login_datetime'] = get_datetime_from_str(res['last_login_datetime'].rstrip('Z')) if res['last_login_datetime'] is not None else None
   return res
 
 def list_users(self, include_new_and_expired=False, only_admins=False,
@@ -74,7 +75,7 @@ def list_users(self, include_new_and_expired=False, only_admins=False,
   db, cursor = self._connect()
   try:
     list_users = """
-      SELECT id,firstname,lastname,email,role,creation_datetime,
+      SELECT id,firstname,lastname,email,role,creation_datetime,last_login_datetime
         notif_new_event,notif_event_change,notif_tomorrow_events
       FROM users
       WHERE role IS NOT NULL AND role!='deleted'
@@ -95,6 +96,7 @@ def list_users(self, include_new_and_expired=False, only_admins=False,
 
     for user in res:
       user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
+      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user['last_login_datetime'] is not None else None
     return res
   finally:
     db.close()
@@ -154,6 +156,17 @@ def update_user(self, user_id, *,
       db.close()
   return fields_to_update
 
+def update_last_login_datetime(self, user_id):
+  now = datetime.datetime.utcnow().isoformat()+'Z'
+  db, cursor = self._connect()
+  update_user = "UPDATE users SET last_login_datetime=? WHERE id=?"
+  try:
+    cursor.execute(update_user, (now, user_id))
+    db.commit()
+    return cursor.rowcount
+  finally:
+    db.close()
+
 def set_password_lost(self, user_id, empty=False):
   db, cursor = self._connect()
   if empty:
@@ -206,7 +219,7 @@ def list_users_by_score(self, include_new_and_expired=False):
 
     look_back = "-12 months"
     list_users = f"""
-      SELECT id, firstname, lastname, email, role, creation_datetime,
+      SELECT id, firstname, lastname, email, role, creation_datetime, last_login_datetime,
         nb_created_events, nb_participations, nb_interests, nb_comments,
         (nb_created_events*10 + nb_participations*5 + nb_interests*2 + nb_comments) AS score
       FROM
@@ -253,6 +266,7 @@ def list_users_by_score(self, include_new_and_expired=False):
     res = cursor.fetchall()
     for user in res:
       user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
+      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user['last_login_datetime'] is not None else None
     return res
   finally:
     db.close()

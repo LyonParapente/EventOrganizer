@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS "users" (
 "notif_tomorrow_events" BOOLEAN DEFAULT 1,
 "wing" TEXT,
 "presentation" TEXT,
-"creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+"creation_datetime" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+"last_login_datetime" TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS "events" (

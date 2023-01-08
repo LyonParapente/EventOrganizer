@@ -37,6 +37,8 @@ class LoginAPI():
 
       if user['role'] in ['user', 'temporary', 'admin']:
         if bcrypt.check_password_hash(user['password'], password):
+          db.update_last_login_datetime(user['id'])
+          print('Successful login of %s' % email)
           return LoginAPI.get_token(user, expires_delta)
         else:
           print('Password hash does not match')
