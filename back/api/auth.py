@@ -30,7 +30,7 @@ def login(json):
 class LoginAPI():
   @staticmethod
   def authenticate(email, password, expires_delta):
-    user = db.get_user(email=email)
+    user = db.get_user(email=email.lower())
     if user is None:
       print('Email not found: %s' % email)
     else:
@@ -86,7 +86,7 @@ class LoginAPI():
 
   @staticmethod
   def lost_password(user_email):
-    user = db.get_user(email=user_email)
+    user = db.get_user(email=user_email.lower())
     if user:
       user_id = user['id']
       token = db.set_password_lost(user_id)

@@ -30,6 +30,9 @@ class DBManage(object):
       with open('./database/patch1.sql', 'r') as sql_file:
         cursor.executescript(sql_file.read())
 
+    # Done manually around release v2.0.5 to allow "Result: UNIQUE constraint failed" du to a duplicate user with different email case
+    # cursor.execute('UPDATE users SET email=lower(email) WHERE lower(email)!=email')
+
     # Save
     db.commit()
 

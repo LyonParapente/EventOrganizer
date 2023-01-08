@@ -1,2 +1,1 @@
-* Fix name of release
-* (note: warnings have correctly disappeared)
+* Email should be case-insensitive
