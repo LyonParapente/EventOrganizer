@@ -62,7 +62,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
+        name: Release ${{ github.ref_name }}
         body_path: last_release.md
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: Release ${{ github.ref }}
         files: artifact.zip
