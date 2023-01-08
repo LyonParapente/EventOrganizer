@@ -31,6 +31,9 @@ footer = """<br/><br/>
 Pour toute question: <a href="mailto:contact@lyonparapente.fr">contact@lyonparapente.fr</a>
 """.format(site=domain)
 
+# https://github.com/mattupstate/flask-mail/issues/128
+from email import header
+header.MAXLINELEN = 32
 
 def check_domain():
   if flask_app.debug:
