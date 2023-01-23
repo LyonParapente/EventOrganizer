@@ -1,7 +1,7 @@
 - eventorganizer.sock
 - events.db
 - exceptions.txt
-- secrets.py
+- app_secrets.py
 - smtp_errors.txt
 - .gitignore
 - .git/
