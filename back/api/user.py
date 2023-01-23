@@ -18,7 +18,7 @@ def createUser(json):
   httpcode, res, opts = post(json)
   if httpcode != 201:
     abort(httpcode, res)
-  return (res, httpcode, opts)
+  return (httpcode, res, opts)
 
 def post(json):
   try:

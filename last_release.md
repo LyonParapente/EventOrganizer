@@ -1,1 +1,1 @@
-* Fix tomorrow events not sent anymore
+* Fix no email when new account

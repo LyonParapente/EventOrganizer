@@ -339,7 +339,7 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
-    httpcode, result, opts = createUser(request.form)
+    httpcode, result = createUser(request.form)
     if httpcode == 201:
       f = request.form
       emails.send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])
