@@ -66,7 +66,7 @@ def get_user(self, user_id=None, email=None):
 
   if res is not None:
     res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
-    res['last_login_datetime'] = get_datetime_from_str(res['last_login_datetime'].rstrip('Z')) if res['last_login_datetime'] is not None else None
+    res['last_login_datetime'] = get_datetime_from_str(res['last_login_datetime'].rstrip('Z')) if res.get('last_login_datetime') is not None else None
   return res
 
 def list_users(self, include_new_and_expired=False, only_admins=False,
@@ -96,7 +96,7 @@ def list_users(self, include_new_and_expired=False, only_admins=False,
 
     for user in res:
       user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
-      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user['last_login_datetime'] is not None else None
+      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user.get('last_login_datetime') is not None else None
     return res
   finally:
     db.close()
@@ -271,7 +271,7 @@ def list_users_by_score(self, include_new_and_expired=False):
 
     for user in res:
       user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
-      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user['last_login_datetime'] is not None else None
+      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user.get('last_login_datetime') is not None else None
 
     return res
   finally:
