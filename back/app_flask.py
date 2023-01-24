@@ -268,6 +268,8 @@ def users():
     if first_inactive_user is None and user['score'] is None:
       first_inactive_user = user['id']
 
+  # TODO: put "new" users (to approve/temporary) at bottom?
+
   header = render_template('header.html', **lang, is_connected=True)
   return render_template('users.html',
     title=lang['usersTitle'], lang=lang['lang'], gotohome=lang['gotohome'], usersDescription=lang['usersDescription'], inactiveUsersDescription=lang['inactiveUsersDescription'],
@@ -339,7 +341,7 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
-    httpcode, result = createUser(request.form)
+    httpcode, result, opts = createUser(request.form)
     if httpcode == 201:
       f = request.form
       emails.send_register(f['email'], f['firstname']+' '+f['lastname'], result['id'])

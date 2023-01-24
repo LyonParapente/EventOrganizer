@@ -1,1 +1,1 @@
-* Fix no email when new account
+* Fix error in register account
