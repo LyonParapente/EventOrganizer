@@ -1,1 +1,1 @@
-* Fix error in register account
+* Fix emails not sent since v2.1.0

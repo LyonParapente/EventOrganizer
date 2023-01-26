@@ -19,14 +19,14 @@ flask_app = None
 
 domain = settings.emails['domain']
 
-header = """
+email_header = """
 <div align="center">
 <img src="{site}/static/img/logo_115.png" alt="Logo"/>
 </div>
 <br />
 """.format(site=domain)
 
-footer = """<br/><br/>
+email_footer = """<br/><br/>
 <a href="https://lyonparapente.fr">Le blog</a> | <a href="{site}">Le calendrier</a><br/>
 Pour toute question: <a href="mailto:contact@lyonparapente.fr">contact@lyonparapente.fr</a>
 """.format(site=domain)
@@ -64,7 +64,7 @@ def send_emails_mailjet(messages):
       "Email": settings.emails['reply_to_email'],
       "Name": settings.emails['reply_to_name']
     }
-    message['HTMLPart'] = header + message['HTMLPart'] + footer
+    message['HTMLPart'] = email_header + message['HTMLPart'] + email_footer
 
     if message.get('Bcc'):
       bcc = chunks(message['Bcc'], settings.emails['max_recipients_per_mail'])
@@ -100,7 +100,7 @@ def send_emails_smtp(app, messages):
   start = datetime.datetime.now()
   with app.app_context():
     for message in messages:
-      message['HTMLPart'] = header + message['HTMLPart'] + footer
+      message['HTMLPart'] = email_header + message['HTMLPart'] + email_footer
       try:
         if message.get('Bcc'):
           dests = compute_recipients_inline(message['Bcc'])
