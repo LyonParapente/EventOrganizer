@@ -253,7 +253,7 @@ function init_routing ()
 					console.log('Showing event:'+num);
 					showEvent(event);
 				}
-				calendar.gotoDate(event.start);
+				calendar.gotoDate(event.start as Date);
 			}, function(){/* do nothing */});
 		})
 		.add(/([0-9]{4})-([0-9]{2})/, function (year, month)
