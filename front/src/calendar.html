@@ -40,7 +40,7 @@
 <div id="calendar"></div>
 
 <div id="loading" style="display:none">
-	<i class="fa fa-circle-notch fa-spin"></i>
+	<i class="fa-solid fa-circle-notch fa-spin"></i>
 </div>
 
 <div class="modal fade" id="createEvent" style="display:none" tabindex="-1" role="dialog" aria-labelledby="createEventTitle" aria-hidden="true">
@@ -102,9 +102,9 @@
 						</div>
 						<div class="col-auto p-0">
 							<label for="sortie_whatsapp" class="col-form-label">
-								<i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i><span>invite link</span>
+								<i class="fa-brands fa-whatsapp" title="WhatsApp">&nbsp;</i><span>invite link</span>
 							</label>
-							<i class="fas fa-question-circle" id="WhatsApp_video"></i>
+							<i class="fa-solid fa-question-circle" id="WhatsApp_video"></i>
 						</div>
 						<div class="col ps-1">
 							<input type="text" class="form-control" id="sortie_whatsapp" placeholder="https://chat.whatsapp.com/..." tabindex="7" />
@@ -149,10 +149,10 @@
 		<div class="modal-content">
 			<div class="modal-header align-items-center">
 				<span class="badge me-2" id="event_category"></span>
-				<a href="javascript:;" class="me-2"><i class="fas fa-bell" id="event_bell"></i></a>
-				<a href="" id="event_ics" title="Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)" class="me-2"><i class="far fa-calendar-alt"></i></a>
+				<a href="javascript:;" class="me-2"><i class="fa-solid fa-bell" id="event_bell"></i></a>
+				<a href="" id="event_ics" title="Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)" class="me-2"><i class="fa-regular fa-calendar-alt"></i></a>
 				<button type="button" class="btn btn-outline-success d-flex align-items-center me-2 p-0" id="event_whatsapp">
-					<i class="fab fa-whatsapp" title="WhatsApp">&nbsp;</i>
+					<i class="fa-brands fa-whatsapp" title="WhatsApp">&nbsp;</i>
 					WhatsApp
 				</button>
 				<h4 class="modal-title container text-center" id="event_title"></h4>
@@ -182,7 +182,7 @@
 							</div>
 
 							<div class="input-group w-auto mt-auto pt-1" id="event_location_box">
-								<div class="input-group-text" id="event_location_title"><i class="fas fa-map-marker" title="Activity location"></i></div><!-- trad -->
+								<div class="input-group-text" id="event_location_title"><i class="fa-solid fa-map-marker" title="Activity location"></i></div><!-- trad -->
 								<span class="form-control" id="event_location"></span>
 								<textarea class="form-control bg-white" rows="1" readonly id="event_location2"></textarea>
 							</div>
@@ -201,16 +201,16 @@
 									</div>
 									<div class="d-flex mt-auto pt-1">
 										<div class="input-group w-auto" id="event_author_phone_box">
-											<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div><!-- trad -->
+											<div class="input-group-text"><i class="fa-solid fa-phone" title="Phone"></i></div><!-- trad -->
 											<span class="form-control" id="event_author_phone"></span>
 										</div>
 										<div class="input-group w-auto ms-1" id="event_author_whatsapp">
-											<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
+											<div class="input-group-text"><i class="fa-brands fa-whatsapp" title="WhatsApp"></i></div>
 											<span class="form-control"><a href="https://api.whatsapp.com/send?phone=">WhatsApp</a></span>
 										</div>
 									</div>
 									<div class="input-group w-auto mt-auto pt-1" id="event_author_email_box">
-										<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div><!-- trad -->
+										<div class="input-group-text"><i class="fa-regular fa-envelope" title="Email"></i></div><!-- trad -->
 										<span class="form-control" id="event_author_email"></span>
 									</div>
 									<div class="mt-auto"></div>
@@ -232,13 +232,13 @@
 							<div class="row mb-1">
 								<div class="col-auto pe-0">
 									<div class="input-group w-auto me-1" id="event_rdv_time_box">
-										<div class="input-group-text"><i class="far fa-clock" id="event_rdv_time_title" title="Time"></i></div><!-- trad -->
+										<div class="input-group-text"><i class="fa-regular fa-clock" id="event_rdv_time_title" title="Time"></i></div><!-- trad -->
 										<span class="form-control" id="event_rdv_time"></span>
 									</div>
 								</div>
 								<div class="col ps-0">
 									<div class="input-group" id="event_rdv_location_box">
-										<div class="input-group-text" id="event_rdv_location_title"><i class="fas fa-map-marker-alt" title="Meeting location"></i></div><!-- trad -->
+										<div class="input-group-text" id="event_rdv_location_title"><i class="fa-solid fa-map-marker-alt" title="Meeting location"></i></div><!-- trad -->
 										<input type="text" class="form-control bg-white" id="event_rdv_location" readonly />
 									</div>
 								</div>

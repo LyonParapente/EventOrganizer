@@ -41,14 +41,14 @@ color: green;
 		<div class="form-inline">
 			<div class="input-group mt-auto pt-1">
 				<div class="input-group-prepend">
-					<div class="input-group-text"><i class="fa fa-phone" title="Phone"></i></div>
+					<div class="input-group-text"><i class="fa-solid fa-phone" title="Phone"></i></div>
 				</div>
 				<span class="form-control"><a href="tel:{{user['raw_phone']}}">{{user['phone_nice']}}</a></span>
 			</div>
 			{% if user['has_whatsapp'] %}
 			<div class="input-group mt-auto ml-1 pt-1">
 				<div class="input-group-prepend">
-					<div class="input-group-text"><i class="fab fa-whatsapp" title="WhatsApp"></i></div>
+					<div class="input-group-text"><i class="fa-brands fa-whatsapp" title="WhatsApp"></i></div>
 				</div>
 				<span class="form-control"><a href="https://api.whatsapp.com/send?phone={{user['phone_whatsapp']}}">WhatsApp</a></span>
 			</div>
@@ -58,7 +58,7 @@ color: green;
 		{% if user['email'] %}
 		<div class="input-group mt-auto pt-1">
 			<div class="input-group-prepend">
-				<div class="input-group-text"><i class="fas fa-at" title="Email"></i></div>
+				<div class="input-group-text"><i class="fa-solid fa-at" title="Email"></i></div>
 			</div>
 			<span class="form-control"><a href="mailto:{{user['email']}}">{{user['email']}}</a></span>
 		</div>
