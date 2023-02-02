@@ -62,7 +62,9 @@ const trads =
 		"NotificationsNotBlocked": "Notifications emails actuellement activées",
 		"invite link": "Lien WhatsApp",
 		"Type a description... Markdown available!": "Tape une description... Markdown disponible !",
-		"Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)": "Exporter au format iCalendar (Google Calendar, Apple Calendar, Android, ...)"
+		"Export to iCalendar format (Google Calendar, Apple Calendar, Android, ...)": "Exporter au format iCalendar (Google Calendar, Apple Calendar, Android, ...)",
+		"Previous": "Précédent",
+		"Next": "Suivant"
 	}
 };
 

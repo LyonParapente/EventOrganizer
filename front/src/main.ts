@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function()
 			prev:
 			{
 				text: '', // doesn't matter but need to be here for .ts
+				hint: i18n('Previous'),
 				click: function()
 				{
 					calendar.prev();
@@ -127,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function()
 			next:
 			{
 				text: '', // doesn't matter but need to be here for .ts
+				hint: i18n('Next'),
 				click: function()
 				{
 					calendar.next();
