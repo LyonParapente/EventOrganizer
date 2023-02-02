@@ -1,1 +1,2 @@
-* Fix emails not sent since v2.1.0
+* Upgrade front dependancies
+* Improve accessibility score
