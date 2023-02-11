@@ -65,8 +65,8 @@ def get_user(self, user_id=None, email=None):
     db.close()
 
   if res is not None:
-    res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
-    res['last_login_datetime'] = get_datetime_from_str(res['last_login_datetime'].rstrip('Z')) if res.get('last_login_datetime') is not None else None
+    res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].replace('Z', '+00:00'))
+    res['last_login_datetime'] = get_datetime_from_str(res['last_login_datetime'].replace('Z', '+00:00')) if res.get('last_login_datetime') is not None else None
   return res
 
 def list_users(self, include_new_and_expired=False, only_admins=False,
@@ -95,8 +95,8 @@ def list_users(self, include_new_and_expired=False, only_admins=False,
     res = cursor.fetchall()
 
     for user in res:
-      user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
-      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user.get('last_login_datetime') is not None else None
+      user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].replace('Z', '+00:00'))
+      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].replace('Z', '+00:00')) if user.get('last_login_datetime') is not None else None
     return res
   finally:
     db.close()
@@ -270,8 +270,8 @@ def list_users_by_score(self, include_new_and_expired=False):
     res = cursor.fetchall()
 
     for user in res:
-      user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].rstrip('Z'))
-      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].rstrip('Z')) if user.get('last_login_datetime') is not None else None
+      user['creation_datetime'] = get_datetime_from_str(user['creation_datetime'].replace('Z', '+00:00'))
+      user['last_login_datetime'] = get_datetime_from_str(user['last_login_datetime'].replace('Z', '+00:00')) if user.get('last_login_datetime') is not None else None
 
     return res
   finally:

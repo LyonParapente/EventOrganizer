@@ -39,7 +39,7 @@ def insert_event(self, *,
   finally:
     db.close()
 
-  new_event['creation_datetime'] = get_datetime_from_str(new_event['creation_datetime'].rstrip('Z'))
+  new_event['creation_datetime'] = get_datetime_from_str(new_event['creation_datetime'].replace('Z', '+00:00'))
   return new_event
 
 def get_event(self, event_id):
@@ -53,7 +53,7 @@ def get_event(self, event_id):
     db.close()
 
   if res is not None:
-    res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].rstrip('Z'))
+    res['creation_datetime'] = get_datetime_from_str(res['creation_datetime'].replace('Z', '+00:00'))
     res['start_date'] = get_date_from_str(res['start_date'])
     if res['end_date'] is not None:
       res['end_date'] = get_date_from_str(res['end_date'])
@@ -165,7 +165,7 @@ def get_events_list(self, start, end, fetch_start_before=True):
 
   for event in events_list:
     del event["end_date_bis"]
-    event['creation_datetime'] = get_datetime_from_str(event['creation_datetime'].rstrip('Z'))
+    event['creation_datetime'] = get_datetime_from_str(event['creation_datetime'].replace('Z', '+00:00'))
 
     event['start_date'] = get_date_from_str(event['start_date'])
     if event['end_date']:

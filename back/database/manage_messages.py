@@ -26,7 +26,7 @@ def insert_message(self, *,
   finally:
     db.close()
 
-  new_message['creation_datetime'] = get_datetime_from_str(new_message['creation_datetime'].rstrip('Z'))
+  new_message['creation_datetime'] = get_datetime_from_str(new_message['creation_datetime'].replace('Z', '+00:00')
   return new_message
 
 def get_last_message(self, event_id):
@@ -44,7 +44,7 @@ def get_last_message(self, event_id):
     db.close()
 
   if message is not None:
-    message['creation_datetime'] = get_datetime_from_str(message['creation_datetime'].rstrip('Z'))
+    message['creation_datetime'] = get_datetime_from_str(message['creation_datetime'].replace('Z', '+00:00')
   return message
 
 def edit_message(self, id, comment, author_id, event_id):
@@ -93,7 +93,7 @@ def get_messages_list(self, event_id):
     cursor.execute(get_messages, (event_id,))
     messages_list = cursor.fetchall()
     for msg in messages_list:
-      msg['creation_datetime'] = get_datetime_from_str(msg['creation_datetime'].rstrip('Z'))
+      msg['creation_datetime'] = get_datetime_from_str(msg['creation_datetime'].replace('Z', '+00:00'))
 
     cursor.execute(get_registrations, (event_id,))
     registrations_list = cursor.fetchall()

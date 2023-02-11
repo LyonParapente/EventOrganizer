@@ -33,7 +33,7 @@ def set_registration(self, *,
   finally:
     db.close()
 
-  registration['lastupdate_datetime'] = get_datetime_from_str(registration['lastupdate_datetime'].rstrip('Z'))
+  registration['lastupdate_datetime'] = get_datetime_from_str(registration['lastupdate_datetime'].replace('Z', '+00:00'))
   return registration
 
 def get_registration(self, event_id, user_id):
@@ -50,7 +50,7 @@ def get_registration(self, event_id, user_id):
     db.close()
 
   if res is not None:
-    res['lastupdate_datetime'] = get_datetime_from_str(res['lastupdate_datetime'].rstrip('Z'))
+    res['lastupdate_datetime'] = get_datetime_from_str(res['lastupdate_datetime'].replace('Z', '+00:00'))
   return res
 
 def delete_registration(self, event_id, user_id):
