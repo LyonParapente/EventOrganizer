@@ -1,5 +1,1 @@
-* Fix incorrect time (-1h) due to timezone issue since switch to apiflask (and difference between utc and current french time because winter)
-
-Also forgotten in previous release:
-* Slightly increase calendar size
-* Fix a typescript warning
+* Fix exception on /users due to offset-aware datetimes (timezone) since v2.2.2

@@ -53,7 +53,7 @@ class LoginAPI():
 
   @staticmethod
   def check_user_expired(user):
-    return LoginAPI.get_expiration_datetime(user) < datetime.datetime.utcnow()
+    return LoginAPI.get_expiration_datetime(user) < datetime.datetime.now(datetime.timezone.utc)
 
   @staticmethod
   def test_user_expiration(user):

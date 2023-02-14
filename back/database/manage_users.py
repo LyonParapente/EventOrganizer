@@ -13,6 +13,7 @@ def insert_user(self, *,
 
   pw_hash = bcrypt.generate_password_hash(password).decode()
   now = datetime.datetime.utcnow()
+  now_aware = now.replace(tzinfo=datetime.timezone.utc)
 
   new_user = {
     'firstname': firstname,
@@ -46,7 +47,7 @@ def insert_user(self, *,
   finally:
     db.close()
 
-  new_user['creation_datetime'] = now
+  new_user['creation_datetime'] = now_aware # need datetime object
 
   return new_user
 
