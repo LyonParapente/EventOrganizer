@@ -31,6 +31,19 @@ You can also query:
 Insert an event in database:  
 `curl -i -H "Content-Type: application/json" -X POST -d "{\"title\": \"mon titre\", \"location\": \"mon endroit\", \"start_date\": \"2020-03-29\"}" http://localhost:5000/api/events`
 
+# Check for updates
+
+For back:
+```
+pip install pip-outdated # install globally
+.\env\Scripts\activate
+pip-outdated
+```
+
+For front:
+```
+npm outdated
+```
 
 # Linux hosting (prod)
 
