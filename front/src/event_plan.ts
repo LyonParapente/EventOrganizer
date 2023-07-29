@@ -14,6 +14,11 @@ import * as bootstrap from 'bootstrap';
 import * as DOMPurify from 'dompurify';
 import { marked } from 'marked';
 
+marked.use({
+  mangle: false,
+  headerIds: false,
+}); // prevent console warnings
+
 var sortie_date_start = id("sortie_date_start") as HTMLInputElement;
 var sortie_date_end = id("sortie_date_end") as HTMLInputElement;
 
