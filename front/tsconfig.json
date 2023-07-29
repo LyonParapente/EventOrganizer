@@ -5,7 +5,6 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true, // window['connected_user']
     "baseUrl": "./src/"
   }
 }
