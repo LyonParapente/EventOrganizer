@@ -1,8 +1,13 @@
 @ECHO OFF
 
-CALL env\Scripts\activate
+:: Compile front
+CD ..\front\
+CALL run_prod.bat
+CD ..\back\
 
-::py -m pip install -r .\requirements.txt
+
+CALL env\Scripts\activate
+py -m pip install -r .\requirements.txt
 
 SET FLASK_DEBUG=1
 py .\app_flask.py
