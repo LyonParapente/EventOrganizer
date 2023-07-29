@@ -112,13 +112,13 @@ def resize(image, background=None, **kw):
 
   # Handle the easy cases
   if size.mode in (RESHAPE, None) or size.req_width is None or size.req_height is None:
-    return image.resize((size.width, size.height), Image.ANTIALIAS)
+    return image.resize((size.width, size.height), Image.LANCZOS)
 
   if size.mode not in (FIT, PAD, CROP):
     raise ValueError('unknown mode %r' % size.mode)
 
   if image.size != (size.op_width, size.op_height):
-    image = image.resize((size.op_width, size.op_height), Image.ANTIALIAS)
+    image = image.resize((size.op_width, size.op_height), Image.LANCZOS)
 
   if size.mode == FIT:
     return image
