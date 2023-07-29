@@ -376,10 +376,10 @@ def send_new_message(author_name, author_id, event_id, comment):
       "Bcc": recipients,
       "Subject": "{author_name} a posté un commentaire pour la sortie {title}".format(author_name=author_name, title=title),
       "HTMLPart": """
-<a href="{site}/user:{author_id}">{author_name}</a> a posté un commentaire pour la sortie <a href="{site}/event:{event_id}">{title}</a> :<br/><br/>
 {comment}
-<br/><br/><br/>
-<a href="{site}/event:{event_id}">Plus d'informations sur la sortie</a>
+<br/>
+---<br/>
+Commentaire de <a href="{site}/user:{author_id}">{author_name}</a> pour la sortie <a href="{site}/event:{event_id}">{title}</a>
 """.format(author_name=html.escape(author_name), author_id=str(author_id),
       event_id=str(event_id), title=html.escape(title), site=domain,
       comment=markdown.markdown(comment))
