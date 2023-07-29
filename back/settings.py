@@ -54,3 +54,4 @@ emails = {
   "domain": domain,
   "max_recipients_per_mail": 50
 }
+mail_quota_exceeded_timeout = 3600 # in seconds

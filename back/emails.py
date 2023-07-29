@@ -9,6 +9,7 @@ import settings
 #---
 import app_secrets
 import datetime
+import time
 import html
 import sys
 import traceback
@@ -34,6 +35,8 @@ Pour toute question: <a href="mailto:contact@lyonparapente.fr">contact@lyonparap
 # https://github.com/mattupstate/flask-mail/issues/128
 from email import header
 header.MAXLINELEN = 32
+
+mail_quota_exceeded = False
 
 def check_domain():
   if flask_app.debug:
@@ -92,6 +95,29 @@ def compute_recipients_inline(contacts):
     recipients.append(contact['Name']+' <'+contact['Email']+'>')
   return recipients
 
+def send_email_with_quota_retry(mail, msg):
+
+  # when quota is already reached by another thread
+  while mail_quota_exceeded:
+    time.sleep(10)
+
+  while True:
+    try:
+      mail.send(msg)
+
+      # email was successful
+      mail_quota_exceeded = False # unlock other threads
+      break # get out of loop
+    except:
+      tracebackmsg = traceback.format_exc()
+      if "Mail quota exceeded" in tracebackmsg: # You have exceeded the limit of X messages per hour and per account
+        mail_quota_exceeded = True # block all other threads sending emails
+        time.sleep(settings.mail_quota_exceeded_timeout + 1)
+        # let's try again in the next loop iteration
+      else:
+        raise
+
+
 def send_emails_smtp(app, messages):
   if app.debug:
     print(messages)
@@ -117,7 +143,7 @@ def send_emails_smtp(app, messages):
           reply_to = settings.emails['reply_to_name']+" <"+settings.emails['reply_to_email']+">"
           msg = Message(message['Subject'], recipients=recipients, bcc=bcc, reply_to=reply_to)
           msg.html = message['HTMLPart']
-          mail.send(msg)
+          send_email_with_quota_retry(mail, msg)
       except:
         with open("smtp_errors.txt", "a") as myfile:
           myfile.write(str(start)+'\n')
