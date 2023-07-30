@@ -96,6 +96,7 @@ def compute_recipients_inline(contacts):
   return recipients
 
 def send_email_with_quota_retry(mail, msg):
+  global mail_quota_exceeded
 
   # when quota is already reached by another thread
   while mail_quota_exceeded:
