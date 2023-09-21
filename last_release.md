@@ -1,1 +1,1 @@
-* Ability to edit event in progress
+* Allow to save edited event in progress
