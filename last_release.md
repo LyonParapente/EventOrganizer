@@ -1,1 +1,1 @@
-* Fix no more emails
+* Ability to edit event in progress

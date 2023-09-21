@@ -116,7 +116,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 
 	var today = new Date();
 	var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-	if (start_date.getTime() < todayMidnight.getTime())
+	if (start_date.getTime() < todayMidnight.getTime() && !editedEvent)
 	{
 		console.warn(i18n("Cannot create event in the past"));
 		return;
