@@ -314,7 +314,7 @@ function SubmitEvent (onCreate: (event: EventInput) => void)
 	}
 	else
 	{
-		Object.keys(body).forEach(x => body[x] === '' ? delete body[x] : x);
+		Object.keys(body).forEach(x => body[x as keyof object] === '' ? delete body[x as keyof object] : x);
 	}
 
 	requestJson(method, url, body,
