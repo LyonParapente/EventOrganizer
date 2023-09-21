@@ -163,6 +163,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 
 	sortie_date_start.value = toDateString(start_date);
 	sortie_date_end.value = toDateString(end_date);
+	sortie_date_start.setAttribute("min", toDateString(editedEvent ? start_date : new Date()));
 	sortie_date_end.setAttribute("min", sortie_date_start.value);
 
 	if (editedEvent)
