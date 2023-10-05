@@ -114,8 +114,8 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		end_date = new Date(end_date.getTime() - 86400000);
 	}
 
-	var today = new Date();
-	var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+	var now = new Date();
+	var todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 	if (start_date.getTime() < todayMidnight.getTime() && !editedEvent)
 	{
 		console.warn(i18n("Cannot create event in the past"));
@@ -163,7 +163,13 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 
 	sortie_date_start.value = toDateString(start_date);
 	sortie_date_end.value = toDateString(end_date);
-	sortie_date_start.setAttribute("min", toDateString(editedEvent ? start_date : new Date()));
+	var min_start_date = now;
+	if (start_date.getTime() < now.getTime())
+	{
+		// Allows to save edited event in progress without having to change start date
+		var min_start_date = editedEvent ? start_date : now;
+	}
+	sortie_date_start.setAttribute("min", toDateString(min_start_date));
 	sortie_date_end.setAttribute("min", sortie_date_start.value);
 
 	if (editedEvent)
