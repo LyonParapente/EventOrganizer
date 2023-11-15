@@ -255,15 +255,15 @@ def users():
   if is_admin:
     # Add a border to list admins and new users
     for user in users:
-      if user['role']=='admin':
+      if user['role'] == 'admin':
         user['border'] = 'border-danger'
-      elif user['role']=='new':
+      elif user['role'] == 'new':
         user['border'] = 'border-info'
 
   first_inactive_user = None
   for user in users:
     LoginAPI.test_user_expiration(user)
-    if user['role']=='temporary':
+    if user['role'] == 'temporary':
       user['expiration_date'] = LoginAPI.get_expiration_datetime(user)
     if first_inactive_user is None and user['score'] is None:
       first_inactive_user = user['id']
