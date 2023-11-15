@@ -199,8 +199,15 @@ def update_user_role(self, user_id, role, previous_role=None):
   update_role = "UPDATE users SET role=? WHERE id=?"
   values = (role, user_id)
   if previous_role:
-    update_role += " AND role=?"
-    values = (role, user_id, previous_role)
+    if previous_role == 'temporary' and role == 'temporary':
+      # Reset temporary account so that it keeps working for the next settings.temporary_user_duration
+      update_role = "UPDATE users SET role=?,creation_datetime=? WHERE id=? AND role=?"
+      now = datetime.datetime.utcnow()
+      values = (role, now.isoformat()+'Z', user_id, previous_role)
+    else:
+      update_role = "UPDATE users SET role=? WHERE id=? AND role=?"
+      values = (role, user_id, previous_role)
+
   db, cursor = self._connect()
   try:
     cursor.execute(update_role, values)
