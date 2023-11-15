@@ -30,10 +30,10 @@ class LoginAPI():
   @staticmethod
   def authenticate(email, password, expires_delta):
     user = db.get_user(email=email.lower())
+    res = None
     if user is None:
       print('Email not found: %s' % email)
     else:
-      res = None
       if LoginAPI.test_user_expiration(user):
         res = 'expired'
 
