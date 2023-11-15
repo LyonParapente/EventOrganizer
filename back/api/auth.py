@@ -34,18 +34,18 @@ class LoginAPI():
     if user is None:
       print('Email not found: %s' % email)
     else:
-      if LoginAPI.test_user_expiration(user):
-        res = 'expired'
+      if bcrypt.check_password_hash(user['password'], password):
+        if LoginAPI.test_user_expiration(user):
+          res = 'expired'
 
-      if user['role'] in ['user', 'temporary', 'admin']:
-        if bcrypt.check_password_hash(user['password'], password):
+        if user['role'] in ['user', 'temporary', 'admin']:
           db.update_last_login_datetime(user['id'])
-          print('Successful login of %s' % email)
           res = LoginAPI.get_token(user, expires_delta)
+          print('Successful login of %s' % email)
         else:
-          print('Password hash does not match')
+          print('%s is not approved to log-in' % email)
       else:
-        print('%s is not approved to log-in' % email)
+        print('Password hash does not match')
     return res
 
   @staticmethod
