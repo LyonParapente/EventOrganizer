@@ -199,7 +199,7 @@ def update_user_role(self, user_id, role, previous_role=None):
   update_role = "UPDATE users SET role=? WHERE id=?"
   values = (role, user_id)
   if previous_role:
-    if previous_role == 'temporary' and role == 'temporary':
+    if previous_role == 'expired' and role == 'temporary':
       # Reset temporary account so that it keeps working for the next settings.temporary_user_duration
       update_role = "UPDATE users SET role=?,creation_datetime=? WHERE id=? AND role=?"
       now = datetime.datetime.utcnow()
