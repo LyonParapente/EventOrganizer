@@ -1,7 +1,7 @@
 import settings from './settings';
 import get_connected_user from './user';
 
-export function getColorConf (): object
+export function getColorConf (): ColorConfiguration
 {
 	var theme = getTheme();
 	var colorConf;
@@ -18,7 +18,7 @@ export function getColorConf (): object
 
 export function getColor (category: string): string
 {
-	return getColorConf()[category] as string;
+	return getColorConf()[category];
 }
 
 function getTheme (): string

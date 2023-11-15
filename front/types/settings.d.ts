@@ -10,13 +10,15 @@ interface Settings
 	default_theme: string,
 	categories:
 	{
-		[key: string]:
-		{
-			[key: string]: string
-		}
+		[key: string]: ColorConfiguration
 	},
 	use_unsplash: boolean,
 	unsplash_tags: string[],
 	IGN_key: string,
 	international_prefix: string
+}
+
+interface ColorConfiguration
+{
+	[x: string]: string;
 }
