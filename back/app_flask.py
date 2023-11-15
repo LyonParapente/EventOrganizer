@@ -312,12 +312,13 @@ def login():
       form['password'],
       expires
     )
-    if token is not None:
+    if token not in [None, 'expired']:
       response = make_response(redirect('/'))
       set_access_cookies(response, token)
       return response
     else:
-      return render_template('login.html', **lang, error=lang['login_error'],
+      trad_key = 'login_error_expired' if token is 'expired' else 'login_error'
+      return render_template('login.html', **lang, error=lang[trad_key],
         default_theme=settings.default_theme), 401
   elif get_jwt_identity() is not None:
     # Already connected
