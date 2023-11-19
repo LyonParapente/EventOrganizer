@@ -116,7 +116,7 @@ def should_be_connected(message):
   if request.path.startswith('/api'):
     return {'message': 'Authentication failed: '+message}, 401
 
-  response = make_response(redirect('/login'))
+  response = make_response(redirect('/login?'+urllib.parse.urlencode({'dest': request.path})))
   unset_jwt_cookies(response)
   return response
 
@@ -307,13 +307,20 @@ def login():
       # something other than 'session'
       # this sets 1 year in the future, but jwt expiration prevails
       app.config['JWT_SESSION_COOKIE'] = False
+
     token = LoginAPI.authenticate(
       form['login'],
       form['password'],
       expires
     )
+
+    requestedPage = '/'
+    referrerParams = urllib.parse.parse_qs(urllib.parse.urlparse(request.referrer).query)
+    if 'dest' in referrerParams:
+      requestedPage = referrerParams['dest'][0]
+
     if token not in [None, 'expired']:
-      response = make_response(redirect('/'))
+      response = make_response(redirect(requestedPage))
       set_access_cookies(response, token)
       return response
     else:
@@ -322,7 +329,7 @@ def login():
         default_theme=settings.default_theme), 401
   elif get_jwt_identity() is not None:
     # Already connected
-    return redirect('/')
+    return redirect(requestedPage)
   # GET
   return render_template('login.html', **lang,
     default_theme=settings.default_theme)

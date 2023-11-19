@@ -114,7 +114,7 @@ export function showEvent (calEvent: EventApi): void
 	var connected_user: ConnectedUser = get_connected_user();
 	if (!connected_user)
 	{
-		window.location.assign('/login');
+		window.location.assign('/login?dest='+encodeURIComponent('/event:'+calEvent.id));
 		return;
 	}
 
@@ -505,7 +505,7 @@ function SubmitComment ()
 		{
 			if (ex.status === 401)
 			{
-				window.location.assign('/login');
+				window.location.assign('/login?dest='+encodeURIComponent('/event:'+current_event.event_id));
 			}
 			console.error(type, ex.responseText)
 			comment_post_error.innerHTML = i18n('Unable to save');

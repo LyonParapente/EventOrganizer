@@ -1,1 +1,1 @@
-* Fix previous_role
+* Automatically redirect to requested page after login

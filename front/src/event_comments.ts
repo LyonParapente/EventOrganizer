@@ -23,7 +23,7 @@ export default function loadComments (event: CurrentEvent): void
 	};
 	var event_comment_avatar = id("event_comment_avatar");
 	Object.keys(attributes).forEach(attr =>
-		event_comment_avatar.setAttribute(attr, (attributes[attr] as string|number).toString()));
+		event_comment_avatar.setAttribute(attr, (attributes[attr as keyof typeof attributes] as string|number).toString()));
 
 	var event_comments = id('event_comments');
 	event_comments.innerHTML = '<div class="spinner-border m-auto" role="status"></div>';
@@ -39,7 +39,7 @@ export default function loadComments (event: CurrentEvent): void
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
-		CheckAuthentication(ex);
+		CheckAuthentication(ex, event.event_id);
 
 		event_comments.innerHTML = ''; // Remove spinner
 		console.error(type, ex.responseText);
@@ -51,11 +51,11 @@ export default function loadComments (event: CurrentEvent): void
 	});
 }
 
-function CheckAuthentication (ex: XMLHttpRequest)
+function CheckAuthentication (ex: XMLHttpRequest, event_id: number)
 {
 	if (ex.status === 401)
 	{
-		window.location.assign('/login');
+		window.location.assign('/login?dest='+encodeURIComponent('/event:'+event_id));
 	}
 }
 
@@ -306,7 +306,7 @@ function registerToEvent (event_id: number, interest: number, button_id: string,
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
-		CheckAuthentication(ex);
+		CheckAuthentication(ex, event_id);
 		console.error(type, ex);
 	});
 }
@@ -320,7 +320,7 @@ function unregisterFromEvent (event_id: number, button_id: string, container: HT
 	},
 	function (type: string, ex: XMLHttpRequest)
 	{
-		CheckAuthentication(ex);
+		CheckAuthentication(ex, event_id);
 		console.error(type, ex);
 	});
 }

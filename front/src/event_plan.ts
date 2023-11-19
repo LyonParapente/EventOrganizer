@@ -104,7 +104,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 {
 	if (!get_connected_user())
 	{
-		window.location.assign('/login');
+		window.location.assign('/login'); // ?dest='+encodeURIComponent('/event:new')  potential bad date thus commented out
 		return;
 	}
 
@@ -333,7 +333,7 @@ function SubmitEvent (onCreate: (event: EventInput) => void)
 		{
 			if (ex.status === 401)
 			{
-				window.location.assign('/login');
+				window.location.assign('/login'); // ?dest='+encodeURIComponent('/event:new')  potential bad date thus commented out
 			}
 			else if (ex.status === 400)
 			{
