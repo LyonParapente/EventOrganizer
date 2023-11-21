@@ -1,1 +1,1 @@
-* Automatically redirect to requested page after login
+* Fix Application Exception when calling /login if already logged
