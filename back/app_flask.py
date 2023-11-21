@@ -329,7 +329,7 @@ def login():
         default_theme=settings.default_theme), 401
   elif get_jwt_identity() is not None:
     # Already connected
-    return redirect(requestedPage)
+    return redirect('/')
   # GET
   return render_template('login.html', **lang,
     default_theme=settings.default_theme)
