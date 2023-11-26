@@ -1,1 +1,2 @@
-* Fix Application Exception when calling /login if already logged
+* Fix broken gps location when editing an event
+* Minor improvements
