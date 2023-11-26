@@ -59,7 +59,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 
 		if (settings.IGN_key)
 		{
-			var ignLayers = {
+			var ignLayers: IgnLayers = {
 				"IGN Satellite": {name: "ORTHOIMAGERY.ORTHOPHOTOS", key: "ortho"},
 				"Plan IGN": {name: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2", key: "cartes", format: "image/png"},
 
@@ -87,7 +87,7 @@ export function initMap (elem_id: string, edit: boolean, gps?: L.LatLngTuple, lo
 						attribution : "IGN-F/Geoportail",
 						tileSize : 256
 					});
-					tileLayers[niceName] = ignTileLayer;
+					tileLayers[niceName as keyof typeof tileLayers] = ignTileLayer;
 				}
 			}
 		}

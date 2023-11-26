@@ -64,7 +64,7 @@ function onColorPickerChange (hexStringColor: string): void
 		backgroundColor: hexStringColor,
 		color: colorPicker.isDark() ? 'white' : 'black'
 	};
-	Object.keys(css).forEach(option => colorBox.style[option] = css[option] as CSSStyleDeclaration);
+	Object.keys(css).forEach(option => colorBox.style[option as keyof typeof css] = css[option as keyof typeof css]);
 
 	sortie_category.innerHTML = '';
 	sortie_category.appendChild(colorBox);

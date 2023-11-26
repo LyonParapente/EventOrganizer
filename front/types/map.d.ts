@@ -16,3 +16,8 @@ interface NearbyResult
     latlng: L.LatLngExpression;
     properties: {[x: string]: any};
 }
+
+interface IgnLayers
+{
+    [x:string]: {name: string, key?: string, format?: string}
+}

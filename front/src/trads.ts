@@ -1,6 +1,6 @@
 import settings from './settings';
 
-const trads =
+const trads: Translations =
 {
 	fr:
 	{
@@ -70,7 +70,7 @@ const trads =
 
 export function i18n (key: string, ...args: string[]): string
 {
-	var dic = trads[settings.lang] as string;
+	var dic = trads[settings.lang];
 	if (dic)
 	{
 		if (Object.prototype.hasOwnProperty.call(dic, key))
