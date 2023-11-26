@@ -180,7 +180,7 @@ export function planAnEvent (start_date: Date, end_date: Date, editedEvent?: Eve
 		var eP = editedEvent.extendedProps as ExtendedProps; // for eslint
 		sortie_lieu.value = eP.location || '';
 		sortie_RDV.value = eP.gps_location || '';
-		sortie_RDV_gps.value = eP.gps_location || '';
+		sortie_RDV_gps.value = eP.gps ? eP.gps.join(', ') : '';
 		sortie_heure.value = eP.time || '';
 		sortie_whatsapp.value = eP.whatsapp_link || '';
 		sortie_desc.value = eP.description || '';
