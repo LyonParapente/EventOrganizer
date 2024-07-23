@@ -2,7 +2,7 @@ from mailjet_rest import Client # https://www.mailjet.com/
 from flask_mail import Mail, Message
 from database.manager import db
 from trads import lang
-from helper import nice_date, get_date_from_str
+from helper import nice_date
 from flask import request
 import markdown
 import settings
@@ -273,12 +273,7 @@ def compute_recipients(users):
     recipients.append(obj)
   return recipients
 
-def send_new_event(event, creator_name):
-  """Emails when a new event is declared"""
-  check_domain()
-  all_users = db.list_users(notif_new_event=True, include_new_and_expired=True)
-  recipients = compute_recipients(all_users)
-
+def get_nice_date_str(event):
   start_date = nice_date(event['start_date'], settings.lang_locale)
   date_infos = start_date
   if event['end_date'] and str(event['start_date']) != str(event['end_date']):
@@ -286,6 +281,14 @@ def send_new_event(event, creator_name):
     end_date_obj -= datetime.timedelta(days=1)
     end_date = nice_date(end_date_obj, settings.lang_locale)
     date_infos += " -> " + end_date
+  return date_infos
+
+def send_new_event(event, creator_name):
+  """Emails when a new event is declared"""
+  check_domain()
+  all_users = db.list_users(notif_new_event=True, include_new_and_expired=True)
+  recipients = compute_recipients(all_users)
+  date_infos = get_nice_date_str(event)
 
   loc = event.get('location')
   location = ""
@@ -367,16 +370,18 @@ def send_new_message(author_name, author_id, event_id, comment):
   if len(event_users) == 0:
     return None
 
-  # Fetch event title
+  # Fetch event title & dates
   event = db.get_event(event_id)
   title = event['title'].strip()
+  date_infos = get_nice_date_str(event)
 
   recipients = compute_recipients(event_users)
   messages = [
     {
       "Bcc": recipients,
-      "Subject": "{author_name} a posté un commentaire pour la sortie {title}".format(author_name=author_name, title=title),
+      "Subject": "Nouveau commentaire pour la sortie {title} du {date_infos}".format(title=title, date_infos=date_infos),
       "HTMLPart": """
+Commentaire de <a href="{site}/user:{author_id}">{author_name}</a> :<br/>
 {comment}
 <br/>
 ---<br/>
@@ -392,7 +397,7 @@ def send_new_registration(event_id, user_id, user_name, interest):
   """Emails when somebody register to an event"""
   check_domain()
 
-  if interest!=2:
+  if interest != 2:
     return
 
   event_users = get_users_to_contact(event_id, user_id)
