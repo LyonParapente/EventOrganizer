@@ -137,6 +137,10 @@ def no_token_callback(err):
 app.config['UPLOAD_FOLDER'] = settings.uploads_folder # created automatically
 app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024 # 7Mo
 
+@app.errorhandler(413)
+def request_entity_too_large(e):
+  return error_page(lang['fileTooLarge']), 413
+
 # ------------------------------
 # API
 
