@@ -25,6 +25,7 @@ const settings: Settings =
 		{
 			"sortie vol": '#3A87AD',
 			"rando-vol": '#B9EB1A',
+			gonflage: '#BD2323',
 			cross: '#EB2DF5',
 			permanence: '#5FDCE2',
 			club: '#00C400',
