@@ -1,4 +1,6 @@
 env/
+env39/
+env313/
 __pycache__/
 static/*
 !static/css/

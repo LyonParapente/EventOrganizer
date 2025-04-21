@@ -6,7 +6,7 @@ CALL run_prod.bat
 CD ..\back\
 
 
-CALL env\Scripts\activate
+CALL env313\Scripts\activate
 py -m pip install -r .\requirements.txt
 
 SET FLASK_DEBUG=1

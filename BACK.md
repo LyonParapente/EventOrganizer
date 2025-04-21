@@ -7,9 +7,9 @@ Basically meaning, for windows environment:
 # install virtualenv
 py -m pip install --user virtualenv
 # create a virtual environment
-py -m venv env
+py -m venv env313
 # activate it
-.\env\Scripts\activate
+.\env313\Scripts\activate
 # install requirements
 py -m pip install wheel
 py -m pip install -r .\requirements.txt
@@ -60,7 +60,7 @@ Each admin should be created like a normal user (through gui or api), then manua
 For back:
 ```
 pip install pip-outdated # install globally
-.\env\Scripts\activate
+.\env313\Scripts\activate
 pip-outdated
 ```
 
