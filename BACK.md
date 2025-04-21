@@ -38,7 +38,7 @@ sudo update-locale
 
 # Local run (dev)
 
-`py .\app_flask.py`
+`flask --app app_flask run` or `py .\app_flask.py`
 
 Now open your browser to http://localhost:5000/  
 
