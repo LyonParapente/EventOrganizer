@@ -103,6 +103,7 @@ def error_page(infos):
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 app.config['JWT_COOKIE_SAMESITE'] = 'Lax'
 app.config['JWT_COOKIE_SECURE'] = settings.domain.startswith("https") and not app.debug
+app.config['JWT_VERIFY_SUB'] = False # https://github.com/apache/superset/issues/30995#issuecomment-2494706861
 
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
