@@ -13,9 +13,9 @@ UserBP = APIBlueprint('User', __name__)
 @UserBP.input(UserCreate)
 @UserBP.output(UserResponse, status_code=201, description='Created user')
 @UserBP.doc(responses={409: 'Email already registered'})
-def createUser(json):
+def createUser(json_data):
   """Create a user"""
-  httpcode, res, opts = post(json)
+  httpcode, res, opts = post(json_data)
   if httpcode != 201:
     abort(httpcode, res)
   return (httpcode, res, opts)
@@ -51,9 +51,9 @@ class UserAPI(MethodView):
   @UserBP.input(UserUpdate)
   @UserBP.output(UserResponse, description='Updated user')
   @UserBP.doc(responses={403: 'Update forbidden'})
-  def put(self, user_id, json):  # TODO: use PATCH
+  def put(self, user_id, json_data):  # TODO: use PATCH
     """Update a user"""
-    return self.put_internal(user_id, json)
+    return self.put_internal(user_id, json_data)
 
   def put_internal(self, user_id, json):
     if user_id != get_jwt_identity():

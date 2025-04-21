@@ -9,10 +9,10 @@ EventsBP = APIBlueprint('Events', __name__)
 @jwt_required(optional=True)
 @EventsBP.input(EventsQuery, location='query')
 @EventsBP.output(Event(many=True), description='List of events')
-def getEvents(query):
+def getEvents(query_data):
   """Download a list of events (in a date range)"""
-  start = query.get('start')
-  end = query.get('end')
+  start = query_data.get('start')
+  end = query_data.get('end')
   events_list = db.get_events_list(start, end)
 
   user_id = get_jwt_identity()

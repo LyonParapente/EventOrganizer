@@ -1,4 +1,4 @@
-apiflask==1.2.0
+apiflask==2.4.0
 Flask==2.2.5
 Werkzeug==2.3.8
 Flask-Cors==3.0.10

@@ -17,18 +17,18 @@ class EventAPI(MethodView):
   @EventBP.input(EventCreate)
   @EventBP.output(Event, status_code=201, description='Created event')
   @EventBP.doc(responses={403: 'Creation forbidden'})
-  def post(self, event):
+  def post(self, json_data):
     """Create an event"""
 
-    end_date = event['end_date'] if event.get('end_date') else event['start_date']
+    end_date = json_data['end_date'] if json_data.get('end_date') else json_data['start_date']
     today = datetime.date.today()
     if end_date < today:
       abort(403, 'Cannot create an event in the past')
 
     creator_id = get_jwt_identity()
-    event['creator_id'] = creator_id
+    json_data['creator_id'] = creator_id
     try:
-      props = db.insert_event(**event)
+      props = db.insert_event(**json_data)
     except Exception as e:
       abort(500, e.args[0])
 
@@ -37,9 +37,9 @@ class EventAPI(MethodView):
     # The creator of an event is immediately registered as participant
     try:
       db.set_registration(
-        event_id=new_event['id'],
-        user_id=new_event['creator_id'],
-        interest=2
+        event_id = new_event['id'],
+        user_id = new_event['creator_id'],
+        interest = 2
       )
     except Exception as e:
       print(f"Error setting author registration: {e}")
@@ -76,7 +76,7 @@ class EventAPI(MethodView):
   @EventBP.input(EventUpdate)
   @EventBP.output(Event, status_code=200, description='Updated event')
   @EventBP.doc(responses={403: 'Update forbidden'})
-  def put(self, event_id, event):
+  def put(self, event_id, json_data):
     """Update an event"""
     # Check event creator and end_date
     db_event = self.get_internal(event_id)
@@ -92,7 +92,7 @@ class EventAPI(MethodView):
       abort(403, 'Cannot modify a past event')
 
     try:
-      db.update_event(event_id, **event)
+      db.update_event(event_id, **json_data)
     except Exception as e:
       abort(500, e.args[0])
 

@@ -12,23 +12,23 @@ MessageBP = APIBlueprint('Message', __name__)
 @MessageBP.input(MessageCreate)
 @MessageBP.output(MessageResponse, status_code=201, description='Created message')
 @MessageBP.doc(security='BearerAuth', responses={403: 'Update forbidden'})
-def post(message):
+def post(json_data):
   """Create a message"""
   author_id = get_jwt_identity()
-  message['author_id'] = author_id
+  json_data['author_id'] = author_id
 
   props = None
   editLatest = False
-  if 'editLatest' in message:
-    editLatest = message['editLatest']
-    del message['editLatest']
+  if 'editLatest' in json_data:
+    editLatest = json_data['editLatest']
+    del json_data['editLatest']
 
   if editLatest:
-    last_msg = db.get_last_message(message['event_id'])
+    last_msg = db.get_last_message(json_data['event_id'])
     if last_msg and last_msg['author_id'] == author_id:
-      nb = db.edit_message(last_msg['id'], message['comment'], last_msg['author_id'], last_msg['event_id'])
+      nb = db.edit_message(last_msg['id'], json_data['comment'], last_msg['author_id'], last_msg['event_id'])
       if nb == 1:
-        last_msg['comment'] = message['comment']
+        last_msg['comment'] = json_data['comment']
         props = last_msg
       else:
         abort(500, 'Error updating comment')
@@ -36,7 +36,7 @@ def post(message):
       abort(403, 'Can only update the latest comment if it is yours')
   else:
     try:
-      props = db.insert_message(**message)
+      props = db.insert_message(**json_data)
     except Exception as e:
       abort(500, e.args[0])
 

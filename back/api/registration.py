@@ -15,11 +15,11 @@ class RegisterAPI(MethodView):
 
   @RegisterBP.input({'interest': fields.Integer(required=True, validate=validators.OneOf([1, 2]), metadata={'description': 'Interest (1=interested, 2=participate)'})}, location='query')
   @RegisterBP.output(Registration, description='Registration saved/updated')
-  def put(self, event_id, query):
+  def put(self, event_id, query_data):
     """Save or update a registration"""
     user_id = get_jwt_identity()
     try:
-      props = db.set_registration(event_id=event_id, user_id=user_id, interest=query["interest"])
+      props = db.set_registration(event_id=event_id, user_id=user_id, interest=query_data["interest"])
     except sqlite3.IntegrityError as err:
       if str(err) == "FOREIGN KEY constraint failed":
         abort(404, 'Event not found')

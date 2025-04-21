@@ -22,9 +22,9 @@ def create_basic_user_infos(props):
 @MessagesBP.input({'event_id': fields.Integer(required=True)}, location='query')
 @MessagesBP.output(Messages, description='List of messages')
 @MessagesBP.doc(security='BearerAuth', responses={404: 'Event not found'})
-def get(query):
+def get(query_data):
   """Download the list of messages for an event"""
-  messages, registrations, creator = db.get_messages_list(query['event_id'])
+  messages, registrations, creator = db.get_messages_list(query_data['event_id'])
 
   if creator is None:
     abort(404, 'Event not found')

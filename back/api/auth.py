@@ -15,11 +15,11 @@ AuthBP = APIBlueprint('Auth', __name__)
 @AuthBP.input(LoginData)
 @AuthBP.output(AccessToken, description='Successfully logged in')
 @AuthBP.doc(responses={401: 'Authentication failed'})
-def login(json):
+def login(json_data):
   """Login"""
   access_token = LoginAPI.authenticate(
-    json['login'],
-    json['password'],
+    json_data['login'],
+    json_data['password'],
     settings.api_JWT_ACCESS_TOKEN_EXPIRES
   )
   if access_token is None:
