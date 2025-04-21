@@ -17,19 +17,43 @@ py -m pip install -r .\requirements.txt
 
 For linux, replace `py` with `python3` and virtualenv activation with: `source env/bin/activate`
 
+## Setup application
+```
+cp app_secrets.sample.py app_secrets.py
+nano app_secrets.py  # make required changes
+```
+Also make sure settings are ok:
+```
+nano settings.py  # make required changes
+```
+(domain is not important when running locally, don't worry about it)
+
+Install locale if needed:
+```
+# sudo apt-get install language-pack-fr
+sudo locale-gen fr_FR
+sudo locale-gen fr_FR.UTF-8
+sudo update-locale
+```
+
 # Local run (dev)
 
 `py .\app_flask.py`
 
-Now open your browser to http://localhost:5000/swagger  
+Now open your browser to http://localhost:5000/  
+
+API can be browsed here: http://localhost:5000/swagger  
 It should allows you to see and interact with the API (click "Try it out").
 
 You can also query:
 * http://localhost:5000/swagger-online
 * http://localhost:5000/api/events?year=2020
 
-Insert an event in database:  
-`curl -i -H "Content-Type: application/json" -X POST -d "{\"title\": \"mon titre\", \"location\": \"mon endroit\", \"start_date\": \"2020-03-29\"}" http://localhost:5000/api/events`
+# Create admins
+
+Each admin should be created like a normal user (through gui or api), then manually update its role to 'admin'.
+
+`sqlite3 events.db "UPDATE users SET role='admin' WHERE id=101"` (replace id accordingly)
 
 # Check for updates
 

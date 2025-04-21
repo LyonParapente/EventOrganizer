@@ -125,6 +125,12 @@ sudo gunicorn3 --bind 0.0.0.0:80 -w 4 app_flask:app -u <user> -g <group> --pytho
 We're now done with our virtual environment, so we can deactivate it:  
 `deactivate`
 
+# Create admins
+
+Each admin should be created like a normal user (through gui or api), then manually update its role to 'admin'.
+
+`sqlite3 events.db "UPDATE users SET role='admin' WHERE id=101"` (replace id accordingly)
+
 ## Create a systemd service
 (You can also use supervisor rather than systemd)
 
