@@ -72,24 +72,26 @@ class UserAPI(MethodView):
   def delete(self, user_id):
     """Delete a user"""
 
-    user = db.get_user(user_id=user_id)
-
     claims = get_jwt()
-    if claims['role'] == 'admin' and user['role']=='new':
+    if str(user_id) != get_jwt_identity() and claims['role'] != 'admin':
+      abort(403, "You cannot delete someone else")
+
+    user = db.get_user(user_id=user_id)
+    if claims['role'] == 'admin' and user is not None and user['role'] == 'new':
       rowcount = db.delete_user(user_id)
       if rowcount < 1:
         abort(404, 'No user was deleted')
       else:
         return {'message': 'User really deleted'}, 200
 
-    if str(user_id) != get_jwt_identity() and claims['role'] != 'admin':
-      abort(403, "You cannot delete someone else")
 
     # We want to keep user messages (foreign keys)
-    db.update_user_role(user_id, "deleted")
-
-    # Note: a real delete would delete all user's messages and registration and events by CASCADE
-    return {'message': 'User deleted'}, 200
+    rowcount = db.update_user_role(user_id, "deleted")
+    if rowcount < 1:
+      abort(404, f'User {user_id} not found')
+    else:
+      # Note: a real delete would delete all user's messages and registration and events by CASCADE
+      return {'message': 'User deleted'}, 200
 
 
 UserAPI_view = UserAPI.as_view('UserAPI')
