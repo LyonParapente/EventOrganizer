@@ -17,7 +17,7 @@ class RegisterAPI(MethodView):
   @RegisterBP.output(Registration, description='Registration saved/updated')
   def put(self, event_id, query_data):
     """Save or update a registration"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     try:
       props = db.set_registration(event_id=event_id, user_id=user_id, interest=query_data["interest"])
     except sqlite3.IntegrityError as err:
@@ -38,7 +38,7 @@ class RegisterAPI(MethodView):
   @RegisterBP.output(SimpleMessage, description='Confirmation message')
   def delete(self, event_id):
     """Delete a registration"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     previous = db.get_registration(event_id, user_id)
     if previous is None:

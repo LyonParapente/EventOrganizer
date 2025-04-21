@@ -74,7 +74,7 @@ class LoginAPI():
       'theme': user['theme'],
       'notif_event_change': user['notif_event_change']
     }
-    return create_access_token(identity=user['id'], additional_claims=claims, expires_delta=expires_delta)
+    return create_access_token(identity=str(user['id']), additional_claims=claims, expires_delta=expires_delta)
 
   @staticmethod
   def change_password(user_id, old_password, new_password):

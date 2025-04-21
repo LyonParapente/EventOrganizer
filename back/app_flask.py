@@ -103,8 +103,7 @@ def error_page(infos):
 app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 app.config['JWT_COOKIE_SAMESITE'] = 'Lax'
 app.config['JWT_COOKIE_SECURE'] = settings.domain.startswith("https") and not app.debug
-app.config['JWT_VERIFY_SUB'] = False # https://github.com/apache/superset/issues/30995#issuecomment-2494706861
-
+# app.config['JWT_VERIFY_SUB'] = False # https://github.com/apache/superset/issues/30995#issuecomment-2494706861
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_CSRF_CHECK_FORM'] = True
 app.config['JWT_CSRF_IN_COOKIES'] = True
@@ -198,14 +197,14 @@ def event(id=None):
   return calendar()
 
 def calendar():
-  user_id = get_jwt_identity()
-  is_connected = user_id is not None
+  sub = get_jwt_identity()
+  is_connected = sub is not None
   theme = settings.default_theme
   infos = {}
   if is_connected:
     infos = get_jwt()
     theme = infos['theme']
-    infos['id'] = user_id
+    infos['id'] = int(sub)
   header = render_template('header.html', **lang, is_connected=is_connected)
   return render_template('calendar.html', **lang, header=header,
     is_connected=is_connected, userinfos=json.dumps(infos), theme=theme)
@@ -408,7 +407,8 @@ def allowed_file(filename):
 @jwt_required()
 def user_settings():
   """User settings"""
-  id = get_jwt_identity()
+
+  id = int(get_jwt_identity())
   message = error = ''
 
   if request.method == 'POST':
@@ -485,8 +485,9 @@ def regenerate_claims(claims, dest):
 def change_password():
   """Change password"""
 
-  id = get_jwt_identity()
+  sub = get_jwt_identity()
   if id is not None:
+    id = int(sub)
     claims = get_jwt()
     theme = claims['theme']
     is_connected = True

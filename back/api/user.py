@@ -56,7 +56,7 @@ class UserAPI(MethodView):
     return self.put_internal(user_id, json_data)
 
   def put_internal(self, user_id, json):
-    if user_id != get_jwt_identity():
+    if str(user_id) != get_jwt_identity():
       abort(403, "You cannot update someone else")
     try:
       updated_props = db.update_user(user_id, **json)
@@ -82,7 +82,7 @@ class UserAPI(MethodView):
       else:
         return {'message': 'User really deleted'}, 200
 
-    if user_id != get_jwt_identity() and claims['role'] != 'admin':
+    if str(user_id) != get_jwt_identity() and claims['role'] != 'admin':
       abort(403, "You cannot delete someone else")
 
     # We want to keep user messages (foreign keys)

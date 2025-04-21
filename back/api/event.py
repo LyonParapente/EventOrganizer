@@ -25,7 +25,7 @@ class EventAPI(MethodView):
     if end_date < today:
       abort(403, 'Cannot create an event in the past')
 
-    creator_id = get_jwt_identity()
+    creator_id = int(get_jwt_identity())
     json_data['creator_id'] = creator_id
     try:
       props = db.insert_event(**json_data)
@@ -83,7 +83,7 @@ class EventAPI(MethodView):
 
     claims = get_jwt()
     if claims['role'] != 'admin':
-      if db_event['creator_id'] != get_jwt_identity():
+      if db_event['creator_id'] != int(get_jwt_identity()):
         abort(403, "You cannot update someone else event")
 
     today = datetime.date.today()
@@ -109,7 +109,7 @@ class EventAPI(MethodView):
 
     claims = get_jwt()
     if claims['role'] != 'admin':
-      if db_event['creator_id'] != get_jwt_identity():
+      if db_event['creator_id'] != int(get_jwt_identity()):
         abort(403, "You cannot delete someone else event")
 
     today = datetime.date.today()

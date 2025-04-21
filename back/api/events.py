@@ -15,8 +15,7 @@ def getEvents(query_data):
   end = query_data.get('end')
   events_list = db.get_events_list(start, end)
 
-  user_id = get_jwt_identity()
-  is_connected = user_id is not None
+  is_connected = get_jwt_identity() is not None
 
   for i in range(len(events_list)):
     event = events_list[i]

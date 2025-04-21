@@ -14,7 +14,7 @@ MessageBP = APIBlueprint('Message', __name__)
 @MessageBP.doc(security='BearerAuth', responses={403: 'Update forbidden'})
 def post(json_data):
   """Create a message"""
-  author_id = get_jwt_identity()
+  author_id = int(get_jwt_identity())
   json_data['author_id'] = author_id
 
   props = None

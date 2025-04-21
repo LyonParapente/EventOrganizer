@@ -15,7 +15,7 @@ class NotificationsBlocklistAPI(MethodView):
   @NotificationsBlocklistBP.output(SimpleMessage, description='Notifications blocklist added')
   def put(self, event_id):
     """Add a notifications blocklist"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     try:
       db.set_notifications_blocklist(event_id, user_id)
     except sqlite3.IntegrityError as err:
@@ -31,7 +31,7 @@ class NotificationsBlocklistAPI(MethodView):
   @NotificationsBlocklistBP.output(NotificationsBlocklistResponseMessageWithBlock, description='Notifications blocklist response')
   def get(self, event_id):
     """Get a notifications blocklist"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     try:
       row = db.list_notifications_blocklist(event_id, user_id)
     except Exception as e:
@@ -48,7 +48,7 @@ class NotificationsBlocklistAPI(MethodView):
   @NotificationsBlocklistBP.doc(responses={404: 'Notifications blocklist not found'})
   def delete(self, event_id):
     """Delete a notifications blocklist"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     rowcount = db.delete_notifications_blocklist(event_id, user_id)
     if rowcount < 1:
