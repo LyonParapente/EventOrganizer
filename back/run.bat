@@ -9,7 +9,5 @@ CD ..\back\
 CALL env313\Scripts\activate
 py -m pip install -r .\requirements.txt
 
-# SET FLASK_DEBUG=1
-# py .\app_flask.py
 flask --app app_flask run --debug
 
