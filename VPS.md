@@ -346,7 +346,7 @@ Then: `chmod u+x ~/tomorrow_events.sh`
 
 And schedule it with: `crontab -e`  
 
-`0 17 * * * /bin/sh /home/eventorganizer/tomorrow_events.sh`
+`0 17 * * * /bin/sh /var/www/EventOrganizer/tomorrow_events.sh`
 
 ## Automatic remote backup
 
@@ -365,7 +365,15 @@ Then: `chmod u+x ~/rsync_backup.sh`
 
 And schedule it with: `crontab -e`  
 
-`0 */12 * * * /bin/sh /home/eventorganizer/rsync_backup.sh`
+`0 */12 * * * /bin/sh /var/www/EventOrganizer/rsync_backup.sh`
+
+## Delete old cache file for backgrounds
+
+Than haven't been accessed in a year.  
+Schedule it with: `crontab -e`  
+
+`0 0 1 * * find /var/www/EventOrganizer/backgrounds/ -type f -atime +365 -delete`
+
 
 ## Useful
 
