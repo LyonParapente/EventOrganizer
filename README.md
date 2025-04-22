@@ -24,10 +24,12 @@ Main goals:
 
 # Developer
 
+Currently developped on Windows but Linux also possible.
+
 ## Requirements
 
 * Front: [Node & NPM](https://nodejs.org/)
-* Back: Python
+* Back: [Python 3](https://www.python.org/)
 
 ## Front
 
@@ -47,12 +49,19 @@ See [BACK](BACK.md) for how to configure your local development environment.
 
 # Production deployment
 
+Running on linux.  
 Follow the tutorial: [Flask + Gunicorn + Nginx + HTTPS](VPS.md)
 
 # Stack
 
+## Front
 * [TypeScript](https://www.typescriptlang.org/) and [FuseBox](https://github.com/fuse-box/fuse-box) bundler
 * [FullCalendar](https://fullcalendar.io/) with [Bootstrap](https://getbootstrap.com)
 * [Font Awesome](https://fontawesome.com/)
 * [Leaflet](https://leafletjs.com) with [OpenStreetMap](https://www.openstreetmap.org/about) and [Esri](https://esri.github.io/esri-leaflet/)
 
+## Back
+* [Python 3](https://www.python.org/)
+* [Flask](https://flask.palletsprojects.com/)
+* [APIFlask](https://apiflask.com/)
+* and a few other useful packages, see back/requirements.txt
