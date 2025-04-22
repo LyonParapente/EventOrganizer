@@ -48,9 +48,9 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /var/www/EventOrganizer
-          source env/bin/activate
+          source env313/bin/activate
           pip install -r requirements.txt
-          find . -type d -name "__pycache__" -not -path "./env/*" -exec rm -rf "{}" \;
+          find . -type d -name "__pycache__" -not -path "./env*/*" -exec rm -rf "{}" \;
           sudo systemctl restart eventorganizer
 
     - name: Zip artifact
