@@ -371,12 +371,17 @@ And schedule it with: `crontab -e`
 
 A few helpful commands:
 ```
-source /var/www/EventOrganizer/back/env/bin/activate
+source /var/www/EventOrganizer/back/env313/bin/activate
 less /var/log/nginx/error.log
 less /var/log/nginx/access.log
 journalctl -u nginx
 journalctl -u eventorganizer
 echo "alias o='ls -AlFh --time-style=long-iso --color=auto'" >~/.bash_aliases
+
+# delete cache files for backgrounds than haven't been accessed in a year
+du -sh /var/www/EventOrganizer/backgrounds/
+find /var/www/EventOrganizer/backgrounds/ -type f -atime +365 -delete
+du -sh /var/www/EventOrganizer/backgrounds/
 ```
 
 ## Links
