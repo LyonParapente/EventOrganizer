@@ -5,7 +5,7 @@ class MessageResponse(Schema):
   comment = fields.String(metadata={'example': 'This is my message'}, required=True)
   author_id = fields.Integer(metadata={'example': 101}, dump_only=True, required=True)
   event_id = fields.Integer(metadata={'example': 12345}, dump_only=False, required=True)
-  creation_datetime = fields.DateTime(format='iso8601', dump_only=True, required=True, metadata={'example': '2020-04-13T16:30:04.403284'})
+  creation_datetime = fields.DateTime(format='iso', dump_only=True, required=True, metadata={'example': '2020-04-13T16:30:04.403284'})
 
 class MessageCreate(Schema):
   comment = fields.String(metadata={'example': 'This is my message'}, required=True)
@@ -16,16 +16,16 @@ class MessageCreate(Schema):
 # Messages:
 
 class MessagesComment(Schema):
-  date = fields.DateTime(format='iso8601', metadata={'example': '2020-04-13T16:30:04.403284'}, required=True)
+  date = fields.DateTime(format='iso', metadata={'example': '2020-04-13T16:30:04.403284'}, required=True)
   user = fields.Integer(metadata={'example': 101}, required=True)
   comment = fields.String(metadata={'example': 'This is my message'}, required=True)
 
 class MessagesUser(Schema):
   firstname = fields.String(metadata={'example': 'John'}, required=True)
   lastname = fields.String(metadata={'example': 'DOE'}, required=True)
-  phone = fields.String(metadata={'example': '01.02.03.04.05', 'description': 'present if share_phone is true'})
+  phone = fields.String(metadata={'description': 'present if share_phone is true', 'example': '01.02.03.04.05'})
   has_whatsapp = fields.Boolean(metadata={'example': True})
-  email = fields.String(metadata={'example': 'john.doe@gmail.com', 'description': 'present if share_email is true'})
+  email = fields.String(metadata={'description': 'present if share_email is true', 'example': 'john.doe@gmail.com'})
 
 class Messages(Schema):
   users = fields.Dict(keys=fields.String(), values=fields.Nested(MessagesUser), required=True)
