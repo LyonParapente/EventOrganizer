@@ -1,4 +1,3 @@
-* Same email title for each new comment on an event, so that you get a single thread in your inbox
-* Add a new category 'gonflage'
-* Specific error page when uploading a too large file for an avatar
-* Bump some dependancies
+* Upgrade to Python 3.13
+* Upgrade backend packages to latest (Flask, apiflask, ...)
+* Small doc. improvements
