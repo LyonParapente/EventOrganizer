@@ -84,7 +84,7 @@ We then need to configure python:
 ```
 cd /var/www/EventOrganizer
 python3 -m venv env
-source env/bin/activate
+source env313/bin/activate
 pip install wheel  # to ensure that our packages will install even if they are missing wheel archives
 pip install -r requirements.txt
 ```
@@ -118,7 +118,7 @@ python3 app_flask.py
 gunicorn --bind 0.0.0.0:8000 app_flask:app
 # then test on port 8000 in your browser
 # Must be root port ports<1024
-sudo gunicorn3 --bind 0.0.0.0:80 -w 4 app_flask:app -u <user> -g <group> --pythonpath /var/www/EventOrganizer/env/lib/python3.8/site-packages
+sudo gunicorn3 --bind 0.0.0.0:80 -w 4 app_flask:app -u <user> -g <group> --pythonpath /var/www/EventOrganizer/env313/lib/python3.8/site-packages
 # then test on port 80 in your browser
 ```
 
@@ -146,9 +146,9 @@ After=network.target
 User=<user>
 Group=www-data
 WorkingDirectory=/var/www/EventOrganizer
-Environment="PATH=/var/www/EventOrganizer/env/bin"
+Environment="PATH=/var/www/EventOrganizer/env313/bin"
 Environment="PYTHONUNBUFFERED=TRUE"
-ExecStart=/var/www/EventOrganizer/env/bin/gunicorn --workers 4 --bind unix:eventorganizer.sock -m 007 app_flask:app --error-logfile /var/log/gunicorn/error.log --access-logfile /var/log/gunicorn/access.log --capture-output
+ExecStart=/var/www/EventOrganizer/env313/bin/gunicorn --workers 4 --bind unix:eventorganizer.sock -m 007 app_flask:app --error-logfile /var/log/gunicorn/error.log --access-logfile /var/log/gunicorn/access.log --capture-output
 Restart=always
 
 [Install]

@@ -15,7 +15,7 @@ py -m pip install wheel
 py -m pip install -r .\requirements.txt
 ```
 
-For linux, replace `py` with `python3` and virtualenv activation with: `source env/bin/activate`
+For linux, replace `py` with `python3` and virtualenv activation with: `source env313/bin/activate`
 
 ## Setup application
 ```
