@@ -485,8 +485,8 @@ def regenerate_claims(claims, dest):
 def change_password():
   """Change password"""
 
-  sub = get_jwt_identity()
-  if id is not None:
+  sub = get_jwt_identity() 
+  if sub is not None:
     id = int(sub)
     claims = get_jwt()
     theme = claims['theme']
