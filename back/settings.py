@@ -37,6 +37,7 @@ avatars_folder = 'avatars'
 backgrounds_folder = 'backgrounds'
 uploads_allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
 international_prefix = '+33'
+country_check = 'France'
 temporary_user_duration = datetime.timedelta(days=60) # +web_remember_JWT_ACCESS_TOKEN_EXPIRES if user checked remember credentials
 domain = "https://calendrier.lyonparapente.fr"
 emails = {

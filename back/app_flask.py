@@ -16,6 +16,7 @@ import random
 import ics
 import markdown
 import datetime
+import requests
 
 # ------------------------------
 # Our helpers
@@ -353,6 +354,13 @@ def logout():
 def register():
   """Register an account"""
   if request.method == 'POST':
+
+    if settings.country_check != '':
+      # anti bots
+      r = requests.get(f"http://ip-api.com/json/{request.remote_addr}")
+      if r.status_code == 200 and r.json()['country'] != settings.country_check:
+        return "Blocked", 403
+
     httpcode, result, opts = createUser(request.form)
     if httpcode == 201:
       f = request.form

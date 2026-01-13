@@ -10,3 +10,4 @@ Markdown~=3.8.0
 ics==0.7.2
 gunicorn==23.0.0
 PyYAML==6.0.2
+requests==2.32.5

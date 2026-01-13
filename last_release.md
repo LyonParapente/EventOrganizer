@@ -1,1 +1,1 @@
-* Fix problem in change_password when not logged in (regression in 78b0031623e19c5b0ae1899ea83ce4a5808a2343)
+* Protect register endpoint from some bots
