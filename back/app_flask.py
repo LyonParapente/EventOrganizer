@@ -357,7 +357,8 @@ def register():
 
     if settings.country_check != '':
       # anti bots
-      r = requests.get(f"http://ip-api.com/json/{request.remote_addr}")
+      ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+      r = requests.get(f"http://ip-api.com/json/{ip}")
       if r.status_code == 200 and r.json()['country'] != settings.country_check:
         return "Blocked", 403
 
