@@ -120,7 +120,7 @@ def send_email_with_quota_retry(mail, msg):
 
 
 def send_emails_smtp(app, messages):
-  if app.debug:
+  if app.debug and not settings.debug_send_emails:
     print(messages)
     return # do not send real email when developing
 

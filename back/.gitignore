@@ -15,6 +15,7 @@ static/css/webfonts/
 events.db
 events.db-journal
 app_secrets.py
+settings_local.py
 avatars/
 backgrounds/
 uploads/

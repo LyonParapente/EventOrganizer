@@ -1,4 +1,7 @@
-# Local installation
+# Local installation (manual setup, without Docker)
+
+> **Note**: the recommended development setup is `docker compose up`, see [DEV.md](DEV.md).
+> This page describes the manual setup, which keeps working as before.
 
 If you're new with Python, pip and virtualenv, please read [Installing packages using pip and virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)  
 Basically meaning, for windows environment:

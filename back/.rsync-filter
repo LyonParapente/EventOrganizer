@@ -2,6 +2,7 @@
 - events.db
 - exceptions.txt
 - app_secrets.py
+- settings_local.py
 - smtp_errors.txt
 - .gitignore
 - .git/

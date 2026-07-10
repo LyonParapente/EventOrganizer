@@ -1,0 +1,66 @@
+name: eventorganizer
+
+# Local development stack. One command: docker compose up
+# - App:      http://localhost:8000  (admin@example.com / admin1234, see DEV.md)
+# - Swagger:  http://localhost:8000/swagger
+# - Emails:   http://localhost:8025  (Mailpit web UI, catches all outgoing emails)
+#
+# Ports 8000/8025 taken on your machine? Override them in a .env file
+# (not versioned): APP_PORT=8080 and/or MAILPIT_PORT=8125
+# (we avoid host port 5000 on purpose: macOS AirPlay squats it)
+#
+# Front-only mode with mocked API (no back needed):
+#   docker compose --profile mock up front-mock   ->  http://localhost:4444
+
+services:
+
+  back:
+    build:
+      context: .
+      dockerfile: docker/back.Dockerfile
+    ports:
+      - "127.0.0.1:${APP_PORT:-8000}:5000"
+    volumes:
+      - ./back:/app
+      - data:/data
+    depends_on:
+      - mailpit
+
+  # Compiles the front in watch mode into back/static/,
+  # so that http://localhost:8000 always serves fresh bundles.
+  front:
+    build:
+      context: .
+      dockerfile: docker/front.Dockerfile
+    environment:
+      NODE_ENV: fullstack
+      # Uncomment if file changes are not detected (network drives, some WSL2 setups):
+      # CHOKIDAR_USEPOLLING: 1
+    volumes:
+      - ./front:/workspace/front
+      - ./back/static:/workspace/back/static
+      - front_node_modules:/workspace/front/node_modules
+
+  # Legacy front-only mode: FuseBox dev server with a mocked API (front/data/*.json)
+  front-mock:
+    profiles: ["mock"]
+    build:
+      context: .
+      dockerfile: docker/front.Dockerfile
+    environment:
+      NODE_ENV: dev
+    ports:
+      - "127.0.0.1:${MOCK_PORT:-4444}:4444"
+    volumes:
+      - ./front:/workspace/front
+      - front_node_modules:/workspace/front/node_modules
+
+  # Catches all emails sent by the back in dev; nothing leaves your machine.
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "127.0.0.1:${MAILPIT_PORT:-8025}:8025"
+
+volumes:
+  data:
+  front_node_modules:

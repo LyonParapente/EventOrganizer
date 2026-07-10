@@ -1,6 +1,7 @@
 ﻿*.back
 *.orig
 node_modules/
+.env
 
 front/dist/
 front/.cache/
