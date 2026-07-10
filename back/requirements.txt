@@ -8,6 +8,7 @@ Pillow==11.2.1
 mailjet_rest==1.3.4
 Markdown~=3.8.0
 ics==0.7.2
+TatSu==5.8.3 # transitive dependency of ics, newer versions break ics 0.7.2
 gunicorn==23.0.0
 PyYAML==6.0.2
 requests==2.32.5
