@@ -1,7 +1,5 @@
 # Dev image for the front (the code itself is bind-mounted at runtime).
-# Full (non-slim) image: node-sass needs python3/make/g++ when no prebuilt
-# binary matches the architecture (e.g. linux/arm64 on Apple Silicon).
-FROM node:18-bullseye
+FROM node:18-bullseye-slim
 
 WORKDIR /workspace/front
 

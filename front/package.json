@@ -35,7 +35,6 @@
     "leaflet": "^1.9.4",
     "leaflet-fullscreen": "^1.0.2",
     "marked": "^5.1.2",
-    "node-sass": "^9.0.0",
     "simple-color-picker": "^1.0.5",
     "ts-node": "^10.4.0",
     "typescript": "^5.1.6"

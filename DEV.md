@@ -67,7 +67,7 @@ docker compose --profile mock up front-mock   # -> http://localhost:4444
 * **Windows**: requires Docker Desktop (WSL2 backend).
   For fast file watching, clone the repo inside the WSL2 filesystem (e.g. `\\wsl$\Ubuntu\home\...`) rather than on `C:\`.
 * **File changes not detected** (network drives, some WSL2 setups): uncomment `CHOKIDAR_USEPOLLING: 1` in `docker-compose.yml` (front service).
-* **Apple Silicon / ARM**: works; `node-sass` compiles from source during the image build (a few extra minutes, once).
+* **Apple Silicon / ARM**: works out of the box (all front dependencies are pure JavaScript).
 
 ## Manual setup (without Docker)
 

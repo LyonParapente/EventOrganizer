@@ -8,8 +8,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import * as bootstrap from 'bootstrap';
 
-// import 'bootstrap/dist/css/bootstrap.css'; // commented so that we can import the theme between bootstrap and calendar.scss
-import 'css/calendar.scss';
+// import 'bootstrap/dist/css/bootstrap.css'; // commented so that we can import the theme between bootstrap and calendar.css
+import 'css/calendar.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import settings from './settings';
