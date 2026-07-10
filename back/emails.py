@@ -121,8 +121,12 @@ def send_email_with_quota_retry(mail, msg):
 
 def send_emails_smtp(app, messages):
   if app.debug:
-    print(messages)
-    return # do not send real email when developing
+    if not settings.debug_send_emails:
+      print(messages)
+      return # do not send real email when developing
+    # debug_send_emails is meant for a local catcher like Mailpit:
+    # be loud in case a real SMTP server is configured
+    print("WARNING: debug_send_emails=True, really sending through " + settings.emails['server'])
 
   start = datetime.datetime.now()
   with app.app_context():

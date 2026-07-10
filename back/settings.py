@@ -56,3 +56,10 @@ emails = {
   "max_recipients_per_mail": 50
 }
 mail_quota_exceeded_timeout = 3600 # in seconds
+debug_send_emails = False # in debug mode, print emails instead of sending them; set True ONLY with a local catcher like Mailpit, never with a real SMTP server
+#---
+# Local overrides (not versioned), e.g. for development
+try:
+  from settings_local import *
+except ImportError:
+  pass

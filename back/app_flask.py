@@ -574,15 +574,19 @@ os.makedirs(settings.backgrounds_folder, exist_ok=True)
 
 # List known backgrounds
 available_backgrounds = []
-for filename in os.listdir('uploads/backgrounds'):
+backgrounds_source_folder = settings.uploads_folder + '/backgrounds'
+os.makedirs(backgrounds_source_folder, exist_ok=True)
+for filename in os.listdir(backgrounds_source_folder):
   filenameL = filename.lower()
   if filenameL.endswith(".jpg") or filenameL.endswith(".jpeg"):
-    filepath = 'uploads/backgrounds/' + filename
+    filepath = backgrounds_source_folder + '/' + filename
     available_backgrounds.append(filepath)
 
 @bpapp.route('/background/<int:width>x<int:height>')
 def background(width, height):
   """Get proper size background"""
+  if not available_backgrounds:
+    return rescue_background(width, height)
   rand = random.randint(0, len(available_backgrounds) - 1)
   background = available_backgrounds[rand]
   return get_image_resized(background, width, height)

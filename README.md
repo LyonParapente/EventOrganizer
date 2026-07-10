@@ -24,14 +24,29 @@ Main goals:
 
 # Developer
 
+## Docker setup (recommended)
+
+One command, same setup on Windows, macOS and Linux (requires [Docker](https://docs.docker.com/get-docker/)):
+
+```
+docker compose up
+```
+
+Then open http://localhost:8000/ and log in with `admin@example.com` / `admin1234`.  
+Back (Python) and front (TypeScript) both hot-reload on save, and all outgoing emails are caught locally at http://localhost:8025.
+
+See [DEV](DEV.md) for details (dev accounts, front-only mock mode, resetting data, platform notes).
+
+## Manual setup
+
 Currently developped on Windows but Linux also possible.
 
-## Requirements
+### Requirements
 
 * Front: [Node & NPM](https://nodejs.org/)
 * Back: [Python 3](https://www.python.org/)
 
-## Front
+### Front
 
 Front is made using TypeScript and [FuseBox](https://github.com/fuse-box/fuse-box) bundler.  
 
@@ -42,8 +57,7 @@ Then open your browser to http://localhost:4444/
 
 Each time you save a source file, FuseBox reloads the page of all connected browsers, even your phone :-).
 
-
-## Back
+### Back
 
 See [BACK](BACK.md) for how to configure your local development environment.
 
